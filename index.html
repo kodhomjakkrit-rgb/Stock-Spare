@@ -315,6 +315,17 @@
   }
   .login-box .brand{display:flex;align-items:center;gap:12px;}
   .login-box .brand .mark{width:72px;height:78px;}
+  .password-field{position:relative;}
+  .password-field input{padding-right:46px;}
+  .password-toggle{
+    position:absolute;right:6px;bottom:5px;width:36px;height:36px;padding:0;
+    display:grid;place-items:center;border:0;background:transparent;color:var(--text-dim);
+  }
+  .password-toggle:hover,.password-toggle:focus-visible{background:var(--panel-alt);color:var(--text);}
+  .password-toggle svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .password-toggle .eye-off{display:none;}
+  .password-toggle.is-visible .eye-on{display:none;}
+  .password-toggle.is-visible .eye-off{display:block;}
   .login-settings{margin:4px 0 12px;border:1px dashed var(--border);border-radius:8px;padding:9px 10px;}
   .login-settings summary{cursor:pointer;color:var(--text-dim);font-size:12px;}
   .login-settings .field{margin-top:9px;}
@@ -511,7 +522,7 @@
     .alert-banner{align-items:flex-start;flex-direction:column;}.alert-action{width:100%;}
     .gauge{min-width:130px;}
   }
-  /* ================= v3.9 controlled workflow ================= */
+  /* ================= v3.9.1 controlled workflow ================= */
   .status-pill.draft{background:#26333a;color:#b6c5c1}.status-pill.pending{background:var(--accent-dim);color:#ffd071}
   .status-pill.approved{background:var(--brand-dim);color:#78e9dc}.status-pill.issued{background:var(--success-dim);color:#65ddb0}
   .status-pill.rejected,.status-pill.cancelled{background:var(--danger-dim);color:#ff9b9b}
@@ -538,7 +549,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.9.1</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -547,9 +558,13 @@
       <label>ชื่อผู้ใช้งาน</label>
       <input type="text" id="login-name" placeholder="กรอกชื่อผู้ใช้งาน" autocomplete="username" required>
     </div>
-    <div class="field" style="margin-bottom:6px;">
+    <div class="field password-field" style="margin-bottom:6px;">
       <label>รหัสผ่าน</label>
       <input type="password" id="login-password" placeholder="กรอกรหัสผ่าน" autocomplete="current-password" required>
+      <button type="button" id="btn-toggle-login-password" class="password-toggle" aria-label="แสดงรหัสผ่าน" aria-pressed="false" title="แสดงรหัสผ่าน">
+        <svg class="eye-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12" r="2.6"/></svg>
+        <svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 6.2A10.6 10.6 0 0112 6c6 0 9.5 6 9.5 6a16 16 0 01-3 3.7M7.1 7.1C4.1 9 2.5 12 2.5 12s3.5 6 9.5 6c1.2 0 2.3-.2 3.3-.6M9.9 9.9a3 3 0 004.2 4.2"/></svg>
+      </button>
     </div>
     <details class="login-settings">
       <summary>ตั้งค่า Web App URL (ใช้เมื่อติดตั้งครั้งแรก)</summary>
@@ -569,7 +584,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.9.1</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -1197,11 +1212,18 @@
   const POLL_INTERVAL_MS = 60000;
   const API_TIMEOUT_MS = 25000;
   const AUTH_KEY = "sparepartsStock_auth";
+  const WORK_DRAFT_PREFIX = "sparepartsStock_workDraft_v391_";
+  const LAST_USER_KEY = "sparepartsStock_lastUser";
 
   // ============ LOGIN / ROLE PERMISSIONS ============
-  // v3.9 stores user accounts as salted password hashes in the Users sheet.
+  // v3.9.1 keeps v3.9 salted password hashes and adds secure re-login/resume.
   let currentUser = null; // { username, name, role, token, expiresAt }
   let logoLoadPromise = null;
+  let lastAuthenticatedUsername = "";
+  let leaveLockActive = false;
+  let draftSaveTimer = null;
+  let draftAutosaveTimer = null;
+  let restoringDraft = false;
 
   function applyDriveLogo(dataUrl){
     if(!/^data:image\//i.test(String(dataUrl||""))) throw new Error("ข้อมูลโลโก้ไม่ถูกต้อง");
@@ -1242,6 +1264,89 @@
   }
   function saveAuth(user){ localStorage.setItem(AUTH_KEY, JSON.stringify(user)); }
   function clearAuth(){ localStorage.removeItem(AUTH_KEY); }
+  function draftKey(username){ return WORK_DRAFT_PREFIX + encodeURIComponent(String(username||"").toLowerCase()); }
+  function safeDraftLines(lines){
+    return Array.isArray(lines) ? lines.map(x=>({id:String(x.id||uid()),serverId:String(x.serverId||""),partId:String(x.partId||""),qty:x.qty==null?"":String(x.qty)})) : [];
+  }
+  function saveWorkingDraft(username){
+    if(restoringDraft) return false;
+    username = username || (currentUser&&currentUser.username) || lastAuthenticatedUsername;
+    if(!username) return false;
+    document.querySelectorAll("[data-doc-part],[data-doc-qty]").forEach(el=>{
+      const type=el.dataset.docPart||el.dataset.docQty,lines=type==="in"?receiveLines:issueLines,line=lines.find(x=>x.id===el.dataset.lineId);
+      if(!line)return;
+      if(el.dataset.docPart!==undefined)line.partId=el.value;else line.qty=el.value;
+    });
+    document.querySelectorAll("[data-request-part],[data-request-qty]").forEach(el=>{
+      const line=requestLines.find(x=>x.id===el.dataset.lineId);if(!line)return;
+      if(el.dataset.requestPart!==undefined)line.partId=el.value;else line.qty=el.value;
+    });
+    document.querySelectorAll("[data-count-part]").forEach(el=>{countDraft[el.dataset.countPart]=el.value;});
+    const fields = {};
+    document.querySelectorAll("#app input[id],#app select[id],#app textarea[id]").forEach(el=>{
+      if(el.type==="password" || el.type==="file") return;
+      fields[el.id] = el.type==="checkbox" || el.type==="radio" ? {checked:el.checked} : {value:el.value};
+    });
+    const activeView = document.querySelector(".view.active")?.id.replace("view-","") || "dashboard";
+    const draft = {
+      schema:1,username,savedAt:new Date().toISOString(),activeView,scrollY:window.scrollY||0,fields,
+      receiveLines:safeDraftLines(receiveLines),issueLines:safeDraftLines(issueLines),requestLines:safeDraftLines(requestLines),
+      countDraft:{...countDraft},currentMasterType
+    };
+    try{
+      localStorage.setItem(draftKey(username),JSON.stringify(draft));
+      localStorage.setItem(LAST_USER_KEY,username);
+      return true;
+    }catch(err){
+      console.warn("บันทึกร่างงานในเครื่องไม่สำเร็จ:",err.message||err);
+      return false;
+    }
+  }
+  function scheduleDraftSave(){
+    if(!currentUser || restoringDraft) return;
+    clearTimeout(draftSaveTimer);
+    draftSaveTimer=setTimeout(()=>saveWorkingDraft(),250);
+  }
+  function restoreWorkingDraft(username){
+    let draft;
+    try{draft=JSON.parse(localStorage.getItem(draftKey(username))||"null");}catch(e){draft=null;}
+    if(!draft || draft.username!==username) return false;
+    restoringDraft=true;
+    try{
+      const restoredReceive=safeDraftLines(draft.receiveLines),restoredIssue=safeDraftLines(draft.issueLines),restoredRequest=safeDraftLines(draft.requestLines);
+      receiveLines=restoredReceive.length?restoredReceive:[{id:uid(),partId:"",qty:""}];
+      issueLines=restoredIssue.length?restoredIssue:[{id:uid(),partId:"",qty:""}];
+      requestLines=restoredRequest.length?restoredRequest:[{id:uid(),partId:"",qty:""}];
+      Object.keys(countDraft).forEach(k=>delete countDraft[k]);
+      Object.assign(countDraft,draft.countDraft&&typeof draft.countDraft==="object"?draft.countDraft:{});
+      if(["suppliers","trucks","provinces","documents"].includes(draft.currentMasterType)) currentMasterType=draft.currentMasterType;
+      renderAll();
+      Object.entries(draft.fields||{}).forEach(([id,saved])=>{
+        const el=document.getElementById(id);
+        if(!el || el.type==="password" || el.type==="file") return;
+        if(el.type==="checkbox" || el.type==="radio") el.checked=!!saved.checked;
+        else if(saved.value!=null) el.value=String(saved.value);
+      });
+      const allowedView=document.getElementById("view-"+draft.activeView)?draft.activeView:"dashboard";
+      activateView(allowedView);
+      requestAnimationFrame(()=>window.scrollTo({top:Number(draft.scrollY)||0,behavior:"auto"}));
+      return true;
+    }finally{restoringDraft=false;}
+  }
+  function startDraftAutosave(){
+    if(draftAutosaveTimer) return;
+    draftAutosaveTimer=setInterval(()=>saveWorkingDraft(),1500);
+  }
+  function lockAfterLeaving(message){
+    if(!currentUser || leaveLockActive) return;
+    leaveLockActive=true;
+    lastAuthenticatedUsername=currentUser.username;
+    saveWorkingDraft(lastAuthenticatedUsername);
+    clearAuth();
+    if(pollTimer) clearInterval(pollTimer);
+    if(typeof stopScanner==="function") stopScanner();
+    showLogin(lastAuthenticatedUsername,message||"เพื่อความปลอดภัย กรุณาเข้าสู่ระบบใหม่ งานที่ค้างไว้ยังอยู่");
+  }
   function isAdmin(){ return !!currentUser && currentUser.role === "admin"; }
   function requireAdmin(){
     if(isAdmin()) return true;
@@ -1260,6 +1365,9 @@
 
   function showApp(user){
     currentUser = user;
+    lastAuthenticatedUsername = user.username;
+    leaveLockActive = false;
+    localStorage.setItem(LAST_USER_KEY,user.username);
     document.getElementById("login-overlay").classList.add("hide");
     document.getElementById("app").classList.add("unlocked");
     applyRolePermissions(user);
@@ -1267,8 +1375,11 @@
     document.getElementById("count-by").value = document.getElementById("count-by").value || user.name;
     document.getElementById("count-approved").value = document.getElementById("count-approved").value || user.name;
     loadLogoFromDrive();
-      initAppAfterLogin();
-      if(user.mustChangePassword) setTimeout(()=>openPasswordModal(true), 400);
+    initAppAfterLogin();
+    const resumed=restoreWorkingDraft(user.username);
+    startDraftAutosave();
+    if(resumed) setTimeout(()=>toast("กลับสู่งานที่ค้างไว้แล้ว"),350);
+    if(user.mustChangePassword) setTimeout(()=>openPasswordModal(true), 400);
   }
 
   function showLogin(prefillName, errorMessage){
@@ -1277,7 +1388,13 @@
     document.getElementById("app").classList.remove("unlocked");
     if(prefillName) document.getElementById("login-name").value = prefillName;
     document.getElementById("login-script-url").value = getScriptURL();
-    document.getElementById("login-password").value = "";
+    const passwordInput=document.getElementById("login-password"),toggle=document.getElementById("btn-toggle-login-password");
+    passwordInput.value = "";
+    passwordInput.type = "password";
+    toggle.classList.remove("is-visible");
+    toggle.setAttribute("aria-pressed","false");
+    toggle.setAttribute("aria-label","แสดงรหัสผ่าน");
+    toggle.title="แสดงรหัสผ่าน";
     document.getElementById("login-error").textContent = errorMessage || "";
     loadLogoFromDrive();
     document.getElementById("login-password").focus();
@@ -1285,10 +1402,23 @@
 
   function expireSession(message){
     const username = currentUser ? currentUser.username : "";
+    if(username) saveWorkingDraft(username);
     clearAuth();
     if(pollTimer) clearInterval(pollTimer);
     showLogin(username, message || "เซสชันหมดอายุ กรุณาเข้าสู่ระบบใหม่");
   }
+
+  document.getElementById("btn-toggle-login-password").addEventListener("click",()=>{
+    const input=document.getElementById("login-password"),btn=document.getElementById("btn-toggle-login-password");
+    const willShow=input.type==="password";
+    input.type=willShow?"text":"password";
+    btn.classList.toggle("is-visible",willShow);
+    btn.setAttribute("aria-pressed",String(willShow));
+    btn.setAttribute("aria-label",willShow?"ซ่อนรหัสผ่าน":"แสดงรหัสผ่าน");
+    btn.title=willShow?"ซ่อนรหัสผ่าน":"แสดงรหัสผ่าน";
+    input.focus();
+    input.setSelectionRange(input.value.length,input.value.length);
+  });
 
   document.getElementById("login-form").addEventListener("submit", async (e)=>{
     e.preventDefault();
@@ -1314,7 +1444,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.9 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.9.1 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -1323,6 +1453,7 @@
 
   document.getElementById("btn-logout").addEventListener("click", ()=>{
     if(!confirm("ออกจากระบบ?")) return;
+    saveWorkingDraft();
     clearAuth();
     if(pollTimer) clearInterval(pollTimer);
     location.reload();
@@ -1520,8 +1651,22 @@
 
   window.addEventListener("online", ()=>{ if(hasScriptURL()) syncFromSheet(false); });
   document.addEventListener("visibilitychange", ()=>{
-    if(!document.hidden && hasScriptURL() && !isSyncing && activeWrites===0) syncFromSheet(false);
+    if(document.hidden){
+      lockAfterLeaving("ออกจากหน้าโปรแกรมแล้ว กรุณาเข้าสู่ระบบใหม่ งานที่ค้างไว้ยังอยู่");
+    }else if(currentUser && hasScriptURL() && !isSyncing && activeWrites===0){
+      syncFromSheet(false);
+    }
   });
+  window.addEventListener("pagehide",()=>lockAfterLeaving("กลับเข้าสู่โปรแกรม กรุณาเข้าสู่ระบบใหม่ งานที่ค้างไว้ยังอยู่"));
+  window.addEventListener("beforeunload",()=>{
+    if(currentUser){
+      lastAuthenticatedUsername=currentUser.username;
+      saveWorkingDraft(lastAuthenticatedUsername);
+      clearAuth();
+    }
+  });
+  document.addEventListener("input",e=>{if(e.target.closest&&e.target.closest("#app"))scheduleDraftSave();});
+  document.addEventListener("change",e=>{if(e.target.closest&&e.target.closest("#app"))scheduleDraftSave();});
 
   // Settings modal wiring
   function openSettingsModal(){
@@ -2141,7 +2286,7 @@
       normalized.parts.forEach(saved=>{const p=partById(saved.id);if(p)Object.assign(p,saved);});state.transactions.push(...normalized.transactions);
       if(type==="in"){receiveLines=[{id:uid(),partId:"",qty:""}];document.getElementById("rec-contact").value="";document.getElementById("rec-note").value="";}
       else{issueLines=[{id:uid(),partId:"",qty:""}];document.getElementById("iss-person").value=currentUser?currentUser.name:"";document.getElementById("iss-note").value="";}
-      cacheSave();renderAll();showDocumentSuccess(result.docNo);toast(`${type==="in"?"รับเข้า":"เบิกออก"} ${result.docNo} สำเร็จ ${result.transactions.length} รายการ`);
+      cacheSave();renderAll();saveWorkingDraft();showDocumentSuccess(result.docNo);toast(`${type==="in"?"รับเข้า":"เบิกออก"} ${result.docNo} สำเร็จ ${result.transactions.length} รายการ`);
     }catch(err){toast("บันทึกเอกสารไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent=normalText;}
   }
   document.getElementById("btn-receive-submit").addEventListener("click",()=>submitDocument("in"));
@@ -2189,7 +2334,7 @@
     body.innerHTML=requestLines.map((line,index)=>{const p=partById(line.partId),available=p?availableQty(p.id,editingId):0;return `<tr><td class="mono">${index+1}</td><td><select data-request-part data-line-id="${line.id}">${documentPartOptions(line.partId)}</select></td><td><input class="qty-input" type="number" min="0" step="any" value="${escapeHTML(line.qty)}" data-request-qty data-line-id="${line.id}" placeholder="0"></td><td>${p?`<span class="available-qty mono">${fmtMoney(available)} ${escapeHTML(p.unit)}</span>${reservedQty(p.id,editingId)>0?`<div class="reserved-note">จองอื่น ${fmtMoney(reservedQty(p.id,editingId))}</div>`:""}`:"-"}</td><td><button class="small danger-ghost" data-request-remove data-line-id="${line.id}" ${requestLines.length===1?'disabled':''}>ลบ</button></td></tr>`;}).join("");
     const valid=requestLines.filter(x=>x.partId&&Number(x.qty)>0);document.getElementById("request-line-count").textContent=`${valid.length} รายการ`;document.getElementById("request-total-qty").textContent=`รวม ${fmtMoney(valid.reduce((s,x)=>s+Number(x.qty),0))} หน่วย`;
   }
-  function clearRequestForm(){document.getElementById("req-id").value="";document.getElementById("req-version").value="";document.getElementById("req-date").value=todayISO();document.getElementById("req-requester").value=currentUser?currentUser.name:"";document.getElementById("req-department").value="";document.getElementById("req-purpose").value="";requestLines=[{id:uid(),partId:"",qty:""}];renderRequestLines();document.getElementById("btn-request-submit").textContent="ส่งคำขออนุมัติ";}
+  function clearRequestForm(){document.getElementById("req-id").value="";document.getElementById("req-version").value="";document.getElementById("req-date").value=todayISO();document.getElementById("req-requester").value=currentUser?currentUser.name:"";document.getElementById("req-department").value="";document.getElementById("req-purpose").value="";requestLines=[{id:uid(),partId:"",qty:""}];renderRequestLines();document.getElementById("btn-request-submit").textContent="ส่งคำขออนุมัติ";saveWorkingDraft();}
   document.getElementById("req-date").value=todayISO();
   document.getElementById("btn-request-add-line").addEventListener("click",()=>{requestLines.push({id:uid(),partId:"",qty:""});renderRequestLines();});
   document.getElementById("btn-request-clear").addEventListener("click",clearRequestForm);
@@ -2265,7 +2410,7 @@
       if(!hasScriptURL())throw new Error("การตรวจนับต้องเชื่อมต่อ Google Sheets เพื่อเก็บ Audit Log");
       const saved=await apiCall("saveStockCount",{count}),normalized=normalizeFromSheet({parts:saved.parts,transactions:saved.transactions,stockCounts:saved.stockCounts});
       normalized.parts.forEach(x=>{const p=partById(x.id);if(p)Object.assign(p,x);});state.transactions.push(...normalized.transactions);state.stockCounts.push(...normalized.stockCounts);
-      Object.keys(countDraft).forEach(k=>delete countDraft[k]);document.getElementById("count-reason").value="";cacheSave();renderAll();toast(`บันทึกตรวจนับ ${saved.countNo} เรียบร้อย`);
+      Object.keys(countDraft).forEach(k=>delete countDraft[k]);document.getElementById("count-reason").value="";cacheSave();renderAll();saveWorkingDraft();toast(`บันทึกตรวจนับ ${saved.countNo} เรียบร้อย`);
     }catch(err){toast("บันทึกตรวจนับไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="ยืนยันและปรับยอด";}
   });
 
@@ -3023,11 +3168,10 @@
   }
 
   const savedAuth = loadAuth();
-  if(savedAuth){
-    showApp(savedAuth);
-  } else {
-    showLogin();
-  }
+  const rememberedUsername=(savedAuth&&savedAuth.username)||localStorage.getItem(LAST_USER_KEY)||"";
+  const hasSavedWork=rememberedUsername&&localStorage.getItem(draftKey(rememberedUsername));
+  clearAuth();
+  showLogin(rememberedUsername,hasSavedWork?"กรุณาเข้าสู่ระบบใหม่ งานที่ค้างไว้จะกลับมาหลังเข้าสู่ระบบ":"");
 })();
 </script>
 </body>
