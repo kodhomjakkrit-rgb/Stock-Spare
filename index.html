@@ -522,7 +522,7 @@
     .alert-banner{align-items:flex-start;flex-direction:column;}.alert-action{width:100%;}
     .gauge{min-width:130px;}
   }
-  /* ================= v3.9.1 controlled workflow ================= */
+  /* ================= v3.9.2 controlled workflow ================= */
   .status-pill.draft{background:#26333a;color:#b6c5c1}.status-pill.pending{background:var(--accent-dim);color:#ffd071}
   .status-pill.approved{background:var(--brand-dim);color:#78e9dc}.status-pill.issued{background:var(--success-dim);color:#65ddb0}
   .status-pill.rejected,.status-pill.cancelled{background:var(--danger-dim);color:#ff9b9b}
@@ -549,7 +549,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9.1</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.9.2</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -584,7 +584,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9.1</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.9.2</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -1214,13 +1214,21 @@
   const AUTH_KEY = "sparepartsStock_auth";
   const WORK_DRAFT_PREFIX = "sparepartsStock_workDraft_v391_";
   const LAST_USER_KEY = "sparepartsStock_lastUser";
+  const TAB_SESSION_KEY = "sparepartsStock_tabSession_v392";
+
+  // sessionStorage survives refresh/navigation in the same tab, but is removed
+  // when that tab is closed. This lets us lock only after the program tab closes.
+  let tabSessionWasOpen = false;
+  try{
+    tabSessionWasOpen = sessionStorage.getItem(TAB_SESSION_KEY) === "active";
+    sessionStorage.setItem(TAB_SESSION_KEY,"active");
+  }catch(e){}
 
   // ============ LOGIN / ROLE PERMISSIONS ============
-  // v3.9.1 keeps v3.9 salted password hashes and adds secure re-login/resume.
+  // v3.9.2 keeps v3.9 salted password hashes and locks only after closing the tab.
   let currentUser = null; // { username, name, role, token, expiresAt }
   let logoLoadPromise = null;
   let lastAuthenticatedUsername = "";
-  let leaveLockActive = false;
   let draftSaveTimer = null;
   let draftAutosaveTimer = null;
   let restoringDraft = false;
@@ -1337,16 +1345,6 @@
     if(draftAutosaveTimer) return;
     draftAutosaveTimer=setInterval(()=>saveWorkingDraft(),1500);
   }
-  function lockAfterLeaving(message){
-    if(!currentUser || leaveLockActive) return;
-    leaveLockActive=true;
-    lastAuthenticatedUsername=currentUser.username;
-    saveWorkingDraft(lastAuthenticatedUsername);
-    clearAuth();
-    if(pollTimer) clearInterval(pollTimer);
-    if(typeof stopScanner==="function") stopScanner();
-    showLogin(lastAuthenticatedUsername,message||"เพื่อความปลอดภัย กรุณาเข้าสู่ระบบใหม่ งานที่ค้างไว้ยังอยู่");
-  }
   function isAdmin(){ return !!currentUser && currentUser.role === "admin"; }
   function requireAdmin(){
     if(isAdmin()) return true;
@@ -1366,7 +1364,6 @@
   function showApp(user){
     currentUser = user;
     lastAuthenticatedUsername = user.username;
-    leaveLockActive = false;
     localStorage.setItem(LAST_USER_KEY,user.username);
     document.getElementById("login-overlay").classList.add("hide");
     document.getElementById("app").classList.add("unlocked");
@@ -1444,7 +1441,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.9.1 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.9.2 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -1652,17 +1649,16 @@
   window.addEventListener("online", ()=>{ if(hasScriptURL()) syncFromSheet(false); });
   document.addEventListener("visibilitychange", ()=>{
     if(document.hidden){
-      lockAfterLeaving("ออกจากหน้าโปรแกรมแล้ว กรุณาเข้าสู่ระบบใหม่ งานที่ค้างไว้ยังอยู่");
+      if(currentUser) saveWorkingDraft();
     }else if(currentUser && hasScriptURL() && !isSyncing && activeWrites===0){
       syncFromSheet(false);
     }
   });
-  window.addEventListener("pagehide",()=>lockAfterLeaving("กลับเข้าสู่โปรแกรม กรุณาเข้าสู่ระบบใหม่ งานที่ค้างไว้ยังอยู่"));
+  window.addEventListener("pagehide",()=>{ if(currentUser) saveWorkingDraft(); });
   window.addEventListener("beforeunload",()=>{
     if(currentUser){
       lastAuthenticatedUsername=currentUser.username;
       saveWorkingDraft(lastAuthenticatedUsername);
-      clearAuth();
     }
   });
   document.addEventListener("input",e=>{if(e.target.closest&&e.target.closest("#app"))scheduleDraftSave();});
@@ -3170,8 +3166,11 @@
   const savedAuth = loadAuth();
   const rememberedUsername=(savedAuth&&savedAuth.username)||localStorage.getItem(LAST_USER_KEY)||"";
   const hasSavedWork=rememberedUsername&&localStorage.getItem(draftKey(rememberedUsername));
-  clearAuth();
-  showLogin(rememberedUsername,hasSavedWork?"กรุณาเข้าสู่ระบบใหม่ งานที่ค้างไว้จะกลับมาหลังเข้าสู่ระบบ":"");
+  if(savedAuth && tabSessionWasOpen){
+    showApp(savedAuth);
+  }else{
+    showLogin(rememberedUsername,hasSavedWork?"ปิดหน้าโปรแกรมแล้ว กรุณาเข้าสู่ระบบใหม่ งานที่ค้างไว้จะกลับมาหลังเข้าสู่ระบบ":"");
+  }
 })();
 </script>
 </body>
