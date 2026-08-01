@@ -239,6 +239,11 @@
     align-items:center;justify-content:center;padding:20px;
   }
   #master-modal-overlay.show{display:flex;}
+  #success-modal-overlay,#user-modal-overlay,#password-modal-overlay{
+    display:none;position:fixed;inset:0;background:rgba(8,10,13,.72);z-index:120;
+    align-items:center;justify-content:center;padding:20px;
+  }
+  #success-modal-overlay.show,#user-modal-overlay.show,#password-modal-overlay.show{display:flex;}
   .modal{
     background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
     width:min(100%,680px);max-width:680px;padding:20px;
@@ -302,6 +307,23 @@
   .login-settings .field{margin-top:9px;}
   .role-note{margin:0 0 12px;padding:9px 10px;border-radius:7px;background:var(--panel-alt);color:var(--text-dim);font-size:12px;line-height:1.55;}
   [hidden]{display:none!important;}
+  .status-pill{display:inline-flex;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap;}
+  .status-pill.active{background:var(--success-dim);color:var(--success);}
+  .status-pill.inactive,.status-pill.cancelled{background:var(--danger-dim);color:#ffd7d9;}
+  tr.cancelled-row{opacity:.65;text-decoration:none;}
+  .doc-summary{border:1px solid var(--border);background:var(--panel-alt);border-radius:9px;padding:14px;line-height:1.8;margin:10px 0;}
+  #print-area{display:none;}
+  @media print{
+    body{background:#fff;color:#111;}
+    body>*{display:none!important;}
+    #print-area{display:block!important;padding:20mm 16mm;font-family:'Noto Sans Thai',sans-serif;color:#111;}
+    #print-area .print-head{display:flex;align-items:center;gap:14px;border-bottom:2px solid #111;padding-bottom:12px;margin-bottom:18px;}
+    #print-area img{width:68px;height:68px;object-fit:contain;}
+    #print-area h1{font-size:22px;margin:0;} #print-area h2{font-size:18px;margin:4px 0 0;}
+    #print-area table{border-collapse:collapse;width:100%;margin-top:16px;}
+    #print-area th,#print-area td{border:1px solid #999;padding:8px;color:#111;text-transform:none;letter-spacing:0;}
+    #print-area .print-sign{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:70px;text-align:center;}
+  }
 </style>
 </head>
 <body>
@@ -348,6 +370,7 @@
     </div>
     <div class="top-actions">
       <span id="current-user-badge" class="sync-badge sync-off" style="border-style:dashed;"></span>
+      <button id="btn-change-password" class="small">เปลี่ยนรหัสผ่าน</button>
       <button id="btn-logout" class="small">ออกจากระบบ</button>
       <span id="sync-badge" class="sync-badge sync-off" title="คลิกเพื่อซิงก์ข้อมูลทันที" style="cursor:pointer;">● ยังไม่ได้เชื่อมต่อ Sheets</span>
       <button id="btn-settings" data-admin-only>⚙ ตั้งค่า Sheets</button>
@@ -364,6 +387,7 @@
     <button class="tab" data-view="issue"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 14h16v6H4z"/><path d="M12 14V6m0 0l-3.5 3.5M12 6l3.5 3.5"/></svg>เบิกออก</button>
     <button class="tab" data-view="master" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v4H4zM4 11h16v8H4z"/><path d="M8 13v4m4-4v4m4-4v4"/></svg>ฐานข้อมูล</button>
     <button class="tab" data-view="import" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M12 7v7m0 0l-3-3m3 3l3-3M8 17h8"/></svg>นำเข้าข้อมูล</button>
+    <button class="tab" data-view="users" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.5-4 2.3-6 5.5-6s5 2 5.5 6M17 8h4m-2-2v4"/></svg>ผู้ใช้ / Audit</button>
     <button class="tab" data-view="history"><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>ประวัติ/รายงาน</button>
   </nav>
 
@@ -437,7 +461,7 @@
       <div class="table-wrap">
         <table>
           <thead><tr>
-            <th>รหัส</th><th>ชื่ออะไหล่</th><th>หมวดหมู่</th><th>คงเหลือ</th><th>ที่จัดเก็บ</th><th>มูลค่า/หน่วย</th><th></th>
+            <th>รหัส</th><th>ชื่ออะไหล่</th><th>หมวดหมู่</th><th>คงเหลือ</th><th>ที่จัดเก็บ</th><th>มูลค่า/หน่วย</th><th>สถานะ</th><th></th>
           </tr></thead>
           <tbody id="parts-body"></tbody>
         </table>
@@ -643,6 +667,26 @@
     </div>
   </section>
 
+  <!-- USERS / AUDIT -->
+  <section class="view" id="view-users" data-admin-only>
+    <div class="panel">
+      <h2>ผู้ใช้งานระบบ <button class="primary small" id="btn-add-user">+ เพิ่มผู้ใช้</button></h2>
+      <div class="import-note">จัดการบัญชีได้จากหน้านี้ รหัสผ่านถูกจัดเก็บเป็นค่าแฮช และระบบจะล็อกบัญชีชั่วคราวเมื่อกรอกรหัสผิดครบ 5 ครั้ง</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>ชื่อผู้ใช้</th><th>ชื่อที่แสดง</th><th>สิทธิ์</th><th>สถานะ</th><th>เข้าใช้ผิด</th><th></th></tr></thead>
+        <tbody id="users-body"></tbody>
+      </table></div>
+    </div>
+    <div class="panel">
+      <h2>Audit Log <span class="sub">500 เหตุการณ์ล่าสุด</span></h2>
+      <div class="search-bar"><input id="audit-search" placeholder="ค้นหาผู้ใช้ การกระทำ หรือรายละเอียด..."></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>วันเวลา</th><th>ผู้ใช้</th><th>การกระทำ</th><th>ข้อมูล</th><th>รายละเอียด</th></tr></thead>
+        <tbody id="audit-body"></tbody>
+      </table></div>
+    </div>
+  </section>
+
   <!-- HISTORY / REPORTS -->
   <section class="view" id="view-history">
     <div class="panel">
@@ -659,7 +703,7 @@
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>วันที่</th><th>รหัส</th><th>อะไหล่</th><th>ประเภท</th><th>จำนวน</th><th>โดย/ผู้ส่ง</th><th>หมายเหตุ</th></tr></thead>
+          <thead><tr><th>เลขที่</th><th>วันที่</th><th>อะไหล่</th><th>ประเภท</th><th>จำนวน</th><th>โดย/ผู้ส่ง</th><th>สถานะ</th><th></th></tr></thead>
           <tbody id="history-body"></tbody>
         </table>
       </div>
@@ -667,6 +711,43 @@
   </section>
 
 </div>
+
+<!-- Transaction success / print -->
+<div id="success-modal-overlay"><div class="modal">
+  <h3>บันทึกรายการสำเร็จ</h3>
+  <div id="success-summary" class="doc-summary"></div>
+  <div class="form-actions">
+    <button id="btn-success-close">ทำรายการใหม่</button>
+    <button id="btn-success-detail">ดูในประวัติ</button>
+    <button class="primary" id="btn-success-print">พิมพ์ / บันทึก PDF</button>
+  </div>
+</div></div>
+
+<!-- User add/edit modal -->
+<div id="user-modal-overlay"><div class="modal">
+  <h3 id="user-modal-title">เพิ่มผู้ใช้งาน</h3><input type="hidden" id="uf-id">
+  <div class="field-grid">
+    <div class="field"><label>ชื่อผู้ใช้ *</label><input id="uf-username" autocomplete="off" placeholder="เช่น somchai"></div>
+    <div class="field"><label>ชื่อที่แสดง *</label><input id="uf-name" placeholder="ชื่อพนักงาน"></div>
+    <div class="field"><label>ระดับสิทธิ์</label><select id="uf-role"><option value="staff">Staff — รับเข้า/เบิกออก</option><option value="admin">Admin — จัดการทั้งหมด</option></select></div>
+    <div class="field" id="uf-password-wrap"><label>รหัสผ่านเริ่มต้น *</label><input type="password" id="uf-password" autocomplete="new-password"><div class="hint">อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข</div></div>
+    <div class="field span2"><label><input type="checkbox" id="uf-must-change"> บังคับเปลี่ยนรหัสผ่านเมื่อเข้าสู่ระบบ</label></div>
+  </div>
+  <div class="form-actions"><button id="btn-user-cancel">ยกเลิก</button><button class="primary" id="btn-user-save">บันทึก</button></div>
+</div></div>
+
+<!-- Change password modal -->
+<div id="password-modal-overlay"><div class="modal">
+  <h3>เปลี่ยนรหัสผ่าน</h3>
+  <div class="field-grid">
+    <div class="field span2"><label>รหัสผ่านปัจจุบัน</label><input type="password" id="pw-current" autocomplete="current-password"></div>
+    <div class="field"><label>รหัสผ่านใหม่</label><input type="password" id="pw-new" autocomplete="new-password"></div>
+    <div class="field"><label>ยืนยันรหัสผ่านใหม่</label><input type="password" id="pw-confirm" autocomplete="new-password"></div>
+  </div>
+  <div class="form-actions"><button id="btn-password-cancel">ยกเลิก</button><button class="primary" id="btn-password-save">บันทึกรหัสผ่านใหม่</button></div>
+</div></div>
+
+<div id="print-area"></div>
 
 <!-- Part add/edit modal -->
 <div id="modal-overlay">
@@ -786,7 +867,7 @@
   const AUTH_KEY = "sparepartsStock_auth";
 
   // ============ LOGIN / ROLE PERMISSIONS ============
-  // บัญชีและรหัสผ่านกำหนดใน Code.gs เพื่อไม่เปิดเผยรหัสผ่านในหน้าเว็บ
+  // v3.6 stores user accounts as salted password hashes in the Users sheet.
   let currentUser = null; // { username, name, role, token, expiresAt }
   let logoLoadPromise = null;
 
@@ -850,7 +931,8 @@
     applyRolePermissions(user);
     document.getElementById("iss-person").value = document.getElementById("iss-person").value || user.name;
     loadLogoFromDrive();
-    initAppAfterLogin();
+      initAppAfterLogin();
+      if(user.mustChangePassword) setTimeout(()=>openPasswordModal(true), 400);
   }
 
   function showLogin(prefillName, errorMessage){
@@ -896,7 +978,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.5 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.6 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -916,7 +998,7 @@
     return local.toISOString().slice(0,10);
   };
 
-  let state = { parts: [], transactions: [], suppliers: [], trucks: [], provinces: [], documents: [] };
+  let state = { parts: [], transactions: [], suppliers: [], trucks: [], provinces: [], documents: [], users: [], auditLogs: [] };
   const charts = {};
   const CHART_FONT_TH = "'Noto Sans Thai', sans-serif";
   const CHART_FONT_MONO = "'IBM Plex Mono', monospace";
@@ -1026,26 +1108,32 @@
   }
 
   function normalizeFromSheet(data){
+    const truthyActive = v => !(v===false || v===0 || String(v).toLowerCase()==="false" || String(v)==="0" || String(v)==="หยุดใช้");
     const parts = (data.parts||[]).map(p=>({
       id: String(p.id), code: String(p.code||""), name: String(p.name||""),
       category: String(p.category||"อื่นๆ"), unit: String(p.unit||"ชิ้น"),
       qty: Number(p.qty)||0, minQty: Number(p.minQty)||0, cost: Number(p.cost)||0,
       location: String(p.location||""), supplierId:String(p.supplierId||""),
-      truckId:String(p.truckId||""), provinceId:String(p.provinceId||"")
+      truckId:String(p.truckId||""), provinceId:String(p.provinceId||""),
+      isActive:truthyActive(p.isActive), createdAt:String(p.createdAt||""), updatedAt:String(p.updatedAt||"")
     })).filter(p=>p.id && p.code);
     const transactions = (data.transactions||[]).map(t=>({
       id: String(t.id), partId: String(t.partId), type: t.type==="in"?"in":"out",
       qty: Number(t.qty)||0, date: String(t.date||"").slice(0,10),
       person: String(t.person||""), supplier: String(t.supplier||""), note: String(t.note||""),
       supplierId:String(t.supplierId||""), truckId:String(t.truckId||""), provinceId:String(t.provinceId||""),
-      prNo:String(t.prNo||""), poNo:String(t.poNo||""), ivNo:String(t.ivNo||"")
+      prNo:String(t.prNo||""), poNo:String(t.poNo||""), ivNo:String(t.ivNo||""),
+      docNo:String(t.docNo||""), status:String(t.status||"active")==="cancelled"?"cancelled":"active",
+      cancelReason:String(t.cancelReason||""), cancelledAt:String(t.cancelledAt||""), cancelledBy:String(t.cancelledBy||""),
+      createdAt:String(t.createdAt||""), createdBy:String(t.createdBy||"")
     })).filter(t=>t.id && t.partId);
-    const truthyActive = v => !(v===false || v===0 || String(v).toLowerCase()==="false" || String(v)==="0" || String(v)==="หยุดใช้");
     const suppliers = (data.suppliers||[]).map(x=>({id:String(x.id||""),code:String(x.code||""),name:String(x.name||""),contact:String(x.contact||""),phone:String(x.phone||""),taxId:String(x.taxId||""),address:String(x.address||""),provinceId:String(x.provinceId||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.name);
     const trucks = (data.trucks||[]).map(x=>({id:String(x.id||""),plateNo:String(x.plateNo||""),provinceId:String(x.provinceId||""),description:String(x.description||""),driver:String(x.driver||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.plateNo);
     const provinces = (data.provinces||[]).map(x=>({id:String(x.id||""),name:String(x.name||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.name);
     const documents = (data.documents||[]).map(x=>({id:String(x.id||""),docType:String(x.docType||"").toUpperCase(),docNo:String(x.docNo||""),supplierId:String(x.supplierId||""),date:String(x.date||"").slice(0,10),note:String(x.note||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.docNo);
-    return { parts, transactions, suppliers, trucks, provinces, documents };
+    const users = (data.users||[]).map(x=>({id:String(x.id||""),username:String(x.username||""),name:String(x.name||""),role:x.role==="admin"?"admin":"staff",isActive:truthyActive(x.isActive),mustChangePassword:!!x.mustChangePassword,failedAttempts:Number(x.failedAttempts)||0,lockedUntil:String(x.lockedUntil||""),createdAt:String(x.createdAt||""),updatedAt:String(x.updatedAt||"")})).filter(x=>x.id&&x.username);
+    const auditLogs = (data.auditLogs||[]).map(x=>({id:String(x.id||""),timestamp:String(x.timestamp||""),username:String(x.username||""),userName:String(x.userName||""),role:String(x.role||""),action:String(x.action||""),entityType:String(x.entityType||""),entityId:String(x.entityId||""),detail:String(x.detail||"")}));
+    return { parts, transactions, suppliers, trucks, provinces, documents, users, auditLogs };
   }
 
   async function syncFromSheet(showToastOnFail){
@@ -1154,6 +1242,8 @@
     state.suppliers = [];
     state.trucks = [];
     state.documents = [];
+    state.users = [];
+    state.auditLogs = [];
     save();
   }
 
@@ -1162,7 +1252,11 @@
       const raw = localStorage.getItem(STORAGE_KEY);
       if(raw){
         const parsed = JSON.parse(raw);
-        if(parsed && Array.isArray(parsed.parts)){ state = normalizeFromSheet(parsed); return; }
+        if(parsed && Array.isArray(parsed.parts)){
+          state = normalizeFromSheet(parsed);
+          if(!isAdmin()){ state.users=[]; state.auditLogs=[]; }
+          return;
+        }
       }
     }catch(e){}
     if(!hasScriptURL()) seed();
@@ -1231,7 +1325,7 @@
 
   // ---------- Tab navigation ----------
   function activateView(viewName){
-    if(["master","import"].includes(viewName) && !isAdmin()){
+    if(["master","import","users"].includes(viewName) && !isAdmin()){
       toast("เมนูนี้ใช้ได้เฉพาะผู้ดูแลระบบ", true);
       viewName = "dashboard";
     }
@@ -1276,12 +1370,14 @@
 
   // ================= DASHBOARD =================
   function renderDashboard(){
-    const total = state.parts.length;
-    const low = state.parts.filter(p=>stockStatus(p)!=="ok").length;
-    const value = state.parts.reduce((s,p)=> s + (p.qty*(p.cost||0)), 0);
+    const activeParts = state.parts.filter(p=>p.isActive!==false);
+    const activeTx = state.transactions.filter(t=>t.status!=="cancelled");
+    const total = activeParts.length;
+    const low = activeParts.filter(p=>stockStatus(p)!=="ok").length;
+    const value = activeParts.reduce((s,p)=> s + (p.qty*(p.cost||0)), 0);
 
     const now = new Date();
-    const issuedThisMonth = state.transactions
+    const issuedThisMonth = activeTx
       .filter(t=> t.type==="out" && new Date(t.date).getMonth()===now.getMonth() && new Date(t.date).getFullYear()===now.getFullYear())
       .reduce((s,t)=> s+t.qty, 0);
 
@@ -1296,7 +1392,7 @@
       : "";
 
     const lowBody = document.getElementById("low-stock-body");
-    const lowParts = state.parts.filter(p=>stockStatus(p)!=="ok").sort((a,b)=> a.qty-b.qty);
+    const lowParts = activeParts.filter(p=>stockStatus(p)!=="ok").sort((a,b)=> a.qty-b.qty);
     lowBody.innerHTML = lowParts.length ? lowParts.map(p=>`
       <tr>
         <td>${tagHTML(p)}</td>
@@ -1307,7 +1403,7 @@
       </tr>`).join("") : `<tr class="empty-row"><td colspan="5">ไม่มีรายการที่ต้องสั่งซื้อเพิ่มในขณะนี้</td></tr>`;
 
     const recentBody = document.getElementById("recent-tx-body");
-    const recent = [...state.transactions].sort((a,b)=> b.date.localeCompare(a.date) || b.id.localeCompare(a.id)).slice(0,8);
+    const recent = [...activeTx].sort((a,b)=> b.date.localeCompare(a.date) || b.id.localeCompare(a.id)).slice(0,8);
     recentBody.innerHTML = recent.length ? recent.map(t=>{
       const p = partById(t.partId);
       return `<tr>
@@ -1333,7 +1429,7 @@
   function renderStatusChart(){
     const canvas = document.getElementById("chart-status");
     const counts = {ok:0, low:0, out:0};
-    state.parts.forEach(p=> counts[stockStatus(p)]++);
+    state.parts.filter(p=>p.isActive!==false).forEach(p=> counts[stockStatus(p)]++);
     const data = {
       labels: ["ปกติ","ใกล้หมด","หมดสต็อก"],
       datasets: [{ data:[counts.ok, counts.low, counts.out], backgroundColor:["#3ebd82","#f2a93b","#e5535a"], borderWidth:0, hoverOffset:4 }]
@@ -1356,7 +1452,7 @@
   function renderCategoryChart(){
     const canvas = document.getElementById("chart-category");
     const map = {};
-    state.parts.forEach(p=>{ map[p.category] = (map[p.category]||0) + p.qty*(p.cost||0); });
+    state.parts.filter(p=>p.isActive!==false).forEach(p=>{ map[p.category] = (map[p.category]||0) + p.qty*(p.cost||0); });
     const labels = Object.keys(map);
     const values = Object.values(map);
     const data = { labels, datasets:[{ data:values, backgroundColor:"#4fa3b0", borderRadius:6, maxBarThickness:30 }] };
@@ -1387,8 +1483,8 @@
       const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
       months.push({ key: d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"), label: d.toLocaleDateString("th-TH",{month:"short", year:"2-digit"}) });
     }
-    const inData = months.map(m=> state.transactions.filter(t=> t.type==="in" && t.date.startsWith(m.key)).reduce((s,t)=>s+t.qty,0));
-    const outData = months.map(m=> state.transactions.filter(t=> t.type==="out" && t.date.startsWith(m.key)).reduce((s,t)=>s+t.qty,0));
+    const inData = months.map(m=> state.transactions.filter(t=> t.status!=="cancelled" && t.type==="in" && t.date.startsWith(m.key)).reduce((s,t)=>s+t.qty,0));
+    const outData = months.map(m=> state.transactions.filter(t=> t.status!=="cancelled" && t.type==="out" && t.date.startsWith(m.key)).reduce((s,t)=>s+t.qty,0));
     const data = {
       labels: months.map(m=>m.label),
       datasets:[
@@ -1441,11 +1537,12 @@
         <td>${gaugeHTML(p)}</td>
         <td class="mono">${escapeHTML(p.location||"-")}</td>
         <td class="mono">฿${fmtMoney(p.cost)}</td>
+        <td><span class="status-pill ${p.isActive===false?'inactive':'active'}">${p.isActive===false?'หยุดใช้':'ใช้งาน'}</span></td>
         <td class="row-actions">${isAdmin() ? `
           <button class="small" data-edit="${p.id}">แก้ไข</button>
-          <button class="small danger-ghost" data-del="${p.id}">ลบ</button>` : '<span class="hint">ดูอย่างเดียว</span>'}
+          <button class="small ${p.isActive===false?'':'danger-ghost'}" data-del="${p.id}">${p.isActive===false?'เปิดใช้':'หยุดใช้'}</button>` : '<span class="hint">ดูอย่างเดียว</span>'}
         </td>
-      </tr>`).join("") : `<tr class="empty-row"><td colspan="7">ไม่พบอะไหล่ที่ค้นหา</td></tr>`;
+      </tr>`).join("") : `<tr class="empty-row"><td colspan="8">ไม่พบอะไหล่ที่ค้นหา</td></tr>`;
 
     body.querySelectorAll("[data-edit]").forEach(b=> b.addEventListener("click", ()=> openPartModal(b.dataset.edit)));
     body.querySelectorAll("[data-del]").forEach(b=> b.addEventListener("click", ()=> deletePart(b.dataset.del)));
@@ -1567,21 +1664,22 @@
     if(!requireAdmin()) return;
     const p = partById(id);
     if(!p) return;
-    if(!confirm(`ลบ "${p.name}" ออกจากรายการอะไหล่? (ประวัติการเบิก-รับที่เกี่ยวข้องจะยังคงอยู่)`)) return;
+    const nextActive = p.isActive===false;
+    if(!confirm(`${nextActive?'เปิดใช้งาน':'หยุดใช้งาน'} "${p.name}"? ประวัติเดิมจะยังคงอยู่`)) return;
     try{
-      if(hasScriptURL()) await apiCall("deletePart", { id });
-      state.parts = state.parts.filter(x=>x.id!==id);
+      const saved = hasScriptURL() ? await apiCall("deletePart", { id, isActive:nextActive }) : null;
+      Object.assign(p, saved||{isActive:nextActive});
       cacheSave();
       renderAll();
-      toast("ลบอะไหล่แล้ว" + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
+      toast((nextActive?"เปิดใช้งาน":"หยุดใช้งาน") + "อะไหล่แล้ว" + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
     }catch(err){
-      toast("ลบใน Google Sheets ไม่สำเร็จ: " + err.message, true);
+      toast("เปลี่ยนสถานะใน Google Sheets ไม่สำเร็จ: " + err.message, true);
     }
   }
 
   // ================= RECEIVE =================
   function populatePartSelects(){
-    const options = state.parts
+    const options = state.parts.filter(p=>p.isActive!==false)
       .sort((a,b)=> a.name.localeCompare(b.name,'th'))
       .map(p=>`<option value="${p.id}">${escapeHTML(p.code)} — ${escapeHTML(p.name)} (คงเหลือ ${p.qty} ${escapeHTML(p.unit)})</option>`).join("");
     ["rec-part","iss-part"].forEach(id=>{
@@ -1635,7 +1733,8 @@
     try{
       const saved = hasScriptURL() ? await apiCall("addTransaction", { tx }) : null;
       p.qty = saved&&saved.part ? Number(saved.part.qty) : updatedPart.qty;
-      state.transactions.push(tx);
+      const savedTx = saved&&saved.tx ? normalizeFromSheet({transactions:[saved.tx]}).transactions[0] : {...tx,docNo:nextLocalDocNo("in",date),status:"active",createdBy:currentUser?currentUser.username:""};
+      state.transactions.push(savedTx);
       cacheSave();
 
       document.getElementById("rec-qty").value = "";
@@ -1643,6 +1742,7 @@
       document.getElementById("rec-note").value = "";
       toast(`รับเข้า "${p.name}" จำนวน ${qty} ${p.unit} เรียบร้อย` + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
       renderAll();
+      showTransactionSuccess(savedTx);
     }catch(err){
       toast("บันทึกไป Google Sheets ไม่สำเร็จ: " + err.message, true);
     }finally{
@@ -1697,7 +1797,8 @@
     try{
       const saved = hasScriptURL() ? await apiCall("addTransaction", { tx }) : null;
       p.qty = saved&&saved.part ? Number(saved.part.qty) : updatedPart.qty;
-      state.transactions.push(tx);
+      const savedTx = saved&&saved.tx ? normalizeFromSheet({transactions:[saved.tx]}).transactions[0] : {...tx,docNo:nextLocalDocNo("out",date),status:"active",createdBy:currentUser?currentUser.username:""};
+      state.transactions.push(savedTx);
       cacheSave();
 
       document.getElementById("iss-qty").value = "";
@@ -1705,6 +1806,7 @@
       document.getElementById("iss-note").value = "";
       toast(`เบิก "${p.name}" จำนวน ${qty} ${p.unit} เรียบร้อย` + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
       renderAll();
+      showTransactionSuccess(savedTx);
     }catch(err){
       toast("บันทึกไป Google Sheets ไม่สำเร็จ: " + err.message, true);
     }finally{
@@ -1902,6 +2004,76 @@
     try{const records=masterImportDraft.rows.map(x=>x.record);if(hasScriptURL())state[currentMasterType]=(await apiCall("bulkImportMaster",{masterType:currentMasterType,rows:records})).map(x=>normalizeFromSheet({[currentMasterType]:[x]})[currentMasterType][0]);else state[currentMasterType].push(...records);cacheSave();clearMasterImport();renderAll();toast(`นำเข้า${MASTER_IMPORT_CONFIG[currentMasterType].label}สำเร็จ ${records.length} แถว`);}catch(err){toast("นำเข้าไม่สำเร็จ: "+err.message,true);renderMasterImportPreview();}finally{btn.disabled=false;btn.textContent="ยืนยันนำเข้าฐานข้อมูล";}
   });
 
+  // ================= USERS / AUDIT =================
+  let passwordForced=false;
+  function renderUsers(){
+    if(!isAdmin())return;
+    const body=document.getElementById("users-body");
+    body.innerHTML=state.users.length?state.users.map(u=>`<tr>
+      <td class="mono">${escapeHTML(u.username)}</td><td>${escapeHTML(u.name)}</td>
+      <td><span class="tag ${u.role==='admin'?'low':'ok'}">${u.role==='admin'?'Admin':'Staff'}</span></td>
+      <td><span class="status-pill ${u.isActive?'active':'inactive'}">${u.isActive?'ใช้งาน':'ปิดใช้'}</span>${u.lockedUntil&&new Date(u.lockedUntil)>new Date()?'<div class="hint">ล็อกชั่วคราว</div>':''}</td>
+      <td class="mono">${u.failedAttempts||0}</td><td class="row-actions">
+        <button class="small" data-user-edit="${u.id}">แก้ไข</button>
+        <button class="small" data-user-reset="${u.id}">รีเซ็ตรหัส</button>
+        <button class="small ${u.isActive?'danger-ghost':''}" data-user-active="${u.id}">${u.isActive?'ปิดใช้':'เปิดใช้'}</button>
+      </td></tr>`).join(""):`<tr class="empty-row"><td colspan="6">ยังไม่มีผู้ใช้งาน</td></tr>`;
+    body.querySelectorAll("[data-user-edit]").forEach(b=>b.addEventListener("click",()=>openUserModal(b.dataset.userEdit)));
+    body.querySelectorAll("[data-user-reset]").forEach(b=>b.addEventListener("click",()=>resetUserPasswordUI(b.dataset.userReset)));
+    body.querySelectorAll("[data-user-active]").forEach(b=>b.addEventListener("click",()=>toggleUserActiveUI(b.dataset.userActive)));
+    renderAudit();
+  }
+
+  function renderAudit(){
+    if(!isAdmin())return;
+    const q=(document.getElementById("audit-search").value||"").toLowerCase().trim();
+    let list=[...state.auditLogs].sort((a,b)=>b.timestamp.localeCompare(a.timestamp));
+    if(q)list=list.filter(x=>`${x.username} ${x.userName} ${x.action} ${x.entityType} ${x.detail}`.toLowerCase().includes(q));
+    document.getElementById("audit-body").innerHTML=list.length?list.map(x=>`<tr><td class="mono">${escapeHTML(new Date(x.timestamp).toLocaleString('th-TH'))}</td><td>${escapeHTML(x.userName||x.username||'-')}</td><td class="mono">${escapeHTML(x.action)}</td><td>${escapeHTML(x.entityType||'-')}</td><td>${escapeHTML(x.detail||'-')}</td></tr>`).join(""):`<tr class="empty-row"><td colspan="5">ไม่พบ Audit Log</td></tr>`;
+  }
+  document.getElementById("audit-search").addEventListener("input",renderAudit);
+  document.getElementById("btn-add-user").addEventListener("click",()=>openUserModal(""));
+
+  function openUserModal(id){
+    if(!requireAdmin())return;const u=id?state.users.find(x=>x.id===id):null;
+    document.getElementById("user-modal-title").textContent=u?"แก้ไขผู้ใช้งาน":"เพิ่มผู้ใช้งาน";
+    document.getElementById("uf-id").value=u?u.id:"";document.getElementById("uf-username").value=u?u.username:"";
+    document.getElementById("uf-name").value=u?u.name:"";document.getElementById("uf-role").value=u?u.role:"staff";
+    document.getElementById("uf-password").value="";document.getElementById("uf-password-wrap").hidden=!!u;
+    document.getElementById("uf-must-change").checked=u?!!u.mustChangePassword:true;
+    document.getElementById("user-modal-overlay").classList.add("show");
+  }
+  function closeUserModal(){document.getElementById("user-modal-overlay").classList.remove("show");}
+  document.getElementById("btn-user-cancel").addEventListener("click",closeUserModal);
+  document.getElementById("btn-user-save").addEventListener("click",async()=>{
+    const id=document.getElementById("uf-id").value,record={id,username:document.getElementById("uf-username").value.trim(),name:document.getElementById("uf-name").value.trim(),role:document.getElementById("uf-role").value,password:document.getElementById("uf-password").value,mustChangePassword:document.getElementById("uf-must-change").checked};
+    if(!record.username||!record.name||(!id&&!record.password)){toast("กรุณากรอกข้อมูลที่มี * ให้ครบ",true);return;}
+    const btn=document.getElementById("btn-user-save");btn.disabled=true;
+    try{const saved=hasScriptURL()?await apiCall("saveUser",{record}):{...record,id:id||uid(),isActive:true};const i=state.users.findIndex(x=>x.id===saved.id);if(i>=0)state.users[i]=saved;else state.users.push(saved);cacheSave();closeUserModal();renderUsers();toast("บันทึกผู้ใช้งานเรียบร้อย");}catch(err){toast("บันทึกผู้ใช้ไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;}
+  });
+
+  async function toggleUserActiveUI(id){
+    const u=state.users.find(x=>x.id===id);if(!u)return;if(!confirm(`${u.isActive?'ปิด':'เปิด'}ใช้งานบัญชี ${u.username}?`))return;
+    try{const saved=await apiCall("setUserActive",{id,isActive:!u.isActive});Object.assign(u,saved);cacheSave();renderUsers();toast("เปลี่ยนสถานะผู้ใช้เรียบร้อย");}catch(err){toast("เปลี่ยนสถานะไม่สำเร็จ: "+err.message,true);}
+  }
+  async function resetUserPasswordUI(id){
+    const u=state.users.find(x=>x.id===id);if(!u)return;const pw=prompt(`ตั้งรหัสผ่านใหม่ให้ ${u.username}\nอย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข`);if(pw===null)return;
+    try{const saved=await apiCall("resetUserPassword",{id,newPassword:pw});Object.assign(u,saved);cacheSave();renderUsers();toast("รีเซ็ตรหัสผ่านแล้ว ระบบจะบังคับผู้ใช้เปลี่ยนเมื่อเข้าสู่ระบบ");}catch(err){toast("รีเซ็ตรหัสผ่านไม่สำเร็จ: "+err.message,true);}
+  }
+
+  function openPasswordModal(forced){
+    passwordForced=!!forced;document.getElementById("pw-current").value="";document.getElementById("pw-new").value="";document.getElementById("pw-confirm").value="";
+    document.getElementById("btn-password-cancel").hidden=passwordForced;document.getElementById("password-modal-overlay").classList.add("show");
+  }
+  document.getElementById("btn-change-password").addEventListener("click",()=>openPasswordModal(false));
+  document.getElementById("btn-password-cancel").addEventListener("click",()=>{if(!passwordForced)document.getElementById("password-modal-overlay").classList.remove("show");});
+  document.getElementById("btn-password-save").addEventListener("click",async()=>{
+    const currentPassword=document.getElementById("pw-current").value,newPassword=document.getElementById("pw-new").value,confirmPassword=document.getElementById("pw-confirm").value;
+    if(newPassword!==confirmPassword){toast("ยืนยันรหัสผ่านใหม่ไม่ตรงกัน",true);return;}
+    const btn=document.getElementById("btn-password-save");btn.disabled=true;
+    try{await apiCall("changeOwnPassword",{currentPassword,newPassword});currentUser.mustChangePassword=false;saveAuth(currentUser);passwordForced=false;document.getElementById("password-modal-overlay").classList.remove("show");toast("เปลี่ยนรหัสผ่านเรียบร้อย");}catch(err){toast("เปลี่ยนรหัสผ่านไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;}
+  });
+
   // ================= HISTORY / REPORTS =================
   ["hist-type-filter","hist-from","hist-to","hist-search"].forEach(id=>{
     document.getElementById(id).addEventListener("input", renderHistory);
@@ -1921,7 +2093,7 @@
     if(search){
       list = list.filter(t=>{
         const p = partById(t.partId);
-        const hay = `${p?p.name:""} ${p?p.code:""} ${txContext(t)} ${t.person||""} ${t.supplier||""}`.toLowerCase();
+        const hay = `${t.docNo||""} ${p?p.name:""} ${p?p.code:""} ${txContext(t)} ${t.person||""} ${t.supplier||""} ${t.cancelReason||""}`.toLowerCase();
         return hay.includes(search);
       });
     }
@@ -1929,16 +2101,73 @@
     const body = document.getElementById("history-body");
     body.innerHTML = list.length ? list.map(t=>{
       const p = partById(t.partId);
-      return `<tr>
+      const cancelled=t.status==="cancelled";
+      return `<tr class="${cancelled?'cancelled-row':''}">
+        <td class="mono">${escapeHTML(t.docNo||"(ข้อมูลเก่า)")}</td>
         <td class="mono">${fmtDate(t.date)}</td>
-        <td>${p?tagHTML(p):"-"}</td>
-        <td>${escapeHTML(p?p.name:"(ลบแล้ว)")}</td>
+        <td>${p?tagHTML(p)+" "+escapeHTML(p.name):"(ไม่พบอะไหล่)"}</td>
         <td>${t.type==="in" ? '<span class="tag ok">รับเข้า</span>' : '<span class="tag low">เบิกออก</span>'}</td>
         <td class="mono">${t.type==="in" ? "+" : "-"}${t.qty}</td>
         <td>${escapeHTML(t.person||t.supplier||"-")}</td>
-        <td>${escapeHTML(txContext(t)||"-")}</td>
+        <td><span class="status-pill ${cancelled?'cancelled':'active'}">${cancelled?'ยกเลิกแล้ว':'ปกติ'}</span>${cancelled?`<div class="hint">${escapeHTML(t.cancelReason||"")}</div>`:""}</td>
+        <td class="row-actions"><button class="small" data-print-tx="${t.id}">พิมพ์</button>${isAdmin()&&!cancelled?`<button class="small danger-ghost" data-cancel-tx="${t.id}">ยกเลิก</button>`:""}</td>
       </tr>`;
-    }).join("") : `<tr class="empty-row"><td colspan="7">ไม่พบรายการตามเงื่อนไขที่เลือก</td></tr>`;
+    }).join("") : `<tr class="empty-row"><td colspan="8">ไม่พบรายการตามเงื่อนไขที่เลือก</td></tr>`;
+    body.querySelectorAll("[data-print-tx]").forEach(b=>b.addEventListener("click",()=>printTransactionById(b.dataset.printTx)));
+    body.querySelectorAll("[data-cancel-tx]").forEach(b=>b.addEventListener("click",()=>cancelTransactionUI(b.dataset.cancelTx)));
+  }
+
+  function nextLocalDocNo(type,date){
+    const month=String(date||todayISO()).slice(0,7).replace("-","");
+    const prefix=(type==="in"?"RC":"IS")+"-"+month+"-";
+    const max=state.transactions.reduce((m,t)=>String(t.docNo||"").startsWith(prefix)?Math.max(m,Number(String(t.docNo).slice(prefix.length))||0):m,0);
+    return prefix+String(max+1).padStart(4,"0");
+  }
+
+  let lastSavedTxId="";
+  function showTransactionSuccess(tx){
+    lastSavedTxId=tx.id;
+    const p=partById(tx.partId);
+    document.getElementById("success-summary").innerHTML=`
+      <div><b>เลขที่เอกสาร:</b> <span class="mono">${escapeHTML(tx.docNo||"-")}</span></div>
+      <div><b>ประเภท:</b> ${tx.type==="in"?"ใบรับเข้า":"ใบเบิกออก"}</div>
+      <div><b>อะไหล่:</b> ${escapeHTML(p?p.code+" — "+p.name:"-")}</div>
+      <div><b>จำนวน:</b> ${tx.qty} ${escapeHTML(p?p.unit:"")}</div>`;
+    document.getElementById("success-modal-overlay").classList.add("show");
+  }
+  document.getElementById("btn-success-close").addEventListener("click",()=>document.getElementById("success-modal-overlay").classList.remove("show"));
+  document.getElementById("btn-success-detail").addEventListener("click",()=>{document.getElementById("success-modal-overlay").classList.remove("show");activateView("history");});
+  document.getElementById("btn-success-print").addEventListener("click",()=>printTransactionById(lastSavedTxId));
+
+  function printTransactionById(id){
+    const tx=state.transactions.find(x=>x.id===id); if(!tx){toast("ไม่พบรายการสำหรับพิมพ์",true);return;}
+    const p=partById(tx.partId), logo=document.querySelector("[data-drive-logo]");
+    const title=tx.type==="in"?"ใบรับเข้าอะไหล่":"ใบเบิกอะไหล่";
+    const party=tx.type==="in"?(tx.supplier||tx.person||"-"):(tx.person||"-");
+    document.getElementById("print-area").innerHTML=`
+      <div class="print-head"><img src="${escapeHTML(logo?logo.src:"")}"><div><h1>H.O.B Stock Control</h1><h2>${title}</h2></div></div>
+      <div><b>เลขที่เอกสาร:</b> ${escapeHTML(tx.docNo||"-")} &nbsp; <b>วันที่:</b> ${fmtDate(tx.date)}</div>
+      <div><b>${tx.type==="in"?"ผู้ส่ง/ซัพพลายเออร์":"ผู้เบิก/แผนก"}:</b> ${escapeHTML(party)}</div>
+      <table><thead><tr><th>รหัส</th><th>รายการ</th><th>จำนวน</th><th>หน่วย</th><th>หมายเหตุ</th></tr></thead><tbody><tr>
+      <td>${escapeHTML(p?p.code:"-")}</td><td>${escapeHTML(p?p.name:"-")}</td><td>${tx.qty}</td><td>${escapeHTML(p?p.unit:"")}</td><td>${escapeHTML(txContext(tx)||"-")}</td>
+      </tr></tbody></table>
+      ${tx.status==="cancelled"?`<p><b>สถานะ: ยกเลิกแล้ว</b> — ${escapeHTML(tx.cancelReason||"")}</p>`:""}
+      <div class="print-sign"><div>ลงชื่อ ____________________<br>ผู้ทำรายการ</div><div>ลงชื่อ ____________________<br>ผู้ตรวจสอบ/อนุมัติ</div></div>`;
+    window.print();
+  }
+
+  async function cancelTransactionUI(id){
+    if(!requireAdmin())return;
+    const tx=state.transactions.find(x=>x.id===id),p=tx?partById(tx.partId):null;if(!tx||!p)return;
+    const reason=prompt(`ระบุเหตุผลยกเลิก ${tx.docNo||"รายการนี้"} (อย่างน้อย 3 ตัวอักษร)`);if(reason===null)return;
+    if(reason.trim().length<3){toast("กรุณาระบุเหตุผลอย่างน้อย 3 ตัวอักษร",true);return;}
+    if(!confirm(`ยืนยันยกเลิก ${tx.docNo||"รายการ"} และกลับยอดสต๊อก?`))return;
+    try{
+      const saved=hasScriptURL()?await apiCall("cancelTransaction",{id,reason:reason.trim()}):null;
+      if(saved&&saved.tx)Object.assign(tx,normalizeFromSheet({transactions:[saved.tx]}).transactions[0]);else Object.assign(tx,{status:"cancelled",cancelReason:reason.trim(),cancelledBy:currentUser.username,cancelledAt:new Date().toISOString()});
+      p.qty=saved&&saved.part?Number(saved.part.qty):(tx.type==="in"?p.qty-tx.qty:p.qty+tx.qty);
+      cacheSave();renderAll();toast(`ยกเลิก ${tx.docNo||"รายการ"} และกลับยอดสต๊อกเรียบร้อย`);
+    }catch(err){toast("ยกเลิกรายการไม่สำเร็จ: "+err.message,true);}
   }
 
   // ================= EXCEL EXPORT / IMPORT =================
@@ -1957,6 +2186,7 @@
       const p = partById(t.partId);
       return {
         "วันที่": t.date, "รหัสอะไหล่": p?p.code:"", "ชื่ออะไหล่": p?p.name:"(ลบแล้ว)",
+        "เลขที่เอกสาร":t.docNo||"", "สถานะ":t.status==="cancelled"?"ยกเลิก":"ปกติ", "เหตุผลยกเลิก":t.cancelReason||"",
         "ประเภท": t.type==="in"?"รับเข้า":"เบิกออก", "จำนวน": t.qty,
         "ผู้เบิก/ผู้ส่ง": t.person||t.supplier||"", "ซัพพลายเออร์":supplierById(t.supplierId)?.name||t.supplier||"",
         "รถบรรทุก":truckById(t.truckId)?.plateNo||"", "จังหวัด":provinceById(t.provinceId)?.name||"",
@@ -2280,6 +2510,7 @@
     populatePartSelects();
     populateMasterSelects();
     renderMaster();
+    renderUsers();
     renderReceiveLog();
     renderIssueLog();
     renderHistory();
