@@ -46,9 +46,10 @@
   }
   header.top .brand{display:flex;align-items:center;gap:12px;}
   .brand .mark{
-    width:40px;height:40px;border-radius:8px;
-    background:repeating-linear-gradient(135deg,var(--accent) 0 8px, #171a1e 8px 16px);
+    width:56px;height:60px;border-radius:10px;
+    object-fit:contain;background:#fff;padding:3px;
     border:1px solid var(--border);
+    box-shadow:0 4px 14px rgba(0,0,0,.24);
     flex-shrink:0;
   }
   .brand h1{font-family:'Kanit',sans-serif;font-size:20px;font-weight:700;margin:0;letter-spacing:.3px;}
@@ -295,6 +296,12 @@
     padding:26px;width:100%;max-width:360px;
   }
   .login-box .brand{display:flex;align-items:center;gap:12px;}
+  .login-box .brand .mark{width:72px;height:78px;}
+  .login-settings{margin:4px 0 12px;border:1px dashed var(--border);border-radius:8px;padding:9px 10px;}
+  .login-settings summary{cursor:pointer;color:var(--text-dim);font-size:12px;}
+  .login-settings .field{margin-top:9px;}
+  .role-note{margin:0 0 12px;padding:9px 10px;border-radius:7px;background:var(--panel-alt);color:var(--text-dim);font-size:12px;line-height:1.55;}
+  [hidden]{display:none!important;}
 </style>
 </head>
 <body>
@@ -302,22 +309,30 @@
 <div id="login-overlay">
   <form id="login-form" class="login-box">
     <div class="brand" style="margin-bottom:18px;">
-      <div class="mark"></div>
+      <img class="mark" src="logo-hob.png" alt="โลโก้ H.O.B">
       <div>
         <h1>คลังอะไหล่ — Stock Control</h1>
-        <p>เข้าสู่ระบบเพื่อใช้งาน</p>
+        <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
+    <div class="role-note">ระบบมี 2 ระดับ: ผู้ดูแลระบบ และผู้ใช้งานรับเข้า/เบิกออก</div>
     <div class="field" style="margin-bottom:12px;">
       <label>ชื่อผู้ใช้งาน</label>
-      <input type="text" id="login-name" placeholder="ชื่อ-นามสกุล หรือแผนก" autocomplete="name" required>
+      <input type="text" id="login-name" placeholder="กรอกชื่อผู้ใช้งาน" autocomplete="username" required>
     </div>
     <div class="field" style="margin-bottom:6px;">
       <label>รหัสผ่าน</label>
-      <input type="password" id="login-password" placeholder="รหัสผ่านองค์กร" autocomplete="current-password" required>
+      <input type="password" id="login-password" placeholder="กรอกรหัสผ่าน" autocomplete="current-password" required>
     </div>
+    <details class="login-settings">
+      <summary>ตั้งค่า Web App URL (ใช้เมื่อติดตั้งครั้งแรก)</summary>
+      <div class="field">
+        <label>Web App URL ของ Google Apps Script</label>
+        <input type="text" id="login-script-url" placeholder="https://script.google.com/macros/s/xxxxx/exec">
+      </div>
+    </details>
     <div class="hint" id="login-error" style="color:var(--danger);min-height:16px;margin-bottom:10px;"></div>
-    <button type="submit" class="primary" style="width:100%;padding:11px;">เข้าสู่ระบบ</button>
+    <button type="submit" id="btn-login-submit" class="primary" style="width:100%;padding:11px;">เข้าสู่ระบบ</button>
   </form>
 </div>
 
@@ -325,7 +340,7 @@
 
   <header class="top">
     <div class="brand">
-      <div class="mark"></div>
+      <img class="mark" src="logo-hob.png" alt="โลโก้ H.O.B">
       <div>
         <h1>คลังอะไหล่ — Stock Control</h1>
         <p>รับเข้า · เบิกออก · แจ้งเตือนของใกล้หมด · รายงาน</p>
@@ -335,9 +350,9 @@
       <span id="current-user-badge" class="sync-badge sync-off" style="border-style:dashed;"></span>
       <button id="btn-logout" class="small">ออกจากระบบ</button>
       <span id="sync-badge" class="sync-badge sync-off" title="คลิกเพื่อซิงก์ข้อมูลทันที" style="cursor:pointer;">● ยังไม่ได้เชื่อมต่อ Sheets</span>
-      <button id="btn-settings">⚙ ตั้งค่า Sheets</button>
-      <button id="btn-import">นำเข้า Excel</button>
-      <button id="btn-export" class="primary">ส่งออก Excel</button>
+      <button id="btn-settings" data-admin-only>⚙ ตั้งค่า Sheets</button>
+      <button id="btn-import" data-admin-only>นำเข้า Excel</button>
+      <button id="btn-export" class="primary" data-admin-only>ส่งออก Excel</button>
     </div>
   </header>
 
@@ -347,8 +362,8 @@
     <button class="tab" data-view="parts"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>รายการอะไหล่</button>
     <button class="tab" data-view="receive"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v6H4z"/><path d="M12 10v8m0 0l-3.5-3.5M12 18l3.5-3.5"/></svg>รับเข้า</button>
     <button class="tab" data-view="issue"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 14h16v6H4z"/><path d="M12 14V6m0 0l-3.5 3.5M12 6l3.5 3.5"/></svg>เบิกออก</button>
-    <button class="tab" data-view="master"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v4H4zM4 11h16v8H4z"/><path d="M8 13v4m4-4v4m4-4v4"/></svg>ฐานข้อมูล</button>
-    <button class="tab" data-view="import"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M12 7v7m0 0l-3-3m3 3l3-3M8 17h8"/></svg>นำเข้าข้อมูล</button>
+    <button class="tab" data-view="master" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v4H4zM4 11h16v8H4z"/><path d="M8 13v4m4-4v4m4-4v4"/></svg>ฐานข้อมูล</button>
+    <button class="tab" data-view="import" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M12 7v7m0 0l-3-3m3 3l3-3M8 17h8"/></svg>นำเข้าข้อมูล</button>
     <button class="tab" data-view="history"><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>ประวัติ/รายงาน</button>
   </nav>
 
@@ -414,7 +429,7 @@
   <!-- PARTS MASTER LIST -->
   <section class="view" id="view-parts">
     <div class="panel">
-      <h2>รายการอะไหล่ทั้งหมด <button class="primary small" id="btn-add-part">+ เพิ่มอะไหล่</button></h2>
+      <h2>รายการอะไหล่ทั้งหมด <button class="primary small" id="btn-add-part" data-admin-only>+ เพิ่มอะไหล่</button></h2>
       <div class="search-bar">
         <input type="text" id="part-search" placeholder="ค้นหารหัส / ชื่ออะไหล่...">
         <select id="part-cat-filter"><option value="">ทุกหมวดหมู่</option></select>
@@ -449,19 +464,19 @@
         </div>
         <div class="field">
           <label>ผู้ส่ง/ซัพพลายเออร์</label>
-          <div class="inline-control"><select id="rec-supplier"></select><button class="small" type="button" data-quick-master="suppliers">+ ใหม่</button></div>
+          <div class="inline-control"><select id="rec-supplier"></select><button class="small" type="button" data-quick-master="suppliers" data-admin-only>+ ใหม่</button></div>
         </div>
         <div class="field">
           <label>รถบรรทุก</label>
-          <div class="inline-control"><select id="rec-truck"></select><button class="small" type="button" data-quick-master="trucks">+ ใหม่</button></div>
+          <div class="inline-control"><select id="rec-truck"></select><button class="small" type="button" data-quick-master="trucks" data-admin-only>+ ใหม่</button></div>
         </div>
         <div class="field">
           <label>จังหวัด</label>
-          <div class="inline-control"><select id="rec-province"></select><button class="small" type="button" data-quick-master="provinces">+ ใหม่</button></div>
+          <div class="inline-control"><select id="rec-province"></select><button class="small" type="button" data-quick-master="provinces" data-admin-only>+ ใหม่</button></div>
         </div>
         <div class="field"><label>เลขที่ PR</label><select id="rec-pr"></select></div>
         <div class="field"><label>เลขที่ PO</label><select id="rec-po"></select></div>
-        <div class="field"><label>เลขที่ IV</label><div class="inline-control"><select id="rec-iv"></select><button class="small" type="button" data-quick-master="documents">+ ใหม่</button></div></div>
+        <div class="field"><label>เลขที่ IV</label><div class="inline-control"><select id="rec-iv"></select><button class="small" type="button" data-quick-master="documents" data-admin-only>+ ใหม่</button></div></div>
         <div class="field span2">
           <label>ผู้ส่ง/ผู้ติดต่อ (ถ้ามี)</label>
           <input type="text" id="rec-contact" placeholder="ชื่อผู้ส่งหรือผู้ติดต่อ">
@@ -511,11 +526,11 @@
         </div>
         <div class="field">
           <label>รถบรรทุกที่นำไปใช้</label>
-          <div class="inline-control"><select id="iss-truck"></select><button class="small" type="button" data-quick-master="trucks">+ ใหม่</button></div>
+          <div class="inline-control"><select id="iss-truck"></select><button class="small" type="button" data-quick-master="trucks" data-admin-only>+ ใหม่</button></div>
         </div>
         <div class="field">
           <label>จังหวัด</label>
-          <div class="inline-control"><select id="iss-province"></select><button class="small" type="button" data-quick-master="provinces">+ ใหม่</button></div>
+          <div class="inline-control"><select id="iss-province"></select><button class="small" type="button" data-quick-master="provinces" data-admin-only>+ ใหม่</button></div>
         </div>
         <div class="field"><label>เลขที่ PR</label><select id="iss-pr"></select></div>
         <div class="field"><label>เลขที่ PO</label><select id="iss-po"></select></div>
@@ -770,53 +785,89 @@
   const API_TIMEOUT_MS = 25000;
   const AUTH_KEY = "sparepartsStock_auth";
 
-  // ============ LOGIN CONFIG ============
-  // เปลี่ยนรหัสผ่านองค์กรได้ตรงนี้ (แก้ในไฟล์แล้วส่งไฟล์ใหม่ให้ทุกคนที่ใช้งาน)
-  const APP_PASSWORD = "changeme123";
-
-  let currentUser = null; // { name }
+  // ============ LOGIN / ROLE PERMISSIONS ============
+  // บัญชีและรหัสผ่านกำหนดใน Code.gs เพื่อไม่เปิดเผยรหัสผ่านในหน้าเว็บ
+  let currentUser = null; // { username, name, role, token, expiresAt }
 
   function loadAuth(){
     try{
       const raw = localStorage.getItem(AUTH_KEY);
       if(raw){
         const parsed = JSON.parse(raw);
-        if(parsed && parsed.name) return parsed;
+        if(parsed && parsed.name && parsed.role && parsed.token && Number(parsed.expiresAt)>Date.now()) return parsed;
       }
     }catch(e){}
     return null;
   }
   function saveAuth(user){ localStorage.setItem(AUTH_KEY, JSON.stringify(user)); }
   function clearAuth(){ localStorage.removeItem(AUTH_KEY); }
+  function isAdmin(){ return !!currentUser && currentUser.role === "admin"; }
+  function requireAdmin(){
+    if(isAdmin()) return true;
+    toast("รายการนี้ใช้ได้เฉพาะผู้ดูแลระบบ", true);
+    return false;
+  }
+  function applyRolePermissions(user){
+    const admin = user.role === "admin";
+    document.querySelectorAll("[data-admin-only]").forEach(el=>{ el.hidden = !admin; });
+    const badge = document.getElementById("current-user-badge");
+    badge.textContent = `👤 ${user.name} · ${admin ? "ผู้ดูแลระบบ" : "ผู้ใช้งาน"}`;
+    badge.title = admin ? "สิทธิ์สูงสุด: แก้ไขได้ทุกส่วน" : "ดูข้อมูลและบันทึกรับเข้า/เบิกออกได้";
+  }
 
   function showApp(user){
     currentUser = user;
     document.getElementById("login-overlay").classList.add("hide");
     document.getElementById("app").classList.add("unlocked");
-    const badge = document.getElementById("current-user-badge");
-    badge.textContent = "👤 " + user.name;
+    applyRolePermissions(user);
     document.getElementById("iss-person").value = document.getElementById("iss-person").value || user.name;
     initAppAfterLogin();
   }
 
-  function showLogin(prefillName){
+  function showLogin(prefillName, errorMessage){
+    currentUser = null;
     document.getElementById("login-overlay").classList.remove("hide");
     document.getElementById("app").classList.remove("unlocked");
     if(prefillName) document.getElementById("login-name").value = prefillName;
+    document.getElementById("login-script-url").value = getScriptURL();
     document.getElementById("login-password").value = "";
-    document.getElementById("login-error").textContent = "";
+    document.getElementById("login-error").textContent = errorMessage || "";
     document.getElementById("login-password").focus();
   }
 
-  document.getElementById("login-form").addEventListener("submit", (e)=>{
+  function expireSession(message){
+    const username = currentUser ? currentUser.username : "";
+    clearAuth();
+    if(pollTimer) clearInterval(pollTimer);
+    showLogin(username, message || "เซสชันหมดอายุ กรุณาเข้าสู่ระบบใหม่");
+  }
+
+  document.getElementById("login-form").addEventListener("submit", async (e)=>{
     e.preventDefault();
-    const name = document.getElementById("login-name").value.trim();
+    const username = document.getElementById("login-name").value.trim();
     const password = document.getElementById("login-password").value;
-    if(!name){ document.getElementById("login-error").textContent = "กรุณากรอกชื่อผู้ใช้งาน"; return; }
-    if(password !== APP_PASSWORD){ document.getElementById("login-error").textContent = "รหัสผ่านไม่ถูกต้อง"; return; }
-    const user = { name };
-    saveAuth(user);
-    showApp(user);
+    const enteredURL = document.getElementById("login-script-url").value.trim();
+    const errorEl = document.getElementById("login-error");
+    if(!username){ errorEl.textContent = "กรุณากรอกชื่อผู้ใช้งาน"; return; }
+    if(!password){ errorEl.textContent = "กรุณากรอกรหัสผ่าน"; return; }
+    if(enteredURL) setScriptURL(enteredURL);
+    if(!hasScriptURL()){
+      errorEl.textContent = "กรุณาเปิด 'ตั้งค่า Web App URL' และใส่ URL ก่อนเข้าสู่ระบบ";
+      return;
+    }
+    const btn = document.getElementById("btn-login-submit");
+    btn.disabled = true; btn.textContent = "กำลังตรวจสอบ..."; errorEl.textContent = "";
+    try{
+      const user = await apiCall("login", {username, password});
+      saveAuth(user);
+      showApp(user);
+    }catch(err){
+      errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.4 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
+    }finally{
+      btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
+    }
   });
 
   document.getElementById("btn-logout").addEventListener("click", ()=>{
@@ -890,7 +941,7 @@
   // doesn't handle OPTIONS). Apps Script still reads it fine via e.postData.contents.
   async function apiCall(action, payload){
     const url = validateScriptURL(getScriptURL());
-    const isRead = action === "getAll";
+    const isRead = action === "getAll" || action === "login";
     const maxAttempts = isRead ? 2 : 1; // ห้ามลองบันทึกซ้ำ ป้องกันรายการซ้ำ
     if(!isRead) activeWrites++;
     try{
@@ -903,7 +954,7 @@
           const res = await fetch(requestURL, {
             method: "POST",
             headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify({ action, ...payload }),
+            body: JSON.stringify({ action, ...payload, token: currentUser ? currentUser.token : "" }),
             redirect: "follow",
             cache: "no-store",
             signal: controller.signal
@@ -913,7 +964,14 @@
           let json;
           try{ json = JSON.parse(responseText); }
           catch(e){ throw new Error("Apps Script ส่งคำตอบที่อ่านไม่ได้ กรุณาตรวจสิทธิ์ Web App และ Deploy ใหม่"); }
-          if(!json.ok) throw new Error(json.error || "เกิดข้อผิดพลาดที่ Apps Script");
+          if(!json.ok){
+            const apiErr = new Error(json.error || "เกิดข้อผิดพลาดที่ Apps Script");
+            apiErr.code = json.code || "API_ERROR";
+            if(action!=="login" && ["AUTH_REQUIRED","AUTH_INVALID","AUTH_EXPIRED"].includes(apiErr.code)){
+              expireSession(apiErr.message);
+            }
+            throw apiErr;
+          }
           return json.data;
         }catch(err){
           if(err.name === "AbortError"){
@@ -1004,6 +1062,7 @@
 
   // Settings modal wiring
   function openSettingsModal(){
+    if(!requireAdmin()) return;
     document.getElementById("cfg-script-url").value = getScriptURL();
     document.getElementById("settings-modal-overlay").classList.add("show");
   }
@@ -1138,6 +1197,10 @@
 
   // ---------- Tab navigation ----------
   function activateView(viewName){
+    if(["master","import"].includes(viewName) && !isAdmin()){
+      toast("เมนูนี้ใช้ได้เฉพาะผู้ดูแลระบบ", true);
+      viewName = "dashboard";
+    }
     document.querySelectorAll("nav.tabs .tab").forEach(b=>b.classList.toggle("active", b.dataset.view===viewName));
     document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active", v.id==="view-"+viewName));
     renderAll();
@@ -1344,9 +1407,9 @@
         <td>${gaugeHTML(p)}</td>
         <td class="mono">${escapeHTML(p.location||"-")}</td>
         <td class="mono">฿${fmtMoney(p.cost)}</td>
-        <td class="row-actions">
+        <td class="row-actions">${isAdmin() ? `
           <button class="small" data-edit="${p.id}">แก้ไข</button>
-          <button class="small danger-ghost" data-del="${p.id}">ลบ</button>
+          <button class="small danger-ghost" data-del="${p.id}">ลบ</button>` : '<span class="hint">ดูอย่างเดียว</span>'}
         </td>
       </tr>`).join("") : `<tr class="empty-row"><td colspan="7">ไม่พบอะไหล่ที่ค้นหา</td></tr>`;
 
@@ -1384,6 +1447,7 @@
   document.getElementById("pf-unit").addEventListener("change", ()=> toggleCustomField("pf-unit","pf-unit-custom"));
 
   function openPartModal(id){
+    if(!requireAdmin()) return;
     const p = id ? partById(id) : null;
     populateMasterSelects();
     document.getElementById("modal-title").textContent = p ? "แก้ไขอะไหล่" : "เพิ่มอะไหล่ใหม่";
@@ -1410,6 +1474,7 @@
   document.getElementById("modal-overlay").addEventListener("click", (e)=>{ if(e.target.id==="modal-overlay") closeModal(); });
 
   document.getElementById("btn-modal-save").addEventListener("click", async ()=>{
+    if(!requireAdmin()) return;
     const id = document.getElementById("pf-id").value;
     const code = document.getElementById("pf-code").value.trim();
     const name = document.getElementById("pf-name").value.trim();
@@ -1465,6 +1530,7 @@
   });
 
   async function deletePart(id){
+    if(!requireAdmin()) return;
     const p = partById(id);
     if(!p) return;
     if(!confirm(`ลบ "${p.name}" ออกจากรายการอะไหล่? (ประวัติการเบิก-รับที่เกี่ยวข้องจะยังคงอยู่)`)) return;
@@ -1686,6 +1752,7 @@
   }
 
   function openMasterModal(type,id){
+    if(!requireAdmin()) return;
     modalMasterType=type;
     populateMasterSelects();
     const x=id?(state[type]||[]).find(r=>r.id===id):null;
@@ -1720,6 +1787,7 @@
   }
 
   async function toggleMasterActive(id){
+    if(!requireAdmin()) return;
     const x=(state[currentMasterType]||[]).find(r=>r.id===id); if(!x)return;
     const next=x.isActive===false;
     if(!confirm(`${next?"เปิดใช้งาน":"หยุดใช้"}รายการนี้?`))return;
@@ -1733,6 +1801,7 @@
   document.getElementById("btn-master-modal-cancel").addEventListener("click",closeMasterModal);
   document.getElementById("master-modal-overlay").addEventListener("click",e=>{if(e.target.id==="master-modal-overlay")closeMasterModal();});
   document.getElementById("btn-master-modal-save").addEventListener("click",async()=>{
+    if(!requireAdmin()) return;
     const record=collectMasterForm();
     if(modalMasterType==="suppliers"&&!record.name){toast("กรุณาระบุชื่อซัพพลายเออร์",true);return;}
     if(modalMasterType==="trucks"&&!record.plateNo){toast("กรุณาระบุทะเบียนรถ",true);return;}
@@ -1792,6 +1861,7 @@
   });
   document.getElementById("btn-master-import-clear").addEventListener("click",clearMasterImport);
   document.getElementById("btn-master-import-confirm").addEventListener("click",async()=>{
+    if(!requireAdmin()) return;
     if(!masterImportDraft.rows.length||masterImportDraft.rows.some(x=>!x.valid)){toast("กรุณาแก้ไขข้อมูลที่ผิดก่อน",true);return;}
     if(!confirm(`ยืนยันนำเข้า${MASTER_IMPORT_CONFIG[currentMasterType].label} ${masterImportDraft.rows.length} แถว?`))return;
     const btn=document.getElementById("btn-master-import-confirm");btn.disabled=true;btn.textContent="กำลังนำเข้า...";
@@ -1839,6 +1909,7 @@
 
   // ================= EXCEL EXPORT / IMPORT =================
   document.getElementById("btn-export").addEventListener("click", ()=>{
+    if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
 
     const partsSheet = state.parts.map(p=>({
@@ -1908,6 +1979,7 @@
   setImportType("parts");
 
   function downloadFullTemplate(){
+    if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
     const guide = [
       ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — เวอร์ชันฐานข้อมูลกลาง"],
@@ -2139,6 +2211,7 @@
   }
 
   document.getElementById("btn-confirm-import").addEventListener("click", async ()=>{
+    if(!requireAdmin()) return;
     revalidateImportDraft();
     if(!importDraft.rows.length || importDraft.rows.some(r=>!r.valid)){
       toast("กรุณาแก้ไขแถวที่ผิดก่อนนำเข้า", true); return;
