@@ -336,6 +336,180 @@
     #print-area th,#print-area td{border:1px solid #999;padding:8px;color:#111;text-transform:none;letter-spacing:0;}
     #print-area .print-sign{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:70px;text-align:center;}
   }
+
+  /* ================= v3.8 UI refresh ================= */
+  :root{
+    --bg:#0d1418;
+    --panel:#151f24;
+    --panel-alt:#1c292f;
+    --border:#2a3b42;
+    --text:#edf4f2;
+    --text-dim:#91a39f;
+    --brand:#0f766e;
+    --brand-bright:#2aa99d;
+    --brand-dim:#163f3d;
+    --accent:#f59e0b;
+    --accent-dim:#4b3712;
+    --accent-2:#2aa99d;
+    --accent-2-dim:#163f3d;
+    --success:#22a06b;
+    --success-dim:#173f31;
+    --danger:#dc4545;
+    --danger-dim:#4a2426;
+    --radius:12px;
+    --shadow:0 12px 28px rgba(0,0,0,.18);
+  }
+  body{background:radial-gradient(circle at 80% -10%,#12302f 0,transparent 32%),var(--bg);}
+  #app{max-width:1500px;margin:0 auto;padding:18px 24px 64px;}
+  #app.unlocked{display:grid;grid-template-columns:220px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:0 24px;}
+  header.top{
+    grid-column:1/-1;grid-row:1;position:sticky;top:0;z-index:35;
+    margin:0 -6px 18px;padding:10px 6px 14px;
+    background:linear-gradient(180deg,var(--bg) 76%,rgba(13,20,24,0));
+  }
+  .brand .mark{width:48px;height:50px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.22);}
+  .brand h1{font-size:19px;}.brand p{font-size:12px;}
+  .top-actions{align-items:center;flex-wrap:nowrap;}
+
+  /* Compact user menu */
+  .user-menu{position:relative;}
+  .user-menu summary{list-style:none;}
+  .user-menu summary::-webkit-details-marker{display:none;}
+  .user-summary{
+    display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:7px 11px;
+    border:1px solid var(--border);border-radius:10px;background:var(--panel-alt);
+    color:var(--text);font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;
+  }
+  .user-summary::before{
+    content:'';width:24px;height:24px;border-radius:50%;background:var(--brand-dim);
+    box-shadow:inset 0 0 0 1px #2d766f;
+  }
+  .user-summary::after{content:'⌄';color:var(--text-dim);font-size:15px;margin-left:2px;}
+  .user-menu[open] .user-summary{border-color:var(--brand-bright);}
+  .user-menu-popover{
+    position:absolute;right:0;top:calc(100% + 8px);z-index:60;width:230px;
+    padding:8px;background:var(--panel);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);
+  }
+  .user-menu-title{padding:7px 10px 9px;color:var(--text-dim);font-size:11px;text-transform:uppercase;letter-spacing:.45px;}
+  .menu-action{width:100%;display:flex;align-items:center;gap:9px;text-align:left;background:transparent;border:none;padding:9px 10px;}
+  .menu-action:hover{background:var(--panel-alt);border-color:transparent;}
+  .menu-action .tab-ic{width:17px;height:17px;}.menu-separator{height:1px;background:var(--border);margin:5px 4px;}
+  .danger-text{color:#ff9696;}
+
+  /* Desktop sidebar */
+  nav.tabs{
+    grid-column:1;grid-row:2;align-self:start;position:sticky;top:92px;
+    display:flex;flex-direction:column;gap:3px;overflow:visible;margin:0;
+    padding:12px;background:rgba(21,31,36,.8);backdrop-filter:blur(12px);
+    border:1px solid var(--border);border-radius:14px;box-shadow:0 10px 26px rgba(0,0,0,.13);
+  }
+  .nav-group-label{padding:11px 10px 5px;color:#70837f;font-size:10.5px;font-weight:700;letter-spacing:.65px;text-transform:uppercase;}
+  .nav-group-label:first-child{padding-top:4px;}
+  nav.tabs button.tab{
+    width:100%;justify-content:flex-start;gap:10px;padding:10px 11px;border:1px solid transparent;
+    border-radius:9px;color:var(--text-dim);font-size:13px;
+  }
+  nav.tabs button.tab:hover{background:var(--panel-alt);color:var(--text);}
+  nav.tabs button.tab.active{background:var(--brand-dim);border-color:#2a665f;color:#c9fff8;box-shadow:inset 3px 0 0 var(--brand-bright);}
+  nav.tabs button.tab .tab-ic{width:18px;height:18px;}
+  .view{grid-column:2;grid-row:2;min-width:0;}
+
+  /* Content hierarchy */
+  .panel{border-color:#26383f;box-shadow:0 8px 22px rgba(0,0,0,.1);}
+  .panel h2{font-size:16px;}
+  .kpi{padding:16px 17px;border-color:#26383f;box-shadow:0 8px 22px rgba(0,0,0,.1);}
+  .kpi .value{font-size:28px;}.kpi .icon{width:34px;height:34px;}
+  .kpi.flag-info .icon,.kpi.flag-info .value{color:var(--brand-bright);}
+  button.primary{background:var(--brand);border-color:var(--brand);color:#f4fffd;}
+  button.primary:hover{background:#138b81;}
+  button.warn{background:var(--accent);border-color:var(--accent);color:#211706;}
+
+  /* Quick actions */
+  .quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:-6px 0 16px;}
+  .quick-action{
+    display:flex;align-items:center;gap:11px;text-align:left;padding:12px;background:var(--panel);
+    border-color:var(--border);min-height:68px;
+  }
+  .quick-action:hover{transform:translateY(-1px);border-color:#496167;box-shadow:0 10px 22px rgba(0,0,0,.16);}
+  .quick-action .quick-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:10px;background:var(--panel-alt);flex:0 0 auto;}
+  .quick-action svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .quick-action strong{display:block;color:var(--text);font-size:13px;}.quick-action small{display:block;color:var(--text-dim);font-size:10.5px;margin-top:2px;}
+  .quick-action.receive .quick-icon{color:var(--success);background:var(--success-dim);}
+  .quick-action.issue .quick-icon{color:var(--accent);background:var(--accent-dim);}
+  .quick-action.count .quick-icon,.quick-action.search .quick-icon{color:var(--brand-bright);background:var(--brand-dim);}
+
+  /* Alerts, tables and states */
+  .alert-banner{justify-content:space-between;background:#3e2912;border-color:#704a16;color:#ffdda1;}
+  .alert-banner .alert-copy{display:flex;align-items:center;gap:10px;}
+  .alert-action{border-color:#886224;background:#5a3b13;color:#ffe4b2;white-space:nowrap;}
+  .table-wrap{border:1px solid #26373d;border-radius:9px;max-width:100%;}
+  th{position:sticky;top:0;z-index:2;background:#18252a;color:#9aada8;padding:9px 10px;}
+  tbody tr:nth-child(even):not(.empty-row){background:rgba(255,255,255,.014);}
+  tbody tr:hover{background:#203037!important;}
+  td{border-bottom-color:#223137;}
+  .status-pill{gap:5px;align-items:center;}
+  .status-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
+  .status-pill.stock-ok{background:var(--success-dim);color:var(--success);}
+  .status-pill.stock-low{background:var(--accent-dim);color:#ffc45f;}
+  .status-pill.stock-out{background:var(--danger-dim);color:#ff8b8b;}
+  .gauge .qty{min-width:72px;}.gauge .track{height:7px;}
+  .row-actions{justify-content:flex-end;position:relative;}
+  .row-menu{position:relative;}
+  .row-menu summary{list-style:none;width:30px;height:30px;display:grid;place-items:center;border:1px solid var(--border);border-radius:7px;background:var(--panel-alt);cursor:pointer;font-size:20px;line-height:1;}
+  .row-menu summary::-webkit-details-marker{display:none;}
+  .row-menu-popover{position:absolute;right:0;top:35px;z-index:12;width:145px;padding:6px;background:var(--panel);border:1px solid var(--border);border-radius:9px;box-shadow:var(--shadow);}
+  .row-menu-popover button{display:block;width:100%;text-align:left;background:transparent;border:none;padding:8px;}
+  .row-menu-popover button:hover{background:var(--panel-alt);}
+
+  /* Document forms */
+  .document-panel{position:relative;border-top:3px solid var(--brand);padding:18px;}
+  .issue-document{border-top-color:var(--accent);}
+  .section-caption{display:flex;align-items:center;gap:8px;margin:16px 0 10px;color:var(--text);font:600 13px 'Kanit',sans-serif;}
+  .section-caption span{display:grid;place-items:center;width:23px;height:23px;border-radius:50%;background:var(--brand-dim);color:#bff8f1;font:700 11px 'IBM Plex Mono',monospace;}
+  .issue-document .section-caption span{background:var(--accent-dim);color:#ffd486;}
+  .document-actions{position:sticky;bottom:10px;z-index:6;margin:14px -6px -4px;padding:10px;background:rgba(21,31,36,.92);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.22);}
+  .document-actions button:last-child{min-width:150px;}
+  .doc-total{font-weight:600;}.doc-total span:last-child{color:var(--text);font-family:'IBM Plex Mono',monospace;}
+
+  /* Mobile bottom bar / sheet */
+  .mobile-nav,#mobile-more-overlay{display:none;}
+  @media(max-width:980px){
+    #app{padding:12px 12px 92px;}
+    #app.unlocked{display:block;}
+    header.top{position:sticky;top:0;margin:0 -2px 14px;padding:7px 2px 12px;flex-wrap:nowrap;}
+    header.top .brand{min-width:0;}.brand .mark{width:42px;height:44px;}.brand h1{font-size:16px;white-space:nowrap;}.brand p{display:none;}
+    nav.tabs{display:none;}
+    .view{min-width:0;}
+    .top-actions{margin-left:auto;}.sync-badge{padding:7px 9px;max-width:145px;overflow:hidden;text-overflow:ellipsis;}
+    .user-summary{width:38px;padding:6px;font-size:0;justify-content:center;}.user-summary::before{width:24px;height:24px;}.user-summary::after{display:none;}
+    .quick-actions{grid-template-columns:repeat(2,1fr);}
+    .quick-actions.staff-layout .quick-action.search{grid-column:1/-1;}
+    #app.unlocked ~ .mobile-nav{
+      display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:8px;right:8px;bottom:8px;z-index:45;
+      padding:6px;background:rgba(21,31,36,.94);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:15px;box-shadow:0 14px 32px rgba(0,0,0,.4);
+    }
+    .mobile-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border:none;background:transparent;color:var(--text-dim);font-size:10.5px;}
+    .mobile-tab svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+    .mobile-tab.active{color:#aaf3ea;background:var(--brand-dim);}
+    #mobile-more-overlay.show{display:flex;position:fixed;inset:0;z-index:100;background:rgba(4,8,10,.66);align-items:flex-end;justify-content:center;}
+    .mobile-sheet{width:100%;max-width:620px;background:var(--panel);border:1px solid var(--border);border-radius:18px 18px 0 0;padding:16px 16px 26px;box-shadow:0 -18px 40px rgba(0,0,0,.35);}
+    .mobile-sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}.mobile-sheet-head strong{display:block;font:600 17px 'Kanit',sans-serif;}.mobile-sheet-head small{display:block;color:var(--text-dim);font-size:11px;}
+    #btn-mobile-more-close{width:36px;height:36px;padding:0;border-radius:50%;font-size:22px;}
+    .mobile-more-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
+    .mobile-more-grid button{display:flex;align-items:center;gap:10px;text-align:left;padding:13px;background:var(--panel-alt);}
+    .mobile-more-grid svg{width:20px;height:20px;fill:none;stroke:var(--brand-bright);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  }
+  @media(max-width:640px){
+    .brand h1{max-width:145px;overflow:hidden;text-overflow:ellipsis;}
+    .top-actions .sync-badge{width:36px;min-width:36px;font-size:0;padding:7px;justify-content:center;}
+    .top-actions .sync-badge::before{content:'●';font-size:12px;}
+    .kpi-row{gap:8px}.kpi{padding:13px}.kpi .value{font-size:23px}.kpi .icon{width:29px;height:29px}
+    .quick-actions{gap:8px}.quick-action{padding:10px;min-height:62px}.quick-action .quick-icon{width:32px;height:32px}.quick-action small{display:none;}
+    .charts-row{gap:10px}.panel{padding:13px;margin-bottom:12px}.panel h2{font-size:14.5px}
+    .document-panel{padding:14px}.document-actions{bottom:78px;}
+    .alert-banner{align-items:flex-start;flex-direction:column;}.alert-action{width:100%;}
+    .gauge{min-width:130px;}
+  }
 </style>
 </head>
 <body>
@@ -345,7 +519,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.7</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.8</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -376,31 +550,40 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.7</h1>
-        <p>เอกสารหลายรายการ · ตรวจนับ · จุดสั่งซื้อ · Stock Card</p>
+        <h1>คลังอะไหล่ — Stock Control v3.8</h1>
+        <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
     <div class="top-actions">
-      <span id="current-user-badge" class="sync-badge sync-off" style="border-style:dashed;"></span>
-      <button id="btn-change-password" class="small">เปลี่ยนรหัสผ่าน</button>
-      <button id="btn-logout" class="small">ออกจากระบบ</button>
       <span id="sync-badge" class="sync-badge sync-off" title="คลิกเพื่อซิงก์ข้อมูลทันที" style="cursor:pointer;">● ยังไม่ได้เชื่อมต่อ Sheets</span>
-      <button id="btn-settings" data-admin-only>⚙ ตั้งค่า Sheets</button>
-      <button id="btn-import" data-admin-only>นำเข้า Excel</button>
-      <button id="btn-export" class="primary" data-admin-only>ส่งออก Excel</button>
+      <details class="user-menu" id="user-menu">
+        <summary id="current-user-badge" class="user-summary"></summary>
+        <div class="user-menu-popover">
+          <div class="user-menu-title">บัญชีและเครื่องมือ</div>
+          <button id="btn-change-password" class="menu-action"><svg class="tab-ic" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3M12 14v2"/></svg>เปลี่ยนรหัสผ่าน</button>
+          <button id="btn-settings" class="menu-action" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.4-2.4 1a7 7 0 00-1.7-1L14.5 3h-5l-.4 3.1a7 7 0 00-1.7 1L5 6.1 3 9.5 5 11a7 7 0 000 2l-2 1.5 2 3.4 2.4-1a7 7 0 001.7 1l.4 3.1h5l.4-3.1a7 7 0 001.7-1l2.4 1 2-3.4-2-1.5a7 7 0 00.1-1z"/></svg>ตั้งค่า Google Sheets</button>
+          <button id="btn-import" class="menu-action" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM12 7v7m0 0l-3-3m3 3l3-3M8 17h8"/></svg>นำเข้าข้อมูล Excel</button>
+          <button id="btn-export" class="menu-action" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM12 17v-7m0 0l-3 3m3-3l3 3M8 7h8"/></svg>ส่งออกข้อมูล Excel</button>
+          <div class="menu-separator"></div>
+          <button id="btn-logout" class="menu-action danger-text"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M10 4H5v16h5M14 8l4 4-4 4m4-4H9"/></svg>ออกจากระบบ</button>
+        </div>
+      </details>
     </div>
   </header>
 
 
-  <nav class="tabs">
+  <nav class="tabs" aria-label="เมนูหลัก">
+    <span class="nav-group-label">งานประจำ</span>
     <button class="tab active" data-view="dashboard"><svg class="tab-ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.3"/><rect x="14" y="3" width="7" height="7" rx="1.3"/><rect x="3" y="14" width="7" height="7" rx="1.3"/><rect x="14" y="14" width="7" height="7" rx="1.3"/></svg>ภาพรวม</button>
     <button class="tab" data-view="parts"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>รายการอะไหล่</button>
     <button class="tab" data-view="receive"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v6H4z"/><path d="M12 10v8m0 0l-3.5-3.5M12 18l3.5-3.5"/></svg>รับเข้า</button>
     <button class="tab" data-view="issue"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 14h16v6H4z"/><path d="M12 14V6m0 0l-3.5 3.5M12 6l3.5 3.5"/></svg>เบิกออก</button>
     <button class="tab" data-view="stockcount" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg>ตรวจนับ</button>
+    <span class="nav-group-label">ข้อมูลและผู้ดูแล</span>
     <button class="tab" data-view="master" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v4H4zM4 11h16v8H4z"/><path d="M8 13v4m4-4v4m4-4v4"/></svg>ฐานข้อมูล</button>
     <button class="tab" data-view="import" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M12 7v7m0 0l-3-3m3 3l3-3M8 17h8"/></svg>นำเข้าข้อมูล</button>
     <button class="tab" data-view="users" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.5-4 2.3-6 5.5-6s5 2 5.5 6M17 8h4m-2-2v4"/></svg>ผู้ใช้ / Audit</button>
+    <span class="nav-group-label">รายงาน</span>
     <button class="tab" data-view="history"><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>ประวัติ/รายงาน</button>
   </nav>
 
@@ -425,6 +608,13 @@
       </div>
     </div>
 
+    <div class="quick-actions" aria-label="งานด่วน">
+      <button class="quick-action receive" data-quick-view="receive"><span class="quick-icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v5H4zM4 14h16v5H4z"/><path d="M12 3v10m0 0l-3-3m3 3l3-3"/></svg></span><span><strong>รับเข้า</strong><small>สร้างใบรับอะไหล่</small></span></button>
+      <button class="quick-action issue" data-quick-view="issue"><span class="quick-icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v5H4zM4 14h16v5H4z"/><path d="M12 21V11m0 0l-3 3m3-3l3 3"/></svg></span><span><strong>เบิกออก</strong><small>สร้างใบเบิกอะไหล่</small></span></button>
+      <button class="quick-action count" data-quick-view="stockcount" data-admin-only><span class="quick-icon"><svg viewBox="0 0 24 24"><path d="M7 4h10v3H7zM5 6h14v15H5z"/><path d="M8 12l2 2 5-5M8 18h8"/></svg></span><span><strong>ตรวจนับ</strong><small>เทียบยอดจริงกับระบบ</small></span></button>
+      <button class="quick-action search" data-quick-view="parts"><span class="quick-icon"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></span><span><strong>ค้นหาอะไหล่</strong><small>ดูยอดและตำแหน่งเก็บ</small></span></button>
+    </div>
+
     <div id="alert-banner-slot"></div>
 
     <div class="charts-row">
@@ -442,7 +632,7 @@
       <div class="chart-wrap full"><canvas id="chart-trend"></canvas></div>
     </div>
 
-    <div class="panel">
+    <div class="panel" id="reorder-panel">
       <h2>รายการที่ต้องสั่งซื้อเพิ่ม <span class="sub">อะไหล่ที่คงเหลือ ≤ จุดสั่งซื้อขั้นต่ำ</span></h2>
       <div class="table-wrap">
         <table>
@@ -484,8 +674,9 @@
 
   <!-- RECEIVE -->
   <section class="view" id="view-receive">
-    <div class="panel">
+    <div class="panel document-panel receive-document">
       <h2>ใบรับเข้าอะไหล่ <span class="sub">เพิ่มได้หลายรายการในเอกสารเดียว</span></h2>
+      <div class="section-caption"><span>1</span>ข้อมูลหัวเอกสาร</div>
       <div class="field-grid">
         <div class="field">
           <label>วันที่</label>
@@ -515,8 +706,9 @@
           <textarea id="rec-note" placeholder="เลขที่ใบกำกับ, รายละเอียดเพิ่มเติม..."></textarea>
         </div>
       </div>
+      <div class="section-caption"><span>2</span>รายการอะไหล่</div>
       <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่</th><th style="width:150px">จำนวนรับ</th><th style="width:105px">คงเหลือ</th><th style="width:72px"></th></tr></thead><tbody id="receive-lines-body"></tbody></table><div class="doc-total"><span id="receive-line-count">0 รายการ</span><span id="receive-total-qty">รวม 0 หน่วย</span></div></div>
-      <div class="form-actions">
+      <div class="form-actions document-actions">
         <button id="btn-receive-add-line">+ เพิ่มรายการ</button>
         <button class="primary" id="btn-receive-submit">บันทึกรับเข้า</button>
       </div>
@@ -535,8 +727,9 @@
 
   <!-- ISSUE -->
   <section class="view" id="view-issue">
-    <div class="panel">
+    <div class="panel document-panel issue-document">
       <h2>ใบเบิกอะไหล่ <span class="sub">ตรวจสต๊อกครบทุกบรรทัดก่อนบันทึก</span></h2>
+      <div class="section-caption"><span>1</span>ข้อมูลหัวเอกสาร</div>
       <div class="field-grid">
         <div class="field">
           <label>วันที่</label>
@@ -562,8 +755,9 @@
           <textarea id="iss-note" placeholder="ใช้งานกับเครื่องจักรใด, สาเหตุการเบิก..."></textarea>
         </div>
       </div>
+      <div class="section-caption"><span>2</span>รายการอะไหล่</div>
       <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่</th><th style="width:150px">จำนวนเบิก</th><th style="width:125px">คงเหลือ</th><th style="width:72px"></th></tr></thead><tbody id="issue-lines-body"></tbody></table><div class="doc-total"><span id="issue-line-count">0 รายการ</span><span id="issue-total-qty">รวม 0 หน่วย</span></div></div>
-      <div class="form-actions">
+      <div class="form-actions document-actions">
         <button id="btn-issue-add-line">+ เพิ่มรายการ</button>
         <button class="warn" id="btn-issue-submit">บันทึกเบิกออก</button>
       </div>
@@ -734,6 +928,28 @@
 
 </div>
 
+<!-- Mobile navigation -->
+<nav class="mobile-nav" aria-label="เมนูมือถือ">
+  <button class="mobile-tab active" data-mobile-view="dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.3"/><rect x="14" y="3" width="7" height="7" rx="1.3"/><rect x="3" y="14" width="7" height="7" rx="1.3"/><rect x="14" y="14" width="7" height="7" rx="1.3"/></svg><span>ภาพรวม</span></button>
+  <button class="mobile-tab" data-mobile-view="parts"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4zM3 7v10l9 4 9-4V7M12 11v10"/></svg><span>อะไหล่</span></button>
+  <button class="mobile-tab" data-mobile-view="receive"><svg viewBox="0 0 24 24"><path d="M4 4h16v6H4zM12 10v8m0 0l-3.5-3.5M12 18l3.5-3.5"/></svg><span>รับเข้า</span></button>
+  <button class="mobile-tab" data-mobile-view="issue"><svg viewBox="0 0 24 24"><path d="M4 14h16v6H4zM12 14V6m0 0l-3.5 3.5M12 6l3.5 3.5"/></svg><span>เบิกออก</span></button>
+  <button class="mobile-tab" id="btn-mobile-more"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg><span>เพิ่มเติม</span></button>
+</nav>
+
+<div id="mobile-more-overlay">
+  <div class="mobile-sheet">
+    <div class="mobile-sheet-head"><div><strong>เมนูเพิ่มเติม</strong><small>รายงานและเครื่องมือผู้ดูแล</small></div><button id="btn-mobile-more-close" aria-label="ปิด">×</button></div>
+    <div class="mobile-more-grid">
+      <button data-mobile-view="history"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span>ประวัติ/รายงาน</span></button>
+      <button data-mobile-view="stockcount" data-admin-only><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg><span>ตรวจนับ</span></button>
+      <button data-mobile-view="master" data-admin-only><svg viewBox="0 0 24 24"><path d="M4 5h16v4H4zM4 11h16v8H4zM8 13v4m4-4v4m4-4v4"/></svg><span>ฐานข้อมูล</span></button>
+      <button data-mobile-view="import" data-admin-only><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM12 7v7m0 0l-3-3m3 3l3-3M8 17h8"/></svg><span>นำเข้าข้อมูล</span></button>
+      <button data-mobile-view="users" data-admin-only><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.5-4 2.3-6 5.5-6s5 2 5.5 6M17 8h4m-2-2v4"/></svg><span>ผู้ใช้ / Audit</span></button>
+    </div>
+  </div>
+</div>
+
 <!-- Transaction success / print -->
 <div id="success-modal-overlay"><div class="modal">
   <h3>บันทึกรายการสำเร็จ</h3>
@@ -892,7 +1108,7 @@
   const AUTH_KEY = "sparepartsStock_auth";
 
   // ============ LOGIN / ROLE PERMISSIONS ============
-  // v3.7 stores user accounts as salted password hashes in the Users sheet.
+  // v3.8 stores user accounts as salted password hashes in the Users sheet.
   let currentUser = null; // { username, name, role, token, expiresAt }
   let logoLoadPromise = null;
 
@@ -944,8 +1160,9 @@
   function applyRolePermissions(user){
     const admin = user.role === "admin";
     document.querySelectorAll("[data-admin-only]").forEach(el=>{ el.hidden = !admin; });
+    document.querySelector(".quick-actions").classList.toggle("staff-layout", !admin);
     const badge = document.getElementById("current-user-badge");
-    badge.textContent = `👤 ${user.name} · ${admin ? "ผู้ดูแลระบบ" : "ผู้ใช้งาน"}`;
+    badge.textContent = `${user.name} · ${admin ? "ผู้ดูแลระบบ" : "ผู้ใช้งาน"}`;
     badge.title = admin ? "สิทธิ์สูงสุด: แก้ไขได้ทุกส่วน" : "ดูข้อมูลและบันทึกรับเข้า/เบิกออกได้";
   }
 
@@ -1005,7 +1222,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.7 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.8 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -1356,12 +1573,16 @@
 
   // ---------- Tab navigation ----------
   function activateView(viewName){
-    if(["master","import","users"].includes(viewName) && !isAdmin()){
+    if(["stockcount","master","import","users"].includes(viewName) && !isAdmin()){
       toast("เมนูนี้ใช้ได้เฉพาะผู้ดูแลระบบ", true);
       viewName = "dashboard";
     }
     document.querySelectorAll("nav.tabs .tab").forEach(b=>b.classList.toggle("active", b.dataset.view===viewName));
+    document.querySelectorAll(".mobile-tab[data-mobile-view]").forEach(b=>b.classList.toggle("active", b.dataset.mobileView===viewName));
+    document.getElementById("btn-mobile-more").classList.toggle("active", !["dashboard","parts","receive","issue"].includes(viewName));
     document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active", v.id==="view-"+viewName));
+    document.getElementById("mobile-more-overlay").classList.remove("show");
+    document.getElementById("user-menu").removeAttribute("open");
     renderAll();
     if(viewName === "dashboard"){
       requestAnimationFrame(()=> Object.values(charts).forEach(c=> c.resize()));
@@ -1370,6 +1591,19 @@
   document.querySelectorAll("nav.tabs .tab").forEach(btn=>{
     btn.addEventListener("click", ()=> activateView(btn.dataset.view));
   });
+  document.querySelectorAll("[data-mobile-view]").forEach(btn=>{
+    btn.addEventListener("click", ()=> activateView(btn.dataset.mobileView));
+  });
+  document.querySelectorAll("[data-quick-view]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      activateView(btn.dataset.quickView);
+      if(btn.dataset.quickView==="parts") setTimeout(()=>document.getElementById("part-search").focus(),100);
+    });
+  });
+  document.getElementById("btn-mobile-more").addEventListener("click",()=>document.getElementById("mobile-more-overlay").classList.add("show"));
+  document.getElementById("btn-mobile-more-close").addEventListener("click",()=>document.getElementById("mobile-more-overlay").classList.remove("show"));
+  document.getElementById("mobile-more-overlay").addEventListener("click",e=>{if(e.target.id==="mobile-more-overlay")e.currentTarget.classList.remove("show");});
+  document.querySelectorAll(".user-menu-popover button").forEach(btn=>btn.addEventListener("click",()=>document.getElementById("user-menu").removeAttribute("open")));
   document.getElementById("btn-import").addEventListener("click", ()=> activateView("import"));
 
   // ---------- Stock status helper ----------
@@ -1419,8 +1653,10 @@
 
     const bannerSlot = document.getElementById("alert-banner-slot");
     bannerSlot.innerHTML = low>0
-      ? `<div class="alert-banner">⚠ <span><b>${low} รายการ</b> คงเหลือถึงหรือต่ำกว่าจุดสั่งซื้อขั้นต่ำ — ตรวจสอบในตาราง "รายการที่ต้องสั่งซื้อเพิ่ม" ด้านล่าง</span></div>`
+      ? `<div class="alert-banner"><span class="alert-copy"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M12 3l10 18H2L12 3zM12 10v4M12 17h.01"/></svg><span><b>${low} รายการ</b> คงเหลือถึงหรือต่ำกว่าจุดสั่งซื้อขั้นต่ำ</span></span><button class="small alert-action" data-scroll-reorder>ดูรายการที่ต้องสั่งซื้อ</button></div>`
       : "";
+    const reorderButton=bannerSlot.querySelector("[data-scroll-reorder]");
+    if(reorderButton)reorderButton.addEventListener("click",()=>document.getElementById("reorder-panel").scrollIntoView({behavior:"smooth",block:"start"}));
 
     const lowBody = document.getElementById("low-stock-body");
     const lowParts = activeParts.filter(p=>stockStatus(p)!=="ok").sort((a,b)=> a.qty-b.qty);
@@ -1570,10 +1806,10 @@
         <td>${gaugeHTML(p)}</td>
         <td class="mono">${escapeHTML(p.location||"-")}</td>
         <td class="mono">฿${fmtMoney(p.cost)}</td>
-        <td><span class="status-pill ${p.isActive===false?'inactive':'active'}">${p.isActive===false?'หยุดใช้':'ใช้งาน'}</span></td>
-        <td class="row-actions">${isAdmin() ? `
-          <button class="small" data-edit="${p.id}">แก้ไข</button>
-          <button class="small ${p.isActive===false?'':'danger-ghost'}" data-del="${p.id}">${p.isActive===false?'เปิดใช้':'หยุดใช้'}</button>` : '<span class="hint">ดูอย่างเดียว</span>'}
+        <td><span class="status-pill ${p.isActive===false?'inactive':'stock-'+stockStatus(p)}">${p.isActive===false?'หยุดใช้':statusLabel(stockStatus(p))}</span></td>
+        <td class="row-actions">${isAdmin() ? `<details class="row-menu"><summary aria-label="การทำงานเพิ่มเติม">⋮</summary><div class="row-menu-popover">
+          <button class="small" data-edit="${p.id}">แก้ไขข้อมูล</button>
+          <button class="small ${p.isActive===false?'':'danger-text'}" data-del="${p.id}">${p.isActive===false?'เปิดใช้งาน':'หยุดใช้งาน'}</button></div></details>` : '<span class="hint">ดูอย่างเดียว</span>'}
         </td>
       </tr>`).join("") : `<tr class="empty-row"><td colspan="8">ไม่พบอะไหล่ที่ค้นหา</td></tr>`;
 
