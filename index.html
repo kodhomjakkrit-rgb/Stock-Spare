@@ -1,0 +1,2192 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คลังอะไหล่ | Stock Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#12161b;
+    --panel:#1b2129;
+    --panel-alt:#232a33;
+    --border:#313a45;
+    --text:#e7eaee;
+    --text-dim:#8b96a3;
+    --accent:#f2a93b;
+    --accent-dim:#7a5a26;
+    --accent-2:#4fa3b0;
+    --accent-2-dim:#2b4d52;
+    --danger:#e5535a;
+    --danger-dim:#4a2528;
+    --success:#3ebd82;
+    --success-dim:#204534;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Noto Sans Thai','IBM Plex Mono',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .display{font-family:'Kanit',sans-serif;}
+
+  /* ---------- Layout shell ---------- */
+  #app{max-width:1180px;margin:0 auto;padding:22px 20px 60px;}
+
+  header.top{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;margin-bottom:18px;flex-wrap:wrap;
+  }
+  header.top .brand{display:flex;align-items:center;gap:12px;}
+  .brand .mark{
+    width:40px;height:40px;border-radius:8px;
+    background:repeating-linear-gradient(135deg,var(--accent) 0 8px, #171a1e 8px 16px);
+    border:1px solid var(--border);
+    flex-shrink:0;
+  }
+  .brand h1{font-family:'Kanit',sans-serif;font-size:20px;font-weight:700;margin:0;letter-spacing:.3px;}
+  .brand p{margin:2px 0 0;color:var(--text-dim);font-size:12.5px;}
+
+  .top-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  button{
+    font-family:'Noto Sans Thai',sans-serif;
+    cursor:pointer;border-radius:8px;border:1px solid var(--border);
+    background:var(--panel-alt);color:var(--text);
+    padding:9px 14px;font-size:13.5px;font-weight:500;
+    transition:.15s border-color, .15s background;
+  }
+  button:hover{border-color:var(--accent-2);}
+  button:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px;}
+  button.primary{background:var(--accent-2);border-color:var(--accent-2);color:#0d1418;font-weight:600;}
+  button.primary:hover{background:#5cb2bf;}
+  button.warn{background:var(--accent);border-color:var(--accent);color:#241a08;font-weight:600;}
+  button.warn:hover{background:#f6ba5c;}
+  button.danger-ghost{color:var(--danger);border-color:var(--danger-dim);background:transparent;}
+  button.danger-ghost:hover{background:var(--danger-dim);}
+  button.small{padding:5px 9px;font-size:12px;border-radius:6px;}
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{
+    display:flex;gap:4px;border-bottom:1px solid var(--border);
+    margin-bottom:20px;overflow-x:auto;
+  }
+  nav.tabs button.tab{
+    background:none;border:none;border-radius:0;
+    padding:11px 16px;color:var(--text-dim);font-weight:500;
+    border-bottom:2px solid transparent;white-space:nowrap;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .tab-ic{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+  nav.tabs button.tab.active{color:var(--text);border-bottom-color:var(--accent);}
+  nav.tabs button.tab:hover{color:var(--text);}
+
+  .view{display:none;}
+  .view.active{display:block;animation:fade .18s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(3px);}to{opacity:1;transform:none;}}
+
+  /* ---------- Cards / KPI ---------- */
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+  @media(max-width:820px){.kpi-row{grid-template-columns:repeat(2,1fr);}}
+  .kpi{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:14px 16px;position:relative;overflow:hidden;
+  }
+  .kpi .icon{
+    position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;background:var(--panel-alt);color:var(--text-dim);
+  }
+  .kpi .icon svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .kpi .label{color:var(--text-dim);font-size:12px;margin-bottom:6px;max-width:75%;}
+  .kpi .value{font-family:'Kanit',sans-serif;font-size:26px;font-weight:700;}
+  .kpi.flag-danger .value{color:var(--danger);}
+  .kpi.flag-accent .value{color:var(--accent);}
+  .kpi.flag-success .value{color:var(--success);}
+  .kpi.flag-info .icon, .kpi.flag-info .value{color:var(--accent-2);}
+  .kpi.flag-danger .icon{background:var(--danger-dim);color:var(--danger);}
+  .kpi.flag-accent .icon{background:var(--accent-dim);color:var(--accent);}
+  .kpi.flag-success .icon{background:var(--success-dim);color:var(--success);}
+  .kpi.flag-info .icon{background:var(--accent-2-dim);color:var(--accent-2);}
+
+  /* ---------- Charts ---------- */
+  .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:820px){.charts-row{grid-template-columns:1fr;}}
+  .chart-wrap{position:relative;height:210px;}
+  .chart-wrap.full{height:230px;}
+  .chart-empty{
+    display:flex;align-items:center;justify-content:center;height:100%;
+    color:var(--text-dim);font-size:13px;text-align:center;
+  }
+
+  .panel{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px;margin-bottom:16px;
+  }
+  .panel h2{font-family:'Kanit',sans-serif;font-size:15px;margin:0 0 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+  .panel h2 .sub{color:var(--text-dim);font-size:12px;font-weight:400;}
+
+  /* ---------- Shelf-label tag (signature element) ---------- */
+  .tag{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:500;
+    background:var(--panel-alt);border:1px dashed var(--border);
+    padding:3px 8px 3px 6px;border-radius:4px;color:var(--text-dim);
+    position:relative;
+  }
+  .tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0;}
+  .tag.ok::before{background:var(--success);}
+  .tag.low::before{background:var(--accent);}
+  .tag.out::before{background:var(--danger);}
+
+  /* ---------- Bin gauge (signature element) ---------- */
+  .gauge{display:flex;align-items:center;gap:8px;min-width:150px;}
+  .gauge .track{
+    flex:1;height:8px;border-radius:4px;background:var(--panel-alt);
+    border:1px solid var(--border);overflow:hidden;position:relative;
+  }
+  .gauge .fill{height:100%;border-radius:4px 0 0 4px;transition:width .25s;}
+  .gauge .fill.success{background:var(--success);}
+  .gauge .fill.accent{background:var(--accent);}
+  .gauge .fill.danger{background:var(--danger);}
+  .gauge .qty{font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;white-space:nowrap;}
+
+  /* ---------- Tables ---------- */
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{
+    text-align:left;color:var(--text-dim);font-weight:500;font-size:11.5px;
+    text-transform:uppercase;letter-spacing:.4px;padding:8px 10px;border-bottom:1px solid var(--border);
+  }
+  td{padding:9px 10px;border-bottom:1px solid #232931;vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--panel-alt);}
+  .table-wrap{overflow-x:auto;}
+  .row-actions{display:flex;gap:6px;}
+  .empty-row td{text-align:center;color:var(--text-dim);padding:28px 10px;}
+
+  /* ---------- Forms ---------- */
+  .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:640px){.field-grid{grid-template-columns:1fr;}}
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field.span2{grid-column:1/-1;}
+  .field label{font-size:12px;color:var(--text-dim);}
+  .field input, .field select, .field textarea{
+    background:var(--panel-alt);border:1px solid var(--border);border-radius:7px;
+    padding:9px 10px;color:var(--text);font-family:'Noto Sans Thai',sans-serif;font-size:13.5px;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--accent-2);outline-offset:0;border-color:var(--accent-2);}
+  .field textarea{resize:vertical;min-height:56px;}
+  .form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;}
+
+  .search-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .search-bar input, .search-bar select{
+    background:var(--panel-alt);border:1px solid var(--border);border-radius:7px;
+    padding:8px 10px;color:var(--text);font-size:13px;font-family:'Noto Sans Thai',sans-serif;
+  }
+  .search-bar input{flex:1;min-width:160px;}
+
+  /* ---------- Batch import ---------- */
+  .import-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0 16px;}
+  @media(max-width:760px){.import-type-grid{grid-template-columns:1fr;}}
+  .import-type{
+    text-align:left;padding:14px;background:var(--panel-alt);border:1px solid var(--border);
+    min-height:92px;display:flex;flex-direction:column;align-items:flex-start;gap:4px;
+  }
+  .import-type strong{font-family:'Kanit',sans-serif;font-size:14px;color:var(--text);}
+  .import-type span{font-size:12px;color:var(--text-dim);line-height:1.55;}
+  .import-type.active{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:#2b261d;}
+  .import-workflow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:14px;border:1px dashed var(--border);border-radius:8px;background:var(--panel-alt);}
+  .import-workflow .file-name{font-size:12px;color:var(--text-dim);overflow-wrap:anywhere;}
+  .import-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0;}
+  @media(max-width:640px){.import-summary{grid-template-columns:1fr;}}
+  .import-stat{padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--panel-alt);}
+  .import-stat .n{font:700 22px 'Kanit',sans-serif;display:block;}
+  .import-stat.ok .n{color:var(--success);}.import-stat.bad .n{color:var(--danger);}.import-stat.total .n{color:var(--accent-2);}
+  .row-status{display:inline-flex;padding:3px 8px;border-radius:999px;font-size:11.5px;font-weight:600;white-space:nowrap;}
+  .row-status.ok{color:var(--success);background:var(--success-dim);}
+  .row-status.bad{color:#ffd7d9;background:var(--danger-dim);}
+  .import-note{padding:10px 12px;border-left:3px solid var(--accent-2);background:var(--accent-2-dim);border-radius:6px;font-size:12.5px;line-height:1.65;}
+  .master-type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0 16px;}
+  @media(max-width:900px){.master-type-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:540px){.master-type-grid{grid-template-columns:1fr;}}
+  .master-type{padding:12px;text-align:left;border:1px solid var(--border);background:var(--panel-alt);border-radius:8px;display:flex;flex-direction:column;gap:4px;}
+  .master-type strong{font-family:'Kanit',sans-serif;font-size:14px;color:var(--text);}
+  .master-type span{font-size:12px;color:var(--text-dim);}
+  .master-type.active{border-color:var(--accent-2);box-shadow:inset 0 0 0 1px var(--accent-2);background:var(--accent-2-dim);}
+  .inline-control{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:center;}
+  .master-form-group{display:none;}
+  .master-form-group.active{display:grid;}
+
+  /* ---------- Modal ---------- */
+  #modal-overlay{
+    display:none;position:fixed;inset:0;background:rgba(8,10,13,.6);
+    align-items:center;justify-content:center;padding:20px;z-index:50;
+  }
+  #modal-overlay.show{display:flex;}
+  #settings-modal-overlay{
+    display:none;position:fixed;inset:0;background:rgba(8,10,13,.6);
+    align-items:center;justify-content:center;padding:20px;z-index:50;
+  }
+  #settings-modal-overlay.show{display:flex;}
+  #master-modal-overlay{
+    display:none;position:fixed;inset:0;background:#000b;z-index:115;
+    align-items:center;justify-content:center;padding:20px;
+  }
+  #master-modal-overlay.show{display:flex;}
+  .modal{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    width:100%;max-width:520px;padding:20px;max-height:88vh;overflow-y:auto;
+  }
+  .modal h3{font-family:'Kanit',sans-serif;margin:0 0 14px;font-size:16px;}
+
+  /* ---------- Toast ---------- */
+  #toast{
+    position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(8px);
+    background:var(--panel-alt);border:1px solid var(--border);border-left:3px solid var(--success);
+    padding:11px 18px;border-radius:8px;font-size:13.5px;opacity:0;pointer-events:none;
+    transition:.2s;z-index:80;
+  }
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  #toast.err{border-left-color:var(--danger);}
+
+  .hint{color:var(--text-dim);font-size:12px;margin-top:2px;}
+  .alert-banner{
+    display:flex;align-items:center;gap:10px;background:var(--danger-dim);
+    border:1px solid #6b3339;color:#ffd7d9;border-radius:8px;padding:10px 14px;
+    font-size:13px;margin-bottom:16px;
+  }
+  .alert-banner b{font-family:'Kanit',sans-serif;}
+
+  /* ---------- Sync badge ---------- */
+  .sync-badge{
+    display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;
+    padding:7px 11px;border-radius:8px;border:1px solid var(--border);background:var(--panel-alt);
+    color:var(--text-dim);white-space:nowrap;
+  }
+  .sync-badge.sync-off{color:var(--text-dim);}
+  .sync-badge.sync-syncing{color:var(--accent);border-color:var(--accent-dim);}
+  .sync-badge.sync-on{color:var(--success);border-color:var(--success-dim);}
+  .sync-badge.sync-err{color:var(--danger);border-color:var(--danger-dim);}
+
+  /* ---------- Login ---------- */
+  #app{display:none;}
+  #app.unlocked{display:block;}
+  #login-overlay{
+    position:fixed;inset:0;background:var(--bg);z-index:100;
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  #login-overlay.hide{display:none;}
+  .login-box{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:26px;width:100%;max-width:360px;
+  }
+  .login-box .brand{display:flex;align-items:center;gap:12px;}
+</style>
+</head>
+<body>
+
+<div id="login-overlay">
+  <form id="login-form" class="login-box">
+    <div class="brand" style="margin-bottom:18px;">
+      <div class="mark"></div>
+      <div>
+        <h1>คลังอะไหล่ — Stock Control</h1>
+        <p>เข้าสู่ระบบเพื่อใช้งาน</p>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom:12px;">
+      <label>ชื่อผู้ใช้งาน</label>
+      <input type="text" id="login-name" placeholder="ชื่อ-นามสกุล หรือแผนก" autocomplete="name" required>
+    </div>
+    <div class="field" style="margin-bottom:6px;">
+      <label>รหัสผ่าน</label>
+      <input type="password" id="login-password" placeholder="รหัสผ่านองค์กร" autocomplete="current-password" required>
+    </div>
+    <div class="hint" id="login-error" style="color:var(--danger);min-height:16px;margin-bottom:10px;"></div>
+    <button type="submit" class="primary" style="width:100%;padding:11px;">เข้าสู่ระบบ</button>
+  </form>
+</div>
+
+<div id="app">
+
+  <header class="top">
+    <div class="brand">
+      <div class="mark"></div>
+      <div>
+        <h1>คลังอะไหล่ — Stock Control</h1>
+        <p>รับเข้า · เบิกออก · แจ้งเตือนของใกล้หมด · รายงาน</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <span id="current-user-badge" class="sync-badge sync-off" style="border-style:dashed;"></span>
+      <button id="btn-logout" class="small">ออกจากระบบ</button>
+      <span id="sync-badge" class="sync-badge sync-off" title="คลิกเพื่อซิงก์ข้อมูลทันที" style="cursor:pointer;">● ยังไม่ได้เชื่อมต่อ Sheets</span>
+      <button id="btn-settings">⚙ ตั้งค่า Sheets</button>
+      <button id="btn-import">นำเข้า Excel</button>
+      <button id="btn-export" class="primary">ส่งออก Excel</button>
+    </div>
+  </header>
+
+
+  <nav class="tabs">
+    <button class="tab active" data-view="dashboard"><svg class="tab-ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.3"/><rect x="14" y="3" width="7" height="7" rx="1.3"/><rect x="3" y="14" width="7" height="7" rx="1.3"/><rect x="14" y="14" width="7" height="7" rx="1.3"/></svg>ภาพรวม</button>
+    <button class="tab" data-view="parts"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>รายการอะไหล่</button>
+    <button class="tab" data-view="receive"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v6H4z"/><path d="M12 10v8m0 0l-3.5-3.5M12 18l3.5-3.5"/></svg>รับเข้า</button>
+    <button class="tab" data-view="issue"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 14h16v6H4z"/><path d="M12 14V6m0 0l-3.5 3.5M12 6l3.5 3.5"/></svg>เบิกออก</button>
+    <button class="tab" data-view="master"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v4H4zM4 11h16v8H4z"/><path d="M8 13v4m4-4v4m4-4v4"/></svg>ฐานข้อมูล</button>
+    <button class="tab" data-view="import"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M12 7v7m0 0l-3-3m3 3l3-3M8 17h8"/></svg>นำเข้าข้อมูล</button>
+    <button class="tab" data-view="history"><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>ประวัติ/รายงาน</button>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <section class="view active" id="view-dashboard">
+    <div class="kpi-row">
+      <div class="kpi flag-info">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/></svg></div>
+        <div class="label">จำนวนรายการอะไหล่</div><div class="value" id="kpi-total">0</div>
+      </div>
+      <div class="kpi flag-danger">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2L12 3z"/><path d="M12 10v4M12 17h.01"/></svg></div>
+        <div class="label">ใกล้หมด / หมดสต็อก</div><div class="value" id="kpi-low">0</div>
+      </div>
+      <div class="kpi flag-accent">
+        <div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v9M9.5 9.8c0-1.3 1.1-2.1 2.5-2.1s2.5.8 2.5 2c0 2.2-5 1.6-5 3.9 0 1.2 1.1 2 2.5 2s2.5-.8 2.5-2"/></svg></div>
+        <div class="label">มูลค่าสต็อกรวม (บาท)</div><div class="value" id="kpi-value">0</div>
+      </div>
+      <div class="kpi flag-success">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 14h16v6H4z"/><path d="M12 14V6m0 0l-3.5 3.5M12 6l3.5 3.5"/></svg></div>
+        <div class="label">เบิกออกเดือนนี้ (ชิ้น)</div><div class="value" id="kpi-issued">0</div>
+      </div>
+    </div>
+
+    <div id="alert-banner-slot"></div>
+
+    <div class="charts-row">
+      <div class="panel">
+        <h2>สัดส่วนสถานะสต็อก <span class="sub">ตามจำนวนรายการ</span></h2>
+        <div class="chart-wrap"><canvas id="chart-status"></canvas></div>
+      </div>
+      <div class="panel">
+        <h2>มูลค่าสต็อกตามหมวดหมู่ <span class="sub">บาท</span></h2>
+        <div class="chart-wrap"><canvas id="chart-category"></canvas></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>แนวโน้มรับเข้า vs เบิกออก <span class="sub">6 เดือนล่าสุด (จำนวนหน่วย)</span></h2>
+      <div class="chart-wrap full"><canvas id="chart-trend"></canvas></div>
+    </div>
+
+    <div class="panel">
+      <h2>รายการที่ต้องสั่งซื้อเพิ่ม <span class="sub">อะไหล่ที่คงเหลือ ≤ จุดสั่งซื้อขั้นต่ำ</span></h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>รหัส</th><th>ชื่ออะไหล่</th><th>คงเหลือ</th><th>ขั้นต่ำ</th><th>สถานะ</th></tr></thead>
+          <tbody id="low-stock-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>ความเคลื่อนไหวล่าสุด</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>วันที่</th><th>รายการ</th><th>ประเภท</th><th>จำนวน</th><th>โดย/หมายเหตุ</th></tr></thead>
+          <tbody id="recent-tx-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTS MASTER LIST -->
+  <section class="view" id="view-parts">
+    <div class="panel">
+      <h2>รายการอะไหล่ทั้งหมด <button class="primary small" id="btn-add-part">+ เพิ่มอะไหล่</button></h2>
+      <div class="search-bar">
+        <input type="text" id="part-search" placeholder="ค้นหารหัส / ชื่ออะไหล่...">
+        <select id="part-cat-filter"><option value="">ทุกหมวดหมู่</option></select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>รหัส</th><th>ชื่ออะไหล่</th><th>หมวดหมู่</th><th>คงเหลือ</th><th>ที่จัดเก็บ</th><th>มูลค่า/หน่วย</th><th></th>
+          </tr></thead>
+          <tbody id="parts-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECEIVE -->
+  <section class="view" id="view-receive">
+    <div class="panel">
+      <h2>บันทึกรับเข้าอะไหล่</h2>
+      <div class="field-grid">
+        <div class="field">
+          <label>อะไหล่</label>
+          <select id="rec-part"></select>
+        </div>
+        <div class="field">
+          <label>จำนวนที่รับเข้า</label>
+          <input type="number" id="rec-qty" min="0" step="any" placeholder="0">
+        </div>
+        <div class="field">
+          <label>วันที่</label>
+          <input type="date" id="rec-date">
+        </div>
+        <div class="field">
+          <label>ผู้ส่ง/ซัพพลายเออร์</label>
+          <div class="inline-control"><select id="rec-supplier"></select><button class="small" type="button" data-quick-master="suppliers">+ ใหม่</button></div>
+        </div>
+        <div class="field">
+          <label>รถบรรทุก</label>
+          <div class="inline-control"><select id="rec-truck"></select><button class="small" type="button" data-quick-master="trucks">+ ใหม่</button></div>
+        </div>
+        <div class="field">
+          <label>จังหวัด</label>
+          <div class="inline-control"><select id="rec-province"></select><button class="small" type="button" data-quick-master="provinces">+ ใหม่</button></div>
+        </div>
+        <div class="field"><label>เลขที่ PR</label><select id="rec-pr"></select></div>
+        <div class="field"><label>เลขที่ PO</label><select id="rec-po"></select></div>
+        <div class="field"><label>เลขที่ IV</label><div class="inline-control"><select id="rec-iv"></select><button class="small" type="button" data-quick-master="documents">+ ใหม่</button></div></div>
+        <div class="field span2">
+          <label>ผู้ส่ง/ผู้ติดต่อ (ถ้ามี)</label>
+          <input type="text" id="rec-contact" placeholder="ชื่อผู้ส่งหรือผู้ติดต่อ">
+        </div>
+        <div class="field span2">
+          <label>หมายเหตุ</label>
+          <textarea id="rec-note" placeholder="เลขที่ใบกำกับ, รายละเอียดเพิ่มเติม..."></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="primary" id="btn-receive-submit">บันทึกรับเข้า</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>รายการรับเข้าล่าสุด</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>วันที่</th><th>อะไหล่</th><th>จำนวน</th><th>ผู้ส่ง</th><th>หมายเหตุ</th></tr></thead>
+          <tbody id="recent-receive-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ISSUE -->
+  <section class="view" id="view-issue">
+    <div class="panel">
+      <h2>บันทึกเบิกอะไหล่</h2>
+      <div class="field-grid">
+        <div class="field">
+          <label>อะไหล่</label>
+          <select id="iss-part"></select>
+        </div>
+        <div class="field">
+          <label>จำนวนที่เบิก</label>
+          <input type="number" id="iss-qty" min="0" step="any" placeholder="0">
+          <div class="hint" id="iss-stock-hint"></div>
+        </div>
+        <div class="field">
+          <label>วันที่</label>
+          <input type="date" id="iss-date">
+        </div>
+        <div class="field">
+          <label>ผู้เบิก / แผนก</label>
+          <input type="text" id="iss-person" placeholder="ชื่อผู้เบิก หรือแผนก">
+        </div>
+        <div class="field">
+          <label>รถบรรทุกที่นำไปใช้</label>
+          <div class="inline-control"><select id="iss-truck"></select><button class="small" type="button" data-quick-master="trucks">+ ใหม่</button></div>
+        </div>
+        <div class="field">
+          <label>จังหวัด</label>
+          <div class="inline-control"><select id="iss-province"></select><button class="small" type="button" data-quick-master="provinces">+ ใหม่</button></div>
+        </div>
+        <div class="field"><label>เลขที่ PR</label><select id="iss-pr"></select></div>
+        <div class="field"><label>เลขที่ PO</label><select id="iss-po"></select></div>
+        <div class="field"><label>เลขที่ IV</label><select id="iss-iv"></select></div>
+        <div class="field span2">
+          <label>หมายเหตุ</label>
+          <textarea id="iss-note" placeholder="ใช้งานกับเครื่องจักรใด, สาเหตุการเบิก..."></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="warn" id="btn-issue-submit">บันทึกเบิกออก</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>รายการเบิกล่าสุด</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>วันที่</th><th>อะไหล่</th><th>จำนวน</th><th>ผู้เบิก/แผนก</th><th>หมายเหตุ</th></tr></thead>
+          <tbody id="recent-issue-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHARED MASTER DATA -->
+  <section class="view" id="view-master">
+    <div class="panel">
+      <h2>ฐานข้อมูลกลาง <span class="sub">ใช้เป็นตัวเลือกในห้องเพิ่มอะไหล่ รับเข้า และเบิกออก</span></h2>
+      <div class="import-note">เพิ่ม แก้ไข หยุดใช้ หรือนำเข้าจาก Excel ได้ รายการที่หยุดใช้จะไม่ขึ้นในช่องเลือกใหม่ แต่ประวัติเดิมยังคงอยู่</div>
+      <div class="master-type-grid">
+        <button class="master-type active" data-master-type="suppliers"><strong>ซัพพลายเออร์</strong><span>ผู้จำหน่ายและข้อมูลติดต่อ</span></button>
+        <button class="master-type" data-master-type="trucks"><strong>รถบรรทุก</strong><span>ทะเบียนรถ จังหวัด และผู้ขับ</span></button>
+        <button class="master-type" data-master-type="provinces"><strong>จังหวัด</strong><span>รายการจังหวัดสำหรับเลือกใช้</span></button>
+        <button class="master-type" data-master-type="documents"><strong>PR / PO / IV</strong><span>เลขที่เอกสารอ้างอิง</span></button>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="master-search" placeholder="ค้นหาข้อมูล...">
+        <button id="btn-master-template">ดาวน์โหลดแม่แบบรวม</button>
+        <button id="btn-master-import">นำเข้าจาก Excel</button>
+        <input type="file" id="master-import-file" accept=".xlsx,.xls" style="display:none">
+        <button class="primary" id="btn-master-add">+ เพิ่มรายการใหม่</button>
+      </div>
+      <div class="hint" id="master-import-hint"></div>
+    </div>
+    <div class="panel">
+      <h2 id="master-list-title">รายชื่อซัพพลายเออร์</h2>
+      <div class="table-wrap"><table><thead id="master-table-head"></thead><tbody id="master-table-body"></tbody></table></div>
+    </div>
+    <div class="panel" id="master-import-preview" style="display:none;">
+      <h2>ตรวจสอบข้อมูลก่อนนำเข้า <span class="sub" id="master-import-caption"></span></h2>
+      <div class="import-summary">
+        <div class="import-stat total"><span class="n" id="master-count-total">0</span><span class="hint">แถวทั้งหมด</span></div>
+        <div class="import-stat ok"><span class="n" id="master-count-ok">0</span><span class="hint">พร้อมนำเข้า</span></div>
+        <div class="import-stat bad"><span class="n" id="master-count-bad">0</span><span class="hint">ต้องแก้ไข</span></div>
+      </div>
+      <div class="table-wrap"><table><thead><tr><th>แถว</th><th>ข้อมูลหลัก</th><th>รายละเอียด</th><th>ผลตรวจสอบ</th></tr></thead><tbody id="master-import-body"></tbody></table></div>
+      <div class="form-actions"><button id="btn-master-import-clear">ล้างรายการ</button><button class="warn" id="btn-master-import-confirm" disabled>ยืนยันนำเข้าฐานข้อมูล</button></div>
+    </div>
+  </section>
+
+  <!-- BATCH IMPORT -->
+  <section class="view" id="view-import">
+    <div class="panel">
+      <h2>นำเข้าข้อมูลแบบชุด <span class="sub">เพิ่มข้อมูลโดยไม่ล้างข้อมูลเดิม</span></h2>
+      <div class="import-note">
+        เลือกงานที่ต้องการ ดาวน์โหลดแม่แบบไปคีย์ด้านนอก แล้วอัปโหลดกลับเข้าระบบ ระบบจะตรวจรหัสซ้ำ วันที่ จำนวน และสต๊อกคงเหลือก่อนบันทึกจริง
+      </div>
+      <div class="import-type-grid">
+        <button class="import-type active" data-import-type="parts">
+          <strong>1. เพิ่มทะเบียนอะไหล่</strong>
+          <span>เพิ่มอะไหล่หลายรายการ พร้อมยอดตั้งต้น หมวดหมู่ หน่วยนับ และตำแหน่งจัดเก็บ</span>
+        </button>
+        <button class="import-type" data-import-type="receive">
+          <strong>2. รับเข้าอะไหล่</strong>
+          <span>รับเข้าหลายรายการจากใบส่งของหรือรายการซื้อ โดยอ้างอิงรหัสอะไหล่ในระบบ</span>
+        </button>
+        <button class="import-type" data-import-type="issue">
+          <strong>3. จ่ายออก / เบิกออก</strong>
+          <span>เบิกหลายรายการให้พนักงาน แผนก หรืองานซ่อม พร้อมตรวจสต๊อกไม่ให้ติดลบ</span>
+        </button>
+      </div>
+      <div class="import-workflow">
+        <button id="btn-download-import-template">ดาวน์โหลดแม่แบบ Excel</button>
+        <button class="primary" id="btn-choose-import-file">เลือกไฟล์ Excel</button>
+        <input type="file" id="batch-import-file" accept=".xlsx,.xls" style="display:none">
+        <span class="file-name" id="import-file-name">ยังไม่ได้เลือกไฟล์</span>
+      </div>
+      <div class="hint" id="import-sheet-hint" style="margin-top:8px;"></div>
+    </div>
+
+    <div class="panel" id="import-preview-panel" style="display:none;">
+      <h2>ตรวจสอบก่อนบันทึก <span class="sub" id="import-preview-caption"></span></h2>
+      <div class="import-summary">
+        <div class="import-stat total"><span class="n" id="import-count-total">0</span><span class="hint">แถวทั้งหมด</span></div>
+        <div class="import-stat ok"><span class="n" id="import-count-ok">0</span><span class="hint">พร้อมนำเข้า</span></div>
+        <div class="import-stat bad"><span class="n" id="import-count-bad">0</span><span class="hint">ต้องแก้ไข</span></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>แถว</th><th>รหัสอะไหล่</th><th>รายละเอียด</th><th>จำนวน</th><th>ผลตรวจสอบ</th></tr></thead>
+          <tbody id="import-preview-body"></tbody>
+        </table>
+      </div>
+      <div class="hint" id="import-preview-limit" style="margin-top:8px;"></div>
+      <div class="form-actions">
+        <button id="btn-clear-import">ล้างรายการ</button>
+        <button class="warn" id="btn-confirm-import" disabled>ยืนยันนำเข้าข้อมูล</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTORY / REPORTS -->
+  <section class="view" id="view-history">
+    <div class="panel">
+      <h2>ประวัติการเคลื่อนไหวทั้งหมด</h2>
+      <div class="search-bar">
+        <select id="hist-type-filter">
+          <option value="">ทุกประเภท</option>
+          <option value="in">รับเข้า</option>
+          <option value="out">เบิกออก</option>
+        </select>
+        <input type="date" id="hist-from">
+        <input type="date" id="hist-to">
+        <input type="text" id="hist-search" placeholder="ค้นหาชื่ออะไหล่ / หมายเหตุ...">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>วันที่</th><th>รหัส</th><th>อะไหล่</th><th>ประเภท</th><th>จำนวน</th><th>โดย/ผู้ส่ง</th><th>หมายเหตุ</th></tr></thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Part add/edit modal -->
+<div id="modal-overlay">
+  <div class="modal">
+    <h3 id="modal-title">เพิ่มอะไหล่ใหม่</h3>
+    <input type="hidden" id="pf-id">
+    <div class="field-grid">
+      <div class="field"><label>รหัสอะไหล่</label><input type="text" id="pf-code" placeholder="เช่น MTR-001"></div>
+      <div class="field"><label>ชื่ออะไหล่</label><input type="text" id="pf-name" placeholder="ชื่ออะไหล่"></div>
+      <div class="field">
+        <label>หมวดหมู่</label>
+        <select id="pf-category">
+          <option>เครื่องจักร</option>
+          <option>ไฟฟ้า</option>
+          <option>บรรจุภัณฑ์</option>
+          <option>ท่อ-วาล์ว</option>
+          <option>อื่นๆ</option>
+          <option value="__custom__">+ เพิ่มหมวดหมู่ใหม่...</option>
+        </select>
+        <input type="text" id="pf-category-custom" placeholder="พิมพ์ชื่อหมวดหมู่ใหม่" style="display:none;margin-top:6px;">
+      </div>
+      <div class="field">
+        <label>หน่วยนับ</label>
+        <select id="pf-unit">
+          <option>ชิ้น</option><option>ชุด</option><option>ม้วน</option>
+          <option>เมตร</option><option>กก.</option><option>ลิตร</option><option>กล่อง</option>
+          <option value="__custom__">+ เพิ่มหน่วยนับใหม่...</option>
+        </select>
+        <input type="text" id="pf-unit-custom" placeholder="พิมพ์หน่วยนับใหม่" style="display:none;margin-top:6px;">
+      </div>
+      <div class="field"><label>จำนวนคงเหลือ</label><input type="number" id="pf-qty" min="0" step="any" placeholder="0"></div>
+      <div class="field"><label>จุดสั่งซื้อขั้นต่ำ</label><input type="number" id="pf-min" min="0" step="any" placeholder="0"></div>
+      <div class="field"><label>มูลค่าต่อหน่วย (บาท)</label><input type="number" id="pf-cost" min="0" step="0.01" placeholder="0.00"></div>
+      <div class="field"><label>ที่จัดเก็บ / ชั้นวาง</label><input type="text" id="pf-location" placeholder="เช่น A1-03"></div>
+      <div class="field"><label>ซัพพลายเออร์หลัก</label><select id="pf-supplier"></select></div>
+      <div class="field"><label>รถบรรทุกที่ใช้กับอะไหล่</label><select id="pf-truck"></select></div>
+      <div class="field"><label>จังหวัด/พื้นที่ใช้งาน</label><select id="pf-province"></select></div>
+    </div>
+    <div class="form-actions">
+      <button id="btn-modal-cancel">ยกเลิก</button>
+      <button class="primary" id="btn-modal-save">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- Shared master data modal -->
+<div id="master-modal-overlay">
+  <div class="modal">
+    <h3 id="master-modal-title">เพิ่มข้อมูล</h3>
+    <input type="hidden" id="mf-id">
+
+    <div class="field-grid master-form-group" id="master-form-suppliers">
+      <div class="field"><label>รหัสซัพพลายเออร์</label><input id="mf-supplier-code" placeholder="เช่น SUP-001"></div>
+      <div class="field"><label>ชื่อซัพพลายเออร์ *</label><input id="mf-supplier-name" placeholder="บริษัท/ร้านค้า"></div>
+      <div class="field"><label>ผู้ติดต่อ</label><input id="mf-supplier-contact"></div>
+      <div class="field"><label>โทรศัพท์</label><input id="mf-supplier-phone"></div>
+      <div class="field"><label>เลขผู้เสียภาษี</label><input id="mf-supplier-tax"></div>
+      <div class="field"><label>จังหวัด</label><select id="mf-supplier-province"></select></div>
+      <div class="field span2"><label>ที่อยู่</label><textarea id="mf-supplier-address"></textarea></div>
+    </div>
+
+    <div class="field-grid master-form-group" id="master-form-trucks">
+      <div class="field"><label>ทะเบียนรถ *</label><input id="mf-truck-plate" placeholder="เช่น 70-1234"></div>
+      <div class="field"><label>จังหวัด</label><select id="mf-truck-province"></select></div>
+      <div class="field"><label>รายละเอียดรถ</label><input id="mf-truck-description" placeholder="ยี่ห้อ/รุ่น/ประเภท"></div>
+      <div class="field"><label>ผู้ขับ</label><input id="mf-truck-driver"></div>
+    </div>
+
+    <div class="field-grid master-form-group" id="master-form-provinces">
+      <div class="field span2"><label>ชื่อจังหวัด *</label><input id="mf-province-name" placeholder="เช่น ราชบุรี"></div>
+    </div>
+
+    <div class="field-grid master-form-group" id="master-form-documents">
+      <div class="field"><label>ประเภทเอกสาร *</label><select id="mf-doc-type"><option>PR</option><option>PO</option><option>IV</option></select></div>
+      <div class="field"><label>เลขที่เอกสาร *</label><input id="mf-doc-no" placeholder="เช่น PO-2026-001"></div>
+      <div class="field"><label>วันที่</label><input type="date" id="mf-doc-date"></div>
+      <div class="field"><label>ซัพพลายเออร์</label><select id="mf-doc-supplier"></select></div>
+      <div class="field span2"><label>หมายเหตุ</label><textarea id="mf-doc-note"></textarea></div>
+    </div>
+
+    <div class="field"><label><input type="checkbox" id="mf-active" checked> เปิดใช้งาน</label></div>
+    <div class="form-actions"><button id="btn-master-modal-cancel">ยกเลิก</button><button class="primary" id="btn-master-modal-save">บันทึก</button></div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div id="settings-modal-overlay">
+  <div class="modal">
+    <h3>ตั้งค่าการเชื่อมต่อ Google Sheets</h3>
+    <div class="field-grid">
+      <div class="field span2">
+        <label>Web App URL ของ Google Apps Script</label>
+        <input type="text" id="cfg-script-url" placeholder="https://script.google.com/macros/s/xxxxx/exec">
+        <div class="hint">คัดลอก URL ที่ได้จากการ Deploy &gt; Web app ใน Apps Script แล้ววางที่นี่ ทุกคนที่ใช้แอปนี้ต้องใส่ URL เดียวกันเพื่อบันทึกลง Sheet เดียวกัน</div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button id="btn-settings-test">ทดสอบการเชื่อมต่อ</button>
+      <button id="btn-settings-cancel">ยกเลิก</button>
+      <button class="primary" id="btn-settings-save">บันทึกและซิงก์</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  const STORAGE_KEY = "sparepartsStock_v1";
+  const SCRIPT_URL_KEY = "sparepartsStock_scriptURL";
+  // ดึงข้อมูลอัตโนมัติทุก 60 วินาที ลดภาระ Apps Script/Sheets
+  // ผู้ใช้ยังกดป้ายสถานะเพื่อซิงก์ทันทีได้ตลอดเวลา
+  const POLL_INTERVAL_MS = 60000;
+  const API_TIMEOUT_MS = 25000;
+  const AUTH_KEY = "sparepartsStock_auth";
+
+  // ============ LOGIN CONFIG ============
+  // เปลี่ยนรหัสผ่านองค์กรได้ตรงนี้ (แก้ในไฟล์แล้วส่งไฟล์ใหม่ให้ทุกคนที่ใช้งาน)
+  const APP_PASSWORD = "changeme123";
+
+  let currentUser = null; // { name }
+
+  function loadAuth(){
+    try{
+      const raw = localStorage.getItem(AUTH_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed && parsed.name) return parsed;
+      }
+    }catch(e){}
+    return null;
+  }
+  function saveAuth(user){ localStorage.setItem(AUTH_KEY, JSON.stringify(user)); }
+  function clearAuth(){ localStorage.removeItem(AUTH_KEY); }
+
+  function showApp(user){
+    currentUser = user;
+    document.getElementById("login-overlay").classList.add("hide");
+    document.getElementById("app").classList.add("unlocked");
+    const badge = document.getElementById("current-user-badge");
+    badge.textContent = "👤 " + user.name;
+    document.getElementById("iss-person").value = document.getElementById("iss-person").value || user.name;
+    initAppAfterLogin();
+  }
+
+  function showLogin(prefillName){
+    document.getElementById("login-overlay").classList.remove("hide");
+    document.getElementById("app").classList.remove("unlocked");
+    if(prefillName) document.getElementById("login-name").value = prefillName;
+    document.getElementById("login-password").value = "";
+    document.getElementById("login-error").textContent = "";
+    document.getElementById("login-password").focus();
+  }
+
+  document.getElementById("login-form").addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const name = document.getElementById("login-name").value.trim();
+    const password = document.getElementById("login-password").value;
+    if(!name){ document.getElementById("login-error").textContent = "กรุณากรอกชื่อผู้ใช้งาน"; return; }
+    if(password !== APP_PASSWORD){ document.getElementById("login-error").textContent = "รหัสผ่านไม่ถูกต้อง"; return; }
+    const user = { name };
+    saveAuth(user);
+    showApp(user);
+  });
+
+  document.getElementById("btn-logout").addEventListener("click", ()=>{
+    if(!confirm("ออกจากระบบ?")) return;
+    clearAuth();
+    if(pollTimer) clearInterval(pollTimer);
+    location.reload();
+  });
+
+  const todayISO = () => {
+    const now = new Date();
+    const local = new Date(now.getTime() - now.getTimezoneOffset()*60000);
+    return local.toISOString().slice(0,10);
+  };
+
+  let state = { parts: [], transactions: [], suppliers: [], trucks: [], provinces: [], documents: [] };
+  const charts = {};
+  const CHART_FONT_TH = "'Noto Sans Thai', sans-serif";
+  const CHART_FONT_MONO = "'IBM Plex Mono', monospace";
+
+  // ================= GOOGLE SHEETS SYNC =================
+  let pollTimer = null;
+  let isSyncing = false;
+  let syncPromise = null;
+  let activeWrites = 0;
+
+  function normalizeScriptURL(value){
+    let url = String(value || "").trim().replace(/[?#].*$/, "").replace(/\/$/, "");
+    // /dev ใช้สำหรับผู้แก้ไขสคริปต์เท่านั้น จึงเปลี่ยนเป็น URL ใช้งานจริง
+    url = url.replace(/\/dev$/i, "/exec");
+    return url;
+  }
+
+  function validateScriptURL(value){
+    const url = normalizeScriptURL(value);
+    if(!url) throw new Error("ยังไม่ได้ตั้งค่า Google Sheets URL");
+    if(/^https:\/\/script\.googleusercontent\.com/i.test(url)){
+      throw new Error("URL นี้เป็นลิงก์ชั่วคราว กรุณาใช้ Web App URL ที่ขึ้นต้นด้วย script.google.com และลงท้าย /exec");
+    }
+    if(!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/i.test(url)){
+      throw new Error("รูปแบบ URL ไม่ถูกต้อง ต้องเป็น Web App URL ที่ลงท้ายด้วย /exec");
+    }
+    return url;
+  }
+
+  function getScriptURL(){ return normalizeScriptURL(localStorage.getItem(SCRIPT_URL_KEY) || ""); }
+  function setScriptURL(url){ localStorage.setItem(SCRIPT_URL_KEY, normalizeScriptURL(url)); }
+  function hasScriptURL(){ return !!getScriptURL(); }
+
+  function setSyncBadge(mode, text, detail){
+    const b = document.getElementById("sync-badge");
+    b.className = "sync-badge sync-" + mode;
+    b.textContent = "● " + text;
+    b.title = detail || "คลิกเพื่อซิงก์ข้อมูลทันที";
+  }
+
+  function wait(ms){ return new Promise(resolve=>setTimeout(resolve, ms)); }
+
+  function apiErrorFromStatus(status){
+    let message = "Google Sheets ตอบกลับ HTTP " + status;
+    if(status===404) message = "ไม่พบ Web App (HTTP 404) กรุณาตรวจ URL /exec และ Deploy เวอร์ชันเดิมใหม่";
+    else if(status===401 || status===403) message = "ไม่มีสิทธิ์เข้า Web App กรุณาตรวจ Execute as และ Who has access";
+    else if(status===429) message = "Google Apps Script ถูกเรียกถี่เกินไป กรุณารอสักครู่";
+    else if(status>=500) message = "Google Apps Script ขัดข้องชั่วคราว (HTTP " + status + ")";
+    const err = new Error(message);
+    err.status = status;
+    return err;
+  }
+
+  // Sends as text/plain to avoid a CORS preflight against Apps Script (which
+  // doesn't handle OPTIONS). Apps Script still reads it fine via e.postData.contents.
+  async function apiCall(action, payload){
+    const url = validateScriptURL(getScriptURL());
+    const isRead = action === "getAll";
+    const maxAttempts = isRead ? 2 : 1; // ห้ามลองบันทึกซ้ำ ป้องกันรายการซ้ำ
+    if(!isRead) activeWrites++;
+    try{
+      let lastError;
+      for(let attempt=1; attempt<=maxAttempts; attempt++){
+        const controller = new AbortController();
+        const timer = setTimeout(()=>controller.abort(), API_TIMEOUT_MS);
+        try{
+          const requestURL = url + (url.includes("?") ? "&" : "?") + "_ts=" + Date.now();
+          const res = await fetch(requestURL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action, ...payload }),
+            redirect: "follow",
+            cache: "no-store",
+            signal: controller.signal
+          });
+          const responseText = await res.text();
+          if(!res.ok) throw apiErrorFromStatus(res.status);
+          let json;
+          try{ json = JSON.parse(responseText); }
+          catch(e){ throw new Error("Apps Script ส่งคำตอบที่อ่านไม่ได้ กรุณาตรวจสิทธิ์ Web App และ Deploy ใหม่"); }
+          if(!json.ok) throw new Error(json.error || "เกิดข้อผิดพลาดที่ Apps Script");
+          return json.data;
+        }catch(err){
+          if(err.name === "AbortError"){
+            err = new Error("หมดเวลารอ Google Sheets เกิน 25 วินาที");
+            err.code = "TIMEOUT";
+          }
+          lastError = err;
+          const temporary = err.code === "TIMEOUT" || err.name === "TypeError" || [404,408,429,500,502,503,504].includes(err.status);
+          if(attempt < maxAttempts && temporary){ await wait(1200); continue; }
+          throw err;
+        }finally{
+          clearTimeout(timer);
+        }
+      }
+      throw lastError || new Error("เชื่อมต่อ Google Sheets ไม่สำเร็จ");
+    }finally{
+      if(!isRead) activeWrites = Math.max(0, activeWrites - 1);
+    }
+  }
+
+  function normalizeFromSheet(data){
+    const parts = (data.parts||[]).map(p=>({
+      id: String(p.id), code: String(p.code||""), name: String(p.name||""),
+      category: String(p.category||"อื่นๆ"), unit: String(p.unit||"ชิ้น"),
+      qty: Number(p.qty)||0, minQty: Number(p.minQty)||0, cost: Number(p.cost)||0,
+      location: String(p.location||""), supplierId:String(p.supplierId||""),
+      truckId:String(p.truckId||""), provinceId:String(p.provinceId||"")
+    })).filter(p=>p.id && p.code);
+    const transactions = (data.transactions||[]).map(t=>({
+      id: String(t.id), partId: String(t.partId), type: t.type==="in"?"in":"out",
+      qty: Number(t.qty)||0, date: String(t.date||"").slice(0,10),
+      person: String(t.person||""), supplier: String(t.supplier||""), note: String(t.note||""),
+      supplierId:String(t.supplierId||""), truckId:String(t.truckId||""), provinceId:String(t.provinceId||""),
+      prNo:String(t.prNo||""), poNo:String(t.poNo||""), ivNo:String(t.ivNo||"")
+    })).filter(t=>t.id && t.partId);
+    const truthyActive = v => !(v===false || v===0 || String(v).toLowerCase()==="false" || String(v)==="0" || String(v)==="หยุดใช้");
+    const suppliers = (data.suppliers||[]).map(x=>({id:String(x.id||""),code:String(x.code||""),name:String(x.name||""),contact:String(x.contact||""),phone:String(x.phone||""),taxId:String(x.taxId||""),address:String(x.address||""),provinceId:String(x.provinceId||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.name);
+    const trucks = (data.trucks||[]).map(x=>({id:String(x.id||""),plateNo:String(x.plateNo||""),provinceId:String(x.provinceId||""),description:String(x.description||""),driver:String(x.driver||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.plateNo);
+    const provinces = (data.provinces||[]).map(x=>({id:String(x.id||""),name:String(x.name||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.name);
+    const documents = (data.documents||[]).map(x=>({id:String(x.id||""),docType:String(x.docType||"").toUpperCase(),docNo:String(x.docNo||""),supplierId:String(x.supplierId||""),date:String(x.date||"").slice(0,10),note:String(x.note||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.docNo);
+    return { parts, transactions, suppliers, trucks, provinces, documents };
+  }
+
+  async function syncFromSheet(showToastOnFail){
+    if(!hasScriptURL()) return false;
+    if(syncPromise) return syncPromise;
+    if(activeWrites>0) return false;
+    syncPromise = (async()=>{
+      isSyncing = true;
+      setSyncBadge("syncing", "กำลังซิงก์...");
+      try{
+        const data = await apiCall("getAll", {});
+        state = normalizeFromSheet(data);
+        cacheSave();
+        renderAll();
+        const time = new Date().toLocaleTimeString("th-TH", {hour:"2-digit", minute:"2-digit"});
+        setSyncBadge("on", "ซิงก์แล้ว " + time, "เชื่อมต่อ Google Sheets แล้ว — คลิกเพื่อซิงก์ทันที");
+        return true;
+      }catch(err){
+        let badgeText = "ซิงก์ไม่สำเร็จ — กดเพื่อลองใหม่";
+        if(!navigator.onLine) badgeText = "ออฟไลน์ — ใช้ข้อมูลล่าสุดในเครื่อง";
+        else if(err.status===404) badgeText = "URL Sheets ใช้งานไม่ได้ — กดตั้งค่า";
+        else if(err.code==="TIMEOUT") badgeText = "Sheets ตอบช้า — กดเพื่อลองใหม่";
+        setSyncBadge("err", badgeText, err.message);
+        if(showToastOnFail) toast("ดึงข้อมูลจาก Google Sheets ไม่สำเร็จ: " + err.message, true);
+        return false;
+      }finally{
+        isSyncing = false;
+        syncPromise = null;
+      }
+    })();
+    return syncPromise;
+  }
+
+  function startPolling(){
+    if(pollTimer) clearInterval(pollTimer);
+    if(!hasScriptURL()) return;
+    pollTimer = setInterval(()=>{
+      if(document.hidden || !navigator.onLine || isSyncing || activeWrites>0) return;
+      syncFromSheet(false);
+    }, POLL_INTERVAL_MS);
+  }
+
+  window.addEventListener("online", ()=>{ if(hasScriptURL()) syncFromSheet(false); });
+  document.addEventListener("visibilitychange", ()=>{
+    if(!document.hidden && hasScriptURL() && !isSyncing && activeWrites===0) syncFromSheet(false);
+  });
+
+  // Settings modal wiring
+  function openSettingsModal(){
+    document.getElementById("cfg-script-url").value = getScriptURL();
+    document.getElementById("settings-modal-overlay").classList.add("show");
+  }
+  function closeSettingsModal(){ document.getElementById("settings-modal-overlay").classList.remove("show"); }
+  document.getElementById("btn-settings").addEventListener("click", openSettingsModal);
+  document.getElementById("sync-badge").addEventListener("click", ()=>{
+    if(hasScriptURL()) syncFromSheet(true);
+    else openSettingsModal();
+  });
+  document.getElementById("btn-settings-cancel").addEventListener("click", closeSettingsModal);
+  document.getElementById("settings-modal-overlay").addEventListener("click", (e)=>{ if(e.target.id==="settings-modal-overlay") closeSettingsModal(); });
+
+  document.getElementById("btn-settings-test").addEventListener("click", async ()=>{
+    const url = document.getElementById("cfg-script-url").value.trim();
+    if(!url){ toast("กรุณากรอก URL ก่อน", true); return; }
+    const prevUrl = getScriptURL();
+    setScriptURL(url);
+    const btn = document.getElementById("btn-settings-test");
+    btn.disabled = true; btn.textContent = "กำลังทดสอบ...";
+    try{
+      await apiCall("getAll", {});
+      toast("เชื่อมต่อสำเร็จ! กด \"บันทึกและซิงก์\" เพื่อใช้งาน");
+    }catch(err){
+      toast("เชื่อมต่อไม่สำเร็จ: " + err.message, true);
+      setScriptURL(prevUrl);
+    }finally{
+      btn.disabled = false; btn.textContent = "ทดสอบการเชื่อมต่อ";
+    }
+  });
+
+  document.getElementById("btn-settings-save").addEventListener("click", async ()=>{
+    const url = document.getElementById("cfg-script-url").value.trim();
+    if(!url){ toast("กรุณากรอก URL ก่อน", true); return; }
+    setScriptURL(url);
+    closeSettingsModal();
+    const ok = await syncFromSheet(true);
+    if(ok){ toast("ตั้งค่าและซิงก์ข้อมูลจาก Google Sheets เรียบร้อย"); startPolling(); }
+  });
+
+  function seed(){
+    state.parts = [
+      {id:uid(), code:"MTR-001", name:"มอเตอร์ปั๊มน้ำ 2HP", category:"เครื่องจักร", unit:"ชิ้น", qty:4, minQty:2, cost:5200, location:"A1-01"},
+      {id:uid(), code:"CAP-014", name:"ฝาขวด PET 28mm", category:"บรรจุภัณฑ์", unit:"กล่อง", qty:18, minQty:10, cost:320, location:"B2-05"},
+      {id:uid(), code:"FLM-002", name:"ฟิล์มหด (Shrink Film)", category:"บรรจุภัณฑ์", unit:"ม้วน", qty:3, minQty:5, cost:890, location:"B1-02"},
+      {id:uid(), code:"BLT-007", name:"สายพานลำเลียง PVC", category:"เครื่องจักร", unit:"เมตร", qty:12, minQty:6, cost:210, location:"A2-04"},
+      {id:uid(), code:"VLV-003", name:"วาล์วปีกผีเสื้อ 2 นิ้ว", category:"ท่อ-วาล์ว", unit:"ชิ้น", qty:1, minQty:3, cost:1450, location:"C1-01"},
+      {id:uid(), code:"BRG-011", name:"ตลับลูกปืน 6204", category:"เครื่องจักร", unit:"ชิ้น", qty:9, minQty:4, cost:180, location:"A1-06"},
+    ];
+    state.transactions = [];
+    state.provinces = [
+      {id:uid(),name:"กรุงเทพมหานคร",isActive:true,createdAt:new Date().toISOString()},
+      {id:uid(),name:"นครปฐม",isActive:true,createdAt:new Date().toISOString()},
+      {id:uid(),name:"ราชบุรี",isActive:true,createdAt:new Date().toISOString()}
+    ];
+    state.suppliers = [];
+    state.trucks = [];
+    state.documents = [];
+    save();
+  }
+
+  function loadCache(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed && Array.isArray(parsed.parts)){ state = normalizeFromSheet(parsed); return; }
+      }
+    }catch(e){}
+    if(!hasScriptURL()) seed();
+  }
+  function cacheSave(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+  // Legacy alias used throughout the file for local-cache persistence
+  // (called after state is already confirmed saved to Sheets, or as fallback).
+  function save(){ cacheSave(); }
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+
+  function toast(msg, isErr){
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.toggle("err", !!isErr);
+    t.classList.add("show");
+    clearTimeout(toast._h);
+    toast._h = setTimeout(()=> t.classList.remove("show"), 2600);
+  }
+
+  function fmtMoney(n){ return Number(n||0).toLocaleString('th-TH', {maximumFractionDigits:2}); }
+  function fmtDate(d){
+    if(!d) return "-";
+    const dt = new Date(d + "T00:00:00");
+    if(isNaN(dt)) return d;
+    return dt.toLocaleDateString('th-TH', {day:'2-digit',month:'short',year:'numeric'});
+  }
+  function partById(id){ return state.parts.find(p=>p.id===id); }
+  function supplierById(id){ return state.suppliers.find(x=>x.id===id); }
+  function truckById(id){ return state.trucks.find(x=>x.id===id); }
+  function provinceById(id){ return state.provinces.find(x=>x.id===id); }
+  function documentByNo(type,no){ return state.documents.find(x=>x.docType===type && x.docNo===no); }
+  function activeRows(type){ return (state[type]||[]).filter(x=>x.isActive!==false); }
+
+  function setSelectOptions(id, rows, labelFn, currentValue, emptyLabel){
+    const sel = document.getElementById(id);
+    if(!sel) return;
+    const prev = currentValue!==undefined ? currentValue : sel.value;
+    sel.innerHTML = `<option value="">${escapeHTML(emptyLabel||"— ไม่ระบุ —")}</option>` + rows.map(x=>`<option value="${escapeHTML(x.id)}">${escapeHTML(labelFn(x))}</option>`).join("");
+    if(rows.some(x=>x.id===prev)) sel.value = prev;
+  }
+
+  function setDocumentOptions(id, docType, currentNo){
+    const sel = document.getElementById(id);
+    if(!sel) return;
+    const prev = currentNo!==undefined ? currentNo : sel.value;
+    const rows = activeRows("documents").filter(x=>x.docType===docType).sort((a,b)=>b.date.localeCompare(a.date)||a.docNo.localeCompare(b.docNo,'th'));
+    sel.innerHTML = `<option value="">— ไม่ระบุ ${docType} —</option>` + rows.map(x=>`<option value="${escapeHTML(x.docNo)}">${escapeHTML(x.docNo)}${x.date?" · "+fmtDate(x.date):""}</option>`).join("");
+    if(rows.some(x=>x.docNo===prev)) sel.value = prev;
+  }
+
+  function populateMasterSelects(){
+    const suppliers = activeRows("suppliers").sort((a,b)=>a.name.localeCompare(b.name,'th'));
+    const trucks = activeRows("trucks").sort((a,b)=>a.plateNo.localeCompare(b.plateNo,'th'));
+    const provinces = activeRows("provinces").sort((a,b)=>a.name.localeCompare(b.name,'th'));
+    ["rec-supplier","pf-supplier","mf-doc-supplier"].forEach(id=>setSelectOptions(id,suppliers,x=>(x.code?x.code+" — ":"")+x.name,undefined,"— ไม่ระบุซัพพลายเออร์ —"));
+    ["rec-truck","iss-truck","pf-truck"].forEach(id=>setSelectOptions(id,trucks,x=>x.plateNo+(provinceById(x.provinceId)?" · "+provinceById(x.provinceId).name:""),undefined,"— ไม่ระบุรถ —"));
+    ["rec-province","iss-province","pf-province","mf-supplier-province","mf-truck-province"].forEach(id=>setSelectOptions(id,provinces,x=>x.name,undefined,"— ไม่ระบุจังหวัด —"));
+    [["rec-pr","PR"],["rec-po","PO"],["rec-iv","IV"],["iss-pr","PR"],["iss-po","PO"],["iss-iv","IV"]].forEach(([id,type])=>setDocumentOptions(id,type));
+  }
+  function txContext(t){
+    const truck=truckById(t.truckId), province=provinceById(t.provinceId);
+    return [t.prNo?"PR: "+t.prNo:"",t.poNo?"PO: "+t.poNo:"",t.ivNo?"IV: "+t.ivNo:"",truck?"รถ: "+truck.plateNo:"",province?"จังหวัด: "+province.name:"",t.note||""].filter(Boolean).join(" | ");
+  }
+
+  // ---------- Tab navigation ----------
+  function activateView(viewName){
+    document.querySelectorAll("nav.tabs .tab").forEach(b=>b.classList.toggle("active", b.dataset.view===viewName));
+    document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active", v.id==="view-"+viewName));
+    renderAll();
+    if(viewName === "dashboard"){
+      requestAnimationFrame(()=> Object.values(charts).forEach(c=> c.resize()));
+    }
+  }
+  document.querySelectorAll("nav.tabs .tab").forEach(btn=>{
+    btn.addEventListener("click", ()=> activateView(btn.dataset.view));
+  });
+  document.getElementById("btn-import").addEventListener("click", ()=> activateView("import"));
+
+  // ---------- Stock status helper ----------
+  function stockStatus(p){
+    if(p.qty <= 0) return "out";
+    if(p.qty <= p.minQty) return "low";
+    return "ok";
+  }
+  function statusLabel(s){
+    return s==="out" ? "หมดสต็อก" : s==="low" ? "ใกล้หมด" : "ปกติ";
+  }
+  function gaugeHTML(p){
+    const s = stockStatus(p);
+    const ref = Math.max(p.minQty*2, p.qty, 1);
+    const pct = Math.max(4, Math.min(100, Math.round((p.qty/ref)*100)));
+    const cls = s==="ok" ? "success" : s==="low" ? "accent" : "danger";
+    return `<div class="gauge">
+      <span class="qty">${p.qty} ${escapeHTML(p.unit)}</span>
+      <div class="track"><div class="fill ${cls}" style="width:${pct}%"></div></div>
+    </div>`;
+  }
+  function tagHTML(p){
+    const s = stockStatus(p);
+    return `<span class="tag ${s==='ok'?'ok':s==='low'?'low':'out'}">${escapeHTML(p.code)}</span>`;
+  }
+  function escapeHTML(s){
+    return String(s??"").replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // ================= DASHBOARD =================
+  function renderDashboard(){
+    const total = state.parts.length;
+    const low = state.parts.filter(p=>stockStatus(p)!=="ok").length;
+    const value = state.parts.reduce((s,p)=> s + (p.qty*(p.cost||0)), 0);
+
+    const now = new Date();
+    const issuedThisMonth = state.transactions
+      .filter(t=> t.type==="out" && new Date(t.date).getMonth()===now.getMonth() && new Date(t.date).getFullYear()===now.getFullYear())
+      .reduce((s,t)=> s+t.qty, 0);
+
+    document.getElementById("kpi-total").textContent = total;
+    document.getElementById("kpi-low").textContent = low;
+    document.getElementById("kpi-value").textContent = fmtMoney(value);
+    document.getElementById("kpi-issued").textContent = issuedThisMonth;
+
+    const bannerSlot = document.getElementById("alert-banner-slot");
+    bannerSlot.innerHTML = low>0
+      ? `<div class="alert-banner">⚠ <span><b>${low} รายการ</b> คงเหลือถึงหรือต่ำกว่าจุดสั่งซื้อขั้นต่ำ — ตรวจสอบในตาราง "รายการที่ต้องสั่งซื้อเพิ่ม" ด้านล่าง</span></div>`
+      : "";
+
+    const lowBody = document.getElementById("low-stock-body");
+    const lowParts = state.parts.filter(p=>stockStatus(p)!=="ok").sort((a,b)=> a.qty-b.qty);
+    lowBody.innerHTML = lowParts.length ? lowParts.map(p=>`
+      <tr>
+        <td>${tagHTML(p)}</td>
+        <td>${escapeHTML(p.name)}</td>
+        <td class="mono">${p.qty} ${escapeHTML(p.unit)}</td>
+        <td class="mono">${p.minQty}</td>
+        <td>${statusLabel(stockStatus(p))}</td>
+      </tr>`).join("") : `<tr class="empty-row"><td colspan="5">ไม่มีรายการที่ต้องสั่งซื้อเพิ่มในขณะนี้</td></tr>`;
+
+    const recentBody = document.getElementById("recent-tx-body");
+    const recent = [...state.transactions].sort((a,b)=> b.date.localeCompare(a.date) || b.id.localeCompare(a.id)).slice(0,8);
+    recentBody.innerHTML = recent.length ? recent.map(t=>{
+      const p = partById(t.partId);
+      return `<tr>
+        <td class="mono">${fmtDate(t.date)}</td>
+        <td>${escapeHTML(p?p.name:"(ลบแล้ว)")}</td>
+        <td>${t.type==="in" ? '<span class="tag ok">รับเข้า</span>' : '<span class="tag low">เบิกออก</span>'}</td>
+        <td class="mono">${t.qty}</td>
+        <td>${escapeHTML(t.person||t.supplier||"-")}</td>
+      </tr>`;
+    }).join("") : `<tr class="empty-row"><td colspan="5">ยังไม่มีความเคลื่อนไหว</td></tr>`;
+
+    renderCharts();
+  }
+
+  // ================= CHARTS =================
+  function renderCharts(){
+    if(typeof Chart === "undefined") return;
+    renderStatusChart();
+    renderCategoryChart();
+    renderTrendChart();
+  }
+
+  function renderStatusChart(){
+    const canvas = document.getElementById("chart-status");
+    const counts = {ok:0, low:0, out:0};
+    state.parts.forEach(p=> counts[stockStatus(p)]++);
+    const data = {
+      labels: ["ปกติ","ใกล้หมด","หมดสต็อก"],
+      datasets: [{ data:[counts.ok, counts.low, counts.out], backgroundColor:["#3ebd82","#f2a93b","#e5535a"], borderWidth:0, hoverOffset:4 }]
+    };
+    if(charts.status){ charts.status.data = data; charts.status.update(); return; }
+    charts.status = new Chart(canvas, {
+      type: "doughnut",
+      data,
+      options:{
+        maintainAspectRatio:false,
+        cutout:"62%",
+        plugins:{
+          legend:{ position:"bottom", labels:{ color:"#8b96a3", font:{family:CHART_FONT_TH, size:12}, boxWidth:10, padding:14 } },
+          tooltip:{ bodyFont:{family:CHART_FONT_TH}, titleFont:{family:CHART_FONT_TH} }
+        }
+      }
+    });
+  }
+
+  function renderCategoryChart(){
+    const canvas = document.getElementById("chart-category");
+    const map = {};
+    state.parts.forEach(p=>{ map[p.category] = (map[p.category]||0) + p.qty*(p.cost||0); });
+    const labels = Object.keys(map);
+    const values = Object.values(map);
+    const data = { labels, datasets:[{ data:values, backgroundColor:"#4fa3b0", borderRadius:6, maxBarThickness:30 }] };
+    if(charts.category){ charts.category.data = data; charts.category.update(); return; }
+    charts.category = new Chart(canvas, {
+      type:"bar",
+      data,
+      options:{
+        indexAxis:"y",
+        maintainAspectRatio:false,
+        plugins:{
+          legend:{display:false},
+          tooltip:{ bodyFont:{family:CHART_FONT_MONO}, titleFont:{family:CHART_FONT_TH}, callbacks:{ label:(c)=> " ฿" + fmtMoney(c.parsed.x) } }
+        },
+        scales:{
+          x:{ ticks:{ color:"#8b96a3", font:{family:CHART_FONT_MONO, size:11} }, grid:{ color:"#232931" } },
+          y:{ ticks:{ color:"#e7eaee", font:{family:CHART_FONT_TH, size:12} }, grid:{ display:false } }
+        }
+      }
+    });
+  }
+
+  function renderTrendChart(){
+    const canvas = document.getElementById("chart-trend");
+    const now = new Date();
+    const months = [];
+    for(let i=5;i>=0;i--){
+      const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+      months.push({ key: d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"), label: d.toLocaleDateString("th-TH",{month:"short", year:"2-digit"}) });
+    }
+    const inData = months.map(m=> state.transactions.filter(t=> t.type==="in" && t.date.startsWith(m.key)).reduce((s,t)=>s+t.qty,0));
+    const outData = months.map(m=> state.transactions.filter(t=> t.type==="out" && t.date.startsWith(m.key)).reduce((s,t)=>s+t.qty,0));
+    const data = {
+      labels: months.map(m=>m.label),
+      datasets:[
+        { label:"รับเข้า", data:inData, borderColor:"#3ebd82", backgroundColor:"#3ebd8230", fill:true, tension:.35, pointRadius:3 },
+        { label:"เบิกออก", data:outData, borderColor:"#e5535a", backgroundColor:"#e5535a30", fill:true, tension:.35, pointRadius:3 }
+      ]
+    };
+    if(charts.trend){ charts.trend.data = data; charts.trend.update(); return; }
+    charts.trend = new Chart(canvas, {
+      type:"line",
+      data,
+      options:{
+        maintainAspectRatio:false,
+        interaction:{ mode:"index", intersect:false },
+        plugins:{ legend:{ position:"bottom", labels:{ color:"#8b96a3", font:{family:CHART_FONT_TH, size:12}, boxWidth:10, padding:14 } } },
+        scales:{
+          x:{ ticks:{ color:"#8b96a3", font:{family:CHART_FONT_TH, size:11} }, grid:{ display:false } },
+          y:{ beginAtZero:true, ticks:{ color:"#8b96a3", font:{family:CHART_FONT_MONO, size:11} }, grid:{ color:"#232931" } }
+        }
+      }
+    });
+  }
+
+  // ================= PARTS MASTER =================
+  function refreshCategoryFilter(){
+    const sel = document.getElementById("part-cat-filter");
+    const cats = [...new Set(state.parts.map(p=>p.category))];
+    const current = sel.value;
+    sel.innerHTML = `<option value="">ทุกหมวดหมู่</option>` + cats.map(c=>`<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("");
+    sel.value = cats.includes(current) ? current : "";
+  }
+
+  function renderParts(){
+    refreshCategoryFilter();
+    const search = (document.getElementById("part-search").value||"").toLowerCase().trim();
+    const cat = document.getElementById("part-cat-filter").value;
+    const body = document.getElementById("parts-body");
+
+    let list = state.parts.filter(p=>{
+      const matchSearch = !search || p.code.toLowerCase().includes(search) || p.name.toLowerCase().includes(search);
+      const matchCat = !cat || p.category===cat;
+      return matchSearch && matchCat;
+    });
+
+    body.innerHTML = list.length ? list.map(p=>`
+      <tr>
+        <td>${tagHTML(p)}</td>
+        <td>${escapeHTML(p.name)}</td>
+        <td>${escapeHTML(p.category)}</td>
+        <td>${gaugeHTML(p)}</td>
+        <td class="mono">${escapeHTML(p.location||"-")}</td>
+        <td class="mono">฿${fmtMoney(p.cost)}</td>
+        <td class="row-actions">
+          <button class="small" data-edit="${p.id}">แก้ไข</button>
+          <button class="small danger-ghost" data-del="${p.id}">ลบ</button>
+        </td>
+      </tr>`).join("") : `<tr class="empty-row"><td colspan="7">ไม่พบอะไหล่ที่ค้นหา</td></tr>`;
+
+    body.querySelectorAll("[data-edit]").forEach(b=> b.addEventListener("click", ()=> openPartModal(b.dataset.edit)));
+    body.querySelectorAll("[data-del]").forEach(b=> b.addEventListener("click", ()=> deletePart(b.dataset.del)));
+  }
+
+  document.getElementById("part-search").addEventListener("input", renderParts);
+  document.getElementById("part-cat-filter").addEventListener("change", renderParts);
+  document.getElementById("btn-add-part").addEventListener("click", ()=> openPartModal(null));
+
+  const DEFAULT_CATEGORIES = ["เครื่องจักร","ไฟฟ้า","บรรจุภัณฑ์","ท่อ-วาล์ว","อื่นๆ"];
+  const DEFAULT_UNITS = ["ชิ้น","ชุด","ม้วน","เมตร","กก.","ลิตร","กล่อง"];
+
+  function populateSelectWithCustomOption(selectEl, defaults, currentValue, customLabel){
+    const known = new Set(defaults);
+    state.parts.forEach(p=>{
+      const v = selectEl.id === "pf-category" ? p.category : p.unit;
+      if(v) known.add(v);
+    });
+    if(currentValue) known.add(currentValue);
+    const opts = [...known].map(v=>`<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`).join("");
+    selectEl.innerHTML = opts + `<option value="__custom__">${customLabel}</option>`;
+    selectEl.value = currentValue && known.has(currentValue) ? currentValue : (defaults[0]||"");
+  }
+
+  function toggleCustomField(selectId, customInputId){
+    const sel = document.getElementById(selectId);
+    const custom = document.getElementById(customInputId);
+    const isCustom = sel.value === "__custom__";
+    custom.style.display = isCustom ? "block" : "none";
+    if(isCustom) custom.focus(); else custom.value = "";
+  }
+  document.getElementById("pf-category").addEventListener("change", ()=> toggleCustomField("pf-category","pf-category-custom"));
+  document.getElementById("pf-unit").addEventListener("change", ()=> toggleCustomField("pf-unit","pf-unit-custom"));
+
+  function openPartModal(id){
+    const p = id ? partById(id) : null;
+    populateMasterSelects();
+    document.getElementById("modal-title").textContent = p ? "แก้ไขอะไหล่" : "เพิ่มอะไหล่ใหม่";
+    document.getElementById("pf-id").value = p ? p.id : "";
+    document.getElementById("pf-code").value = p ? p.code : "";
+    document.getElementById("pf-name").value = p ? p.name : "";
+    populateSelectWithCustomOption(document.getElementById("pf-category"), DEFAULT_CATEGORIES, p ? p.category : "เครื่องจักร", "+ เพิ่มหมวดหมู่ใหม่...");
+    populateSelectWithCustomOption(document.getElementById("pf-unit"), DEFAULT_UNITS, p ? p.unit : "ชิ้น", "+ เพิ่มหน่วยนับใหม่...");
+    document.getElementById("pf-category-custom").style.display = "none";
+    document.getElementById("pf-category-custom").value = "";
+    document.getElementById("pf-unit-custom").style.display = "none";
+    document.getElementById("pf-unit-custom").value = "";
+    document.getElementById("pf-qty").value = p ? p.qty : 0;
+    document.getElementById("pf-min").value = p ? p.minQty : 0;
+    document.getElementById("pf-cost").value = p ? p.cost : "";
+    document.getElementById("pf-location").value = p ? p.location : "";
+    document.getElementById("pf-supplier").value = p ? (p.supplierId||"") : "";
+    document.getElementById("pf-truck").value = p ? (p.truckId||"") : "";
+    document.getElementById("pf-province").value = p ? (p.provinceId||"") : "";
+    document.getElementById("modal-overlay").classList.add("show");
+  }
+  function closeModal(){ document.getElementById("modal-overlay").classList.remove("show"); }
+  document.getElementById("btn-modal-cancel").addEventListener("click", closeModal);
+  document.getElementById("modal-overlay").addEventListener("click", (e)=>{ if(e.target.id==="modal-overlay") closeModal(); });
+
+  document.getElementById("btn-modal-save").addEventListener("click", async ()=>{
+    const id = document.getElementById("pf-id").value;
+    const code = document.getElementById("pf-code").value.trim();
+    const name = document.getElementById("pf-name").value.trim();
+    if(!code || !name){ toast("กรุณากรอกรหัสและชื่ออะไหล่", true); return; }
+
+    const dup = state.parts.find(p=> p.code.toLowerCase()===code.toLowerCase() && p.id!==id);
+    if(dup){ toast("รหัสอะไหล่นี้มีอยู่แล้ว", true); return; }
+
+    let category = document.getElementById("pf-category").value;
+    if(category === "__custom__"){
+      category = document.getElementById("pf-category-custom").value.trim();
+      if(!category){ toast("กรุณากรอกชื่อหมวดหมู่ใหม่", true); return; }
+    }
+    let unit = document.getElementById("pf-unit").value;
+    if(unit === "__custom__"){
+      unit = document.getElementById("pf-unit-custom").value.trim();
+      if(!unit){ toast("กรุณากรอกหน่วยนับใหม่", true); return; }
+    }
+
+    const data = {
+      code, name, category, unit,
+      qty: Math.max(0, Number(document.getElementById("pf-qty").value)||0),
+      minQty: Math.max(0, Number(document.getElementById("pf-min").value)||0),
+      cost: Math.max(0, parseFloat(document.getElementById("pf-cost").value)||0),
+      location: document.getElementById("pf-location").value.trim(),
+      supplierId: document.getElementById("pf-supplier").value,
+      truckId: document.getElementById("pf-truck").value,
+      provinceId: document.getElementById("pf-province").value,
+    };
+
+    const btn = document.getElementById("btn-modal-save");
+    btn.disabled = true; btn.textContent = "กำลังบันทึก...";
+    try{
+      if(id){
+        const partObj = { id, ...data };
+        if(hasScriptURL()) await apiCall("updatePart", { part: partObj });
+        Object.assign(partById(id), data);
+        toast("แก้ไขอะไหล่เรียบร้อย" + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
+      } else {
+        const partObj = { id: uid(), ...data };
+        if(hasScriptURL()) await apiCall("addPart", { part: partObj });
+        state.parts.push(partObj);
+        toast("เพิ่มอะไหล่ใหม่เรียบร้อย" + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
+      }
+      cacheSave();
+      closeModal();
+      renderAll();
+    }catch(err){
+      toast("บันทึกไป Google Sheets ไม่สำเร็จ: " + err.message, true);
+    }finally{
+      btn.disabled = false; btn.textContent = "บันทึก";
+    }
+  });
+
+  async function deletePart(id){
+    const p = partById(id);
+    if(!p) return;
+    if(!confirm(`ลบ "${p.name}" ออกจากรายการอะไหล่? (ประวัติการเบิก-รับที่เกี่ยวข้องจะยังคงอยู่)`)) return;
+    try{
+      if(hasScriptURL()) await apiCall("deletePart", { id });
+      state.parts = state.parts.filter(x=>x.id!==id);
+      cacheSave();
+      renderAll();
+      toast("ลบอะไหล่แล้ว" + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
+    }catch(err){
+      toast("ลบใน Google Sheets ไม่สำเร็จ: " + err.message, true);
+    }
+  }
+
+  // ================= RECEIVE =================
+  function populatePartSelects(){
+    const options = state.parts
+      .sort((a,b)=> a.name.localeCompare(b.name,'th'))
+      .map(p=>`<option value="${p.id}">${escapeHTML(p.code)} — ${escapeHTML(p.name)} (คงเหลือ ${p.qty} ${escapeHTML(p.unit)})</option>`).join("");
+    ["rec-part","iss-part"].forEach(id=>{
+      const sel = document.getElementById(id);
+      const prev = sel.value;
+      sel.innerHTML = options || `<option value="">— ไม่มีอะไหล่ในระบบ —</option>`;
+      if(prev) sel.value = prev;
+    });
+    updateIssueHint();
+  }
+
+  document.getElementById("rec-date").value = todayISO();
+  document.getElementById("iss-date").value = todayISO();
+  document.getElementById("rec-supplier").addEventListener("change", ()=>{
+    const s=supplierById(document.getElementById("rec-supplier").value);
+    if(s&&s.provinceId) document.getElementById("rec-province").value=s.provinceId;
+  });
+  document.getElementById("rec-truck").addEventListener("change", ()=>{
+    const t=truckById(document.getElementById("rec-truck").value);
+    if(t&&t.provinceId) document.getElementById("rec-province").value=t.provinceId;
+  });
+  document.getElementById("iss-truck").addEventListener("change", ()=>{
+    const t=truckById(document.getElementById("iss-truck").value);
+    if(t&&t.provinceId) document.getElementById("iss-province").value=t.provinceId;
+  });
+
+  document.getElementById("btn-receive-submit").addEventListener("click", async ()=>{
+    const partId = document.getElementById("rec-part").value;
+    const qty = Number(document.getElementById("rec-qty").value);
+    const date = document.getElementById("rec-date").value || todayISO();
+    const supplierId = document.getElementById("rec-supplier").value;
+    const supplierObj = supplierById(supplierId);
+    const supplier = supplierObj ? supplierObj.name : "";
+    const truckId = document.getElementById("rec-truck").value;
+    const provinceId = document.getElementById("rec-province").value;
+    const prNo = document.getElementById("rec-pr").value;
+    const poNo = document.getElementById("rec-po").value;
+    const ivNo = document.getElementById("rec-iv").value;
+    const contact = document.getElementById("rec-contact").value.trim();
+    const note = document.getElementById("rec-note").value.trim();
+
+    if(!partId){ toast("กรุณาเลือกอะไหล่", true); return; }
+    if(!qty || qty<=0){ toast("กรุณากรอกจำนวนที่ถูกต้อง", true); return; }
+
+    const p = partById(partId);
+    const tx = {id:uid(), partId, type:"in", qty, date, supplier, supplierId, truckId, provinceId, prNo, poNo, ivNo, person:contact, note};
+    const updatedPart = { ...p, qty: p.qty + qty };
+
+    const btn = document.getElementById("btn-receive-submit");
+    btn.disabled = true; btn.textContent = "กำลังบันทึก...";
+    try{
+      const saved = hasScriptURL() ? await apiCall("addTransaction", { tx }) : null;
+      p.qty = saved&&saved.part ? Number(saved.part.qty) : updatedPart.qty;
+      state.transactions.push(tx);
+      cacheSave();
+
+      document.getElementById("rec-qty").value = "";
+      document.getElementById("rec-contact").value = "";
+      document.getElementById("rec-note").value = "";
+      toast(`รับเข้า "${p.name}" จำนวน ${qty} ${p.unit} เรียบร้อย` + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
+      renderAll();
+    }catch(err){
+      toast("บันทึกไป Google Sheets ไม่สำเร็จ: " + err.message, true);
+    }finally{
+      btn.disabled = false; btn.textContent = "บันทึกรับเข้า";
+    }
+  });
+
+  function renderReceiveLog(){
+    const body = document.getElementById("recent-receive-body");
+    const list = state.transactions.filter(t=>t.type==="in").sort((a,b)=>b.date.localeCompare(a.date)).slice(0,10);
+    body.innerHTML = list.length ? list.map(t=>{
+      const p = partById(t.partId);
+      return `<tr>
+        <td class="mono">${fmtDate(t.date)}</td>
+        <td>${escapeHTML(p?p.name:"(ลบแล้ว)")}</td>
+        <td class="mono">+${t.qty}</td>
+        <td>${escapeHTML(t.supplier||"-")}</td>
+        <td>${escapeHTML(txContext(t)||"-")}</td>
+      </tr>`;
+    }).join("") : `<tr class="empty-row"><td colspan="5">ยังไม่มีรายการรับเข้า</td></tr>`;
+  }
+
+  // ================= ISSUE =================
+  document.getElementById("iss-part").addEventListener("change", updateIssueHint);
+  function updateIssueHint(){
+    const p = partById(document.getElementById("iss-part").value);
+    document.getElementById("iss-stock-hint").textContent = p ? `คงเหลือปัจจุบัน: ${p.qty} ${p.unit}` : "";
+  }
+
+  document.getElementById("btn-issue-submit").addEventListener("click", async ()=>{
+    const partId = document.getElementById("iss-part").value;
+    const qty = Number(document.getElementById("iss-qty").value);
+    const date = document.getElementById("iss-date").value || todayISO();
+    const person = document.getElementById("iss-person").value.trim();
+    const truckId = document.getElementById("iss-truck").value;
+    const provinceId = document.getElementById("iss-province").value;
+    const prNo = document.getElementById("iss-pr").value;
+    const poNo = document.getElementById("iss-po").value;
+    const ivNo = document.getElementById("iss-iv").value;
+    const note = document.getElementById("iss-note").value.trim();
+
+    if(!partId){ toast("กรุณาเลือกอะไหล่", true); return; }
+    if(!qty || qty<=0){ toast("กรุณากรอกจำนวนที่ถูกต้อง", true); return; }
+    const p = partById(partId);
+    if(qty > p.qty){ toast(`คงเหลือไม่พอ (มีเพียง ${p.qty} ${p.unit})`, true); return; }
+
+    const tx = {id:uid(), partId, type:"out", qty, date, person, truckId, provinceId, prNo, poNo, ivNo, note};
+    const updatedPart = { ...p, qty: p.qty - qty };
+
+    const btn = document.getElementById("btn-issue-submit");
+    btn.disabled = true; btn.textContent = "กำลังบันทึก...";
+    try{
+      const saved = hasScriptURL() ? await apiCall("addTransaction", { tx }) : null;
+      p.qty = saved&&saved.part ? Number(saved.part.qty) : updatedPart.qty;
+      state.transactions.push(tx);
+      cacheSave();
+
+      document.getElementById("iss-qty").value = "";
+      document.getElementById("iss-person").value = currentUser ? currentUser.name : "";
+      document.getElementById("iss-note").value = "";
+      toast(`เบิก "${p.name}" จำนวน ${qty} ${p.unit} เรียบร้อย` + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
+      renderAll();
+    }catch(err){
+      toast("บันทึกไป Google Sheets ไม่สำเร็จ: " + err.message, true);
+    }finally{
+      btn.disabled = false; btn.textContent = "บันทึกเบิกออก";
+    }
+  });
+
+  function renderIssueLog(){
+    const body = document.getElementById("recent-issue-body");
+    const list = state.transactions.filter(t=>t.type==="out").sort((a,b)=>b.date.localeCompare(a.date)).slice(0,10);
+    body.innerHTML = list.length ? list.map(t=>{
+      const p = partById(t.partId);
+      return `<tr>
+        <td class="mono">${fmtDate(t.date)}</td>
+        <td>${escapeHTML(p?p.name:"(ลบแล้ว)")}</td>
+        <td class="mono">-${t.qty}</td>
+        <td>${escapeHTML(t.person||"-")}</td>
+        <td>${escapeHTML(txContext(t)||"-")}</td>
+      </tr>`;
+    }).join("") : `<tr class="empty-row"><td colspan="5">ยังไม่มีรายการเบิกออก</td></tr>`;
+  }
+
+  // ================= SHARED MASTER DATA =================
+  let currentMasterType = "suppliers";
+  let modalMasterType = "suppliers";
+  let masterImportDraft = {type:"suppliers",rows:[],fileName:""};
+  const MASTER_UI = {
+    suppliers:{title:"รายชื่อซัพพลายเออร์",headers:["รหัส","ซัพพลายเออร์","ผู้ติดต่อ","โทรศัพท์","จังหวัด","สถานะ",""]},
+    trucks:{title:"ทะเบียนรถบรรทุก",headers:["ทะเบียนรถ","จังหวัด","รายละเอียด","ผู้ขับ","สถานะ",""]},
+    provinces:{title:"รายชื่อจังหวัด",headers:["จังหวัด","สถานะ",""]},
+    documents:{title:"เลขอ้างอิง PR / PO / IV",headers:["ประเภท","เลขที่เอกสาร","วันที่","ซัพพลายเออร์","หมายเหตุ","สถานะ",""]}
+  };
+
+  function clearMasterImport(){
+    masterImportDraft={type:currentMasterType,rows:[],fileName:""};
+    document.getElementById("master-import-file").value="";
+    document.getElementById("master-import-preview").style.display="none";
+    document.getElementById("master-import-hint").textContent=`นำเข้าจากชีท “${MASTER_IMPORT_CONFIG[currentMasterType].sheet}” ในแม่แบบรวม`;
+  }
+
+  function setMasterType(type){
+    if(!MASTER_UI[type]) return;
+    currentMasterType=type;
+    document.querySelectorAll("[data-master-type]").forEach(b=>b.classList.toggle("active",b.dataset.masterType===type));
+    clearMasterImport();
+    renderMaster();
+  }
+
+  function masterSearchText(x){
+    if(currentMasterType==="suppliers") return `${x.code} ${x.name} ${x.contact} ${x.phone} ${x.taxId} ${provinceById(x.provinceId)?.name||""}`;
+    if(currentMasterType==="trucks") return `${x.plateNo} ${x.description} ${x.driver} ${provinceById(x.provinceId)?.name||""}`;
+    if(currentMasterType==="provinces") return x.name;
+    return `${x.docType} ${x.docNo} ${x.date} ${x.note} ${supplierById(x.supplierId)?.name||""}`;
+  }
+  function masterRecordKey(type,x){
+    if(type==="suppliers")return String(x.code||x.name||"").trim().toLowerCase();
+    if(type==="trucks")return `${x.plateNo||""}|${x.provinceId||""}`.trim().toLowerCase();
+    if(type==="provinces")return String(x.name||"").trim().toLowerCase();
+    return `${x.docType||""}|${x.docNo||""}`.trim().toLowerCase();
+  }
+
+  function renderMaster(){
+    const ui=MASTER_UI[currentMasterType];
+    if(!ui) return;
+    document.getElementById("master-list-title").textContent=ui.title;
+    document.getElementById("master-table-head").innerHTML=`<tr>${ui.headers.map(h=>`<th>${escapeHTML(h)}</th>`).join("")}</tr>`;
+    const q=(document.getElementById("master-search").value||"").trim().toLowerCase();
+    const rows=(state[currentMasterType]||[]).filter(x=>!q||masterSearchText(x).toLowerCase().includes(q));
+    document.getElementById("master-table-body").innerHTML=rows.length?rows.map(x=>{
+      const status=x.isActive!==false?'<span class="tag ok">ใช้งาน</span>':'<span class="tag out">หยุดใช้</span>';
+      const actions=`<td class="row-actions"><button class="small" data-master-edit="${x.id}">แก้ไข</button><button class="small ${x.isActive!==false?'danger-ghost':''}" data-master-toggle="${x.id}">${x.isActive!==false?'หยุดใช้':'เปิดใช้'}</button></td>`;
+      if(currentMasterType==="suppliers") return `<tr><td class="mono">${escapeHTML(x.code||"-")}</td><td>${escapeHTML(x.name)}</td><td>${escapeHTML(x.contact||"-")}</td><td class="mono">${escapeHTML(x.phone||"-")}</td><td>${escapeHTML(provinceById(x.provinceId)?.name||"-")}</td><td>${status}</td>${actions}</tr>`;
+      if(currentMasterType==="trucks") return `<tr><td class="mono">${escapeHTML(x.plateNo)}</td><td>${escapeHTML(provinceById(x.provinceId)?.name||"-")}</td><td>${escapeHTML(x.description||"-")}</td><td>${escapeHTML(x.driver||"-")}</td><td>${status}</td>${actions}</tr>`;
+      if(currentMasterType==="provinces") return `<tr><td>${escapeHTML(x.name)}</td><td>${status}</td>${actions}</tr>`;
+      return `<tr><td><span class="tag ok">${escapeHTML(x.docType)}</span></td><td class="mono">${escapeHTML(x.docNo)}</td><td>${fmtDate(x.date)}</td><td>${escapeHTML(supplierById(x.supplierId)?.name||"-")}</td><td>${escapeHTML(x.note||"-")}</td><td>${status}</td>${actions}</tr>`;
+    }).join(""):`<tr class="empty-row"><td colspan="${ui.headers.length}">ยังไม่มีข้อมูล</td></tr>`;
+    document.querySelectorAll("[data-master-edit]").forEach(b=>b.addEventListener("click",()=>openMasterModal(currentMasterType,b.dataset.masterEdit)));
+    document.querySelectorAll("[data-master-toggle]").forEach(b=>b.addEventListener("click",()=>toggleMasterActive(b.dataset.masterToggle)));
+  }
+
+  function openMasterModal(type,id){
+    modalMasterType=type;
+    populateMasterSelects();
+    const x=id?(state[type]||[]).find(r=>r.id===id):null;
+    document.getElementById("master-modal-title").textContent=(x?"แก้ไข":"เพิ่ม")+" "+MASTER_IMPORT_CONFIG[type].label;
+    document.getElementById("mf-id").value=x?x.id:"";
+    document.getElementById("mf-active").checked=x?x.isActive!==false:true;
+    document.querySelectorAll(".master-form-group").forEach(g=>g.classList.toggle("active",g.id==="master-form-"+type));
+    if(type==="suppliers"){
+      document.getElementById("mf-supplier-code").value=x?x.code:""; document.getElementById("mf-supplier-name").value=x?x.name:"";
+      document.getElementById("mf-supplier-contact").value=x?x.contact:""; document.getElementById("mf-supplier-phone").value=x?x.phone:"";
+      document.getElementById("mf-supplier-tax").value=x?x.taxId:""; document.getElementById("mf-supplier-address").value=x?x.address:"";
+      document.getElementById("mf-supplier-province").value=x?x.provinceId:"";
+    }else if(type==="trucks"){
+      document.getElementById("mf-truck-plate").value=x?x.plateNo:""; document.getElementById("mf-truck-province").value=x?x.provinceId:"";
+      document.getElementById("mf-truck-description").value=x?x.description:""; document.getElementById("mf-truck-driver").value=x?x.driver:"";
+    }else if(type==="provinces") document.getElementById("mf-province-name").value=x?x.name:"";
+    else{
+      document.getElementById("mf-doc-type").value=x?x.docType:"PR"; document.getElementById("mf-doc-no").value=x?x.docNo:"";
+      document.getElementById("mf-doc-date").value=x?x.date:todayISO(); document.getElementById("mf-doc-supplier").value=x?x.supplierId:"";
+      document.getElementById("mf-doc-note").value=x?x.note:"";
+    }
+    document.getElementById("master-modal-overlay").classList.add("show");
+  }
+  function closeMasterModal(){document.getElementById("master-modal-overlay").classList.remove("show");}
+
+  function collectMasterForm(){
+    const base={id:document.getElementById("mf-id").value||uid(),isActive:document.getElementById("mf-active").checked,createdAt:new Date().toISOString()};
+    if(modalMasterType==="suppliers") return {...base,code:document.getElementById("mf-supplier-code").value.trim(),name:document.getElementById("mf-supplier-name").value.trim(),contact:document.getElementById("mf-supplier-contact").value.trim(),phone:document.getElementById("mf-supplier-phone").value.trim(),taxId:document.getElementById("mf-supplier-tax").value.trim(),address:document.getElementById("mf-supplier-address").value.trim(),provinceId:document.getElementById("mf-supplier-province").value};
+    if(modalMasterType==="trucks") return {...base,plateNo:document.getElementById("mf-truck-plate").value.trim(),provinceId:document.getElementById("mf-truck-province").value,description:document.getElementById("mf-truck-description").value.trim(),driver:document.getElementById("mf-truck-driver").value.trim()};
+    if(modalMasterType==="provinces") return {...base,name:document.getElementById("mf-province-name").value.trim()};
+    return {...base,docType:document.getElementById("mf-doc-type").value,docNo:document.getElementById("mf-doc-no").value.trim(),date:document.getElementById("mf-doc-date").value,supplierId:document.getElementById("mf-doc-supplier").value,note:document.getElementById("mf-doc-note").value.trim()};
+  }
+
+  async function toggleMasterActive(id){
+    const x=(state[currentMasterType]||[]).find(r=>r.id===id); if(!x)return;
+    const next=x.isActive===false;
+    if(!confirm(`${next?"เปิดใช้งาน":"หยุดใช้"}รายการนี้?`))return;
+    try{if(hasScriptURL())await apiCall("setMasterActive",{masterType:currentMasterType,id,isActive:next});x.isActive=next;cacheSave();renderAll();toast("เปลี่ยนสถานะเรียบร้อย");}catch(err){toast("เปลี่ยนสถานะไม่สำเร็จ: "+err.message,true);}
+  }
+
+  document.querySelectorAll("[data-master-type]").forEach(b=>b.addEventListener("click",()=>setMasterType(b.dataset.masterType)));
+  document.querySelectorAll("[data-quick-master]").forEach(b=>b.addEventListener("click",()=>openMasterModal(b.dataset.quickMaster,null)));
+  document.getElementById("master-search").addEventListener("input",renderMaster);
+  document.getElementById("btn-master-add").addEventListener("click",()=>openMasterModal(currentMasterType,null));
+  document.getElementById("btn-master-modal-cancel").addEventListener("click",closeMasterModal);
+  document.getElementById("master-modal-overlay").addEventListener("click",e=>{if(e.target.id==="master-modal-overlay")closeMasterModal();});
+  document.getElementById("btn-master-modal-save").addEventListener("click",async()=>{
+    const record=collectMasterForm();
+    if(modalMasterType==="suppliers"&&!record.name){toast("กรุณาระบุชื่อซัพพลายเออร์",true);return;}
+    if(modalMasterType==="trucks"&&!record.plateNo){toast("กรุณาระบุทะเบียนรถ",true);return;}
+    if(modalMasterType==="provinces"&&!record.name){toast("กรุณาระบุชื่อจังหวัด",true);return;}
+    if(modalMasterType==="documents"&&!record.docNo){toast("กรุณาระบุเลขที่เอกสาร",true);return;}
+    if((state[modalMasterType]||[]).some(x=>x.id!==record.id&&masterRecordKey(modalMasterType,x)===masterRecordKey(modalMasterType,record))){toast("ข้อมูลนี้มีอยู่ในฐานข้อมูลแล้ว",true);return;}
+    const btn=document.getElementById("btn-master-modal-save");btn.disabled=true;btn.textContent="กำลังบันทึก...";
+    try{
+      const saved=hasScriptURL()?await apiCall("saveMaster",{masterType:modalMasterType,record}):record;
+      const list=state[modalMasterType],idx=list.findIndex(x=>x.id===saved.id);if(idx>=0)list[idx]=saved;else list.push(saved);
+      cacheSave();closeMasterModal();renderAll();toast("บันทึกฐานข้อมูลเรียบร้อย"+(hasScriptURL()?" และซิงก์กับ Sheets แล้ว":""));
+    }catch(err){toast("บันทึกไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="บันทึก";}
+  });
+
+  function validateMasterImport(type,rawRows){
+    const existing=new Set((state[type]||[]).map(x=>{
+      if(type==="suppliers")return String(x.code||x.name).toLowerCase();
+      if(type==="trucks")return `${x.plateNo}|${x.provinceId}`.toLowerCase();
+      if(type==="provinces")return x.name.toLowerCase();
+      return `${x.docType}|${x.docNo}`.toLowerCase();
+    }));
+    const seen=new Set();
+    return rawRows.map((raw,i)=>{
+      const errors=[];let record={id:uid(),isActive:String(raw["สถานะ"]||"ใช้งาน").trim()!=="หยุดใช้",createdAt:new Date().toISOString()},key="",primary="",detail="";
+      const provinceText=String(raw["จังหวัด"]||"").trim(),province=findByText(activeRows("provinces"),["name"],provinceText);
+      if(provinceText&&!province&&type!=="provinces")errors.push("ไม่พบจังหวัดในฐานข้อมูล");
+      if(type==="suppliers"){
+        record={...record,code:String(raw["รหัส"]||"").trim(),name:String(raw["ชื่อซัพพลายเออร์"]||"").trim(),contact:String(raw["ผู้ติดต่อ"]||"").trim(),phone:String(raw["โทรศัพท์"]||"").trim(),taxId:String(raw["เลขผู้เสียภาษี"]||"").trim(),address:String(raw["ที่อยู่"]||"").trim(),provinceId:province?.id||""};
+        if(!record.name)errors.push("กรุณาระบุชื่อซัพพลายเออร์");key=String(record.code||record.name).toLowerCase();primary=record.name;detail=record.code||record.contact||"-";
+      }else if(type==="trucks"){
+        record={...record,plateNo:String(raw["ทะเบียนรถ"]||"").trim(),provinceId:province?.id||"",description:String(raw["รายละเอียดรถ"]||"").trim(),driver:String(raw["ผู้ขับ"]||"").trim()};
+        if(!record.plateNo)errors.push("กรุณาระบุทะเบียนรถ");key=`${record.plateNo}|${record.provinceId}`.toLowerCase();primary=record.plateNo;detail=[provinceText,record.description].filter(Boolean).join(" · ")||"-";
+      }else if(type==="provinces"){
+        record={...record,name:String(raw["จังหวัด"]||"").trim()};if(!record.name)errors.push("กรุณาระบุจังหวัด");key=record.name.toLowerCase();primary=record.name;detail="จังหวัด";
+      }else{
+        const supplierText=String(raw["ซัพพลายเออร์"]||"").trim(),supplier=findByText(activeRows("suppliers"),["name","code"],supplierText);
+        if(supplierText&&!supplier)errors.push("ไม่พบซัพพลายเออร์ในฐานข้อมูล");
+        record={...record,docType:String(raw["ประเภท"]||"").trim().toUpperCase(),docNo:String(raw["เลขที่เอกสาร"]||"").trim(),date:parseImportDate(raw["วันที่"]),supplierId:supplier?.id||"",note:String(raw["หมายเหตุ"]||"").trim()};
+        if(!["PR","PO","IV"].includes(record.docType))errors.push("ประเภทต้องเป็น PR, PO หรือ IV");if(!record.docNo)errors.push("กรุณาระบุเลขที่เอกสาร");if(raw["วันที่"]&&!record.date)errors.push("วันที่ไม่ถูกต้อง");key=`${record.docType}|${record.docNo}`.toLowerCase();primary=`${record.docType} ${record.docNo}`;detail=[record.date,supplierText].filter(Boolean).join(" · ")||"-";
+      }
+      if(key&&(existing.has(key)||seen.has(key)))errors.push("ข้อมูลซ้ำกับในระบบหรือซ้ำในไฟล์");if(key)seen.add(key);
+      return{rowNo:i+2,record,primary,detail,errors,valid:errors.length===0};
+    });
+  }
+
+  function renderMasterImportPreview(){
+    const rows=masterImportDraft.rows,total=rows.length,ok=rows.filter(x=>x.valid).length;
+    document.getElementById("master-import-preview").style.display="block";document.getElementById("master-import-caption").textContent=masterImportDraft.fileName;
+    document.getElementById("master-count-total").textContent=total;document.getElementById("master-count-ok").textContent=ok;document.getElementById("master-count-bad").textContent=total-ok;
+    document.getElementById("btn-master-import-confirm").disabled=!total||ok!==total;
+    document.getElementById("master-import-body").innerHTML=rows.slice(0,500).map(r=>`<tr><td class="mono">${r.rowNo}</td><td>${escapeHTML(r.primary||"-")}</td><td>${escapeHTML(r.detail||"-")}</td><td>${r.valid?'<span class="row-status ok">พร้อมนำเข้า</span>':`<span class="row-status bad">${escapeHTML(r.errors.join(" · "))}</span>`}</td></tr>`).join("");
+  }
+
+  document.getElementById("btn-master-import").addEventListener("click",()=>document.getElementById("master-import-file").click());
+  document.getElementById("master-import-file").addEventListener("change",e=>{
+    const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=evt=>{try{const wb=XLSX.read(evt.target.result,{type:"array",cellDates:true}),cfg=MASTER_IMPORT_CONFIG[currentMasterType],ws=wb.Sheets[cfg.sheet];if(!ws)throw new Error(`ไม่พบชีท “${cfg.sheet}”`);const raw=XLSX.utils.sheet_to_json(ws,{defval:"",raw:true}).filter(r=>Object.values(r).some(v=>String(v??"").trim()!==""));if(!raw.length)throw new Error("ไม่พบข้อมูลสำหรับนำเข้า");if(raw.length>5000)throw new Error("นำเข้าได้สูงสุดครั้งละ 5,000 แถว");masterImportDraft={type:currentMasterType,rows:validateMasterImport(currentMasterType,raw),fileName:file.name};renderMasterImportPreview();}catch(err){clearMasterImport();toast("อ่านไฟล์ไม่สำเร็จ: "+err.message,true);}};reader.readAsArrayBuffer(file);
+  });
+  document.getElementById("btn-master-import-clear").addEventListener("click",clearMasterImport);
+  document.getElementById("btn-master-import-confirm").addEventListener("click",async()=>{
+    if(!masterImportDraft.rows.length||masterImportDraft.rows.some(x=>!x.valid)){toast("กรุณาแก้ไขข้อมูลที่ผิดก่อน",true);return;}
+    if(!confirm(`ยืนยันนำเข้า${MASTER_IMPORT_CONFIG[currentMasterType].label} ${masterImportDraft.rows.length} แถว?`))return;
+    const btn=document.getElementById("btn-master-import-confirm");btn.disabled=true;btn.textContent="กำลังนำเข้า...";
+    try{const records=masterImportDraft.rows.map(x=>x.record);if(hasScriptURL())state[currentMasterType]=(await apiCall("bulkImportMaster",{masterType:currentMasterType,rows:records})).map(x=>normalizeFromSheet({[currentMasterType]:[x]})[currentMasterType][0]);else state[currentMasterType].push(...records);cacheSave();clearMasterImport();renderAll();toast(`นำเข้า${MASTER_IMPORT_CONFIG[currentMasterType].label}สำเร็จ ${records.length} แถว`);}catch(err){toast("นำเข้าไม่สำเร็จ: "+err.message,true);renderMasterImportPreview();}finally{btn.disabled=false;btn.textContent="ยืนยันนำเข้าฐานข้อมูล";}
+  });
+
+  // ================= HISTORY / REPORTS =================
+  ["hist-type-filter","hist-from","hist-to","hist-search"].forEach(id=>{
+    document.getElementById(id).addEventListener("input", renderHistory);
+    document.getElementById(id).addEventListener("change", renderHistory);
+  });
+
+  function renderHistory(){
+    const type = document.getElementById("hist-type-filter").value;
+    const from = document.getElementById("hist-from").value;
+    const to = document.getElementById("hist-to").value;
+    const search = (document.getElementById("hist-search").value||"").toLowerCase().trim();
+
+    let list = [...state.transactions].sort((a,b)=> b.date.localeCompare(a.date));
+    if(type) list = list.filter(t=>t.type===type);
+    if(from) list = list.filter(t=>t.date>=from);
+    if(to) list = list.filter(t=>t.date<=to);
+    if(search){
+      list = list.filter(t=>{
+        const p = partById(t.partId);
+        const hay = `${p?p.name:""} ${p?p.code:""} ${txContext(t)} ${t.person||""} ${t.supplier||""}`.toLowerCase();
+        return hay.includes(search);
+      });
+    }
+
+    const body = document.getElementById("history-body");
+    body.innerHTML = list.length ? list.map(t=>{
+      const p = partById(t.partId);
+      return `<tr>
+        <td class="mono">${fmtDate(t.date)}</td>
+        <td>${p?tagHTML(p):"-"}</td>
+        <td>${escapeHTML(p?p.name:"(ลบแล้ว)")}</td>
+        <td>${t.type==="in" ? '<span class="tag ok">รับเข้า</span>' : '<span class="tag low">เบิกออก</span>'}</td>
+        <td class="mono">${t.type==="in" ? "+" : "-"}${t.qty}</td>
+        <td>${escapeHTML(t.person||t.supplier||"-")}</td>
+        <td>${escapeHTML(txContext(t)||"-")}</td>
+      </tr>`;
+    }).join("") : `<tr class="empty-row"><td colspan="7">ไม่พบรายการตามเงื่อนไขที่เลือก</td></tr>`;
+  }
+
+  // ================= EXCEL EXPORT / IMPORT =================
+  document.getElementById("btn-export").addEventListener("click", ()=>{
+    const wb = XLSX.utils.book_new();
+
+    const partsSheet = state.parts.map(p=>({
+      "รหัสอะไหล่": p.code, "ชื่ออะไหล่": p.name, "หมวดหมู่": p.category, "หน่วยนับ": p.unit,
+      "คงเหลือ": p.qty, "จุดสั่งซื้อขั้นต่ำ": p.minQty, "มูลค่าต่อหน่วย": p.cost, "ที่จัดเก็บ": p.location,
+      "ซัพพลายเออร์หลัก": supplierById(p.supplierId)?.name||"", "รถบรรทุก": truckById(p.truckId)?.plateNo||"", "จังหวัด":provinceById(p.provinceId)?.name||""
+    }));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(partsSheet), "รายการอะไหล่");
+
+    const txSheet = state.transactions.map(t=>{
+      const p = partById(t.partId);
+      return {
+        "วันที่": t.date, "รหัสอะไหล่": p?p.code:"", "ชื่ออะไหล่": p?p.name:"(ลบแล้ว)",
+        "ประเภท": t.type==="in"?"รับเข้า":"เบิกออก", "จำนวน": t.qty,
+        "ผู้เบิก/ผู้ส่ง": t.person||t.supplier||"", "ซัพพลายเออร์":supplierById(t.supplierId)?.name||t.supplier||"",
+        "รถบรรทุก":truckById(t.truckId)?.plateNo||"", "จังหวัด":provinceById(t.provinceId)?.name||"",
+        "PR":t.prNo||"", "PO":t.poNo||"", "IV":t.ivNo||"", "หมายเหตุ": t.note||""
+      };
+    });
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(txSheet), "ประวัติการเคลื่อนไหว");
+
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.suppliers.map(x=>({"รหัส":x.code,"ชื่อซัพพลายเออร์":x.name,"ผู้ติดต่อ":x.contact,"โทรศัพท์":x.phone,"เลขผู้เสียภาษี":x.taxId,"ที่อยู่":x.address,"จังหวัด":provinceById(x.provinceId)?.name||"","สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "ซัพพลายเออร์");
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.trucks.map(x=>({"ทะเบียนรถ":x.plateNo,"จังหวัด":provinceById(x.provinceId)?.name||"","รายละเอียดรถ":x.description,"ผู้ขับ":x.driver,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "รถบรรทุก");
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.provinces.map(x=>({"จังหวัด":x.name,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "จังหวัด");
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.documents.map(x=>({"ประเภท":x.docType,"เลขที่เอกสาร":x.docNo,"วันที่":x.date,"ซัพพลายเออร์":supplierById(x.supplierId)?.name||"","หมายเหตุ":x.note,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "PR-PO-IV");
+
+    XLSX.writeFile(wb, `stock-${todayISO()}.xlsx`);
+    toast("ส่งออกไฟล์ Excel เรียบร้อย");
+  });
+
+  const IMPORT_CONFIG = {
+    parts: {
+      sheet:"เพิ่มอะไหล่", label:"เพิ่มทะเบียนอะไหล่",
+      headers:["รหัสอะไหล่","ชื่ออะไหล่","หมวดหมู่","หน่วยนับ","จำนวนตั้งต้น","จุดสั่งซื้อขั้นต่ำ","มูลค่าต่อหน่วย","ที่จัดเก็บ","ซัพพลายเออร์หลัก","รถบรรทุก","จังหวัด"],
+      example:["SP-001","ลูกปืนตัวอย่าง","เครื่องจักร","ชิ้น",10,3,250,"A1-01","บริษัทตัวอย่าง จำกัด","70-1234","ราชบุรี"]
+    },
+    receive: {
+      sheet:"รับเข้า", label:"รับเข้าอะไหล่",
+      headers:["วันที่","รหัสอะไหล่","จำนวน","ซัพพลายเออร์","รถบรรทุก","จังหวัด","PR","PO","IV","ผู้ส่ง/ผู้ติดต่อ","หมายเหตุ"],
+      example:[todayISO(),"SP-001",5,"บริษัทตัวอย่าง จำกัด","70-1234","ราชบุรี","PR-001","PO-001","IV-001","สมชาย","รับตามใบส่งของ"]
+    },
+    issue: {
+      sheet:"จ่ายออก", label:"จ่ายออก / เบิกออก",
+      headers:["วันที่","รหัสอะไหล่","จำนวน","ผู้เบิก/แผนก","รถบรรทุก","จังหวัด","PR","PO","IV","เครื่องจักร/งาน","หมายเหตุ"],
+      example:[todayISO(),"SP-001",2,"ฝ่ายซ่อมบำรุง","70-1234","ราชบุรี","PR-001","PO-001","","เครื่องบรรจุ 1","เปลี่ยนตามรอบ"]
+    }
+  };
+  const MASTER_IMPORT_CONFIG = {
+    suppliers:{sheet:"ซัพพลายเออร์",label:"ซัพพลายเออร์",headers:["รหัส","ชื่อซัพพลายเออร์","ผู้ติดต่อ","โทรศัพท์","เลขผู้เสียภาษี","ที่อยู่","จังหวัด","สถานะ"],example:["SUP-001","บริษัทตัวอย่าง จำกัด","สมชาย","0812345678","0105559999999","99/9 หมู่ 1","ราชบุรี","ใช้งาน"]},
+    trucks:{sheet:"รถบรรทุก",label:"รถบรรทุก",headers:["ทะเบียนรถ","จังหวัด","รายละเอียดรถ","ผู้ขับ","สถานะ"],example:["70-1234","ราชบุรี","Hino 6 ล้อ","สมศักดิ์","ใช้งาน"]},
+    provinces:{sheet:"จังหวัด",label:"จังหวัด",headers:["จังหวัด","สถานะ"],example:["ราชบุรี","ใช้งาน"]},
+    documents:{sheet:"PR-PO-IV",label:"PR / PO / IV",headers:["ประเภท","เลขที่เอกสาร","วันที่","ซัพพลายเออร์","หมายเหตุ","สถานะ"],example:["PO","PO-2026-001",todayISO(),"บริษัทตัวอย่าง จำกัด","ซื้ออะไหล่ประจำเดือน","ใช้งาน"]}
+  };
+  let importDraft = { type:"parts", rawRows:[], rows:[], fileName:"" };
+
+  function setImportType(type){
+    if(!IMPORT_CONFIG[type]) return;
+    importDraft = { type, rawRows:[], rows:[], fileName:"" };
+    document.querySelectorAll("[data-import-type]").forEach(b=>b.classList.toggle("active", b.dataset.importType===type));
+    document.getElementById("batch-import-file").value = "";
+    document.getElementById("import-file-name").textContent = "ยังไม่ได้เลือกไฟล์";
+    document.getElementById("import-sheet-hint").textContent = `ไฟล์ต้องมีชีทชื่อ “${IMPORT_CONFIG[type].sheet}” และใช้หัวคอลัมน์ตามแม่แบบ`;
+    document.getElementById("import-preview-panel").style.display = "none";
+  }
+
+  document.querySelectorAll("[data-import-type]").forEach(b=> b.addEventListener("click", ()=>setImportType(b.dataset.importType)));
+  setImportType("parts");
+
+  function downloadFullTemplate(){
+    const wb = XLSX.utils.book_new();
+    const guide = [
+      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — เวอร์ชันฐานข้อมูลกลาง"],
+      ["วิธีใช้","ใช้ไฟล์เดียวได้ทุกห้อง เลือกประเภทในโปรแกรมแล้วอัปโหลดไฟล์เดิม ระบบจะอ่านเฉพาะชีทที่ตรงกัน"],
+      ["ลำดับแนะนำ","จังหวัด → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
+      ["ข้อควรระวัง","ห้ามเปลี่ยนชื่อชีทและหัวคอลัมน์ วันที่แนะนำ yyyy-mm-dd และข้อมูลอ้างอิงควรตรงกับฐานข้อมูลกลาง"]
+    ];
+    const guideWS = XLSX.utils.aoa_to_sheet(guide);
+    guideWS["!cols"] = [{wch:24},{wch:100}];
+    XLSX.utils.book_append_sheet(wb, guideWS, "คำแนะนำ");
+    [...Object.values(MASTER_IMPORT_CONFIG),...Object.values(IMPORT_CONFIG)].forEach(cfg=>{
+      const ws=XLSX.utils.aoa_to_sheet([cfg.headers,cfg.example]);
+      ws["!cols"]=cfg.headers.map(h=>({wch:Math.max(14,h.length+5)}));
+      ws["!autofilter"]={ref:"A1:"+XLSX.utils.encode_col(cfg.headers.length-1)+"1"};
+      XLSX.utils.book_append_sheet(wb,ws,cfg.sheet);
+    });
+    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v3.xlsx");
+    toast("ดาวน์โหลดแม่แบบรวมเรียบร้อย");
+  }
+  document.getElementById("btn-download-import-template").addEventListener("click",downloadFullTemplate);
+  document.getElementById("btn-master-template").addEventListener("click",downloadFullTemplate);
+
+  document.getElementById("btn-choose-import-file").addEventListener("click", ()=>document.getElementById("batch-import-file").click());
+  document.getElementById("batch-import-file").addEventListener("change", (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt)=>{
+      try{
+        const wb = XLSX.read(evt.target.result, {type:"array", cellDates:true});
+        const cfg = IMPORT_CONFIG[importDraft.type];
+        const ws = wb.Sheets[cfg.sheet];
+        if(!ws) throw new Error(`ไม่พบชีท “${cfg.sheet}” กรุณาใช้ไฟล์แม่แบบของประเภทที่เลือก`);
+        const rows = XLSX.utils.sheet_to_json(ws, {defval:"", raw:true});
+        const meaningful = rows.filter(r=>Object.values(r).some(v=>String(v??"").trim()!==""));
+        if(!meaningful.length) throw new Error("ไม่พบข้อมูลใต้หัวคอลัมน์ในไฟล์");
+        if(meaningful.length > 5000) throw new Error("นำเข้าได้สูงสุดครั้งละ 5,000 แถว");
+        importDraft.rawRows = meaningful.map((r,i)=>({ ...r, __rowNo:i+2 }));
+        importDraft.fileName = file.name;
+        document.getElementById("import-file-name").textContent = file.name;
+        revalidateImportDraft();
+      }catch(err){
+        importDraft.rawRows = [];
+        importDraft.rows = [];
+        document.getElementById("import-preview-panel").style.display = "none";
+        toast("อ่านไฟล์ไม่สำเร็จ: " + (err.message||"รูปแบบไฟล์ไม่ถูกต้อง"), true);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  });
+
+  function parseImportDate(value){
+    if(value instanceof Date && !isNaN(value)){
+      const y=value.getFullYear(), m=String(value.getMonth()+1).padStart(2,"0"), d=String(value.getDate()).padStart(2,"0");
+      return `${y}-${m}-${d}`;
+    }
+    if(typeof value === "number" && typeof XLSX !== "undefined"){
+      const x = XLSX.SSF.parse_date_code(value);
+      if(x) return `${x.y}-${String(x.m).padStart(2,"0")}-${String(x.d).padStart(2,"0")}`;
+    }
+    const s = String(value??"").trim();
+    let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if(m) return validDateParts(Number(m[1]),Number(m[2]),Number(m[3]));
+    m = s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+    if(m){
+      let year = Number(m[3]);
+      if(year > 2400) year -= 543;
+      return validDateParts(year,Number(m[2]),Number(m[1]));
+    }
+    return "";
+  }
+
+  function validDateParts(y,m,d){
+    const dt = new Date(y,m-1,d);
+    if(dt.getFullYear()!==y || dt.getMonth()!==m-1 || dt.getDate()!==d) return "";
+    return `${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+  }
+
+  function numberValue(value, fallback){
+    if(String(value??"").trim()==="") return fallback;
+    const n = Number(value);
+    return Number.isFinite(n) ? n : NaN;
+  }
+
+  function joinNote(parts){ return parts.filter(Boolean).join(" | "); }
+
+  function findByText(rows, fields, value){
+    const key=String(value||"").trim().toLowerCase();
+    if(!key) return null;
+    return rows.find(x=>fields.some(f=>String(x[f]||"").trim().toLowerCase()===key))||null;
+  }
+  function resolveImportRefs(raw, errors){
+    const supplierText=String(raw["ซัพพลายเออร์"]||raw["ซัพพลายเออร์หลัก"]||"").trim();
+    const truckText=String(raw["รถบรรทุก"]||"").trim();
+    const provinceText=String(raw["จังหวัด"]||"").trim();
+    const supplier=findByText(activeRows("suppliers"),["name","code"],supplierText);
+    const truck=findByText(activeRows("trucks"),["plateNo"],truckText);
+    const province=findByText(activeRows("provinces"),["name"],provinceText);
+    if(supplierText&&!supplier) errors.push("ไม่พบซัพพลายเออร์ในฐานข้อมูล");
+    if(truckText&&!truck) errors.push("ไม่พบรถบรรทุกในฐานข้อมูล");
+    if(provinceText&&!province) errors.push("ไม่พบจังหวัดในฐานข้อมูล");
+    const refs={supplierId:supplier?supplier.id:"",truckId:truck?truck.id:"",provinceId:province?province.id:""};
+    ["PR","PO","IV"].forEach(type=>{
+      const no=String(raw[type]||"").trim();
+      if(no&&!documentByNo(type,no)) errors.push(`ไม่พบ ${type} ${no} ในฐานข้อมูล`);
+      refs[type.toLowerCase()+"No"]=no;
+    });
+    return refs;
+  }
+
+  function validateImportRows(type, rawRows){
+    const existing = new Map(state.parts.map(p=>[p.code.toLowerCase(), p]));
+    const codeCounts = {};
+    if(type==="parts") rawRows.forEach(r=>{
+      const key=String(r["รหัสอะไหล่"]||"").trim().toLowerCase();
+      if(key) codeCounts[key]=(codeCounts[key]||0)+1;
+    });
+    const available = new Map(state.parts.map(p=>[p.code.toLowerCase(), Number(p.qty)||0]));
+
+    return rawRows.map((raw,index)=>{
+      const rowNo = raw.__rowNo || index+2;
+      const code = String(raw["รหัสอะไหล่"]||"").trim();
+      const key = code.toLowerCase();
+      const errors = [];
+      if(!code) errors.push("กรุณาระบุรหัสอะไหล่");
+
+      if(type==="parts"){
+        const name = String(raw["ชื่ออะไหล่"]||"").trim();
+        const qty = numberValue(raw["จำนวนตั้งต้น"],0);
+        const minQty = numberValue(raw["จุดสั่งซื้อขั้นต่ำ"],0);
+        const cost = numberValue(raw["มูลค่าต่อหน่วย"],0);
+        if(!name) errors.push("กรุณาระบุชื่ออะไหล่");
+        if(existing.has(key)) errors.push("รหัสนี้มีอยู่ในระบบแล้ว");
+        if(codeCounts[key]>1) errors.push("รหัสซ้ำกันในไฟล์");
+        if(!Number.isFinite(qty)||qty<0) errors.push("จำนวนตั้งต้นไม่ถูกต้อง");
+        if(!Number.isFinite(minQty)||minQty<0) errors.push("จุดสั่งซื้อขั้นต่ำไม่ถูกต้อง");
+        if(!Number.isFinite(cost)||cost<0) errors.push("มูลค่าต่อหน่วยไม่ถูกต้อง");
+        const refs=resolveImportRefs(raw,errors);
+        return {
+          rowNo, code, name,
+          category:String(raw["หมวดหมู่"]||"อื่นๆ").trim()||"อื่นๆ",
+          unit:String(raw["หน่วยนับ"]||"ชิ้น").trim()||"ชิ้น",
+          qty, minQty, cost, location:String(raw["ที่จัดเก็บ"]||"").trim(), date:todayISO(),
+          supplierId:refs.supplierId,truckId:refs.truckId,provinceId:refs.provinceId,
+          detail:`${name||"-"} · ${String(raw["หมวดหมู่"]||"อื่นๆ")||"อื่นๆ"}`,
+          errors, valid:errors.length===0
+        };
+      }
+
+      const part = existing.get(key);
+      const qty = numberValue(raw["จำนวน"],NaN);
+      const date = parseImportDate(raw["วันที่"]);
+      if(!part) errors.push("ไม่พบรหัสอะไหล่ในระบบ");
+      if(!Number.isFinite(qty)||qty<=0) errors.push("จำนวนต้องมากกว่า 0");
+      if(!date) errors.push("วันที่ไม่ถูกต้อง");
+
+      if(type==="issue" && part && Number.isFinite(qty) && qty>0){
+        const before = available.get(key)||0;
+        if(qty > before + 0.0000001) errors.push(`สต๊อกไม่พอ (คงเหลือ ${before} ${part.unit})`);
+        else available.set(key,before-qty);
+      }
+
+      const refs=resolveImportRefs(raw,errors);
+      const supplierObj=supplierById(refs.supplierId);
+      const supplier = supplierObj?supplierObj.name:"";
+      const person = type==="receive" ? String(raw["ผู้ส่ง/ผู้ติดต่อ"]||"").trim() : String(raw["ผู้เบิก/แผนก"]||"").trim();
+      const machine = String(raw["เครื่องจักร/งาน"]||"").trim();
+      const baseNote = String(raw["หมายเหตุ"]||"").trim();
+      const note = type==="receive"
+        ? baseNote
+        : joinNote([machine ? "เครื่องจักร/งาน: "+machine : "", baseNote]);
+      return {
+        rowNo, code, qty, date, supplier, person, note,
+        supplierId:refs.supplierId,truckId:refs.truckId,provinceId:refs.provinceId,prNo:refs.prNo,poNo:refs.poNo,ivNo:refs.ivNo,
+        detail:`${date||"วันที่ไม่ถูกต้อง"} · ${type==="receive"?(supplier||"ไม่ระบุผู้ส่ง"):(person||"ไม่ระบุผู้เบิก")}`,
+        errors, valid:errors.length===0
+      };
+    });
+  }
+
+  function revalidateImportDraft(){
+    importDraft.rows = validateImportRows(importDraft.type, importDraft.rawRows);
+    const total = importDraft.rows.length;
+    const ok = importDraft.rows.filter(r=>r.valid).length;
+    const bad = total-ok;
+    document.getElementById("import-preview-panel").style.display = "block";
+    document.getElementById("import-count-total").textContent = total;
+    document.getElementById("import-count-ok").textContent = ok;
+    document.getElementById("import-count-bad").textContent = bad;
+    document.getElementById("import-preview-caption").textContent = importDraft.fileName;
+    document.getElementById("btn-confirm-import").disabled = !total || bad>0;
+    const shown = importDraft.rows.slice(0,500);
+    document.getElementById("import-preview-body").innerHTML = shown.map(r=>`<tr>
+      <td class="mono">${r.rowNo}</td>
+      <td>${escapeHTML(r.code||"-")}</td>
+      <td>${escapeHTML(r.detail||"-")}</td>
+      <td class="mono">${Number.isFinite(r.qty)?r.qty:"-"}</td>
+      <td>${r.valid?'<span class="row-status ok">พร้อมนำเข้า</span>':`<span class="row-status bad">${escapeHTML(r.errors.join(" · "))}</span>`}</td>
+    </tr>`).join("");
+    document.getElementById("import-preview-limit").textContent = total>500 ? `แสดง 500 แถวแรกจากทั้งหมด ${total} แถว` : "";
+  }
+
+  document.getElementById("btn-clear-import").addEventListener("click", ()=>setImportType(importDraft.type));
+
+  function applyBatchLocal(type, rows){
+    const parts = state.parts.map(p=>({...p}));
+    const transactions = state.transactions.map(t=>({...t}));
+    const byCode = new Map(parts.map(p=>[p.code.toLowerCase(),p]));
+    rows.forEach(r=>{
+      if(type==="parts"){
+        if(byCode.has(r.code.toLowerCase())) throw new Error(`รหัส ${r.code} มีอยู่ในระบบแล้ว`);
+        const p = {id:uid(),code:r.code,name:r.name,category:r.category,unit:r.unit,qty:r.qty,minQty:r.minQty,cost:r.cost,location:r.location,supplierId:r.supplierId||"",truckId:r.truckId||"",provinceId:r.provinceId||""};
+        parts.push(p); byCode.set(r.code.toLowerCase(),p);
+        if(r.qty>0) transactions.push({id:uid(),partId:p.id,type:"in",qty:r.qty,date:r.date,person:"",supplier:"ยอดตั้งต้น",supplierId:r.supplierId||"",truckId:r.truckId||"",provinceId:r.provinceId||"",prNo:"",poNo:"",ivNo:"",note:`นำเข้าอะไหล่จาก Excel${currentUser?" โดย "+currentUser.name:""}`});
+        return;
+      }
+      const p = byCode.get(r.code.toLowerCase());
+      if(!p) throw new Error(`ไม่พบรหัสอะไหล่ ${r.code}`);
+      if(type==="issue" && r.qty>p.qty+0.0000001) throw new Error(`สต๊อก ${r.code} ไม่พอ`);
+      p.qty += type==="receive" ? r.qty : -r.qty;
+      transactions.push({
+        id:uid(),partId:p.id,type:type==="receive"?"in":"out",qty:r.qty,date:r.date,
+        person:type==="issue"?(r.person||(currentUser?currentUser.name:"")):r.person||"",
+        supplier:type==="receive"?r.supplier:"",supplierId:r.supplierId||"",truckId:r.truckId||"",provinceId:r.provinceId||"",
+        prNo:r.prNo||"",poNo:r.poNo||"",ivNo:r.ivNo||"",note:r.note
+      });
+    });
+    state = {...state,parts,transactions};
+  }
+
+  document.getElementById("btn-confirm-import").addEventListener("click", async ()=>{
+    revalidateImportDraft();
+    if(!importDraft.rows.length || importDraft.rows.some(r=>!r.valid)){
+      toast("กรุณาแก้ไขแถวที่ผิดก่อนนำเข้า", true); return;
+    }
+    const cfg = IMPORT_CONFIG[importDraft.type];
+    if(!confirm(`ยืนยัน${cfg.label}จำนวน ${importDraft.rows.length} แถว? ข้อมูลเดิมจะไม่ถูกล้าง`)) return;
+    const btn = document.getElementById("btn-confirm-import");
+    btn.disabled=true; btn.textContent="กำลังนำเข้า...";
+    try{
+      if(hasScriptURL()){
+        const result = await apiCall("bulkImport", {importType:importDraft.type,rows:importDraft.rows,importedBy:currentUser?currentUser.name:""});
+        state = normalizeFromSheet(result);
+      }else{
+        applyBatchLocal(importDraft.type, importDraft.rows);
+      }
+      cacheSave(); renderAll();
+      const count = importDraft.rows.length;
+      setImportType(importDraft.type);
+      toast(`นำเข้า ${cfg.label} สำเร็จ ${count} แถว` + (hasScriptURL()?" และซิงก์กับ Sheets แล้ว":""));
+    }catch(err){
+      toast("นำเข้าข้อมูลไม่สำเร็จ: " + (err.message||"เกิดข้อผิดพลาด"), true);
+      revalidateImportDraft();
+    }finally{
+      btn.disabled=false; btn.textContent="ยืนยันนำเข้าข้อมูล";
+    }
+  });
+
+  // ================= RENDER ALL =================
+  function renderAll(){
+    renderDashboard();
+    renderParts();
+    populatePartSelects();
+    populateMasterSelects();
+    renderMaster();
+    renderReceiveLog();
+    renderIssueLog();
+    renderHistory();
+  }
+
+  function initAppAfterLogin(){
+    loadCache();
+    clearMasterImport();
+    renderAll();
+    if(hasScriptURL()){
+      syncFromSheet(true).then(()=> startPolling());
+    } else {
+      setSyncBadge("off", "ยังไม่ได้เชื่อมต่อ Sheets — กด ⚙ ตั้งค่า Sheets");
+    }
+  }
+
+  const savedAuth = loadAuth();
+  if(savedAuth){
+    showApp(savedAuth);
+  } else {
+    showLogin();
+  }
+})();
+</script>
+</body>
+</html>
