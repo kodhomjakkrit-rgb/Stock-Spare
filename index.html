@@ -183,6 +183,18 @@
   .field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--accent-2);outline-offset:0;border-color:var(--accent-2);}
   .field textarea{resize:vertical;min-height:56px;}
   .form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;}
+  .doc-lines{margin-top:14px;border:1px solid var(--border);border-radius:9px;overflow:hidden;}
+  .doc-lines table{min-width:690px;}
+  .doc-lines select,.doc-lines input{
+    width:100%;background:var(--panel-alt);border:1px solid var(--border);border-radius:6px;
+    color:var(--text);padding:7px 8px;font-family:'Noto Sans Thai',sans-serif;
+  }
+  .doc-lines .qty-input{min-width:110px;}
+  .doc-total{display:flex;justify-content:flex-end;gap:18px;padding:10px 12px;background:var(--panel-alt);font-size:12.5px;color:var(--text-dim);}
+  .count-input{width:110px!important;}
+  .diff-pos{color:var(--success);font-weight:700}.diff-neg{color:var(--danger);font-weight:700}.diff-zero{color:var(--text-dim)}
+  .report-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:820px){.report-grid{grid-template-columns:1fr;}}
 
   .search-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
   .search-bar input, .search-bar select{
@@ -333,7 +345,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.7</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -364,8 +376,8 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control</h1>
-        <p>รับเข้า · เบิกออก · แจ้งเตือนของใกล้หมด · รายงาน</p>
+        <h1>คลังอะไหล่ — Stock Control v3.7</h1>
+        <p>เอกสารหลายรายการ · ตรวจนับ · จุดสั่งซื้อ · Stock Card</p>
       </div>
     </div>
     <div class="top-actions">
@@ -385,6 +397,7 @@
     <button class="tab" data-view="parts"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>รายการอะไหล่</button>
     <button class="tab" data-view="receive"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v6H4z"/><path d="M12 10v8m0 0l-3.5-3.5M12 18l3.5-3.5"/></svg>รับเข้า</button>
     <button class="tab" data-view="issue"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 14h16v6H4z"/><path d="M12 14V6m0 0l-3.5 3.5M12 6l3.5 3.5"/></svg>เบิกออก</button>
+    <button class="tab" data-view="stockcount" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg>ตรวจนับ</button>
     <button class="tab" data-view="master" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v4H4zM4 11h16v8H4z"/><path d="M8 13v4m4-4v4m4-4v4"/></svg>ฐานข้อมูล</button>
     <button class="tab" data-view="import" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M12 7v7m0 0l-3-3m3 3l3-3M8 17h8"/></svg>นำเข้าข้อมูล</button>
     <button class="tab" data-view="users" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.5-4 2.3-6 5.5-6s5 2 5.5 6M17 8h4m-2-2v4"/></svg>ผู้ใช้ / Audit</button>
@@ -433,7 +446,7 @@
       <h2>รายการที่ต้องสั่งซื้อเพิ่ม <span class="sub">อะไหล่ที่คงเหลือ ≤ จุดสั่งซื้อขั้นต่ำ</span></h2>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>รหัส</th><th>ชื่ออะไหล่</th><th>คงเหลือ</th><th>ขั้นต่ำ</th><th>สถานะ</th></tr></thead>
+          <thead><tr><th>รหัส</th><th>ชื่ออะไหล่</th><th>คงเหลือ</th><th>จุดสั่งซื้อ</th><th>สูงสุด</th><th>แนะนำสั่ง</th><th>ที่จัดเก็บ</th></tr></thead>
           <tbody id="low-stock-body"></tbody>
         </table>
       </div>
@@ -472,16 +485,8 @@
   <!-- RECEIVE -->
   <section class="view" id="view-receive">
     <div class="panel">
-      <h2>บันทึกรับเข้าอะไหล่</h2>
+      <h2>ใบรับเข้าอะไหล่ <span class="sub">เพิ่มได้หลายรายการในเอกสารเดียว</span></h2>
       <div class="field-grid">
-        <div class="field">
-          <label>อะไหล่</label>
-          <select id="rec-part"></select>
-        </div>
-        <div class="field">
-          <label>จำนวนที่รับเข้า</label>
-          <input type="number" id="rec-qty" min="0" step="any" placeholder="0">
-        </div>
         <div class="field">
           <label>วันที่</label>
           <input type="date" id="rec-date">
@@ -510,7 +515,9 @@
           <textarea id="rec-note" placeholder="เลขที่ใบกำกับ, รายละเอียดเพิ่มเติม..."></textarea>
         </div>
       </div>
+      <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่</th><th style="width:150px">จำนวนรับ</th><th style="width:105px">คงเหลือ</th><th style="width:72px"></th></tr></thead><tbody id="receive-lines-body"></tbody></table><div class="doc-total"><span id="receive-line-count">0 รายการ</span><span id="receive-total-qty">รวม 0 หน่วย</span></div></div>
       <div class="form-actions">
+        <button id="btn-receive-add-line">+ เพิ่มรายการ</button>
         <button class="primary" id="btn-receive-submit">บันทึกรับเข้า</button>
       </div>
     </div>
@@ -529,17 +536,8 @@
   <!-- ISSUE -->
   <section class="view" id="view-issue">
     <div class="panel">
-      <h2>บันทึกเบิกอะไหล่</h2>
+      <h2>ใบเบิกอะไหล่ <span class="sub">ตรวจสต๊อกครบทุกบรรทัดก่อนบันทึก</span></h2>
       <div class="field-grid">
-        <div class="field">
-          <label>อะไหล่</label>
-          <select id="iss-part"></select>
-        </div>
-        <div class="field">
-          <label>จำนวนที่เบิก</label>
-          <input type="number" id="iss-qty" min="0" step="any" placeholder="0">
-          <div class="hint" id="iss-stock-hint"></div>
-        </div>
         <div class="field">
           <label>วันที่</label>
           <input type="date" id="iss-date">
@@ -564,7 +562,9 @@
           <textarea id="iss-note" placeholder="ใช้งานกับเครื่องจักรใด, สาเหตุการเบิก..."></textarea>
         </div>
       </div>
+      <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่</th><th style="width:150px">จำนวนเบิก</th><th style="width:125px">คงเหลือ</th><th style="width:72px"></th></tr></thead><tbody id="issue-lines-body"></tbody></table><div class="doc-total"><span id="issue-line-count">0 รายการ</span><span id="issue-total-qty">รวม 0 หน่วย</span></div></div>
       <div class="form-actions">
+        <button id="btn-issue-add-line">+ เพิ่มรายการ</button>
         <button class="warn" id="btn-issue-submit">บันทึกเบิกออก</button>
       </div>
     </div>
@@ -578,6 +578,23 @@
         </table>
       </div>
     </div>
+  </section>
+
+  <!-- STOCK COUNT -->
+  <section class="view" id="view-stockcount" data-admin-only>
+    <div class="panel">
+      <h2>ตรวจนับและปรับยอดสต๊อก <span class="sub">เฉพาะ Admin · บันทึก Audit Log อัตโนมัติ</span></h2>
+      <div class="field-grid">
+        <div class="field"><label>วันที่ตรวจนับ</label><input type="date" id="count-date"></div>
+        <div class="field"><label>ผู้ตรวจนับ</label><input id="count-by" placeholder="ชื่อผู้ตรวจนับ"></div>
+        <div class="field"><label>ผู้อนุมัติ</label><input id="count-approved" placeholder="ชื่อผู้อนุมัติ"></div>
+        <div class="field"><label>เหตุผล / รอบตรวจนับ *</label><input id="count-reason" placeholder="เช่น ตรวจนับสิ้นเดือน สิงหาคม 2569"></div>
+      </div>
+      <div class="search-bar" style="margin-top:14px"><input id="count-search" placeholder="ค้นหารหัส ชื่อ หรือตำแหน่งจัดเก็บ..."><button id="btn-count-fill-system">เติมยอดตามระบบทั้งหมด</button></div>
+      <div class="table-wrap"><table><thead><tr><th>รหัส</th><th>อะไหล่</th><th>ที่จัดเก็บ</th><th>ยอดระบบ</th><th>ยอดนับจริง</th><th>ผลต่าง</th></tr></thead><tbody id="stock-count-body"></tbody></table></div>
+      <div class="form-actions"><button class="primary" id="btn-count-save">ยืนยันและปรับยอด</button></div>
+    </div>
+    <div class="panel"><h2>ประวัติตรวจนับล่าสุด</h2><div class="table-wrap"><table><thead><tr><th>เลขที่</th><th>วันที่</th><th>อะไหล่</th><th>ยอดเดิม</th><th>ยอดจริง</th><th>ผลต่าง</th><th>ผู้ตรวจ/ผู้อนุมัติ</th></tr></thead><tbody id="stock-count-history-body"></tbody></table></div></div>
   </section>
 
   <!-- SHARED MASTER DATA -->
@@ -689,6 +706,11 @@
 
   <!-- HISTORY / REPORTS -->
   <section class="view" id="view-history">
+    <div class="report-grid">
+      <div class="panel"><h2>อะไหล่เบิกสูงสุด <span class="sub">90 วันล่าสุด</span></h2><div class="table-wrap"><table><thead><tr><th>รหัส</th><th>รายการ</th><th>จำนวนเบิก</th></tr></thead><tbody id="top-issued-body"></tbody></table></div></div>
+      <div class="panel"><h2>อะไหล่ไม่เคลื่อนไหว</h2><div class="search-bar"><select id="inactive-days"><option value="90">เกิน 90 วัน</option><option value="180">เกิน 180 วัน</option><option value="365">เกิน 365 วัน</option></select></div><div class="table-wrap"><table><thead><tr><th>รหัส</th><th>รายการ</th><th>เคลื่อนไหวล่าสุด</th><th>คงเหลือ</th></tr></thead><tbody id="inactive-parts-body"></tbody></table></div></div>
+    </div>
+    <div class="panel"><h2>Stock Card รายอะไหล่</h2><div class="search-bar"><select id="stock-card-part"></select><button id="btn-stock-card-export">ส่งออก Stock Card</button></div><div class="table-wrap"><table><thead><tr><th>วันที่</th><th>เลขที่</th><th>รับเข้า</th><th>เบิกออก</th><th>คงเหลือ</th><th>รายละเอียด</th></tr></thead><tbody id="stock-card-body"></tbody></table></div></div>
     <div class="panel">
       <h2>ประวัติการเคลื่อนไหวทั้งหมด</h2>
       <div class="search-bar">
@@ -780,6 +802,9 @@
       </div>
       <div class="field"><label>จำนวนคงเหลือ</label><input type="number" id="pf-qty" min="0" step="any" placeholder="0"></div>
       <div class="field"><label>จุดสั่งซื้อขั้นต่ำ</label><input type="number" id="pf-min" min="0" step="any" placeholder="0"></div>
+      <div class="field"><label>จุดสั่งซื้อ (Reorder Point)</label><input type="number" id="pf-reorder" min="0" step="any" placeholder="0"></div>
+      <div class="field"><label>จำนวนสูงสุด (Max Stock)</label><input type="number" id="pf-max" min="0" step="any" placeholder="0"></div>
+      <div class="field"><label>ระยะเวลารอสินค้า (วัน)</label><input type="number" id="pf-lead" min="0" step="1" placeholder="0"></div>
       <div class="field"><label>มูลค่าต่อหน่วย (บาท)</label><input type="number" id="pf-cost" min="0" step="0.01" placeholder="0.00"></div>
       <div class="field"><label>ที่จัดเก็บ / ชั้นวาง</label><input type="text" id="pf-location" placeholder="เช่น A1-03"></div>
       <div class="field"><label>ซัพพลายเออร์หลัก</label><select id="pf-supplier"></select></div>
@@ -867,7 +892,7 @@
   const AUTH_KEY = "sparepartsStock_auth";
 
   // ============ LOGIN / ROLE PERMISSIONS ============
-  // v3.6 stores user accounts as salted password hashes in the Users sheet.
+  // v3.7 stores user accounts as salted password hashes in the Users sheet.
   let currentUser = null; // { username, name, role, token, expiresAt }
   let logoLoadPromise = null;
 
@@ -930,6 +955,8 @@
     document.getElementById("app").classList.add("unlocked");
     applyRolePermissions(user);
     document.getElementById("iss-person").value = document.getElementById("iss-person").value || user.name;
+    document.getElementById("count-by").value = document.getElementById("count-by").value || user.name;
+    document.getElementById("count-approved").value = document.getElementById("count-approved").value || user.name;
     loadLogoFromDrive();
       initAppAfterLogin();
       if(user.mustChangePassword) setTimeout(()=>openPasswordModal(true), 400);
@@ -978,7 +1005,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.6 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.7 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -998,7 +1025,7 @@
     return local.toISOString().slice(0,10);
   };
 
-  let state = { parts: [], transactions: [], suppliers: [], trucks: [], provinces: [], documents: [], users: [], auditLogs: [] };
+  let state = { parts: [], transactions: [], suppliers: [], trucks: [], provinces: [], documents: [], stockCounts: [], users: [], auditLogs: [] };
   const charts = {};
   const CHART_FONT_TH = "'Noto Sans Thai', sans-serif";
   const CHART_FONT_MONO = "'IBM Plex Mono', monospace";
@@ -1115,7 +1142,8 @@
       qty: Number(p.qty)||0, minQty: Number(p.minQty)||0, cost: Number(p.cost)||0,
       location: String(p.location||""), supplierId:String(p.supplierId||""),
       truckId:String(p.truckId||""), provinceId:String(p.provinceId||""),
-      isActive:truthyActive(p.isActive), createdAt:String(p.createdAt||""), updatedAt:String(p.updatedAt||"")
+      isActive:truthyActive(p.isActive), createdAt:String(p.createdAt||""), updatedAt:String(p.updatedAt||""),
+      maxQty:Number(p.maxQty)||0,reorderPoint:Number(p.reorderPoint===undefined||p.reorderPoint===""?p.minQty:p.reorderPoint)||0,leadTimeDays:Number(p.leadTimeDays)||0
     })).filter(p=>p.id && p.code);
     const transactions = (data.transactions||[]).map(t=>({
       id: String(t.id), partId: String(t.partId), type: t.type==="in"?"in":"out",
@@ -1125,15 +1153,17 @@
       prNo:String(t.prNo||""), poNo:String(t.poNo||""), ivNo:String(t.ivNo||""),
       docNo:String(t.docNo||""), status:String(t.status||"active")==="cancelled"?"cancelled":"active",
       cancelReason:String(t.cancelReason||""), cancelledAt:String(t.cancelledAt||""), cancelledBy:String(t.cancelledBy||""),
-      createdAt:String(t.createdAt||""), createdBy:String(t.createdBy||"")
+      createdAt:String(t.createdAt||""), createdBy:String(t.createdBy||""),
+      documentId:String(t.documentId||""),lineNo:Number(t.lineNo)||0
     })).filter(t=>t.id && t.partId);
     const suppliers = (data.suppliers||[]).map(x=>({id:String(x.id||""),code:String(x.code||""),name:String(x.name||""),contact:String(x.contact||""),phone:String(x.phone||""),taxId:String(x.taxId||""),address:String(x.address||""),provinceId:String(x.provinceId||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.name);
     const trucks = (data.trucks||[]).map(x=>({id:String(x.id||""),plateNo:String(x.plateNo||""),provinceId:String(x.provinceId||""),description:String(x.description||""),driver:String(x.driver||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.plateNo);
     const provinces = (data.provinces||[]).map(x=>({id:String(x.id||""),name:String(x.name||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.name);
     const documents = (data.documents||[]).map(x=>({id:String(x.id||""),docType:String(x.docType||"").toUpperCase(),docNo:String(x.docNo||""),supplierId:String(x.supplierId||""),date:String(x.date||"").slice(0,10),note:String(x.note||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.docNo);
+    const stockCounts = (data.stockCounts||[]).map(x=>({id:String(x.id||""),countNo:String(x.countNo||""),date:String(x.date||"").slice(0,10),partId:String(x.partId||""),systemQty:Number(x.systemQty)||0,actualQty:Number(x.actualQty)||0,difference:Number(x.difference)||0,reason:String(x.reason||""),countedBy:String(x.countedBy||""),approvedBy:String(x.approvedBy||""),status:String(x.status||"approved"),createdAt:String(x.createdAt||""),createdBy:String(x.createdBy||"")})).filter(x=>x.id&&x.partId);
     const users = (data.users||[]).map(x=>({id:String(x.id||""),username:String(x.username||""),name:String(x.name||""),role:x.role==="admin"?"admin":"staff",isActive:truthyActive(x.isActive),mustChangePassword:!!x.mustChangePassword,failedAttempts:Number(x.failedAttempts)||0,lockedUntil:String(x.lockedUntil||""),createdAt:String(x.createdAt||""),updatedAt:String(x.updatedAt||"")})).filter(x=>x.id&&x.username);
     const auditLogs = (data.auditLogs||[]).map(x=>({id:String(x.id||""),timestamp:String(x.timestamp||""),username:String(x.username||""),userName:String(x.userName||""),role:String(x.role||""),action:String(x.action||""),entityType:String(x.entityType||""),entityId:String(x.entityId||""),detail:String(x.detail||"")}));
-    return { parts, transactions, suppliers, trucks, provinces, documents, users, auditLogs };
+    return { parts, transactions, suppliers, trucks, provinces, documents, stockCounts, users, auditLogs };
   }
 
   async function syncFromSheet(showToastOnFail){
@@ -1226,12 +1256,12 @@
 
   function seed(){
     state.parts = [
-      {id:uid(), code:"MTR-001", name:"มอเตอร์ปั๊มน้ำ 2HP", category:"เครื่องจักร", unit:"ชิ้น", qty:4, minQty:2, cost:5200, location:"A1-01"},
-      {id:uid(), code:"CAP-014", name:"ฝาขวด PET 28mm", category:"บรรจุภัณฑ์", unit:"กล่อง", qty:18, minQty:10, cost:320, location:"B2-05"},
-      {id:uid(), code:"FLM-002", name:"ฟิล์มหด (Shrink Film)", category:"บรรจุภัณฑ์", unit:"ม้วน", qty:3, minQty:5, cost:890, location:"B1-02"},
-      {id:uid(), code:"BLT-007", name:"สายพานลำเลียง PVC", category:"เครื่องจักร", unit:"เมตร", qty:12, minQty:6, cost:210, location:"A2-04"},
-      {id:uid(), code:"VLV-003", name:"วาล์วปีกผีเสื้อ 2 นิ้ว", category:"ท่อ-วาล์ว", unit:"ชิ้น", qty:1, minQty:3, cost:1450, location:"C1-01"},
-      {id:uid(), code:"BRG-011", name:"ตลับลูกปืน 6204", category:"เครื่องจักร", unit:"ชิ้น", qty:9, minQty:4, cost:180, location:"A1-06"},
+      {id:uid(), code:"MTR-001", name:"มอเตอร์ปั๊มน้ำ 2HP", category:"เครื่องจักร", unit:"ชิ้น", qty:4, minQty:2,reorderPoint:2,maxQty:8,leadTimeDays:7, cost:5200, location:"A1-01"},
+      {id:uid(), code:"CAP-014", name:"ฝาขวด PET 28mm", category:"บรรจุภัณฑ์", unit:"กล่อง", qty:18, minQty:10,reorderPoint:10,maxQty:30,leadTimeDays:5, cost:320, location:"B2-05"},
+      {id:uid(), code:"FLM-002", name:"ฟิล์มหด (Shrink Film)", category:"บรรจุภัณฑ์", unit:"ม้วน", qty:3, minQty:5,reorderPoint:5,maxQty:12,leadTimeDays:5, cost:890, location:"B1-02"},
+      {id:uid(), code:"BLT-007", name:"สายพานลำเลียง PVC", category:"เครื่องจักร", unit:"เมตร", qty:12, minQty:6,reorderPoint:6,maxQty:20,leadTimeDays:10, cost:210, location:"A2-04"},
+      {id:uid(), code:"VLV-003", name:"วาล์วปีกผีเสื้อ 2 นิ้ว", category:"ท่อ-วาล์ว", unit:"ชิ้น", qty:1, minQty:3,reorderPoint:3,maxQty:8,leadTimeDays:14, cost:1450, location:"C1-01"},
+      {id:uid(), code:"BRG-011", name:"ตลับลูกปืน 6204", category:"เครื่องจักร", unit:"ชิ้น", qty:9, minQty:4,reorderPoint:4,maxQty:12,leadTimeDays:7, cost:180, location:"A1-06"},
     ];
     state.transactions = [];
     state.provinces = [
@@ -1242,6 +1272,7 @@
     state.suppliers = [];
     state.trucks = [];
     state.documents = [];
+    state.stockCounts = [];
     state.users = [];
     state.auditLogs = [];
     save();
@@ -1344,7 +1375,7 @@
   // ---------- Stock status helper ----------
   function stockStatus(p){
     if(p.qty <= 0) return "out";
-    if(p.qty <= p.minQty) return "low";
+    if(p.qty <= (p.reorderPoint||p.minQty)) return "low";
     return "ok";
   }
   function statusLabel(s){
@@ -1398,9 +1429,11 @@
         <td>${tagHTML(p)}</td>
         <td>${escapeHTML(p.name)}</td>
         <td class="mono">${p.qty} ${escapeHTML(p.unit)}</td>
-        <td class="mono">${p.minQty}</td>
-        <td>${statusLabel(stockStatus(p))}</td>
-      </tr>`).join("") : `<tr class="empty-row"><td colspan="5">ไม่มีรายการที่ต้องสั่งซื้อเพิ่มในขณะนี้</td></tr>`;
+        <td class="mono">${p.reorderPoint||p.minQty}</td>
+        <td class="mono">${p.maxQty||"-"}</td>
+        <td class="mono">${Math.max(0,(p.maxQty||p.reorderPoint||p.minQty)-p.qty)} ${escapeHTML(p.unit)}</td>
+        <td class="mono">${escapeHTML(p.location||"-")}</td>
+      </tr>`).join("") : `<tr class="empty-row"><td colspan="7">ไม่มีรายการที่ต้องสั่งซื้อเพิ่มในขณะนี้</td></tr>`;
 
     const recentBody = document.getElementById("recent-tx-body");
     const recent = [...activeTx].sort((a,b)=> b.date.localeCompare(a.date) || b.id.localeCompare(a.id)).slice(0,8);
@@ -1593,6 +1626,9 @@
     document.getElementById("pf-unit-custom").value = "";
     document.getElementById("pf-qty").value = p ? p.qty : 0;
     document.getElementById("pf-min").value = p ? p.minQty : 0;
+    document.getElementById("pf-reorder").value = p ? (p.reorderPoint||p.minQty||0) : 0;
+    document.getElementById("pf-max").value = p ? (p.maxQty||0) : 0;
+    document.getElementById("pf-lead").value = p ? (p.leadTimeDays||0) : 0;
     document.getElementById("pf-cost").value = p ? p.cost : "";
     document.getElementById("pf-location").value = p ? p.location : "";
     document.getElementById("pf-supplier").value = p ? (p.supplierId||"") : "";
@@ -1629,6 +1665,9 @@
       code, name, category, unit,
       qty: Math.max(0, Number(document.getElementById("pf-qty").value)||0),
       minQty: Math.max(0, Number(document.getElementById("pf-min").value)||0),
+      reorderPoint: Math.max(0, Number(document.getElementById("pf-reorder").value)||0),
+      maxQty: Math.max(0, Number(document.getElementById("pf-max").value)||0),
+      leadTimeDays: Math.max(0, Number(document.getElementById("pf-lead").value)||0),
       cost: Math.max(0, parseFloat(document.getElementById("pf-cost").value)||0),
       location: document.getElementById("pf-location").value.trim(),
       supplierId: document.getElementById("pf-supplier").value,
@@ -1677,22 +1716,46 @@
     }
   }
 
-  // ================= RECEIVE =================
-  function populatePartSelects(){
-    const options = state.parts.filter(p=>p.isActive!==false)
-      .sort((a,b)=> a.name.localeCompare(b.name,'th'))
-      .map(p=>`<option value="${p.id}">${escapeHTML(p.code)} — ${escapeHTML(p.name)} (คงเหลือ ${p.qty} ${escapeHTML(p.unit)})</option>`).join("");
-    ["rec-part","iss-part"].forEach(id=>{
-      const sel = document.getElementById(id);
-      const prev = sel.value;
-      sel.innerHTML = options || `<option value="">— ไม่มีอะไหล่ในระบบ —</option>`;
-      if(prev) sel.value = prev;
-    });
-    updateIssueHint();
+  // ================= MULTI-LINE RECEIVE / ISSUE =================
+  let receiveLines = [{id:uid(),partId:"",qty:""}];
+  let issueLines = [{id:uid(),partId:"",qty:""}];
+
+  function documentPartOptions(selected){
+    const options = state.parts.filter(p=>p.isActive!==false).sort((a,b)=>a.name.localeCompare(b.name,'th'));
+    return `<option value="">— เลือกอะไหล่ —</option>` + options.map(p=>`<option value="${p.id}" ${p.id===selected?'selected':''}>${escapeHTML(p.code)} — ${escapeHTML(p.name)}</option>`).join("");
   }
+  function renderDocumentLines(type){
+    const lines=type==="in"?receiveLines:issueLines;
+    const body=document.getElementById(type==="in"?"receive-lines-body":"issue-lines-body");
+    body.innerHTML=lines.map((line,index)=>{
+      const p=partById(line.partId);
+      return `<tr><td class="mono">${index+1}</td><td><select data-doc-part="${type}" data-line-id="${line.id}">${documentPartOptions(line.partId)}</select></td><td><input class="qty-input" type="number" min="0" step="any" value="${escapeHTML(line.qty)}" data-doc-qty="${type}" data-line-id="${line.id}" placeholder="0"></td><td class="mono">${p?`${p.qty} ${escapeHTML(p.unit)}`:'-'}</td><td><button class="small danger-ghost" data-doc-remove="${type}" data-line-id="${line.id}" ${lines.length===1?'disabled':''}>ลบ</button></td></tr>`;
+    }).join("");
+    const valid=lines.filter(x=>x.partId&&Number(x.qty)>0);
+    document.getElementById(type==="in"?"receive-line-count":"issue-line-count").textContent=`${valid.length} รายการ`;
+    document.getElementById(type==="in"?"receive-total-qty":"issue-total-qty").textContent=`รวม ${fmtMoney(valid.reduce((s,x)=>s+Number(x.qty),0))} หน่วย`;
+  }
+  function populatePartSelects(){
+    renderDocumentLines("in");renderDocumentLines("out");
+    renderStockCardPartOptions();
+  }
+  document.addEventListener("change",e=>{
+    const type=e.target.dataset.docPart||e.target.dataset.docQty;if(!type)return;
+    const lines=type==="in"?receiveLines:issueLines,line=lines.find(x=>x.id===e.target.dataset.lineId);if(!line)return;
+    if(e.target.dataset.docPart)line.partId=e.target.value;else line.qty=e.target.value;
+    renderDocumentLines(type);
+  });
+  document.addEventListener("click",e=>{
+    const type=e.target.dataset.docRemove;if(!type)return;
+    if(type==="in")receiveLines=receiveLines.filter(x=>x.id!==e.target.dataset.lineId);else issueLines=issueLines.filter(x=>x.id!==e.target.dataset.lineId);
+    renderDocumentLines(type);
+  });
+  document.getElementById("btn-receive-add-line").addEventListener("click",()=>{receiveLines.push({id:uid(),partId:"",qty:""});renderDocumentLines("in");});
+  document.getElementById("btn-issue-add-line").addEventListener("click",()=>{issueLines.push({id:uid(),partId:"",qty:""});renderDocumentLines("out");});
 
   document.getElementById("rec-date").value = todayISO();
   document.getElementById("iss-date").value = todayISO();
+  document.getElementById("count-date").value = todayISO();
   document.getElementById("rec-supplier").addEventListener("change", ()=>{
     const s=supplierById(document.getElementById("rec-supplier").value);
     if(s&&s.provinceId) document.getElementById("rec-province").value=s.provinceId;
@@ -1706,49 +1769,39 @@
     if(t&&t.provinceId) document.getElementById("iss-province").value=t.provinceId;
   });
 
-  document.getElementById("btn-receive-submit").addEventListener("click", async ()=>{
-    const partId = document.getElementById("rec-part").value;
-    const qty = Number(document.getElementById("rec-qty").value);
-    const date = document.getElementById("rec-date").value || todayISO();
-    const supplierId = document.getElementById("rec-supplier").value;
-    const supplierObj = supplierById(supplierId);
-    const supplier = supplierObj ? supplierObj.name : "";
-    const truckId = document.getElementById("rec-truck").value;
-    const provinceId = document.getElementById("rec-province").value;
-    const prNo = document.getElementById("rec-pr").value;
-    const poNo = document.getElementById("rec-po").value;
-    const ivNo = document.getElementById("rec-iv").value;
-    const contact = document.getElementById("rec-contact").value.trim();
-    const note = document.getElementById("rec-note").value.trim();
-
-    if(!partId){ toast("กรุณาเลือกอะไหล่", true); return; }
-    if(!qty || qty<=0){ toast("กรุณากรอกจำนวนที่ถูกต้อง", true); return; }
-
-    const p = partById(partId);
-    const tx = {id:uid(), partId, type:"in", qty, date, supplier, supplierId, truckId, provinceId, prNo, poNo, ivNo, person:contact, note};
-    const updatedPart = { ...p, qty: p.qty + qty };
-
-    const btn = document.getElementById("btn-receive-submit");
-    btn.disabled = true; btn.textContent = "กำลังบันทึก...";
+  function collectDocument(type){
+    const lines=(type==="in"?receiveLines:issueLines).filter(x=>x.partId||String(x.qty).trim());
+    if(!lines.length)throw new Error("กรุณาเพิ่มรายการอะไหล่อย่างน้อย 1 รายการ");
+    const seen=new Set();
+    const items=lines.map((x,i)=>{const qty=Number(x.qty),p=partById(x.partId);if(!p)throw new Error(`รายการที่ ${i+1}: กรุณาเลือกอะไหล่`);if(!qty||qty<=0)throw new Error(`รายการที่ ${i+1}: จำนวนต้องมากกว่า 0`);if(seen.has(x.partId))throw new Error(`รายการที่ ${i+1}: เลือกอะไหล่ซ้ำ`);seen.add(x.partId);if(type==="out"&&qty>p.qty)throw new Error(`สต๊อก ${p.code} ไม่พอ (คงเหลือ ${p.qty} ${p.unit})`);return{partId:x.partId,qty};});
+    const prefix=type==="in"?"rec":"iss",supplierId=type==="in"?document.getElementById("rec-supplier").value:"";
+    return {type,date:document.getElementById(`${prefix}-date`).value||todayISO(),items,
+      supplierId,supplier:type==="in"?(supplierById(supplierId)?.name||""):"",
+      person:type==="in"?document.getElementById("rec-contact").value.trim():document.getElementById("iss-person").value.trim(),
+      truckId:document.getElementById(`${prefix}-truck`).value,provinceId:document.getElementById(`${prefix}-province`).value,
+      prNo:document.getElementById(`${prefix}-pr`).value,poNo:document.getElementById(`${prefix}-po`).value,ivNo:document.getElementById(`${prefix}-iv`).value,
+      note:document.getElementById(`${prefix}-note`).value.trim()};
+  }
+  async function submitDocument(type){
+    let docPayload;try{docPayload=collectDocument(type);}catch(err){toast(err.message,true);return;}
+    const btn=document.getElementById(type==="in"?"btn-receive-submit":"btn-issue-submit"),normalText=type==="in"?"บันทึกรับเข้า":"บันทึกเบิกออก";
+    btn.disabled=true;btn.textContent="กำลังบันทึกทั้งใบ...";
     try{
-      const saved = hasScriptURL() ? await apiCall("addTransaction", { tx }) : null;
-      p.qty = saved&&saved.part ? Number(saved.part.qty) : updatedPart.qty;
-      const savedTx = saved&&saved.tx ? normalizeFromSheet({transactions:[saved.tx]}).transactions[0] : {...tx,docNo:nextLocalDocNo("in",date),status:"active",createdBy:currentUser?currentUser.username:""};
-      state.transactions.push(savedTx);
-      cacheSave();
-
-      document.getElementById("rec-qty").value = "";
-      document.getElementById("rec-contact").value = "";
-      document.getElementById("rec-note").value = "";
-      toast(`รับเข้า "${p.name}" จำนวน ${qty} ${p.unit} เรียบร้อย` + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
-      renderAll();
-      showTransactionSuccess(savedTx);
-    }catch(err){
-      toast("บันทึกไป Google Sheets ไม่สำเร็จ: " + err.message, true);
-    }finally{
-      btn.disabled = false; btn.textContent = "บันทึกรับเข้า";
-    }
-  });
+      let result;
+      if(hasScriptURL())result=await apiCall("addDocument",{document:docPayload});
+      else{
+        const docNo=nextLocalDocNo(type,docPayload.date),documentId=uid();
+        const transactions=docPayload.items.map((x,i)=>({id:uid(),documentId,lineNo:i+1,partId:x.partId,type,qty:x.qty,date:docPayload.date,person:docPayload.person,supplier:docPayload.supplier,supplierId:docPayload.supplierId,truckId:docPayload.truckId,provinceId:docPayload.provinceId,prNo:docPayload.prNo,poNo:docPayload.poNo,ivNo:docPayload.ivNo,note:docPayload.note,docNo,status:"active",createdBy:currentUser?currentUser.username:""}));
+        transactions.forEach(t=>{const p=partById(t.partId);p.qty+=type==="in"?t.qty:-t.qty;});result={docNo,documentId,transactions,parts:docPayload.items.map(x=>partById(x.partId))};
+      }
+      const normalized=normalizeFromSheet({transactions:result.transactions,parts:result.parts});
+      normalized.parts.forEach(saved=>{const p=partById(saved.id);if(p)Object.assign(p,saved);});state.transactions.push(...normalized.transactions);
+      if(type==="in"){receiveLines=[{id:uid(),partId:"",qty:""}];document.getElementById("rec-contact").value="";document.getElementById("rec-note").value="";}
+      else{issueLines=[{id:uid(),partId:"",qty:""}];document.getElementById("iss-person").value=currentUser?currentUser.name:"";document.getElementById("iss-note").value="";}
+      cacheSave();renderAll();showDocumentSuccess(result.docNo);toast(`${type==="in"?"รับเข้า":"เบิกออก"} ${result.docNo} สำเร็จ ${result.transactions.length} รายการ`);
+    }catch(err){toast("บันทึกเอกสารไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent=normalText;}
+  }
+  document.getElementById("btn-receive-submit").addEventListener("click",()=>submitDocument("in"));
 
   function renderReceiveLog(){
     const body = document.getElementById("recent-receive-body");
@@ -1766,53 +1819,7 @@
   }
 
   // ================= ISSUE =================
-  document.getElementById("iss-part").addEventListener("change", updateIssueHint);
-  function updateIssueHint(){
-    const p = partById(document.getElementById("iss-part").value);
-    document.getElementById("iss-stock-hint").textContent = p ? `คงเหลือปัจจุบัน: ${p.qty} ${p.unit}` : "";
-  }
-
-  document.getElementById("btn-issue-submit").addEventListener("click", async ()=>{
-    const partId = document.getElementById("iss-part").value;
-    const qty = Number(document.getElementById("iss-qty").value);
-    const date = document.getElementById("iss-date").value || todayISO();
-    const person = document.getElementById("iss-person").value.trim();
-    const truckId = document.getElementById("iss-truck").value;
-    const provinceId = document.getElementById("iss-province").value;
-    const prNo = document.getElementById("iss-pr").value;
-    const poNo = document.getElementById("iss-po").value;
-    const ivNo = document.getElementById("iss-iv").value;
-    const note = document.getElementById("iss-note").value.trim();
-
-    if(!partId){ toast("กรุณาเลือกอะไหล่", true); return; }
-    if(!qty || qty<=0){ toast("กรุณากรอกจำนวนที่ถูกต้อง", true); return; }
-    const p = partById(partId);
-    if(qty > p.qty){ toast(`คงเหลือไม่พอ (มีเพียง ${p.qty} ${p.unit})`, true); return; }
-
-    const tx = {id:uid(), partId, type:"out", qty, date, person, truckId, provinceId, prNo, poNo, ivNo, note};
-    const updatedPart = { ...p, qty: p.qty - qty };
-
-    const btn = document.getElementById("btn-issue-submit");
-    btn.disabled = true; btn.textContent = "กำลังบันทึก...";
-    try{
-      const saved = hasScriptURL() ? await apiCall("addTransaction", { tx }) : null;
-      p.qty = saved&&saved.part ? Number(saved.part.qty) : updatedPart.qty;
-      const savedTx = saved&&saved.tx ? normalizeFromSheet({transactions:[saved.tx]}).transactions[0] : {...tx,docNo:nextLocalDocNo("out",date),status:"active",createdBy:currentUser?currentUser.username:""};
-      state.transactions.push(savedTx);
-      cacheSave();
-
-      document.getElementById("iss-qty").value = "";
-      document.getElementById("iss-person").value = currentUser ? currentUser.name : "";
-      document.getElementById("iss-note").value = "";
-      toast(`เบิก "${p.name}" จำนวน ${qty} ${p.unit} เรียบร้อย` + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
-      renderAll();
-      showTransactionSuccess(savedTx);
-    }catch(err){
-      toast("บันทึกไป Google Sheets ไม่สำเร็จ: " + err.message, true);
-    }finally{
-      btn.disabled = false; btn.textContent = "บันทึกเบิกออก";
-    }
-  });
+  document.getElementById("btn-issue-submit").addEventListener("click",()=>submitDocument("out"));
 
   function renderIssueLog(){
     const body = document.getElementById("recent-issue-body");
@@ -1828,6 +1835,38 @@
       </tr>`;
     }).join("") : `<tr class="empty-row"><td colspan="5">ยังไม่มีรายการเบิกออก</td></tr>`;
   }
+
+  // ================= STOCK COUNT =================
+  const countDraft={};
+  function renderStockCount(){
+    if(!isAdmin())return;
+    const q=(document.getElementById("count-search").value||"").toLowerCase().trim();
+    const rows=state.parts.filter(p=>p.isActive!==false&&(!q||`${p.code} ${p.name} ${p.location}`.toLowerCase().includes(q))).sort((a,b)=>(a.location||"").localeCompare(b.location||"",'th')||a.code.localeCompare(b.code));
+    document.getElementById("stock-count-body").innerHTML=rows.length?rows.map(p=>{
+      const actual=countDraft[p.id],diff=actual===""||actual===undefined?null:Number(actual)-p.qty;
+      return `<tr><td>${tagHTML(p)}</td><td>${escapeHTML(p.name)}</td><td class="mono">${escapeHTML(p.location||"-")}</td><td class="mono">${p.qty} ${escapeHTML(p.unit)}</td><td><input class="count-input" type="number" min="0" step="any" data-count-part="${p.id}" value="${actual===undefined?'':escapeHTML(actual)}" placeholder="ยอดจริง"></td><td class="mono ${diff===null?'diff-zero':diff>0?'diff-pos':diff<0?'diff-neg':'diff-zero'}">${diff===null?'-':(diff>0?'+':'')+fmtMoney(diff)}</td></tr>`;
+    }).join(""):`<tr class="empty-row"><td colspan="6">ไม่พบอะไหล่</td></tr>`;
+    const history=[...(state.stockCounts||[])].sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt.localeCompare(a.createdAt)).slice(0,20);
+    document.getElementById("stock-count-history-body").innerHTML=history.length?history.map(x=>{const p=partById(x.partId);return `<tr><td class="mono">${escapeHTML(x.countNo)}</td><td>${fmtDate(x.date)}</td><td>${escapeHTML(p?p.code+' — '+p.name:'-')}</td><td class="mono">${x.systemQty}</td><td class="mono">${x.actualQty}</td><td class="mono ${x.difference>0?'diff-pos':x.difference<0?'diff-neg':'diff-zero'}">${x.difference>0?'+':''}${x.difference}</td><td>${escapeHTML(x.countedBy||'-')} / ${escapeHTML(x.approvedBy||'-')}</td></tr>`;}).join(""):`<tr class="empty-row"><td colspan="7">ยังไม่มีประวัติตรวจนับ</td></tr>`;
+  }
+  document.getElementById("count-search").addEventListener("input",renderStockCount);
+  document.getElementById("stock-count-body").addEventListener("change",e=>{if(!e.target.dataset.countPart)return;countDraft[e.target.dataset.countPart]=e.target.value;renderStockCount();});
+  document.getElementById("btn-count-fill-system").addEventListener("click",()=>{state.parts.filter(p=>p.isActive!==false).forEach(p=>countDraft[p.id]=p.qty);renderStockCount();});
+  document.getElementById("btn-count-save").addEventListener("click",async()=>{
+    if(!requireAdmin())return;
+    const items=Object.keys(countDraft).filter(id=>countDraft[id]!=="").map(partId=>({partId,actualQty:Number(countDraft[partId])}));
+    const reason=document.getElementById("count-reason").value.trim();if(!items.length){toast("กรุณากรอกยอดนับจริงอย่างน้อย 1 รายการ",true);return;}if(!reason){toast("กรุณาระบุเหตุผลหรือรอบตรวจนับ",true);return;}
+    if(items.some(x=>!Number.isFinite(x.actualQty)||x.actualQty<0)){toast("ยอดนับจริงต้องไม่น้อยกว่า 0",true);return;}
+    if(!confirm(`ยืนยันปรับยอดตามผลตรวจนับ ${items.length} รายการ?`))return;
+    const count={date:document.getElementById("count-date").value||todayISO(),countedBy:document.getElementById("count-by").value.trim(),approvedBy:document.getElementById("count-approved").value.trim(),reason,items};
+    const btn=document.getElementById("btn-count-save");btn.disabled=true;btn.textContent="กำลังปรับยอด...";
+    try{
+      if(!hasScriptURL())throw new Error("การตรวจนับต้องเชื่อมต่อ Google Sheets เพื่อเก็บ Audit Log");
+      const saved=await apiCall("saveStockCount",{count}),normalized=normalizeFromSheet({parts:saved.parts,transactions:saved.transactions,stockCounts:saved.stockCounts});
+      normalized.parts.forEach(x=>{const p=partById(x.id);if(p)Object.assign(p,x);});state.transactions.push(...normalized.transactions);state.stockCounts.push(...normalized.stockCounts);
+      Object.keys(countDraft).forEach(k=>delete countDraft[k]);document.getElementById("count-reason").value="";cacheSave();renderAll();toast(`บันทึกตรวจนับ ${saved.countNo} เรียบร้อย`);
+    }catch(err){toast("บันทึกตรวจนับไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="ยืนยันและปรับยอด";}
+  });
 
   // ================= SHARED MASTER DATA =================
   let currentMasterType = "suppliers";
@@ -2079,6 +2118,38 @@
     document.getElementById(id).addEventListener("input", renderHistory);
     document.getElementById(id).addEventListener("change", renderHistory);
   });
+  document.getElementById("inactive-days").addEventListener("change",renderManagementReports);
+  document.getElementById("stock-card-part").addEventListener("change",renderStockCard);
+
+  function renderStockCardPartOptions(){
+    const sel=document.getElementById("stock-card-part");if(!sel)return;const prev=sel.value;
+    sel.innerHTML=`<option value="">— เลือกอะไหล่ —</option>`+state.parts.slice().sort((a,b)=>a.code.localeCompare(b.code)).map(p=>`<option value="${p.id}">${escapeHTML(p.code)} — ${escapeHTML(p.name)}</option>`).join("");
+    if(state.parts.some(p=>p.id===prev))sel.value=prev;renderStockCard();
+  }
+  function stockCardRows(partId){
+    const p=partById(partId);if(!p)return[];const tx=state.transactions.filter(t=>t.partId===partId&&t.status!=="cancelled").sort((a,b)=>a.date.localeCompare(b.date)||a.createdAt.localeCompare(b.createdAt)||a.lineNo-b.lineNo);
+    let balance=p.qty-tx.reduce((s,t)=>s+(t.type==="in"?t.qty:-t.qty),0);
+    return tx.map(t=>{balance+=t.type==="in"?t.qty:-t.qty;return{...t,balance};});
+  }
+  function renderStockCard(){
+    const rows=stockCardRows(document.getElementById("stock-card-part").value),body=document.getElementById("stock-card-body");
+    body.innerHTML=rows.length?rows.map(t=>`<tr><td>${fmtDate(t.date)}</td><td class="mono">${escapeHTML(t.docNo||"-")}</td><td class="mono diff-pos">${t.type==="in"?t.qty:"-"}</td><td class="mono diff-neg">${t.type==="out"?t.qty:"-"}</td><td class="mono">${fmtMoney(t.balance)}</td><td>${escapeHTML(txContext(t)||t.note||"-")}</td></tr>`).join(""):`<tr class="empty-row"><td colspan="6">เลือกอะไหล่เพื่อดู Stock Card</td></tr>`;
+  }
+  function renderManagementReports(){
+    const activeTx=state.transactions.filter(t=>t.status!=="cancelled"),cutoff90=new Date();cutoff90.setDate(cutoff90.getDate()-90);const cutoffISO=cutoff90.toISOString().slice(0,10),totals={};
+    activeTx.filter(t=>t.type==="out"&&t.date>=cutoffISO).forEach(t=>totals[t.partId]=(totals[t.partId]||0)+t.qty);
+    const top=Object.entries(totals).map(([id,qty])=>({p:partById(id),qty})).filter(x=>x.p).sort((a,b)=>b.qty-a.qty).slice(0,10);
+    document.getElementById("top-issued-body").innerHTML=top.length?top.map(x=>`<tr><td>${tagHTML(x.p)}</td><td>${escapeHTML(x.p.name)}</td><td class="mono">${fmtMoney(x.qty)} ${escapeHTML(x.p.unit)}</td></tr>`).join(""):`<tr class="empty-row"><td colspan="3">ยังไม่มีการเบิกใน 90 วันล่าสุด</td></tr>`;
+    const days=Number(document.getElementById("inactive-days").value)||90,cutoff=new Date();cutoff.setDate(cutoff.getDate()-days);const limit=cutoff.toISOString().slice(0,10);
+    const inactive=state.parts.filter(p=>p.isActive!==false).map(p=>{const latest=activeTx.filter(t=>t.partId===p.id).sort((a,b)=>b.date.localeCompare(a.date))[0];return{p,latest:latest?latest.date:""};}).filter(x=>!x.latest||x.latest<limit).sort((a,b)=>(a.latest||"").localeCompare(b.latest||""));
+    document.getElementById("inactive-parts-body").innerHTML=inactive.length?inactive.map(x=>`<tr><td>${tagHTML(x.p)}</td><td>${escapeHTML(x.p.name)}</td><td>${x.latest?fmtDate(x.latest):"ไม่เคยเคลื่อนไหว"}</td><td class="mono">${x.p.qty} ${escapeHTML(x.p.unit)}</td></tr>`).join(""):`<tr class="empty-row"><td colspan="4">ไม่มีรายการไม่เคลื่อนไหวเกิน ${days} วัน</td></tr>`;
+    renderStockCard();
+  }
+  document.getElementById("btn-stock-card-export").addEventListener("click",()=>{
+    const partId=document.getElementById("stock-card-part").value,p=partById(partId);if(!p){toast("กรุณาเลือกอะไหล่",true);return;}
+    const rows=stockCardRows(partId).map(t=>({"วันที่":t.date,"เลขที่":t.docNo,"รับเข้า":t.type==="in"?t.qty:"","เบิกออก":t.type==="out"?t.qty:"","คงเหลือ":t.balance,"รายละเอียด":txContext(t)||t.note||""}));
+    const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),"Stock Card");XLSX.writeFile(wb,`Stock-Card-${p.code}-${todayISO()}.xlsx`);
+  });
 
   function renderHistory(){
     const type = document.getElementById("hist-type-filter").value;
@@ -2110,11 +2181,13 @@
         <td class="mono">${t.type==="in" ? "+" : "-"}${t.qty}</td>
         <td>${escapeHTML(t.person||t.supplier||"-")}</td>
         <td><span class="status-pill ${cancelled?'cancelled':'active'}">${cancelled?'ยกเลิกแล้ว':'ปกติ'}</span>${cancelled?`<div class="hint">${escapeHTML(t.cancelReason||"")}</div>`:""}</td>
-        <td class="row-actions"><button class="small" data-print-tx="${t.id}">พิมพ์</button>${isAdmin()&&!cancelled?`<button class="small danger-ghost" data-cancel-tx="${t.id}">ยกเลิก</button>`:""}</td>
+        <td class="row-actions"><button class="small" data-print-tx="${t.id}">พิมพ์ใบ</button>${isAdmin()&&!cancelled?`<button class="small danger-ghost" data-cancel-tx="${t.id}">ยกเลิกรายการ</button>${t.docNo?`<button class="small danger-ghost" data-cancel-doc="${escapeHTML(t.docNo)}">ยกเลิกทั้งใบ</button>`:""}`:""}</td>
       </tr>`;
     }).join("") : `<tr class="empty-row"><td colspan="8">ไม่พบรายการตามเงื่อนไขที่เลือก</td></tr>`;
     body.querySelectorAll("[data-print-tx]").forEach(b=>b.addEventListener("click",()=>printTransactionById(b.dataset.printTx)));
     body.querySelectorAll("[data-cancel-tx]").forEach(b=>b.addEventListener("click",()=>cancelTransactionUI(b.dataset.cancelTx)));
+    body.querySelectorAll("[data-cancel-doc]").forEach(b=>b.addEventListener("click",()=>cancelDocumentUI(b.dataset.cancelDoc)));
+    renderManagementReports();
   }
 
   function nextLocalDocNo(type,date){
@@ -2124,34 +2197,36 @@
     return prefix+String(max+1).padStart(4,"0");
   }
 
-  let lastSavedTxId="";
-  function showTransactionSuccess(tx){
-    lastSavedTxId=tx.id;
-    const p=partById(tx.partId);
+  let lastSavedDocNo="";
+  function showDocumentSuccess(docNo){
+    lastSavedDocNo=docNo;
+    const lines=state.transactions.filter(t=>t.docNo===docNo),tx=lines[0];if(!tx)return;
     document.getElementById("success-summary").innerHTML=`
-      <div><b>เลขที่เอกสาร:</b> <span class="mono">${escapeHTML(tx.docNo||"-")}</span></div>
+      <div><b>เลขที่เอกสาร:</b> <span class="mono">${escapeHTML(docNo||"-")}</span></div>
       <div><b>ประเภท:</b> ${tx.type==="in"?"ใบรับเข้า":"ใบเบิกออก"}</div>
-      <div><b>อะไหล่:</b> ${escapeHTML(p?p.code+" — "+p.name:"-")}</div>
-      <div><b>จำนวน:</b> ${tx.qty} ${escapeHTML(p?p.unit:"")}</div>`;
+      <div><b>จำนวนรายการ:</b> ${lines.length} รายการ</div>
+      <div><b>รวมจำนวน:</b> ${fmtMoney(lines.reduce((s,x)=>s+x.qty,0))} หน่วย</div>`;
     document.getElementById("success-modal-overlay").classList.add("show");
   }
   document.getElementById("btn-success-close").addEventListener("click",()=>document.getElementById("success-modal-overlay").classList.remove("show"));
   document.getElementById("btn-success-detail").addEventListener("click",()=>{document.getElementById("success-modal-overlay").classList.remove("show");activateView("history");});
-  document.getElementById("btn-success-print").addEventListener("click",()=>printTransactionById(lastSavedTxId));
+  document.getElementById("btn-success-print").addEventListener("click",()=>printDocumentByNo(lastSavedDocNo));
 
   function printTransactionById(id){
-    const tx=state.transactions.find(x=>x.id===id); if(!tx){toast("ไม่พบรายการสำหรับพิมพ์",true);return;}
-    const p=partById(tx.partId), logo=document.querySelector("[data-drive-logo]");
+    const tx=state.transactions.find(x=>x.id===id);if(!tx){toast("ไม่พบรายการสำหรับพิมพ์",true);return;}printDocumentByNo(tx.docNo||tx.id);
+  }
+  function printDocumentByNo(docNo){
+    let lines=state.transactions.filter(x=>x.docNo===docNo);if(!lines.length){const one=state.transactions.find(x=>x.id===docNo);if(one)lines=[one];}const tx=lines[0];if(!tx){toast("ไม่พบรายการสำหรับพิมพ์",true);return;}
+    const logo=document.querySelector("[data-drive-logo]");
     const title=tx.type==="in"?"ใบรับเข้าอะไหล่":"ใบเบิกอะไหล่";
     const party=tx.type==="in"?(tx.supplier||tx.person||"-"):(tx.person||"-");
+    const rows=lines.map((line,index)=>{const p=partById(line.partId);return `<tr><td>${index+1}</td><td>${escapeHTML(p?p.code:"-")}</td><td>${escapeHTML(p?p.name:"-")}</td><td>${line.qty}</td><td>${escapeHTML(p?p.unit:"")}</td><td>${escapeHTML(line.note||"-")}</td></tr>`;}).join("");
     document.getElementById("print-area").innerHTML=`
       <div class="print-head"><img src="${escapeHTML(logo?logo.src:"")}"><div><h1>H.O.B Stock Control</h1><h2>${title}</h2></div></div>
       <div><b>เลขที่เอกสาร:</b> ${escapeHTML(tx.docNo||"-")} &nbsp; <b>วันที่:</b> ${fmtDate(tx.date)}</div>
       <div><b>${tx.type==="in"?"ผู้ส่ง/ซัพพลายเออร์":"ผู้เบิก/แผนก"}:</b> ${escapeHTML(party)}</div>
-      <table><thead><tr><th>รหัส</th><th>รายการ</th><th>จำนวน</th><th>หน่วย</th><th>หมายเหตุ</th></tr></thead><tbody><tr>
-      <td>${escapeHTML(p?p.code:"-")}</td><td>${escapeHTML(p?p.name:"-")}</td><td>${tx.qty}</td><td>${escapeHTML(p?p.unit:"")}</td><td>${escapeHTML(txContext(tx)||"-")}</td>
-      </tr></tbody></table>
-      ${tx.status==="cancelled"?`<p><b>สถานะ: ยกเลิกแล้ว</b> — ${escapeHTML(tx.cancelReason||"")}</p>`:""}
+      <table><thead><tr><th>#</th><th>รหัส</th><th>รายการ</th><th>จำนวน</th><th>หน่วย</th><th>หมายเหตุ</th></tr></thead><tbody>${rows}</tbody></table>
+      ${lines.every(x=>x.status==="cancelled")?`<p><b>สถานะ: ยกเลิกแล้ว</b> — ${escapeHTML(tx.cancelReason||"")}</p>`:""}
       <div class="print-sign"><div>ลงชื่อ ____________________<br>ผู้ทำรายการ</div><div>ลงชื่อ ____________________<br>ผู้ตรวจสอบ/อนุมัติ</div></div>`;
     window.print();
   }
@@ -2169,6 +2244,12 @@
       cacheSave();renderAll();toast(`ยกเลิก ${tx.docNo||"รายการ"} และกลับยอดสต๊อกเรียบร้อย`);
     }catch(err){toast("ยกเลิกรายการไม่สำเร็จ: "+err.message,true);}
   }
+  async function cancelDocumentUI(docNo){
+    if(!requireAdmin())return;const lines=state.transactions.filter(x=>x.docNo===docNo&&x.status!=="cancelled");if(!lines.length)return;
+    const reason=prompt(`ระบุเหตุผลยกเลิกทั้งใบ ${docNo} (อย่างน้อย 3 ตัวอักษร)`);if(reason===null)return;if(reason.trim().length<3){toast("กรุณาระบุเหตุผลอย่างน้อย 3 ตัวอักษร",true);return;}
+    if(!confirm(`ยืนยันยกเลิกทั้งใบ ${docNo} จำนวน ${lines.length} รายการ และกลับยอดสต๊อก?`))return;
+    try{const saved=await apiCall("cancelDocument",{docNo,reason:reason.trim()}),normalized=normalizeFromSheet({transactions:saved.transactions,parts:saved.parts});normalized.transactions.forEach(x=>{const t=state.transactions.find(y=>y.id===x.id);if(t)Object.assign(t,x);});normalized.parts.forEach(x=>{const p=partById(x.id);if(p)Object.assign(p,x);});cacheSave();renderAll();toast(`ยกเลิกทั้งใบ ${docNo} เรียบร้อย`);}catch(err){toast("ยกเลิกทั้งใบไม่สำเร็จ: "+err.message,true);}
+  }
 
   // ================= EXCEL EXPORT / IMPORT =================
   document.getElementById("btn-export").addEventListener("click", ()=>{
@@ -2177,7 +2258,8 @@
 
     const partsSheet = state.parts.map(p=>({
       "รหัสอะไหล่": p.code, "ชื่ออะไหล่": p.name, "หมวดหมู่": p.category, "หน่วยนับ": p.unit,
-      "คงเหลือ": p.qty, "จุดสั่งซื้อขั้นต่ำ": p.minQty, "มูลค่าต่อหน่วย": p.cost, "ที่จัดเก็บ": p.location,
+      "คงเหลือ": p.qty, "จุดสั่งซื้อขั้นต่ำ": p.minQty, "จุดสั่งซื้อ":p.reorderPoint, "จำนวนสูงสุด":p.maxQty,
+      "ระยะเวลารอสินค้า(วัน)":p.leadTimeDays,"จำนวนแนะนำสั่ง":Math.max(0,(p.maxQty||p.reorderPoint||p.minQty)-p.qty), "มูลค่าต่อหน่วย": p.cost, "ที่จัดเก็บ": p.location,
       "ซัพพลายเออร์หลัก": supplierById(p.supplierId)?.name||"", "รถบรรทุก": truckById(p.truckId)?.plateNo||"", "จังหวัด":provinceById(p.provinceId)?.name||""
     }));
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(partsSheet), "รายการอะไหล่");
@@ -2199,6 +2281,7 @@
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.trucks.map(x=>({"ทะเบียนรถ":x.plateNo,"จังหวัด":provinceById(x.provinceId)?.name||"","รายละเอียดรถ":x.description,"ผู้ขับ":x.driver,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "รถบรรทุก");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.provinces.map(x=>({"จังหวัด":x.name,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "จังหวัด");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.documents.map(x=>({"ประเภท":x.docType,"เลขที่เอกสาร":x.docNo,"วันที่":x.date,"ซัพพลายเออร์":supplierById(x.supplierId)?.name||"","หมายเหตุ":x.note,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "PR-PO-IV");
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet((state.stockCounts||[]).map(x=>{const p=partById(x.partId);return{"เลขที่ตรวจนับ":x.countNo,"วันที่":x.date,"รหัสอะไหล่":p?.code||"","ชื่ออะไหล่":p?.name||"","ยอดระบบ":x.systemQty,"ยอดจริง":x.actualQty,"ผลต่าง":x.difference,"เหตุผล":x.reason,"ผู้ตรวจ":x.countedBy,"ผู้อนุมัติ":x.approvedBy};})), "ตรวจนับสต๊อก");
 
     XLSX.writeFile(wb, `stock-${todayISO()}.xlsx`);
     toast("ส่งออกไฟล์ Excel เรียบร้อย");
@@ -2207,8 +2290,8 @@
   const IMPORT_CONFIG = {
     parts: {
       sheet:"เพิ่มอะไหล่", label:"เพิ่มทะเบียนอะไหล่",
-      headers:["รหัสอะไหล่","ชื่ออะไหล่","หมวดหมู่","หน่วยนับ","จำนวนตั้งต้น","จุดสั่งซื้อขั้นต่ำ","มูลค่าต่อหน่วย","ที่จัดเก็บ","ซัพพลายเออร์หลัก","รถบรรทุก","จังหวัด"],
-      example:["SP-001","ลูกปืนตัวอย่าง","เครื่องจักร","ชิ้น",10,3,250,"A1-01","บริษัทตัวอย่าง จำกัด","70-1234","ราชบุรี"]
+      headers:["รหัสอะไหล่","ชื่ออะไหล่","หมวดหมู่","หน่วยนับ","จำนวนตั้งต้น","จุดสั่งซื้อขั้นต่ำ","จุดสั่งซื้อ","จำนวนสูงสุด","ระยะเวลารอสินค้า(วัน)","มูลค่าต่อหน่วย","ที่จัดเก็บ","ซัพพลายเออร์หลัก","รถบรรทุก","จังหวัด"],
+      example:["SP-001","ลูกปืนตัวอย่าง","เครื่องจักร","ชิ้น",10,3,3,15,7,250,"A1-01","บริษัทตัวอย่าง จำกัด","70-1234","ราชบุรี"]
     },
     receive: {
       sheet:"รับเข้า", label:"รับเข้าอะไหล่",
@@ -2374,19 +2457,25 @@
         const name = String(raw["ชื่ออะไหล่"]||"").trim();
         const qty = numberValue(raw["จำนวนตั้งต้น"],0);
         const minQty = numberValue(raw["จุดสั่งซื้อขั้นต่ำ"],0);
+        const reorderPoint = numberValue(raw["จุดสั่งซื้อ"],minQty);
+        const maxQty = numberValue(raw["จำนวนสูงสุด"],0);
+        const leadTimeDays = numberValue(raw["ระยะเวลารอสินค้า(วัน)"],0);
         const cost = numberValue(raw["มูลค่าต่อหน่วย"],0);
         if(!name) errors.push("กรุณาระบุชื่ออะไหล่");
         if(existing.has(key)) errors.push("รหัสนี้มีอยู่ในระบบแล้ว");
         if(codeCounts[key]>1) errors.push("รหัสซ้ำกันในไฟล์");
         if(!Number.isFinite(qty)||qty<0) errors.push("จำนวนตั้งต้นไม่ถูกต้อง");
         if(!Number.isFinite(minQty)||minQty<0) errors.push("จุดสั่งซื้อขั้นต่ำไม่ถูกต้อง");
+        if(!Number.isFinite(reorderPoint)||reorderPoint<0) errors.push("จุดสั่งซื้อไม่ถูกต้อง");
+        if(!Number.isFinite(maxQty)||maxQty<0) errors.push("จำนวนสูงสุดไม่ถูกต้อง");
+        if(!Number.isFinite(leadTimeDays)||leadTimeDays<0) errors.push("ระยะเวลารอสินค้าไม่ถูกต้อง");
         if(!Number.isFinite(cost)||cost<0) errors.push("มูลค่าต่อหน่วยไม่ถูกต้อง");
         const refs=resolveImportRefs(raw,errors);
         return {
           rowNo, code, name,
           category:String(raw["หมวดหมู่"]||"อื่นๆ").trim()||"อื่นๆ",
           unit:String(raw["หน่วยนับ"]||"ชิ้น").trim()||"ชิ้น",
-          qty, minQty, cost, location:String(raw["ที่จัดเก็บ"]||"").trim(), date:todayISO(),
+          qty, minQty, reorderPoint, maxQty, leadTimeDays, cost, location:String(raw["ที่จัดเก็บ"]||"").trim(), date:todayISO(),
           supplierId:refs.supplierId,truckId:refs.truckId,provinceId:refs.provinceId,
           detail:`${name||"-"} · ${String(raw["หมวดหมู่"]||"อื่นๆ")||"อื่นๆ"}`,
           errors, valid:errors.length===0
@@ -2455,7 +2544,7 @@
     rows.forEach(r=>{
       if(type==="parts"){
         if(byCode.has(r.code.toLowerCase())) throw new Error(`รหัส ${r.code} มีอยู่ในระบบแล้ว`);
-        const p = {id:uid(),code:r.code,name:r.name,category:r.category,unit:r.unit,qty:r.qty,minQty:r.minQty,cost:r.cost,location:r.location,supplierId:r.supplierId||"",truckId:r.truckId||"",provinceId:r.provinceId||""};
+        const p = {id:uid(),code:r.code,name:r.name,category:r.category,unit:r.unit,qty:r.qty,minQty:r.minQty,reorderPoint:r.reorderPoint,maxQty:r.maxQty,leadTimeDays:r.leadTimeDays,cost:r.cost,location:r.location,supplierId:r.supplierId||"",truckId:r.truckId||"",provinceId:r.provinceId||""};
         parts.push(p); byCode.set(r.code.toLowerCase(),p);
         if(r.qty>0) transactions.push({id:uid(),partId:p.id,type:"in",qty:r.qty,date:r.date,person:"",supplier:"ยอดตั้งต้น",supplierId:r.supplierId||"",truckId:r.truckId||"",provinceId:r.provinceId||"",prNo:"",poNo:"",ivNo:"",note:`นำเข้าอะไหล่จาก Excel${currentUser?" โดย "+currentUser.name:""}`});
         return;
@@ -2513,6 +2602,7 @@
     renderUsers();
     renderReceiveLog();
     renderIssueLog();
+    renderStockCount();
     renderHistory();
   }
 
