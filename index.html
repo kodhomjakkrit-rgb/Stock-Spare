@@ -174,7 +174,7 @@
   .empty-row td{text-align:center;color:var(--text-dim);padding:28px 10px;}
 
 
-  /* ---------- Sortable list tables v3.9.7 ---------- */
+  /* ---------- Sortable list tables v3.9.8 ---------- */
   table.sortable-table thead th.sortable-column{
     cursor:pointer;user-select:none;position:relative;padding-right:28px;
     transition:background .15s,color .15s;
@@ -193,6 +193,12 @@
   table.sortable-table thead th.sortable-column.sort-desc{color:var(--brand-bright);}
   table.sortable-table thead th.sort-disabled{cursor:default;padding-right:10px;}
   table.sortable-table thead th.sort-disabled::after{display:none;}
+
+
+  /* ---------- Per-report Excel export v3.9.8 ---------- */
+  .report-export-btn{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+  .report-export-btn::before{content:'⇩';font-size:13px;font-weight:800}
+  @media(max-width:620px){.report-export-btn{width:100%;justify-content:center;margin-top:2px}}
 
   /* ---------- Forms ---------- */
   .field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
@@ -547,7 +553,7 @@
     .alert-banner{align-items:flex-start;flex-direction:column;}.alert-action{width:100%;}
     .gauge{min-width:130px;}
   }
-  /* ================= v3.9.7 Stock Card shortcut ================= */
+  /* ================= v3.9.8 Stock Card shortcut ================= */
   .status-pill.draft{background:#26333a;color:#b6c5c1}.status-pill.pending{background:var(--accent-dim);color:#ffd071}
   .status-pill.approved{background:var(--brand-dim);color:#78e9dc}.status-pill.issued{background:var(--success-dim);color:#65ddb0}
   .status-pill.rejected,.status-pill.cancelled{background:var(--danger-dim);color:#ff9b9b}
@@ -579,7 +585,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9.7</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.9.8</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -614,7 +620,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9.7</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.9.8</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -1268,6 +1274,129 @@
   const sortingBodyIds = new Set();
   const thaiSortCollator = new Intl.Collator("th", {numeric:true,sensitivity:"base"});
 
+
+  // ตารางรายงาน/รายการที่สามารถส่งออก Excel แยกตามหน้าจอได้
+  // ส่งออกเฉพาะหัวตารางและแถวที่กำลังแสดงหลังค้นหา/กรอง/เรียงลำดับแล้ว
+  const REPORT_EXCEL_EXPORTS = {
+    "low-stock-body": { fileName:"รายงาน-รายการที่ต้องสั่งซื้อเพิ่ม" },
+    "recent-tx-body": { fileName:"รายงาน-ความเคลื่อนไหวล่าสุด" },
+    "parts-body": { fileName:"รายงาน-รายการอะไหล่ทั้งหมด" },
+    "recent-receive-body": { fileName:"รายงาน-รายการรับเข้าล่าสุด" },
+    "recent-issue-body": { fileName:"รายงาน-รายการเบิกล่าสุด" },
+    "requests-body": { fileName:"รายงาน-ติดตามคำขอเบิก" },
+    "backups-body": { fileName:"รายงาน-ประวัติไฟล์สำรอง" },
+    "stock-count-history-body": { fileName:"รายงาน-ประวัติตรวจนับ" },
+    "master-table-body": { dynamicTitle:true, fileName:"รายงาน-ฐานข้อมูลกลาง" },
+    "users-body": { fileName:"รายงาน-ผู้ใช้งานระบบ" },
+    "audit-body": { fileName:"รายงาน-Audit-Log" },
+    "top-issued-body": { fileName:"รายงาน-อะไหล่เบิกสูงสุด-90วัน" },
+    "inactive-parts-body": { dynamicTitle:true, fileName:"รายงาน-อะไหล่ไม่เคลื่อนไหว" },
+    "history-body": { fileName:"รายงาน-ประวัติการเคลื่อนไหว" }
+  };
+
+  function cleanReportTitle(bodyId,config={}){
+    const tbody=document.getElementById(bodyId), panel=tbody&&tbody.closest(".panel"), heading=panel&&panel.querySelector("h2");
+    let title=config.title||"รายงาน";
+    if(heading){
+      const copy=heading.cloneNode(true);
+      copy.querySelectorAll("button,.sub").forEach(x=>x.remove());
+      const headingText=String(copy.textContent||"").replace(/\s+/g," ").trim();
+      if(headingText) title=headingText;
+    }
+    if(bodyId==="inactive-parts-body"){
+      const days=Number(document.getElementById("inactive-days")?.value)||90;
+      title=`อะไหล่ไม่เคลื่อนไหวเกิน ${days} วัน`;
+    }
+    return title;
+  }
+
+  function safeExcelFileName(value){
+    return String(value||"รายงาน")
+      .replace(/[\\/:*?\"<>|%]+/g,"-")
+      .replace(/\s+/g,"-")
+      .replace(/-+/g,"-")
+      .replace(/^-|-$/g,"")
+      .slice(0,90)||"รายงาน";
+  }
+
+  function cleanExportCellText(cell){
+    if(!cell) return "";
+    const clone=cell.cloneNode(true);
+    clone.querySelectorAll("button,input,select,textarea,svg").forEach(x=>x.remove());
+    clone.querySelectorAll("br").forEach(x=>x.replaceWith("\n"));
+    return String(clone.innerText||clone.textContent||"")
+      .replace(/\u00a0/g," ")
+      .replace(/[ \t]+\n/g,"\n")
+      .replace(/\n[ \t]+/g,"\n")
+      .replace(/[ \t]{2,}/g," ")
+      .trim();
+  }
+
+  function excelCellValue(text,header){
+    const value=String(text??"").trim();
+    if(!value) return "";
+    // รักษาเลขอ้างอิง รหัส ทะเบียน โทรศัพท์ และวันที่เป็นข้อความ เพื่อไม่ให้เลขศูนย์ด้านหน้าหาย
+    if(/รหัส|เลขที่|ทะเบียน|โทร|วันที่|เวลา|ชื่อ|รายการ|รายละเอียด|สถานะ|หมวด|หน่วย|ที่จัดเก็บ|ผู้|อะไหล่/i.test(header||"")) return value;
+    const numeric=value.replace(/,/g,"").replace(/^฿\s*/,"");
+    if(/^[-+]?\d+(?:\.\d+)?$/.test(numeric)) return Number(numeric);
+    return value;
+  }
+
+  function exportTableToExcel(bodyId,config={}){
+    if(typeof XLSX==="undefined"){toast("ไม่สามารถโหลดเครื่องมือ Excel ได้ กรุณาตรวจสอบอินเทอร์เน็ต",true);return;}
+    const tbody=document.getElementById(bodyId), table=tbody&&tbody.closest("table");
+    if(!tbody||!table||!table.tHead){toast("ไม่พบตารางสำหรับส่งออก",true);return;}
+    const headerRow=table.tHead.rows[table.tHead.rows.length-1];
+    const headers=Array.from(headerRow?.cells||[]);
+    const columns=headers.map((th,index)=>({index,label:cleanExportCellText(th)})).filter(col=>{
+      const label=col.label;
+      return label && !/^(การดำเนินการ|จัดการ)$/i.test(label) && !headers[col.index].dataset.noExport;
+    });
+    if(!columns.length){toast("ตารางนี้ไม่มีคอลัมน์สำหรับส่งออก",true);return;}
+
+    const visibleRows=Array.from(tbody.rows).filter(row=>{
+      if(row.classList.contains("empty-row")||row.classList.contains("total-row")||row.hidden) return false;
+      return getComputedStyle(row).display!=="none";
+    });
+    if(!visibleRows.length){toast("ไม่มีข้อมูลตามเงื่อนไขที่เลือกสำหรับส่งออก",true);return;}
+
+    const aoa=[columns.map(c=>c.label)];
+    visibleRows.forEach(row=>{
+      aoa.push(columns.map(c=>excelCellValue(cleanExportCellText(row.cells[c.index]),c.label)));
+    });
+
+    const title=cleanReportTitle(bodyId,config);
+    const sheetName=String(title||"รายงาน").replace(/[\\/?*\[\]:]/g,"-").slice(0,31)||"รายงาน";
+    const ws=XLSX.utils.aoa_to_sheet(aoa);
+    ws["!autofilter"]={ref:XLSX.utils.encode_range({s:{r:0,c:0},e:{r:aoa.length-1,c:columns.length-1}})};
+    ws["!cols"]=columns.map((_,colIndex)=>{
+      const width=Math.max(...aoa.map(row=>String(row[colIndex]??"").split("\n").reduce((m,s)=>Math.max(m,s.length),0)));
+      return {wch:Math.min(Math.max(width+2,10),42)};
+    });
+    const wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,ws,sheetName);
+    let base=config.fileName||title;
+    if(bodyId==="master-table-body") base=title;
+    if(bodyId==="inactive-parts-body") base=title;
+    XLSX.writeFile(wb,`${safeExcelFileName(base)}-${todayISO()}.xlsx`);
+    toast(`ส่งออก ${title} เป็น Excel แล้ว (${visibleRows.length} แถว)`);
+  }
+
+  function initReportExcelExports(){
+    Object.entries(REPORT_EXCEL_EXPORTS).forEach(([bodyId,config])=>{
+      const tbody=document.getElementById(bodyId), table=tbody&&tbody.closest("table"), panel=table&&table.closest(".panel"), heading=panel&&panel.querySelector("h2");
+      if(!heading||heading.querySelector(`[data-export-body="${bodyId}"]`)) return;
+      const btn=document.createElement("button");
+      btn.type="button";
+      btn.className="small report-export-btn";
+      btn.dataset.exportBody=bodyId;
+      btn.textContent="Export Excel";
+      btn.title="ส่งออกข้อมูลที่กำลังแสดงตามตัวกรองและลำดับปัจจุบัน";
+      btn.addEventListener("click",()=>exportTableToExcel(bodyId,config));
+      heading.appendChild(btn);
+    });
+  }
+
   function sortableTableInfo(table){
     if(!table) return null;
     const tbody=table.tBodies&&table.tBodies[0];
@@ -1444,7 +1573,7 @@
   }catch(e){}
 
   // ============ LOGIN / ROLE PERMISSIONS ============
-  // v3.9.7 keeps v3.9 salted password hashes and locks only after closing the tab.
+  // v3.9.8 keeps v3.9 salted password hashes and locks only after closing the tab.
   let currentUser = null; // { username, name, role, token, expiresAt }
   let logoLoadPromise = null;
   let lastAuthenticatedUsername = "";
@@ -1660,7 +1789,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.9.7 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.9.8 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -2994,8 +3123,7 @@
   }
   document.getElementById("btn-stock-card-export").addEventListener("click",()=>{
     const partId=document.getElementById("stock-card-part").value,p=partById(partId);if(!p){toast("กรุณาเลือกอะไหล่",true);return;}
-    const rows=stockCardRows(partId).map(t=>({"วันที่":t.date,"เลขที่":t.docNo,"รับเข้า":t.type==="in"?t.qty:"","เบิกออก":t.type==="out"?t.qty:"","คงเหลือ":t.balance,"รายละเอียด":txContext(t)||t.note||""}));
-    const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),"Stock Card");XLSX.writeFile(wb,`Stock-Card-${p.code}-${todayISO()}.xlsx`);
+    exportTableToExcel("stock-card-body",{title:`Stock Card ${p.code} — ${p.name}`,fileName:`Stock-Card-${p.code}`});
   });
 
   function renderHistory(){
@@ -3491,6 +3619,7 @@
     renderBackups();
     renderHistory();
     initSortableTableObservers();
+    initReportExcelExports();
   }
 
   function initAppAfterLogin(){
