@@ -175,7 +175,7 @@
   .empty-row td{text-align:center;color:var(--text-dim);padding:28px 10px;}
 
 
-  /* ---------- Sortable list tables v3.9.9 ---------- */
+  /* ---------- Sortable list tables v4.0.0 ---------- */
   table.sortable-table thead th.sortable-column{
     cursor:pointer;user-select:none;position:relative;padding-right:28px;
     transition:background .15s,color .15s;
@@ -196,7 +196,7 @@
   table.sortable-table thead th.sort-disabled::after{display:none;}
 
 
-  /* ---------- Per-report Excel export v3.9.9 ---------- */
+  /* ---------- Per-report Excel export v4.0.0 ---------- */
   .report-export-btn{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
   .report-export-btn::before{content:'⇩';font-size:13px;font-weight:800}
   @media(max-width:620px){.report-export-btn{width:100%;justify-content:center;margin-top:2px}}
@@ -554,7 +554,7 @@
     .alert-banner{align-items:flex-start;flex-direction:column;}.alert-action{width:100%;}
     .gauge{min-width:130px;}
   }
-  /* ================= v3.9.9 Stock Card shortcut ================= */
+  /* ================= v4.0.0 Stock Card shortcut ================= */
   .status-pill.draft{background:#26333a;color:#b6c5c1}.status-pill.pending{background:var(--accent-dim);color:#ffd071}
   .status-pill.approved{background:var(--brand-dim);color:#78e9dc}.status-pill.issued{background:var(--success-dim);color:#65ddb0}
   .status-pill.rejected,.status-pill.cancelled{background:var(--danger-dim);color:#ff9b9b}
@@ -579,7 +579,7 @@
   .similar-box.show{display:block}.similar-item{padding:6px 0;border-bottom:1px dashed var(--border)}.similar-item:last-child{border-bottom:0}
 
 
-  /* ================= v3.9.9 Clean Enterprise UI ================= */
+  /* ================= v4.0.0 Clean Enterprise UI ================= */
   :root{
     color-scheme:light;
     --bg:#f4f7fb;
@@ -808,6 +808,116 @@
     .document-actions{background:rgba(255,255,255,.96);}
   }
 
+
+
+  /* ================= v4.0.0 Smart User Experience ================= */
+  #app.unlocked{grid-template-rows:auto auto minmax(0,1fr);}
+  nav.tabs{grid-row:2/4;}
+  .view{grid-row:3;}
+  .workspace-bar{
+    grid-column:2;grid-row:2;min-width:0;display:flex;align-items:center;justify-content:space-between;
+    gap:14px;margin:-4px 0 16px;padding:0 2px;
+  }
+  .workspace-heading{min-width:0;}
+  .breadcrumb{display:flex;align-items:center;gap:7px;color:#7b8999;font-size:11.5px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .breadcrumb button{min-height:0;padding:0;background:transparent;border:0;box-shadow:none;color:#64748b;font-size:11.5px;font-weight:500;}
+  .breadcrumb button:hover{color:var(--brand);background:transparent;box-shadow:none;}
+  .breadcrumb .sep{color:#b4bfca;}
+  .workspace-title{font:700 22px 'Kanit','Noto Sans Thai',sans-serif;color:#0f172a;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .workspace-description{font-size:12px;color:#64748b;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .workspace-status{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;}
+  .activity-pill,.draft-pill{
+    display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:6px 10px;border:1px solid #dbe3ec;
+    border-radius:999px;background:#fff;color:#526173;font-size:11.5px;font-weight:600;box-shadow:0 1px 3px rgba(15,23,42,.04);
+  }
+  .activity-dot{width:8px;height:8px;border-radius:50%;background:#94a3b8;box-shadow:0 0 0 3px #f1f5f9;}
+  .activity-pill.is-busy{border-color:#99e2d9;background:#f0fdfa;color:#0f766e;}
+  .activity-pill.is-busy .activity-dot{background:#14a394;animation:smartPulse 1s ease-in-out infinite;box-shadow:0 0 0 3px #ccfbf1;}
+  .activity-pill.is-success{border-color:#bbf7d0;background:#f0fdf4;color:#15803d;}
+  .activity-pill.is-success .activity-dot{background:#22c55e;box-shadow:0 0 0 3px #dcfce7;}
+  .activity-pill.is-error{border-color:#fecaca;background:#fff1f2;color:#dc2626;}
+  .activity-pill.is-error .activity-dot{background:#ef4444;box-shadow:0 0 0 3px #fee2e2;}
+  .draft-pill{display:none;border-color:#fde68a;background:#fffbeb;color:#a16207;cursor:default;}
+  .draft-pill.show{display:inline-flex;}
+  .draft-pill.is-saved{border-color:#bae6fd;background:#f0f9ff;color:#0369a1;}
+  @keyframes smartPulse{0%,100%{transform:scale(.85);opacity:.65}50%{transform:scale(1.2);opacity:1}}
+
+  /* Dashboard action centre */
+  .attention-panel{padding:16px 18px;}
+  .attention-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;}
+  .attention-head h2{margin:0;display:block;}.attention-head p{margin:2px 0 0;color:#64748b;font-size:12px;}
+  .attention-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+  .attention-card{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;min-height:72px;padding:12px 13px;background:#fff;border:1px solid #e2e8f0;border-radius:11px;box-shadow:none;}
+  .attention-card:hover{border-color:#a7d8d2;background:#f8fffd;box-shadow:0 7px 18px rgba(15,118,110,.08);transform:translateY(-1px);}
+  .attention-card .attention-copy{min-width:0;}.attention-card .attention-label{display:block;color:#64748b;font-size:11px;font-weight:600;}
+  .attention-card strong{display:block;margin-top:2px;color:#0f172a;font:700 23px 'Kanit',sans-serif;line-height:1;}
+  .attention-card .attention-go{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#f1f5f9;color:#64748b;font-size:16px;flex:0 0 auto;}
+  .attention-card.warn strong{color:#d97706}.attention-card.warn .attention-go{background:#fff3dc;color:#d97706}
+  .attention-card.danger strong{color:#dc2626}.attention-card.danger .attention-go{background:#ffeded;color:#dc2626}
+  .attention-card.info strong{color:#0f766e}.attention-card.info .attention-go{background:#def5f1;color:#0f766e}
+  .attention-card.success strong{color:#15803d}.attention-card.success .attention-go{background:#eaf8ef;color:#15803d}
+
+  /* Smart table status and active filters */
+  .table-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:34px;margin:0 0 8px;padding:0 2px;flex-wrap:wrap;}
+  .table-count{display:inline-flex;align-items:center;gap:6px;color:#64748b;font-size:11.5px;}
+  .table-count strong{color:#1e293b;font-weight:700;}
+  .filter-chips{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap;}
+  .filter-chip{display:inline-flex;align-items:center;gap:6px;min-height:28px;padding:4px 8px;border:1px solid #cfe4e1;border-radius:999px;background:#f0fdfa;color:#0f766e;font-size:10.8px;font-weight:600;}
+  .filter-chip button{min-height:18px;width:18px;padding:0;border:0;border-radius:50%;background:transparent;color:inherit;box-shadow:none;font-size:14px;line-height:1;}
+  .filter-chip button:hover{background:#ccfbf1;box-shadow:none;}
+  .clear-filters{min-height:28px;padding:4px 8px;border:0;background:transparent;color:#64748b;font-size:10.8px;box-shadow:none;}
+  .clear-filters:hover{color:#0f766e;background:#f1f5f9;box-shadow:none;}
+
+  /* Clean row action menu */
+  .smart-row-menu{display:inline-block;position:relative;}
+  .smart-row-menu>summary{list-style:none;width:32px;height:32px;display:grid;place-items:center;border:1px solid #d8e0e9;border-radius:8px;background:#fff;color:#64748b;cursor:pointer;font-size:19px;line-height:1;}
+  .smart-row-menu>summary::-webkit-details-marker{display:none;}
+  .smart-row-menu[open]>summary{border-color:#99d9d1;background:#f0fdfa;color:#0f766e;}
+  .smart-row-menu .row-menu-popover{right:0;top:37px;width:176px;padding:6px;}
+  .smart-row-menu .row-menu-popover button{display:flex;width:100%;min-height:34px;align-items:center;text-align:left;padding:7px 9px;border:0;border-radius:7px;background:transparent;color:#334155;box-shadow:none;font-size:12px;}
+  .smart-row-menu .row-menu-popover button:hover{background:#f1f5f9;box-shadow:none;}
+  .smart-row-menu .row-menu-popover button.primary,.smart-row-menu .row-menu-popover button.warn{color:#0f766e;font-weight:700;}
+  .smart-row-menu .row-menu-popover button.danger-ghost{color:#dc2626;}
+
+  /* Useful empty states */
+  .empty-row td{padding:0!important;}
+  .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:154px;padding:24px 16px;text-align:center;color:#64748b;}
+  .empty-state-icon{width:42px;height:42px;display:grid;place-items:center;margin-bottom:9px;border-radius:13px;background:#f1f5f9;color:#94a3b8;font-size:20px;}
+  .empty-state strong{color:#334155;font-size:13px;}.empty-state p{max-width:420px;margin:3px 0 0;font-size:11.5px;color:#7c8a9a;}
+  .empty-state-actions{display:flex;gap:7px;margin-top:11px;flex-wrap:wrap;justify-content:center;}
+  .empty-state-actions button{min-height:33px;padding:6px 10px;font-size:11.5px;}
+
+  /* Toast stack */
+  #toast{position:fixed;z-index:300;top:18px;right:18px;left:auto;bottom:auto;transform:none;width:min(390px,calc(100vw - 28px));display:flex;flex-direction:column;gap:9px;pointer-events:none;background:transparent;border:0;box-shadow:none;opacity:1;}
+  #toast.show{opacity:1;transform:none;}
+  .toast-item{display:grid;grid-template-columns:34px minmax(0,1fr) 26px;align-items:start;gap:9px;padding:11px 11px;background:#fff;border:1px solid #dbe3ec;border-left:4px solid #0f766e;border-radius:11px;box-shadow:0 16px 38px rgba(15,23,42,.16);pointer-events:auto;animation:toastIn .2s ease;}
+  .toast-item.is-error{border-left-color:#dc2626}.toast-item.is-warning{border-left-color:#d97706}.toast-item.is-info{border-left-color:#2563eb}
+  .toast-icon{width:32px;height:32px;display:grid;place-items:center;border-radius:9px;background:#def5f1;color:#0f766e;font-weight:800;}
+  .toast-item.is-error .toast-icon{background:#ffeded;color:#dc2626}.toast-item.is-warning .toast-icon{background:#fff3dc;color:#d97706}.toast-item.is-info .toast-icon{background:#eff6ff;color:#2563eb}
+  .toast-copy strong{display:block;color:#1e293b;font-size:12.5px;margin-bottom:1px}.toast-copy span{display:block;color:#64748b;font-size:11.5px;line-height:1.45;overflow-wrap:anywhere;}
+  .toast-close{width:25px;height:25px;min-height:25px;padding:0;border:0;border-radius:7px;background:transparent;color:#94a3b8;box-shadow:none;font-size:17px;}
+  .toast-close:hover{background:#f1f5f9;color:#475569;box-shadow:none;}
+  .toast-item.toast-out{animation:toastOut .18s ease forwards;}
+  @keyframes toastIn{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:none}}
+  @keyframes toastOut{to{opacity:0;transform:translateY(-6px) scale(.98)}}
+
+  /* Six quick actions in a balanced grid */
+  .quick-actions{grid-template-columns:repeat(3,minmax(0,1fr));}
+
+  @media(max-width:1100px){.attention-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+  @media(max-width:980px){
+    #app.unlocked{display:block;}.workspace-bar{display:flex;margin:0 0 14px;padding:0;}
+    .workspace-title{font-size:19px}.workspace-description{display:none}.workspace-status{max-width:48%;}
+    .activity-pill,.draft-pill{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .quick-actions{grid-template-columns:repeat(2,minmax(0,1fr));}
+  }
+  @media(max-width:640px){
+    .workspace-bar{align-items:flex-start}.workspace-status{display:none}.breadcrumb{font-size:10.5px}.workspace-title{font-size:18px}
+    .attention-grid{grid-template-columns:1fr 1fr;gap:8px}.attention-card{min-height:65px;padding:10px}.attention-card strong{font-size:20px}
+    #toast{top:10px;right:10px;width:calc(100vw - 20px)}
+    .table-meta{align-items:flex-start}.filter-chips{justify-content:flex-start;width:100%;}
+  }
+
 </style>
 </head>
 <body>
@@ -817,7 +927,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9.9</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.0.0</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -852,7 +962,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9.9</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.0.0</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -873,6 +983,19 @@
       </details>
     </div>
   </header>
+
+
+  <div class="workspace-bar" id="workspace-bar" aria-live="polite">
+    <div class="workspace-heading">
+      <div class="breadcrumb"><button type="button" data-breadcrumb-home>หน้าหลัก</button><span class="sep">/</span><span id="breadcrumb-group">งานประจำ</span><span class="sep">/</span><span id="breadcrumb-current">ภาพรวม</span></div>
+      <div class="workspace-title" id="workspace-title">ภาพรวมคลังอะไหล่</div>
+      <div class="workspace-description" id="workspace-description">ติดตามสถานะสต๊อก งานค้าง และความเคลื่อนไหวล่าสุด</div>
+    </div>
+    <div class="workspace-status">
+      <span class="draft-pill" id="draft-pill" title="ระบบบันทึกร่างไว้ในเครื่องอัตโนมัติ"><span>●</span><span id="draft-pill-text">มีรายการที่ยังไม่ได้ยืนยัน</span></span>
+      <span class="activity-pill" id="global-activity"><span class="activity-dot"></span><span id="global-activity-text">พร้อมใช้งาน</span></span>
+    </div>
+  </div>
 
 
   <nav class="tabs" aria-label="เมนูหลัก">
@@ -919,9 +1042,17 @@
       <button class="quick-action issue" data-quick-view="issue"><span class="quick-icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v5H4zM4 14h16v5H4z"/><path d="M12 21V11m0 0l-3 3m3-3l3 3"/></svg></span><span><strong>เบิกออก</strong><small>สร้างใบเบิกอะไหล่</small></span></button>
       <button class="quick-action count" data-quick-view="stockcount" data-admin-only><span class="quick-icon"><svg viewBox="0 0 24 24"><path d="M7 4h10v3H7zM5 6h14v15H5z"/><path d="M8 12l2 2 5-5M8 18h8"/></svg></span><span><strong>ตรวจนับ</strong><small>เทียบยอดจริงกับระบบ</small></span></button>
       <button class="quick-action search" data-quick-view="requisitions"><span class="quick-icon"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 8h6M9 12h6M9 16h3"/></svg></span><span><strong>ขอเบิกอะไหล่</strong><small>ส่งคำขอและติดตามอนุมัติ</small></span></button>
+      <button class="quick-action search" id="quick-add-part" data-admin-only><span class="quick-icon"><svg viewBox="0 0 24 24"><path d="M4 7l8-4 8 4-8 4-8-4zM4 7v10l8 4 8-4V7"/><path d="M18 13v6m-3-3h6"/></svg></span><span><strong>เพิ่มไอเท็ม</strong><small>สร้าง SKU และทะเบียนใหม่</small></span></button>
+      <button class="quick-action count" data-quick-view="import" data-admin-only><span class="quick-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M12 7v7m0 0l-3-3m3 3l3-3M8 17h8"/></svg></span><span><strong>นำเข้า Excel</strong><small>เพิ่มข้อมูลหลายรายการ</small></span></button>
     </div>
 
     <div id="alert-banner-slot"></div>
+
+
+    <div class="panel attention-panel" id="attention-panel">
+      <div class="attention-head"><div><h2>สิ่งที่ต้องดำเนินการ</h2><p>กดที่การ์ดเพื่อเปิดรายการที่เกี่ยวข้องทันที</p></div><span class="hint" id="attention-updated">อัปเดตจากข้อมูลล่าสุด</span></div>
+      <div class="attention-grid" id="attention-grid"></div>
+    </div>
 
     <div class="charts-row">
       <div class="panel">
@@ -1805,7 +1936,7 @@
   }catch(e){}
 
   // ============ LOGIN / ROLE PERMISSIONS ============
-  // v3.9.9 keeps v3.9 salted password hashes and locks only after closing the tab.
+  // v4.0.0 keeps v3.9 salted password hashes and locks only after closing the tab.
   let currentUser = null; // { username, name, role, token, expiresAt }
   let logoLoadPromise = null;
   let lastAuthenticatedUsername = "";
@@ -1884,6 +2015,7 @@
     try{
       localStorage.setItem(draftKey(username),JSON.stringify(draft));
       localStorage.setItem(LAST_USER_KEY,username);
+      markSmartDraftSaved();
       return true;
     }catch(err){
       console.warn("บันทึกร่างงานในเครื่องไม่สำเร็จ:",err.message||err);
@@ -2021,7 +2153,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.9.9 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.0.0 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -2102,6 +2234,8 @@
     const url = validateScriptURL(getScriptURL());
     const isRead = action === "getAll" || action === "login" || action === "getLogo";
     const maxAttempts = isRead ? 2 : 1; // ห้ามลองบันทึกซ้ำ ป้องกันรายการซ้ำ
+    const activityToken=beginGlobalActivity(action,isRead);
+    let activityOk=false;
     if(!isRead) activeWrites++;
     try{
       let lastError;
@@ -2131,6 +2265,7 @@
             }
             throw apiErr;
           }
+          activityOk=true;
           return json.data;
         }catch(err){
           if(err.name === "AbortError"){
@@ -2148,6 +2283,7 @@
       throw lastError || new Error("เชื่อมต่อ Google Sheets ไม่สำเร็จ");
     }finally{
       if(!isRead) activeWrites = Math.max(0, activeWrites - 1);
+      endGlobalActivity(activityToken,activityOk);
     }
   }
 
@@ -2336,13 +2472,22 @@
   function save(){ cacheSave(); }
   function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
 
-  function toast(msg, isErr){
-    const t = document.getElementById("toast");
-    t.textContent = msg;
-    t.classList.toggle("err", !!isErr);
-    t.classList.add("show");
-    clearTimeout(toast._h);
-    toast._h = setTimeout(()=> t.classList.remove("show"), 2600);
+  function toast(msg, isErr, options={}){
+    const host=document.getElementById("toast");
+    if(!host) return;
+    const type=isErr?"error":(options.type||"success");
+    const titles={success:"ดำเนินการสำเร็จ",error:"พบข้อผิดพลาด",warning:"โปรดตรวจสอบ",info:"แจ้งให้ทราบ"};
+    const icons={success:"✓",error:"!",warning:"!",info:"i"};
+    const item=document.createElement("div");
+    item.className=`toast-item is-${type}`;
+    item.setAttribute("role",type==="error"?"alert":"status");
+    item.innerHTML=`<span class="toast-icon">${icons[type]||"✓"}</span><span class="toast-copy"><strong>${escapeHTML(options.title||titles[type]||"แจ้งเตือน")}</strong><span>${escapeHTML(String(msg||""))}</span></span><button type="button" class="toast-close" aria-label="ปิด">×</button>`;
+    const close=()=>{if(item.classList.contains("toast-out"))return;item.classList.add("toast-out");setTimeout(()=>item.remove(),190);};
+    item.querySelector(".toast-close").addEventListener("click",close);
+    host.prepend(item);
+    while(host.children.length>4) host.lastElementChild.remove();
+    const duration=options.duration??(type==="error"?0:3600);
+    if(duration>0) setTimeout(close,duration);
   }
 
   function fmtMoney(n){ return Number(n||0).toLocaleString('th-TH', {maximumFractionDigits:2}); }
@@ -2832,6 +2977,7 @@
         toast("เพิ่มอะไหล่ใหม่เรียบร้อย" + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
       }
       cacheSave();
+      clearSmartDirty();
       closeModal(true);
       renderAll();
     }catch(err){
@@ -2941,7 +3087,7 @@
       normalized.parts.forEach(saved=>{const p=partById(saved.id);if(p)Object.assign(p,saved);});state.transactions.push(...normalized.transactions);
       if(type==="in"){receiveLines=[{id:uid(),partId:"",qty:""}];document.getElementById("rec-contact").value="";document.getElementById("rec-note").value="";}
       else{issueLines=[{id:uid(),partId:"",qty:""}];document.getElementById("iss-person").value=currentUser?currentUser.name:"";document.getElementById("iss-note").value="";}
-      cacheSave();renderAll();saveWorkingDraft();showDocumentSuccess(result.docNo);toast(`${type==="in"?"รับเข้า":"เบิกออก"} ${result.docNo} สำเร็จ ${result.transactions.length} รายการ`);
+      cacheSave();renderAll();clearSmartDirty();saveWorkingDraft();showDocumentSuccess(result.docNo);toast(`${type==="in"?"รับเข้า":"เบิกออก"} ${result.docNo} สำเร็จ ${result.transactions.length} รายการ`);
     }catch(err){toast("บันทึกเอกสารไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent=normalText;}
   }
   document.getElementById("btn-receive-submit").addEventListener("click",()=>submitDocument("in"));
@@ -2989,7 +3135,7 @@
     body.innerHTML=requestLines.map((line,index)=>{const p=partById(line.partId),available=p?availableQty(p.id,editingId):0;return `<tr><td class="mono">${index+1}</td><td><select data-request-part data-line-id="${line.id}">${documentPartOptions(line.partId)}</select></td><td><input class="qty-input" type="number" min="0" step="any" value="${escapeHTML(line.qty)}" data-request-qty data-line-id="${line.id}" placeholder="0"></td><td>${p?`<span class="available-qty mono">${fmtMoney(available)} ${escapeHTML(p.unit)}</span>${reservedQty(p.id,editingId)>0?`<div class="reserved-note">จองอื่น ${fmtMoney(reservedQty(p.id,editingId))}</div>`:""}`:"-"}</td><td><button class="small danger-ghost" data-request-remove data-line-id="${line.id}" ${requestLines.length===1?'disabled':''}>ลบ</button></td></tr>`;}).join("");
     const valid=requestLines.filter(x=>x.partId&&Number(x.qty)>0);document.getElementById("request-line-count").textContent=`${valid.length} รายการ`;document.getElementById("request-total-qty").textContent=`รวม ${fmtMoney(valid.reduce((s,x)=>s+Number(x.qty),0))} หน่วย`;
   }
-  function clearRequestForm(){document.getElementById("req-id").value="";document.getElementById("req-version").value="";document.getElementById("req-date").value=todayISO();document.getElementById("req-requester").value=currentUser?currentUser.name:"";document.getElementById("req-department").value="";document.getElementById("req-purpose").value="";requestLines=[{id:uid(),partId:"",qty:""}];renderRequestLines();document.getElementById("btn-request-submit").textContent="ส่งคำขออนุมัติ";saveWorkingDraft();}
+  function clearRequestForm(){document.getElementById("req-id").value="";document.getElementById("req-version").value="";document.getElementById("req-date").value=todayISO();document.getElementById("req-requester").value=currentUser?currentUser.name:"";document.getElementById("req-department").value="";document.getElementById("req-purpose").value="";requestLines=[{id:uid(),partId:"",qty:""}];renderRequestLines();document.getElementById("btn-request-submit").textContent="ส่งคำขออนุมัติ";clearSmartDirty();saveWorkingDraft();}
   document.getElementById("req-date").value=todayISO();
   document.getElementById("btn-request-add-line").addEventListener("click",()=>{requestLines.push({id:uid(),partId:"",qty:""});renderRequestLines();});
   document.getElementById("btn-request-clear").addEventListener("click",clearRequestForm);
@@ -3065,7 +3211,7 @@
       if(!hasScriptURL())throw new Error("การตรวจนับต้องเชื่อมต่อ Google Sheets เพื่อเก็บ Audit Log");
       const saved=await apiCall("saveStockCount",{count}),normalized=normalizeFromSheet({parts:saved.parts,transactions:saved.transactions,stockCounts:saved.stockCounts});
       normalized.parts.forEach(x=>{const p=partById(x.id);if(p)Object.assign(p,x);});state.transactions.push(...normalized.transactions);state.stockCounts.push(...normalized.stockCounts);
-      Object.keys(countDraft).forEach(k=>delete countDraft[k]);document.getElementById("count-reason").value="";cacheSave();renderAll();saveWorkingDraft();toast(`บันทึกตรวจนับ ${saved.countNo} เรียบร้อย`);
+      Object.keys(countDraft).forEach(k=>delete countDraft[k]);document.getElementById("count-reason").value="";cacheSave();renderAll();clearSmartDirty();saveWorkingDraft();toast(`บันทึกตรวจนับ ${saved.countNo} เรียบร้อย`);
     }catch(err){toast("บันทึกตรวจนับไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="ยืนยันและปรับยอด";}
   });
 
@@ -3188,7 +3334,7 @@
     try{
       const saved=hasScriptURL()?await apiCall("saveMaster",{masterType:modalMasterType,record}):record;
       const list=state[modalMasterType],idx=list.findIndex(x=>x.id===saved.id);if(idx>=0)list[idx]=saved;else list.push(saved);
-      cacheSave();closeMasterModal();renderAll();toast("บันทึกฐานข้อมูลเรียบร้อย"+(hasScriptURL()?" และซิงก์กับ Sheets แล้ว":""));
+      cacheSave();clearSmartDirty();closeMasterModal();renderAll();toast("บันทึกฐานข้อมูลเรียบร้อย"+(hasScriptURL()?" และซิงก์กับ Sheets แล้ว":""));
     }catch(err){toast("บันทึกไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="บันทึก";}
   });
 
@@ -3289,7 +3435,7 @@
     const id=document.getElementById("uf-id").value,record={id,username:document.getElementById("uf-username").value.trim(),name:document.getElementById("uf-name").value.trim(),role:document.getElementById("uf-role").value,password:document.getElementById("uf-password").value,mustChangePassword:document.getElementById("uf-must-change").checked};
     if(!record.username||!record.name||(!id&&!record.password)){toast("กรุณากรอกข้อมูลที่มี * ให้ครบ",true);return;}
     const btn=document.getElementById("btn-user-save");btn.disabled=true;
-    try{const saved=hasScriptURL()?await apiCall("saveUser",{record}):{...record,id:id||uid(),isActive:true};const i=state.users.findIndex(x=>x.id===saved.id);if(i>=0)state.users[i]=saved;else state.users.push(saved);cacheSave();closeUserModal();renderUsers();toast("บันทึกผู้ใช้งานเรียบร้อย");}catch(err){toast("บันทึกผู้ใช้ไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;}
+    try{const saved=hasScriptURL()?await apiCall("saveUser",{record}):{...record,id:id||uid(),isActive:true};const i=state.users.findIndex(x=>x.id===saved.id);if(i>=0)state.users[i]=saved;else state.users.push(saved);cacheSave();clearSmartDirty();closeUserModal();renderUsers();toast("บันทึกผู้ใช้งานเรียบร้อย");}catch(err){toast("บันทึกผู้ใช้ไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;}
   });
 
   async function toggleUserActiveUI(id){
@@ -3836,6 +3982,244 @@
     }
   });
 
+
+
+  // ================= v4.0.0 SMART USER EXPERIENCE =================
+  const SMART_VIEW_META={
+    dashboard:{group:"งานประจำ",title:"ภาพรวมคลังอะไหล่",description:"ติดตามสถานะสต๊อก งานค้าง และความเคลื่อนไหวล่าสุด"},
+    parts:{group:"งานประจำ",title:"ทะเบียนอะไหล่",description:"ค้นหา เพิ่ม แก้ไข และดู Stock Card ของแต่ละไอเท็ม"},
+    receive:{group:"งานประจำ",title:"รับเข้าอะไหล่",description:"บันทึกการซื้อหรือรับสินค้าเข้าสต๊อกแบบหลายรายการ"},
+    issue:{group:"งานประจำ",title:"เบิกออกอะไหล่",description:"ตัดสต๊อกพร้อมตรวจยอดคงเหลือก่อนยืนยัน"},
+    requisitions:{group:"งานประจำ",title:"คำขอเบิกและการอนุมัติ",description:"ส่งคำขอ จองสต๊อก อนุมัติ และจ่ายของตามขั้นตอน"},
+    labels:{group:"งานประจำ",title:"ป้าย QR / Barcode",description:"สร้างและพิมพ์ป้ายสำหรับชั้นวางหรือชิ้นงาน"},
+    stockcount:{group:"ข้อมูลและผู้ดูแล",title:"ตรวจนับและปรับยอด",description:"เทียบยอดจริงกับระบบและเก็บประวัติผู้อนุมัติ"},
+    master:{group:"ข้อมูลและผู้ดูแล",title:"ฐานข้อมูลกลาง",description:"จัดการซัพพลายเออร์ รถ จังหวัด และเลขที่เอกสาร"},
+    import:{group:"ข้อมูลและผู้ดูแล",title:"นำเข้าข้อมูล Excel",description:"ตรวจสอบและนำเข้าข้อมูลหลายรายการอย่างปลอดภัย"},
+    users:{group:"ข้อมูลและผู้ดูแล",title:"ผู้ใช้งานและ Audit Log",description:"จัดการสิทธิ์ บัญชี และตรวจสอบกิจกรรมย้อนหลัง"},
+    backups:{group:"ข้อมูลและผู้ดูแล",title:"สำรองและกู้คืนข้อมูล",description:"สร้างจุดสำรองและกู้คืน Google Sheets อย่างปลอดภัย"},
+    history:{group:"รายงาน",title:"รายงานและ Stock Card",description:"วิเคราะห์การเบิก ความเคลื่อนไหว และยอดคงเหลือรายตัว"}
+  };
+  const SMART_FILTERS={
+    "parts-body":[["part-search","คำค้นหา"],["part-cat-filter","หมวด"]],
+    "requests-body":[["request-search","คำค้นหา"],["request-status-filter","สถานะ"]],
+    "stock-count-body":[["count-search","คำค้นหา"]],
+    "master-table-body":[["master-search","คำค้นหา"]],
+    "audit-body":[["audit-search","คำค้นหา"]],
+    "inactive-parts-body":[["inactive-days","ช่วงเวลา"]],
+    "stock-card-body":[["stock-card-part","อะไหล่"]],
+    "history-body":[["hist-type-filter","ประเภท"],["hist-from","ตั้งแต่"],["hist-to","ถึง"],["hist-search","คำค้นหา"]]
+  };
+  const SMART_EMPTY={
+    "parts-body":{title:"ไม่พบรายการอะไหล่",description:"ลองเปลี่ยนคำค้นหาหรือล้างตัวกรองหมวดหมู่",action:"clear-parts",label:"ล้างตัวกรอง"},
+    "requests-body":{title:"ไม่พบคำขอเบิก",description:"ยังไม่มีคำขอตามสถานะหรือคำค้นหาที่เลือก",action:"clear-requests",label:"ล้างตัวกรอง"},
+    "low-stock-body":{title:"สต๊อกอยู่ในระดับปกติ",description:"ขณะนี้ไม่มีรายการต่ำกว่าจุดสั่งซื้อ"},
+    "recent-tx-body":{title:"ยังไม่มีความเคลื่อนไหว",description:"รายการรับเข้าและเบิกออกล่าสุดจะแสดงที่นี่"},
+    "recent-receive-body":{title:"ยังไม่มีรายการรับเข้า",description:"สร้างใบรับเข้าเพื่อเริ่มบันทึกความเคลื่อนไหว",action:"go-receive",label:"สร้างรายการรับเข้า"},
+    "recent-issue-body":{title:"ยังไม่มีรายการเบิกออก",description:"สร้างใบเบิกออกเมื่อมีการนำอะไหล่ไปใช้งาน",action:"go-issue",label:"สร้างรายการเบิกออก"},
+    "history-body":{title:"ไม่พบประวัติตามเงื่อนไข",description:"ลองเปลี่ยนช่วงวันที่ ประเภท หรือคำค้นหา",action:"clear-history",label:"ล้างตัวกรอง"},
+    "audit-body":{title:"ไม่พบ Audit Log",description:"ไม่พบกิจกรรมที่ตรงกับคำค้นหาปัจจุบัน",action:"clear-audit",label:"ล้างคำค้นหา"},
+    "stock-card-body":{title:"เลือกอะไหล่เพื่อดู Stock Card",description:"เลือก SKU จากด้านบนเพื่อดูยอดยกมา รับเข้า เบิกออก และคงเหลือ"},
+    "backups-body":{title:"ยังไม่มีไฟล์สำรอง",description:"กด “สำรองข้อมูลตอนนี้” เพื่อสร้างจุดกู้คืนแรก"}
+  };
+  const smartTableObservers=new Map();
+  let smartUXInitialized=false;
+  let smartDirty=false;
+  let smartDraftSaved=false;
+  let smartActivityCount=0;
+  let smartActivityResetTimer=null;
+
+  function smartActionLabel(action,isRead){
+    const labels={getAll:"กำลังดึงข้อมูลล่าสุด",login:"กำลังเข้าสู่ระบบ",getLogo:"กำลังโหลดโลโก้",addPart:"กำลังเพิ่มไอเท็ม",updatePart:"กำลังบันทึกไอเท็ม",saveDocument:"กำลังบันทึกเอกสาร",saveRequisition:"กำลังส่งคำขอ",saveStockCount:"กำลังปรับยอด",bulkImport:"กำลังนำเข้าข้อมูล",createBackup:"กำลังสำรองข้อมูล",restoreBackup:"กำลังกู้คืนข้อมูล"};
+    return labels[action]||(isRead?"กำลังโหลดข้อมูล":"กำลังบันทึกข้อมูล");
+  }
+  function beginGlobalActivity(action,isRead){
+    const token={id:Date.now()+Math.random(),label:smartActionLabel(action,isRead)};
+    smartActivityCount++;
+    clearTimeout(smartActivityResetTimer);
+    const pill=document.getElementById("global-activity"),text=document.getElementById("global-activity-text");
+    if(pill&&text){pill.className="activity-pill is-busy";text.textContent=token.label;}
+    return token;
+  }
+  function endGlobalActivity(token,ok){
+    smartActivityCount=Math.max(0,smartActivityCount-1);
+    if(smartActivityCount>0)return;
+    const pill=document.getElementById("global-activity"),text=document.getElementById("global-activity-text");
+    if(!pill||!text)return;
+    pill.className=`activity-pill ${ok?"is-success":"is-error"}`;
+    text.textContent=ok?"ข้อมูลเป็นปัจจุบัน":"ดำเนินการไม่สำเร็จ";
+    clearTimeout(smartActivityResetTimer);
+    smartActivityResetTimer=setTimeout(()=>{pill.className="activity-pill";text.textContent=navigator.onLine?"พร้อมใช้งาน":"ออฟไลน์ — ใช้ข้อมูลในเครื่อง";},ok?1800:4200);
+  }
+  function setSmartDirty(context){
+    smartDirty=true;smartDraftSaved=false;
+    const pill=document.getElementById("draft-pill"),text=document.getElementById("draft-pill-text");
+    if(pill&&text){pill.className="draft-pill show";text.textContent=`${context||"มีรายการ"}ที่ยังไม่ได้ยืนยัน`;}
+  }
+  function markSmartDraftSaved(){
+    if(!smartDirty)return;
+    smartDraftSaved=true;
+    const pill=document.getElementById("draft-pill"),text=document.getElementById("draft-pill-text");
+    if(pill&&text){pill.className="draft-pill show is-saved";text.textContent="บันทึกร่างในเครื่องแล้ว · ยังไม่ได้ยืนยัน";}
+  }
+  function clearSmartDirty(){
+    smartDirty=false;smartDraftSaved=false;
+    const pill=document.getElementById("draft-pill");if(pill)pill.className="draft-pill";
+  }
+  function smartDirtyContext(target){
+    if(target.closest("#modal-overlay"))return "ข้อมูลไอเท็ม";
+    if(target.closest("#master-modal-overlay"))return "ข้อมูลหลัก";
+    if(target.closest("#user-modal-overlay"))return "ข้อมูลผู้ใช้";
+    if(target.closest("#view-receive .document-panel"))return "ใบรับเข้า";
+    if(target.closest("#view-issue .document-panel"))return "ใบเบิกออก";
+    if(target.closest("#view-requisitions .document-panel"))return "คำขอเบิก";
+    if(target.closest("#view-stockcount .panel:first-child"))return "รายการตรวจนับ";
+    return "ข้อมูล";
+  }
+  function shouldTrackSmartDirty(target){
+    if(!target||target.type==="file"||target.type==="password")return false;
+    if(["count-search","part-search","part-cat-filter","request-search","request-status-filter","master-search","audit-search","inactive-days","stock-card-part","hist-type-filter","hist-from","hist-to","hist-search"].includes(target.id))return false;
+    return !!target.closest("#modal-overlay,#master-modal-overlay,#user-modal-overlay,#view-receive .document-panel,#view-issue .document-panel,#view-requisitions .document-panel,#view-stockcount .panel:first-child");
+  }
+
+  function updateWorkspaceHeader(){
+    const active=document.querySelector(".view.active")?.id.replace("view-","")||"dashboard";
+    const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
+    const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
+    if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
+    document.title=`${meta.title} | Stock Control v4.0.0`;
+  }
+
+  function selectLabel(el){
+    if(!el)return"";
+    if(el.tagName==="SELECT")return el.options[el.selectedIndex]?.textContent.trim()||"";
+    if(el.type==="date"&&el.value)return fmtDate(el.value);
+    return String(el.value||"").trim();
+  }
+  function isMeaningfulFilter(el){
+    if(!el)return false;
+    if(el.tagName==="SELECT")return !!el.value;
+    return !!String(el.value||"").trim();
+  }
+  function clearFilterControl(el){
+    if(!el)return;
+    if(el.tagName==="SELECT")el.selectedIndex=0;else el.value="";
+    el.dispatchEvent(new Event("input",{bubbles:true}));
+    el.dispatchEvent(new Event("change",{bubbles:true}));
+  }
+  function countDataRows(tbody){return Array.from(tbody?.rows||[]).filter(r=>!r.classList.contains("empty-row")&&!r.hidden&&getComputedStyle(r).display!=="none").length;}
+  function ensureTableMeta(bodyId){
+    const tbody=document.getElementById(bodyId),wrap=tbody?.closest(".table-wrap");if(!tbody||!wrap)return null;
+    let meta=wrap.previousElementSibling;
+    if(!meta||!meta.classList.contains("table-meta")||meta.dataset.bodyId!==bodyId){
+      meta=document.createElement("div");meta.className="table-meta";meta.dataset.bodyId=bodyId;
+      meta.innerHTML=`<span class="table-count">กำลังแสดง <strong data-table-count>0</strong> รายการ</span><span class="filter-chips" data-filter-chips></span>`;
+      wrap.parentNode.insertBefore(meta,wrap);
+    }
+    return meta;
+  }
+  function refreshTableMeta(bodyId){
+    const tbody=document.getElementById(bodyId),meta=ensureTableMeta(bodyId);if(!tbody||!meta)return;
+    const count=countDataRows(tbody),countEl=meta.querySelector("[data-table-count]");if(countEl)countEl.textContent=count.toLocaleString("th-TH");
+    const chips=meta.querySelector("[data-filter-chips]");if(!chips)return;
+    const filters=(SMART_FILTERS[bodyId]||[]).map(([id,label])=>({el:document.getElementById(id),label})).filter(x=>isMeaningfulFilter(x.el));
+    chips.innerHTML=filters.map(x=>`<span class="filter-chip">${escapeHTML(x.label)}: ${escapeHTML(selectLabel(x.el))}<button type="button" data-clear-filter="${escapeHTML(x.el.id)}" aria-label="ล้างตัวกรอง">×</button></span>`).join("");
+    if(filters.length>1)chips.insertAdjacentHTML("beforeend",`<button type="button" class="clear-filters" data-clear-all-filters="${escapeHTML(bodyId)}">ล้างทั้งหมด</button>`);
+  }
+  function initTableMeta(){
+    Object.keys(REPORT_EXCEL_EXPORTS).concat(["stock-count-body","stock-card-body"]).forEach(bodyId=>{
+      const tbody=document.getElementById(bodyId);if(!tbody)return;
+      ensureTableMeta(bodyId);refreshTableMeta(bodyId);
+      if(!smartTableObservers.has(bodyId)){
+        const ob=new MutationObserver(()=>{refreshTableMeta(bodyId);decorateEmptyState(bodyId);enhanceRowActionMenus(bodyId);});
+        ob.observe(tbody,{childList:true,subtree:true});smartTableObservers.set(bodyId,ob);
+      }
+    });
+  }
+
+  function enhanceRowActionMenus(bodyId){
+    if(!["requests-body","users-body","master-table-body"].includes(bodyId))return;
+    const tbody=document.getElementById(bodyId);if(!tbody)return;
+    Array.from(tbody.rows).forEach(row=>{
+      if(row.classList.contains("empty-row"))return;
+      const cell=row.cells[row.cells.length-1];if(!cell||cell.querySelector("details"))return;
+      const buttons=Array.from(cell.querySelectorAll(":scope > button"));if(buttons.length<2)return;
+      const details=document.createElement("details");details.className="smart-row-menu";
+      const summary=document.createElement("summary");summary.setAttribute("aria-label","เปิดเมนูการทำงาน");summary.textContent="⋮";
+      const menu=document.createElement("div");menu.className="row-menu-popover";
+      buttons.forEach(btn=>{btn.classList.remove("small");menu.appendChild(btn);btn.addEventListener("click",()=>details.removeAttribute("open"),{once:false});});
+      details.append(summary,menu);cell.appendChild(details);cell.classList.add("row-actions");
+    });
+  }
+
+  function decorateEmptyState(bodyId){
+    const tbody=document.getElementById(bodyId);if(!tbody)return;
+    const row=Array.from(tbody.rows).find(r=>r.classList.contains("empty-row"));if(!row||row.dataset.smartEmpty==="1")return;
+    const cell=row.cells[0];if(!cell)return;
+    const fallback=String(cell.textContent||"").trim()||"ยังไม่มีข้อมูล";
+    const cfg=SMART_EMPTY[bodyId]||{title:fallback,description:"ข้อมูลจะแสดงเมื่อมีรายการที่ตรงกับเงื่อนไข"};
+    const action=cfg.action?`<div class="empty-state-actions"><button type="button" ${cfg.action.startsWith("go-")?'class="primary"':''} data-empty-action="${escapeHTML(cfg.action)}">${escapeHTML(cfg.label||"ดำเนินการ")}</button></div>`:"";
+    cell.innerHTML=`<div class="empty-state"><span class="empty-state-icon">◇</span><strong>${escapeHTML(cfg.title)}</strong><p>${escapeHTML(cfg.description||"")}</p>${action}</div>`;
+    row.dataset.smartEmpty="1";
+  }
+  function decorateAllEmptyStates(){Object.keys(REPORT_EXCEL_EXPORTS).concat(["stock-count-body","stock-card-body"]).forEach(decorateEmptyState);}
+
+  function renderSmartDashboardTasks(){
+    const grid=document.getElementById("attention-grid");if(!grid)return;
+    const pending=state.requisitions.filter(x=>x.status==="pending").length;
+    const approved=state.requisitions.filter(x=>x.status==="approved").length;
+    const low=state.parts.filter(p=>p.isActive!==false&&Number(p.qty)<=Number(p.reorderPoint||p.minQty||0)).length;
+    const today=todayISO();
+    const todayTx=state.transactions.filter(t=>t.status!=="cancelled"&&t.date===today).length;
+    const cards=[
+      {label:"คำขอรออนุมัติ",value:pending,tone:pending?"warn":"success",action:"pending"},
+      {label:"อนุมัติแล้ว รอจ่าย",value:approved,tone:approved?"info":"success",action:"approved"},
+      {label:"ต่ำกว่าจุดสั่งซื้อ",value:low,tone:low?"danger":"success",action:"low"},
+      {label:"ความเคลื่อนไหววันนี้",value:todayTx,tone:"info",action:"today"}
+    ];
+    grid.innerHTML=cards.map(x=>`<button type="button" class="attention-card ${x.tone}" data-attention-action="${x.action}"><span class="attention-copy"><span class="attention-label">${escapeHTML(x.label)}</span><strong>${Number(x.value).toLocaleString("th-TH")}</strong></span><span class="attention-go">›</span></button>`).join("");
+    const updated=document.getElementById("attention-updated");if(updated)updated.textContent=`อัปเดต ${new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"})} น.`;
+  }
+
+  function renderSmartUX(){
+    updateWorkspaceHeader();
+    initTableMeta();
+    Object.keys(REPORT_EXCEL_EXPORTS).concat(["stock-count-body","stock-card-body"]).forEach(bodyId=>{refreshTableMeta(bodyId);enhanceRowActionMenus(bodyId);});
+    decorateAllEmptyStates();
+    renderSmartDashboardTasks();
+  }
+  function initSmartUX(){
+    if(smartUXInitialized)return;smartUXInitialized=true;
+    document.querySelector("[data-breadcrumb-home]")?.addEventListener("click",()=>activateView("dashboard"));
+    document.getElementById("quick-add-part")?.addEventListener("click",()=>openPartModal(null));
+    document.addEventListener("input",e=>{if(shouldTrackSmartDirty(e.target))setSmartDirty(smartDirtyContext(e.target));},true);
+    document.addEventListener("change",e=>{if(shouldTrackSmartDirty(e.target))setSmartDirty(smartDirtyContext(e.target));},true);
+    document.addEventListener("click",e=>{
+      const clearOne=e.target.closest("[data-clear-filter]");if(clearOne){clearFilterControl(document.getElementById(clearOne.dataset.clearFilter));return;}
+      const clearAll=e.target.closest("[data-clear-all-filters]");if(clearAll){(SMART_FILTERS[clearAll.dataset.clearAllFilters]||[]).forEach(([id])=>clearFilterControl(document.getElementById(id)));return;}
+      const empty=e.target.closest("[data-empty-action]");if(empty){
+        const a=empty.dataset.emptyAction;
+        if(a==="clear-parts"){clearFilterControl(document.getElementById("part-search"));clearFilterControl(document.getElementById("part-cat-filter"));}
+        else if(a==="clear-requests"){clearFilterControl(document.getElementById("request-search"));clearFilterControl(document.getElementById("request-status-filter"));}
+        else if(a==="clear-history"){["hist-type-filter","hist-from","hist-to","hist-search"].forEach(id=>clearFilterControl(document.getElementById(id)));}
+        else if(a==="clear-audit")clearFilterControl(document.getElementById("audit-search"));
+        else if(a==="go-receive")activateView("receive");else if(a==="go-issue")activateView("issue");
+        return;
+      }
+      const attention=e.target.closest("[data-attention-action]");if(attention){
+        const a=attention.dataset.attentionAction;
+        if(a==="pending"||a==="approved"){activateView("requisitions");document.getElementById("request-status-filter").value=a;renderRequests();}
+        else if(a==="low"){activateView("dashboard");setTimeout(()=>document.getElementById("reorder-panel")?.scrollIntoView({behavior:"smooth",block:"start"}),60);}
+        else if(a==="today"){activateView("history");document.getElementById("hist-from").value=todayISO();document.getElementById("hist-to").value=todayISO();renderHistory();}
+      }
+    });
+    document.addEventListener("click",e=>{
+      if(!e.target.closest(".smart-row-menu"))document.querySelectorAll(".smart-row-menu[open]").forEach(x=>x.removeAttribute("open"));
+    });
+    window.addEventListener("offline",()=>{const p=document.getElementById("global-activity"),t=document.getElementById("global-activity-text");if(p&&t){p.className="activity-pill is-error";t.textContent="ออฟไลน์ — ใช้ข้อมูลในเครื่อง";}});
+    window.addEventListener("online",()=>{const p=document.getElementById("global-activity"),t=document.getElementById("global-activity-text");if(p&&t){p.className="activity-pill is-success";t.textContent="กลับมาออนไลน์แล้ว";setTimeout(()=>{p.className="activity-pill";t.textContent="พร้อมใช้งาน";},1800);}});
+  }
+
+
   // ================= RENDER ALL =================
   function renderAll(){
     renderDashboard();
@@ -3852,9 +4236,11 @@
     renderHistory();
     initSortableTableObservers();
     initReportExcelExports();
+    renderSmartUX();
   }
 
   function initAppAfterLogin(){
+    initSmartUX();
     loadCache();
     clearMasterImport();
     renderAll();
