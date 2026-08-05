@@ -273,6 +273,8 @@
     .modal .form-actions{position:sticky;bottom:-16px;margin:14px -16px -16px;padding:12px 16px;background:var(--panel);border-top:1px solid var(--border);}
   }
   .modal h3{font-family:'Kanit',sans-serif;margin:0 0 14px;font-size:16px;}
+  .modal.modal-attention{animation:modalAttention .24s ease;}
+  @keyframes modalAttention{0%,100%{transform:translateX(0)}30%{transform:translateX(-7px)}65%{transform:translateX(7px)}}
 
   /* ---------- Toast ---------- */
   #toast{
@@ -524,7 +526,7 @@
     .alert-banner{align-items:flex-start;flex-direction:column;}.alert-action{width:100%;}
     .gauge{min-width:130px;}
   }
-  /* ================= v3.9.4 Stock Card shortcut ================= */
+  /* ================= v3.9.5 Stock Card shortcut ================= */
   .status-pill.draft{background:#26333a;color:#b6c5c1}.status-pill.pending{background:var(--accent-dim);color:#ffd071}
   .status-pill.approved{background:var(--brand-dim);color:#78e9dc}.status-pill.issued{background:var(--success-dim);color:#65ddb0}
   .status-pill.rejected,.status-pill.cancelled{background:var(--danger-dim);color:#ff9b9b}
@@ -556,7 +558,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.9.5</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -591,7 +593,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.9.5</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -1241,7 +1243,7 @@
   }catch(e){}
 
   // ============ LOGIN / ROLE PERMISSIONS ============
-  // v3.9.4 keeps v3.9 salted password hashes and locks only after closing the tab.
+  // v3.9.5 keeps v3.9 salted password hashes and locks only after closing the tab.
   let currentUser = null; // { username, name, role, token, expiresAt }
   let logoLoadPromise = null;
   let lastAuthenticatedUsername = "";
@@ -1457,7 +1459,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.9.3 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.9.5 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -2151,6 +2153,28 @@
   document.getElementById("pf-category").addEventListener("change",refreshPartHelpers);
   document.getElementById("btn-use-sku").addEventListener("click",()=>{ document.getElementById("pf-code").value=skuSuggestion(); refreshPartHelpers(); });
 
+  const PART_MODAL_FIELD_IDS = ["pf-id","pf-code","pf-name","pf-category","pf-category-custom","pf-item-type","pf-unit","pf-unit-custom","pf-qty","pf-min","pf-reorder","pf-max","pf-lead","pf-cost","pf-location","pf-supplier","pf-truck","pf-province"];
+  let partModalInitialSnapshot = "";
+  function partModalSnapshot(){
+    return JSON.stringify(PART_MODAL_FIELD_IDS.map(id=>{
+      const el=document.getElementById(id);
+      return el ? String(el.value??"") : "";
+    }));
+  }
+  function partModalHasUnsavedChanges(){
+    return document.getElementById("modal-overlay").classList.contains("show") && partModalInitialSnapshot && partModalSnapshot()!==partModalInitialSnapshot;
+  }
+  function remindPartModalStillOpen(){
+    const modal=document.querySelector("#modal-overlay .modal");
+    if(modal){
+      modal.classList.remove("modal-attention");
+      void modal.offsetWidth;
+      modal.classList.add("modal-attention");
+      setTimeout(()=>modal.classList.remove("modal-attention"),300);
+    }
+    toast("รายการยังเปิดอยู่ ข้อมูลไม่หาย กรุณากด “บันทึก” หรือ “ยกเลิก”");
+  }
+
   function openPartModal(id){
     if(!requireAdmin()) return;
     const p = id ? partById(id) : null;
@@ -2177,11 +2201,22 @@
     document.getElementById("pf-truck").value = p ? (p.truckId||"") : "";
     document.getElementById("pf-province").value = p ? (p.provinceId||"") : "";
     document.getElementById("modal-overlay").classList.add("show");
-    setTimeout(()=>{ if(!p) document.getElementById("pf-code").value = skuSuggestion(); refreshPartHelpers(); },0);
+    setTimeout(()=>{
+      if(!p) document.getElementById("pf-code").value = skuSuggestion();
+      refreshPartHelpers();
+      partModalInitialSnapshot = partModalSnapshot();
+    },0);
   }
-  function closeModal(){ document.getElementById("modal-overlay").classList.remove("show"); }
-  document.getElementById("btn-modal-cancel").addEventListener("click", closeModal);
-  document.getElementById("modal-overlay").addEventListener("click", (e)=>{ if(e.target.id==="modal-overlay") closeModal(); });
+  function closeModal(force=false){
+    if(!force && partModalHasUnsavedChanges() && !confirm("มีข้อมูลที่ยังไม่ได้บันทึก\n\nยืนยันยกเลิกรายการนี้หรือไม่?")) return false;
+    document.getElementById("modal-overlay").classList.remove("show");
+    partModalInitialSnapshot = "";
+    return true;
+  }
+  document.getElementById("btn-modal-cancel").addEventListener("click", ()=>closeModal(false));
+  document.getElementById("modal-overlay").addEventListener("click", (e)=>{
+    if(e.target.id==="modal-overlay") remindPartModalStillOpen();
+  });
 
   document.getElementById("btn-modal-save").addEventListener("click", async ()=>{
     if(!requireAdmin()) return;
@@ -2235,7 +2270,7 @@
         toast("เพิ่มอะไหล่ใหม่เรียบร้อย" + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
       }
       cacheSave();
-      closeModal();
+      closeModal(true);
       renderAll();
     }catch(err){
       toast("บันทึกไป Google Sheets ไม่สำเร็จ: " + err.message, true);
