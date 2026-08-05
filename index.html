@@ -526,7 +526,7 @@
     .alert-banner{align-items:flex-start;flex-direction:column;}.alert-action{width:100%;}
     .gauge{min-width:130px;}
   }
-  /* ================= v3.9.5 Stock Card shortcut ================= */
+  /* ================= v3.9.6 Stock Card shortcut ================= */
   .status-pill.draft{background:#26333a;color:#b6c5c1}.status-pill.pending{background:var(--accent-dim);color:#ffd071}
   .status-pill.approved{background:var(--brand-dim);color:#78e9dc}.status-pill.issued{background:var(--success-dim);color:#65ddb0}
   .status-pill.rejected,.status-pill.cancelled{background:var(--danger-dim);color:#ff9b9b}
@@ -558,7 +558,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9.5</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.9.6</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -593,7 +593,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9.5</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.9.6</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -933,12 +933,12 @@
     <div class="panel">
       <h2>นำเข้าข้อมูลแบบชุด <span class="sub">เพิ่มข้อมูลโดยไม่ล้างข้อมูลเดิม</span></h2>
       <div class="import-note">
-        เลือกงานที่ต้องการ ดาวน์โหลดแม่แบบไปคีย์ด้านนอก แล้วอัปโหลดกลับเข้าระบบ ระบบจะตรวจรหัสซ้ำ วันที่ จำนวน และสต๊อกคงเหลือก่อนบันทึกจริง
+        เลือกงานที่ต้องการ ดาวน์โหลดแม่แบบไปคีย์ด้านนอก แล้วอัปโหลดกลับเข้าระบบ สำหรับการเพิ่มทะเบียนอะไหล่สามารถเว้นรหัส SKU ไว้ได้ ระบบจะแจกเลขต่อจากข้อมูลเดิมและตรวจซ้ำก่อนบันทึกจริง
       </div>
       <div class="import-type-grid">
         <button class="import-type active" data-import-type="parts">
           <strong>1. เพิ่มทะเบียนอะไหล่</strong>
-          <span>เพิ่มอะไหล่หลายรายการ พร้อมยอดตั้งต้น หมวดหมู่ หน่วยนับ และตำแหน่งจัดเก็บ</span>
+          <span>เพิ่มอะไหล่หลายรายการ พร้อมแจก SKU อัตโนมัติจากหมวดหมู่และประเภทไอเท็ม</span>
         </button>
         <button class="import-type" data-import-type="receive">
           <strong>2. รับเข้าอะไหล่</strong>
@@ -1243,7 +1243,7 @@
   }catch(e){}
 
   // ============ LOGIN / ROLE PERMISSIONS ============
-  // v3.9.5 keeps v3.9 salted password hashes and locks only after closing the tab.
+  // v3.9.6 keeps v3.9 salted password hashes and locks only after closing the tab.
   let currentUser = null; // { username, name, role, token, expiresAt }
   let logoLoadPromise = null;
   let lastAuthenticatedUsername = "";
@@ -1459,7 +1459,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.9.5 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.9.6 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -2112,7 +2112,7 @@
   document.getElementById("pf-category").addEventListener("change", ()=> toggleCustomField("pf-category","pf-category-custom"));
   document.getElementById("pf-unit").addEventListener("change", ()=> toggleCustomField("pf-unit","pf-unit-custom"));
 
-  const SKU_CATEGORY_CODES = {"เครื่องจักร":"MCH","ไฟฟ้า":"ELE","บรรจุภัณฑ์":"PKG","ท่อ-วาล์ว":"PIP","ระบบเครื่องยนต์":"ENG","เครื่องยนต์":"ENG","ระบบเบรก":"BRK","เบรก":"BRK","ช่วงล่าง":"SUS","ระบบแอร์":"AIR","สารหล่อลื่น":"LUB","อื่นๆ":"OTH"};
+  const SKU_CATEGORY_CODES = {"เครื่องจักร":"MCH","ไฟฟ้า":"ELE","ระบบไฟฟ้า":"ELE","บรรจุภัณฑ์":"PKG","ท่อ-วาล์ว":"PIP","ระบบเครื่องยนต์":"ENG","เครื่องยนต์":"ENG","ระบบเบรก":"BRK","เบรก":"BRK","ช่วงล่าง":"SUS","ระบบแอร์":"AIR","สารหล่อลื่น":"LUB","อื่นๆ":"OTH"};
   const SKU_TYPE_CODES = {"หลอดไฟ":"LMP","ไฟหน้า":"LMP","ไฟท้าย":"LMP","สวิตช์":"SWI","ผ้าเบรก":"PAD","กรอง":"FIL","ไส้กรอง":"FIL","น้ำมัน":"OIL","จาระบี":"GRS","โช๊ค":"SHK","โช้ค":"SHK","ลูกปืน":"BRG","วาล์ว":"VLV","สายพาน":"BLT","มอเตอร์":"MTR"};
   function cleanSkuToken(value, fallback){
     const txt=String(value||"").trim();
@@ -2666,7 +2666,7 @@
     document.getElementById("master-import-preview").style.display="block";document.getElementById("master-import-caption").textContent=masterImportDraft.fileName;
     document.getElementById("master-count-total").textContent=total;document.getElementById("master-count-ok").textContent=ok;document.getElementById("master-count-bad").textContent=total-ok;
     document.getElementById("btn-master-import-confirm").disabled=!total||ok!==total;
-    document.getElementById("master-import-body").innerHTML=rows.slice(0,500).map(r=>`<tr><td class="mono">${r.rowNo}</td><td>${escapeHTML(r.primary||"-")}</td><td>${escapeHTML(r.detail||"-")}</td><td>${r.valid?'<span class="row-status ok">พร้อมนำเข้า</span>':`<span class="row-status bad">${escapeHTML(r.errors.join(" · "))}</span>`}</td></tr>`).join("");
+    document.getElementById("master-import-body").innerHTML=rows.slice(0,500).map(r=>`<tr><td class="mono">${r.rowNo}</td><td>${escapeHTML(r.primary||"-")}</td><td>${escapeHTML(r.detail||"-")}</td><td>${r.valid?`<span class="row-status ok">พร้อมนำเข้า</span>`:`<span class="row-status bad">${escapeHTML(r.errors.join(" · "))}</span>`}</td></tr>`).join("");
   }
 
   document.getElementById("btn-master-import").addEventListener("click",()=>document.getElementById("master-import-file").click());
@@ -2903,7 +2903,7 @@
     const wb = XLSX.utils.book_new();
 
     const partsSheet = state.parts.map(p=>({
-      "รหัสอะไหล่": p.code, "ชื่ออะไหล่": p.name, "หมวดหมู่": p.category, "หน่วยนับ": p.unit,
+      "รหัสอะไหล่": p.code, "ชื่ออะไหล่": p.name, "หมวดหมู่": p.category, "ประเภทไอเท็ม":p.itemType||"", "หน่วยนับ": p.unit,
       "คงเหลือ": p.qty, "จุดสั่งซื้อขั้นต่ำ": p.minQty, "จุดสั่งซื้อ":p.reorderPoint, "จำนวนสูงสุด":p.maxQty,
       "ระยะเวลารอสินค้า(วัน)":p.leadTimeDays,"จำนวนแนะนำสั่ง":Math.max(0,(p.maxQty||p.reorderPoint||p.minQty)-p.qty), "มูลค่าต่อหน่วย": p.cost, "ที่จัดเก็บ": p.location,
       "ซัพพลายเออร์หลัก": supplierById(p.supplierId)?.name||"", "รถบรรทุก": truckById(p.truckId)?.plateNo||"", "จังหวัด":provinceById(p.provinceId)?.name||""
@@ -2938,8 +2938,8 @@
   const IMPORT_CONFIG = {
     parts: {
       sheet:"เพิ่มอะไหล่", label:"เพิ่มทะเบียนอะไหล่",
-      headers:["รหัสอะไหล่","ชื่ออะไหล่","หมวดหมู่","หน่วยนับ","จำนวนตั้งต้น","จุดสั่งซื้อขั้นต่ำ","จุดสั่งซื้อ","จำนวนสูงสุด","ระยะเวลารอสินค้า(วัน)","มูลค่าต่อหน่วย","ที่จัดเก็บ","ซัพพลายเออร์หลัก","รถบรรทุก","จังหวัด"],
-      example:["SP-001","ลูกปืนตัวอย่าง","เครื่องจักร","ชิ้น",10,3,3,15,7,250,"A1-01","บริษัทตัวอย่าง จำกัด","70-1234","ราชบุรี"]
+      headers:["รหัสอะไหล่","ชื่ออะไหล่","หมวดหมู่","ประเภทไอเท็ม","หน่วยนับ","จำนวนตั้งต้น","จุดสั่งซื้อขั้นต่ำ","จุดสั่งซื้อ","จำนวนสูงสุด","ระยะเวลารอสินค้า(วัน)","มูลค่าต่อหน่วย","ที่จัดเก็บ","ซัพพลายเออร์หลัก","รถบรรทุก","จังหวัด"],
+      example:["","หลอดไฟหน้า H4 24V","ระบบไฟฟ้า","หลอดไฟ","ดวง",10,3,3,15,7,250,"A1-01","บริษัทตัวอย่าง จำกัด","70-1234","ราชบุรี"]
     },
     receive: {
       sheet:"รับเข้า", label:"รับเข้าอะไหล่",
@@ -2966,7 +2966,7 @@
     document.querySelectorAll("[data-import-type]").forEach(b=>b.classList.toggle("active", b.dataset.importType===type));
     document.getElementById("batch-import-file").value = "";
     document.getElementById("import-file-name").textContent = "ยังไม่ได้เลือกไฟล์";
-    document.getElementById("import-sheet-hint").textContent = `ไฟล์ต้องมีชีทชื่อ “${IMPORT_CONFIG[type].sheet}” และใช้หัวคอลัมน์ตามแม่แบบ`;
+    document.getElementById("import-sheet-hint").textContent = `ไฟล์ต้องมีชีทชื่อ “${IMPORT_CONFIG[type].sheet}” และใช้หัวคอลัมน์ตามแม่แบบ` + (type==="parts"?" · เว้นรหัสอะไหล่ไว้ได้ ระบบจะแจก SKU อัตโนมัติ":"");
     document.getElementById("import-preview-panel").style.display = "none";
   }
 
@@ -2977,9 +2977,10 @@
     if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
     const guide = [
-      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v3.9 Controlled Warehouse"],
+      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v3.9.6 Controlled Warehouse"],
       ["วิธีใช้","ใช้ไฟล์เดียวได้ทุกห้อง เลือกประเภทในโปรแกรมแล้วอัปโหลดไฟล์เดิม ระบบจะอ่านเฉพาะชีทที่ตรงกัน"],
       ["ลำดับแนะนำ","จังหวัด → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
+      ["การสร้าง SKU","ในชีท “เพิ่มอะไหล่” สามารถเว้นคอลัมน์รหัสอะไหล่ไว้ ระบบจะสร้าง SKU จากหมวดหมู่ + ประเภทไอเท็ม + เลขลำดับต่อจากข้อมูลเดิมให้อัตโนมัติ"],
       ["ข้อควรระวัง","ห้ามเปลี่ยนชื่อชีทและหัวคอลัมน์ วันที่แนะนำ yyyy-mm-dd และข้อมูลอ้างอิงควรตรงกับฐานข้อมูลกลาง"]
     ];
     const guideWS = XLSX.utils.aoa_to_sheet(guide);
@@ -2991,7 +2992,7 @@
       ws["!autofilter"]={ref:"A1:"+XLSX.utils.encode_col(cfg.headers.length-1)+"1"};
       XLSX.utils.book_append_sheet(wb,ws,cfg.sheet);
     });
-    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v3.9.xlsx");
+    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v3.9.6.xlsx");
     toast("ดาวน์โหลดแม่แบบรวมเรียบร้อย");
   }
   document.getElementById("btn-download-import-template").addEventListener("click",downloadFullTemplate);
@@ -3085,24 +3086,54 @@
     return refs;
   }
 
+  function nextImportSku(category,itemType,unavailableCodes){
+    const cp=SKU_CATEGORY_CODES[String(category||"").trim()]||cleanSkuToken(category,"OTH");
+    const tp=SKU_TYPE_CODES[String(itemType||"").trim()]||cleanSkuToken(itemType,"ITM");
+    const prefix=cp+"-"+tp+"-";
+    const escaped=prefix.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+    let max=0;
+    unavailableCodes.forEach(code=>{
+      const m=String(code||"").toUpperCase().match(new RegExp("^"+escaped+"(\\d+)$"));
+      if(m) max=Math.max(max,Number(m[1])||0);
+    });
+    let no=max+1;
+    let candidate=prefix+String(no).padStart(3,"0");
+    while(unavailableCodes.has(candidate.toLowerCase())){
+      no+=1;
+      candidate=prefix+String(no).padStart(3,"0");
+    }
+    return candidate;
+  }
+
   function validateImportRows(type, rawRows){
-    const existing = new Map(state.parts.map(p=>[p.code.toLowerCase(), p]));
-    const codeCounts = {};
+    const existing = new Map(state.parts.map(p=>[String(p.code||"").trim().toLowerCase(), p]));
+    const manualCodeCounts = {};
+    const unavailableCodes = new Set(existing.keys());
     if(type==="parts") rawRows.forEach(r=>{
       const key=String(r["รหัสอะไหล่"]||"").trim().toLowerCase();
-      if(key) codeCounts[key]=(codeCounts[key]||0)+1;
+      if(key){
+        manualCodeCounts[key]=(manualCodeCounts[key]||0)+1;
+        unavailableCodes.add(key); // กัน SKU อัตโนมัติชนกับรหัสที่ผู้ใช้ระบุในไฟล์
+      }
     });
-    const available = new Map(state.parts.map(p=>[p.code.toLowerCase(), Number(p.qty)||0]));
+    const available = new Map(state.parts.map(p=>[String(p.code||"").trim().toLowerCase(), Number(p.qty)||0]));
 
     return rawRows.map((raw,index)=>{
       const rowNo = raw.__rowNo || index+2;
-      const code = String(raw["รหัสอะไหล่"]||"").trim();
-      const key = code.toLowerCase();
+      const rawCode = String(raw["รหัสอะไหล่"]||"").trim();
+      let code = rawCode;
       const errors = [];
-      if(!code) errors.push("กรุณาระบุรหัสอะไหล่");
 
       if(type==="parts"){
         const name = String(raw["ชื่ออะไหล่"]||"").trim();
+        const category=String(raw["หมวดหมู่"]||"อื่นๆ").trim()||"อื่นๆ";
+        const itemType=String(raw["ประเภทไอเท็ม"]||"").trim();
+        const autoSku = !rawCode;
+        if(autoSku){
+          code=nextImportSku(category,itemType,unavailableCodes);
+          unavailableCodes.add(code.toLowerCase());
+        }
+        const key=code.toLowerCase();
         const qty = numberValue(raw["จำนวนตั้งต้น"],0);
         const minQty = numberValue(raw["จุดสั่งซื้อขั้นต่ำ"],0);
         const reorderPoint = numberValue(raw["จุดสั่งซื้อ"],minQty);
@@ -3110,8 +3141,8 @@
         const leadTimeDays = numberValue(raw["ระยะเวลารอสินค้า(วัน)"],0);
         const cost = numberValue(raw["มูลค่าต่อหน่วย"],0);
         if(!name) errors.push("กรุณาระบุชื่ออะไหล่");
-        if(existing.has(key)) errors.push("รหัสนี้มีอยู่ในระบบแล้ว");
-        if(codeCounts[key]>1) errors.push("รหัสซ้ำกันในไฟล์");
+        if(!autoSku && existing.has(key)) errors.push("รหัสนี้มีอยู่ในระบบแล้ว");
+        if(!autoSku && manualCodeCounts[key]>1) errors.push("รหัสซ้ำกันในไฟล์");
         if(!Number.isFinite(qty)||qty<0) errors.push("จำนวนตั้งต้นไม่ถูกต้อง");
         if(!Number.isFinite(minQty)||minQty<0) errors.push("จุดสั่งซื้อขั้นต่ำไม่ถูกต้อง");
         if(!Number.isFinite(reorderPoint)||reorderPoint<0) errors.push("จุดสั่งซื้อไม่ถูกต้อง");
@@ -3120,16 +3151,17 @@
         if(!Number.isFinite(cost)||cost<0) errors.push("มูลค่าต่อหน่วยไม่ถูกต้อง");
         const refs=resolveImportRefs(raw,errors);
         return {
-          rowNo, code, name,
-          category:String(raw["หมวดหมู่"]||"อื่นๆ").trim()||"อื่นๆ",
+          rowNo, code, autoSku, name, category, itemType,
           unit:String(raw["หน่วยนับ"]||"ชิ้น").trim()||"ชิ้น",
           qty, minQty, reorderPoint, maxQty, leadTimeDays, cost, location:String(raw["ที่จัดเก็บ"]||"").trim(), date:todayISO(),
           supplierId:refs.supplierId,truckId:refs.truckId,provinceId:refs.provinceId,
-          detail:`${name||"-"} · ${String(raw["หมวดหมู่"]||"อื่นๆ")||"อื่นๆ"}`,
+          detail:`${name||"-"} · ${category}${itemType?" / "+itemType:""}${autoSku?" · ระบบแจก SKU":""}`,
           errors, valid:errors.length===0
         };
       }
 
+      const key = code.toLowerCase();
+      if(!code) errors.push("กรุณาระบุรหัสอะไหล่");
       const part = existing.get(key);
       const qty = numberValue(raw["จำนวน"],NaN);
       const date = parseImportDate(raw["วันที่"]);
@@ -3178,7 +3210,7 @@
       <td>${escapeHTML(r.code||"-")}</td>
       <td>${escapeHTML(r.detail||"-")}</td>
       <td class="mono">${Number.isFinite(r.qty)?r.qty:"-"}</td>
-      <td>${r.valid?'<span class="row-status ok">พร้อมนำเข้า</span>':`<span class="row-status bad">${escapeHTML(r.errors.join(" · "))}</span>`}</td>
+      <td>${r.valid?`<span class="row-status ok">${r.autoSku?"พร้อมนำเข้า · SKU อัตโนมัติ":"พร้อมนำเข้า"}</span>`:`<span class="row-status bad">${escapeHTML(r.errors.join(" · "))}</span>`}</td>
     </tr>`).join("");
     document.getElementById("import-preview-limit").textContent = total>500 ? `แสดง 500 แถวแรกจากทั้งหมด ${total} แถว` : "";
   }
@@ -3192,7 +3224,7 @@
     rows.forEach(r=>{
       if(type==="parts"){
         if(byCode.has(r.code.toLowerCase())) throw new Error(`รหัส ${r.code} มีอยู่ในระบบแล้ว`);
-        const p = {id:uid(),code:r.code,name:r.name,category:r.category,unit:r.unit,qty:r.qty,minQty:r.minQty,reorderPoint:r.reorderPoint,maxQty:r.maxQty,leadTimeDays:r.leadTimeDays,cost:r.cost,location:r.location,supplierId:r.supplierId||"",truckId:r.truckId||"",provinceId:r.provinceId||""};
+        const p = {id:uid(),code:r.code,name:r.name,category:r.category,itemType:r.itemType||"",unit:r.unit,qty:r.qty,minQty:r.minQty,reorderPoint:r.reorderPoint,maxQty:r.maxQty,leadTimeDays:r.leadTimeDays,cost:r.cost,location:r.location,supplierId:r.supplierId||"",truckId:r.truckId||"",provinceId:r.provinceId||""};
         parts.push(p); byCode.set(r.code.toLowerCase(),p);
         if(r.qty>0) transactions.push({id:uid(),partId:p.id,type:"in",qty:r.qty,date:r.date,person:"",supplier:"ยอดตั้งต้น",supplierId:r.supplierId||"",truckId:r.truckId||"",provinceId:r.provinceId||"",prNo:"",poNo:"",ivNo:"",note:`นำเข้าอะไหล่จาก Excel${currentUser?" โดย "+currentUser.name:""}`});
         return;
@@ -3218,7 +3250,9 @@
       toast("กรุณาแก้ไขแถวที่ผิดก่อนนำเข้า", true); return;
     }
     const cfg = IMPORT_CONFIG[importDraft.type];
-    if(!confirm(`ยืนยัน${cfg.label}จำนวน ${importDraft.rows.length} แถว? ข้อมูลเดิมจะไม่ถูกล้าง`)) return;
+    const autoSkuCount=importDraft.type==="parts"?importDraft.rows.filter(r=>r.autoSku).length:0;
+    const autoSkuMsg=autoSkuCount?` ระบบจะสร้าง SKU อัตโนมัติ ${autoSkuCount} รายการต่อจากข้อมูลล่าสุดในระบบ`:"";
+    if(!confirm(`ยืนยัน${cfg.label}จำนวน ${importDraft.rows.length} แถว?${autoSkuMsg} ข้อมูลเดิมจะไม่ถูกล้าง`)) return;
     const btn = document.getElementById("btn-confirm-import");
     btn.disabled=true; btn.textContent="กำลังนำเข้า...";
     try{
@@ -3230,8 +3264,9 @@
       }
       cacheSave(); renderAll();
       const count = importDraft.rows.length;
+      const assignedAutoSku=importDraft.type==="parts"?importDraft.rows.filter(r=>r.autoSku).length:0;
       setImportType(importDraft.type);
-      toast(`นำเข้า ${cfg.label} สำเร็จ ${count} แถว` + (hasScriptURL()?" และซิงก์กับ Sheets แล้ว":""));
+      toast(`นำเข้า ${cfg.label} สำเร็จ ${count} แถว` + (assignedAutoSku?` · แจก SKU อัตโนมัติ ${assignedAutoSku} รายการ`:"") + (hasScriptURL()?" และซิงก์กับ Sheets แล้ว":""));
     }catch(err){
       toast("นำเข้าข้อมูลไม่สำเร็จ: " + (err.message||"เกิดข้อผิดพลาด"), true);
       revalidateImportDraft();
