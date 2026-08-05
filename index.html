@@ -173,6 +173,27 @@
   .row-actions{display:flex;gap:6px;}
   .empty-row td{text-align:center;color:var(--text-dim);padding:28px 10px;}
 
+
+  /* ---------- Sortable list tables v3.9.7 ---------- */
+  table.sortable-table thead th.sortable-column{
+    cursor:pointer;user-select:none;position:relative;padding-right:28px;
+    transition:background .15s,color .15s;
+  }
+  table.sortable-table thead th.sortable-column:hover,
+  table.sortable-table thead th.sortable-column:focus-visible{
+    color:var(--text);background:rgba(255,255,255,.045);outline:none;
+  }
+  table.sortable-table thead th.sortable-column::after{
+    content:'↕';position:absolute;right:9px;top:50%;transform:translateY(-50%);
+    color:var(--text-dim);font-size:12px;opacity:.7;
+  }
+  table.sortable-table thead th.sortable-column.sort-asc::after{content:'▲';color:var(--brand-bright);opacity:1;font-size:9px;}
+  table.sortable-table thead th.sortable-column.sort-desc::after{content:'▼';color:var(--brand-bright);opacity:1;font-size:9px;}
+  table.sortable-table thead th.sortable-column.sort-asc,
+  table.sortable-table thead th.sortable-column.sort-desc{color:var(--brand-bright);}
+  table.sortable-table thead th.sort-disabled{cursor:default;padding-right:10px;}
+  table.sortable-table thead th.sort-disabled::after{display:none;}
+
   /* ---------- Forms ---------- */
   .field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
   @media(max-width:640px){.field-grid{grid-template-columns:1fr;}}
@@ -526,7 +547,7 @@
     .alert-banner{align-items:flex-start;flex-direction:column;}.alert-action{width:100%;}
     .gauge{min-width:130px;}
   }
-  /* ================= v3.9.6 Stock Card shortcut ================= */
+  /* ================= v3.9.7 Stock Card shortcut ================= */
   .status-pill.draft{background:#26333a;color:#b6c5c1}.status-pill.pending{background:var(--accent-dim);color:#ffd071}
   .status-pill.approved{background:var(--brand-dim);color:#78e9dc}.status-pill.issued{background:var(--success-dim);color:#65ddb0}
   .status-pill.rejected,.status-pill.cancelled{background:var(--danger-dim);color:#ff9b9b}
@@ -558,7 +579,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9.6</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.9.7</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -593,7 +614,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v3.9.6</h1>
+        <h1>คลังอะไหล่ — Stock Control v3.9.7</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -933,12 +954,12 @@
     <div class="panel">
       <h2>นำเข้าข้อมูลแบบชุด <span class="sub">เพิ่มข้อมูลโดยไม่ล้างข้อมูลเดิม</span></h2>
       <div class="import-note">
-        เลือกงานที่ต้องการ ดาวน์โหลดแม่แบบไปคีย์ด้านนอก แล้วอัปโหลดกลับเข้าระบบ สำหรับการเพิ่มทะเบียนอะไหล่สามารถเว้นรหัส SKU ไว้ได้ ระบบจะแจกเลขต่อจากข้อมูลเดิมและตรวจซ้ำก่อนบันทึกจริง
+        เลือกงานที่ต้องการ ดาวน์โหลดแม่แบบไปคีย์ด้านนอก แล้วอัปโหลดกลับเข้าระบบ ระบบจะตรวจรหัสซ้ำ วันที่ จำนวน และสต๊อกคงเหลือก่อนบันทึกจริง
       </div>
       <div class="import-type-grid">
         <button class="import-type active" data-import-type="parts">
           <strong>1. เพิ่มทะเบียนอะไหล่</strong>
-          <span>เพิ่มอะไหล่หลายรายการ พร้อมแจก SKU อัตโนมัติจากหมวดหมู่และประเภทไอเท็ม</span>
+          <span>เพิ่มอะไหล่หลายรายการ พร้อมยอดตั้งต้น หมวดหมู่ หน่วยนับ และตำแหน่งจัดเก็บ</span>
         </button>
         <button class="import-type" data-import-type="receive">
           <strong>2. รับเข้าอะไหล่</strong>
@@ -1234,6 +1255,186 @@
   const LAST_USER_KEY = "sparepartsStock_lastUser";
   const TAB_SESSION_KEY = "sparepartsStock_tabSession_v392";
 
+
+  // ตารางข้อมูลที่อนุญาตให้ผู้ใช้กดหัวคอลัมน์เพื่อเรียงลำดับ
+  // ไม่รวมตารางกรอกรายการ/หน้าตรวจสอบนำเข้า เพื่อรักษาลำดับเอกสารและลำดับแถวต้นฉบับ
+  const SORTABLE_TABLE_BODIES = new Set([
+    "low-stock-body","recent-tx-body","parts-body","recent-receive-body","recent-issue-body",
+    "requests-body","backups-body","stock-count-body","stock-count-history-body","master-table-body",
+    "users-body","audit-body","top-issued-body","inactive-parts-body","stock-card-body","history-body"
+  ]);
+  const tableSortState = new Map();
+  const sortableTableObservers = new Map();
+  const sortingBodyIds = new Set();
+  const thaiSortCollator = new Intl.Collator("th", {numeric:true,sensitivity:"base"});
+
+  function sortableTableInfo(table){
+    if(!table) return null;
+    const tbody=table.tBodies&&table.tBodies[0];
+    if(!tbody || !SORTABLE_TABLE_BODIES.has(tbody.id)) return null;
+    return {table,tbody,bodyId:tbody.id};
+  }
+
+  function parseThaiDateSortValue(text){
+    const value=String(text||"").replace(/\u00a0/g," ").trim();
+    const thaiMonths={"ม.ค.":1,"ก.พ.":2,"มี.ค.":3,"เม.ย.":4,"พ.ค.":5,"มิ.ย.":6,"ก.ค.":7,"ส.ค.":8,"ก.ย.":9,"ต.ค.":10,"พ.ย.":11,"ธ.ค.":12};
+    let m=value.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})(?:,?\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?(?:\s*น\.)?$/);
+    if(m){
+      let year=Number(m[3]);
+      if(year>2400) year-=543;
+      const time=Date.UTC(year,Number(m[2])-1,Number(m[1]),Number(m[4]||0),Number(m[5]||0),Number(m[6]||0));
+      return Number.isNaN(time)?null:time;
+    }
+    m=value.match(/^(\d{1,2})\s+(ม\.ค\.|ก\.พ\.|มี\.ค\.|เม\.ย\.|พ\.ค\.|มิ\.ย\.|ก\.ค\.|ส\.ค\.|ก\.ย\.|ต\.ค\.|พ\.ย\.|ธ\.ค\.)\s+(\d{4})$/);
+    if(m){
+      let year=Number(m[3]);
+      if(year>2400) year-=543;
+      const time=Date.UTC(year,thaiMonths[m[2]]-1,Number(m[1]));
+      return Number.isNaN(time)?null:time;
+    }
+    m=value.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T\s](\d{2}):(\d{2})(?::(\d{2}))?)?/);
+    if(m){
+      const time=Date.UTC(Number(m[1]),Number(m[2])-1,Number(m[3]),Number(m[4]||0),Number(m[5]||0),Number(m[6]||0));
+      return Number.isNaN(time)?null:time;
+    }
+    return null;
+  }
+
+  function parseNumericSortValue(text){
+    let value=String(text||"").replace(/\u00a0/g," ").trim();
+    if(!value) return null;
+    value=value.replace(/^฿\s*/,"").replace(/,/g,"");
+    // รองรับค่าที่แสดงพร้อมหน่วยและข้อความกำกับต่อท้าย เช่น “15 ชิ้น จองแล้ว 2”
+    const withUnit=value.match(/^([-+]?\d+(?:\.\d+)?)\s*(บาท|หน่วย|ชิ้น|ชุด|ดวง|ลูก|ตัว|กระป๋อง|ถัง|รายการ|วัน|%)(?:\s|$)/i);
+    if(withUnit) return Number(withUnit[1]);
+    value=value.replace(/\s*(บาท|หน่วย|ชิ้น|ชุด|ดวง|ลูก|ตัว|กระป๋อง|ถัง|รายการ|วัน|%)\s*$/i,"").trim();
+    return /^[-+]?\d+(?:\.\d+)?$/.test(value)?Number(value):null;
+  }
+
+  function getCellSortText(cell){
+    if(!cell) return "";
+    return String(cell.dataset.sortValue ?? cell.innerText ?? cell.textContent ?? "")
+      .replace(/\s+/g," ").trim();
+  }
+
+  function sortRowsForColumn(tbody,columnIndex,direction){
+    const allRows=Array.from(tbody.rows);
+    const dataRows=allRows.filter(row=>!row.classList.contains("empty-row"));
+    const emptyRows=allRows.filter(row=>row.classList.contains("empty-row"));
+    const values=dataRows.map(row=>getCellSortText(row.cells[columnIndex]));
+    const nonBlank=values.filter(Boolean);
+    const dates=nonBlank.map(parseThaiDateSortValue);
+    const nums=nonBlank.map(parseNumericSortValue);
+    const dateCount=dates.filter(v=>v!==null).length;
+    const columnType=nonBlank.length && dateCount>0 && dateCount>=Math.ceil(nonBlank.length*.6)
+      ? "date"
+      : nonBlank.length && nums.every(v=>v!==null)
+        ? "number"
+        : "text";
+
+    const decorated=dataRows.map((row,originalIndex)=>{
+      const text=getCellSortText(row.cells[columnIndex]);
+      const key=columnType==="date" ? parseThaiDateSortValue(text)
+        : columnType==="number" ? parseNumericSortValue(text)
+        : text;
+      return {row,originalIndex,key,text};
+    });
+
+    decorated.sort((a,b)=>{
+      const aBlank=a.text==="", bBlank=b.text==="";
+      if(aBlank!==bBlank) return aBlank?1:-1;
+      if((columnType==="number"||columnType==="date") && ((a.key===null)!==(b.key===null))) return a.key===null?1:-1;
+      let result=0;
+      if(columnType==="number" || columnType==="date") result=(a.key??0)-(b.key??0);
+      else result=thaiSortCollator.compare(a.text,b.text);
+      if(result===0) result=a.originalIndex-b.originalIndex;
+      return direction==="asc"?result:-result;
+    });
+
+    decorated.forEach(x=>tbody.appendChild(x.row));
+    emptyRows.forEach(row=>tbody.appendChild(row));
+  }
+
+  function updateSortHeader(table,activeHeader,direction){
+    table.querySelectorAll("thead th").forEach(th=>{
+      th.classList.remove("sort-asc","sort-desc");
+      th.setAttribute("aria-sort","none");
+    });
+    activeHeader.classList.add(direction==="asc"?"sort-asc":"sort-desc");
+    activeHeader.setAttribute("aria-sort",direction==="asc"?"ascending":"descending");
+  }
+
+  function applyStoredTableSort(bodyId){
+    const tbody=document.getElementById(bodyId), table=tbody&&tbody.closest("table"), state=tableSortState.get(bodyId);
+    if(!tbody || !table || !state) return;
+    const headers=Array.from(table.tHead?.rows[table.tHead.rows.length-1]?.cells||[]), th=headers[state.columnIndex];
+    if(!th || th.classList.contains("sort-disabled")) return;
+    sortingBodyIds.add(bodyId);
+    sortRowsForColumn(tbody,state.columnIndex,state.direction);
+    updateSortHeader(table,th,state.direction);
+    setTimeout(()=>sortingBodyIds.delete(bodyId),0);
+  }
+
+  function sortTableFromHeader(th){
+    const table=th.closest("table"), info=sortableTableInfo(table);
+    if(!info || th.classList.contains("sort-disabled")) return;
+    const headers=Array.from(th.parentElement.children), columnIndex=headers.indexOf(th);
+    if(columnIndex<0) return;
+    const previous=tableSortState.get(info.bodyId);
+    const direction=previous&&previous.columnIndex===columnIndex&&previous.direction==="asc"?"desc":"asc";
+    tableSortState.set(info.bodyId,{columnIndex,direction});
+    applyStoredTableSort(info.bodyId);
+  }
+
+  function refreshSortableTables(){
+    SORTABLE_TABLE_BODIES.forEach(bodyId=>{
+      const tbody=document.getElementById(bodyId), table=tbody&&tbody.closest("table");
+      if(!table || !table.tHead) return;
+      table.classList.add("sortable-table");
+      const headers=Array.from(table.tHead.rows[table.tHead.rows.length-1]?.cells||[]);
+      headers.forEach((th,index)=>{
+        const label=String(th.textContent||"").trim();
+        const disabled=!label || /^(การดำเนินการ|จัดการ)$/i.test(label) || th.querySelector("button,input,select");
+        th.classList.toggle("sortable-column",!disabled);
+        th.classList.toggle("sort-disabled",disabled);
+        th.tabIndex=disabled?-1:0;
+        if(!disabled){
+          th.dataset.sortIndex=String(index);
+          th.setAttribute("role","button");
+          th.setAttribute("aria-label",`เรียงลำดับตาม ${label}`);
+          if(!th.hasAttribute("aria-sort")) th.setAttribute("aria-sort","none");
+          th.title="คลิกเพื่อเรียงลำดับ";
+        }
+      });
+    });
+  }
+
+  function initSortableTableObservers(){
+    refreshSortableTables();
+    SORTABLE_TABLE_BODIES.forEach(bodyId=>{
+      const tbody=document.getElementById(bodyId);
+      if(!tbody || sortableTableObservers.has(bodyId)) return;
+      const observer=new MutationObserver(()=>{
+        refreshSortableTables();
+        if(!sortingBodyIds.has(bodyId) && tableSortState.has(bodyId)) applyStoredTableSort(bodyId);
+      });
+      observer.observe(tbody,{childList:true});
+      sortableTableObservers.set(bodyId,observer);
+    });
+  }
+
+  document.addEventListener("click",event=>{
+    const th=event.target.closest("table.sortable-table thead th.sortable-column");
+    if(th) sortTableFromHeader(th);
+  });
+  document.addEventListener("keydown",event=>{
+    const th=event.target.closest&&event.target.closest("table.sortable-table thead th.sortable-column");
+    if(th && (event.key==="Enter" || event.key===" ")){
+      event.preventDefault();
+      sortTableFromHeader(th);
+    }
+  });
+
   // sessionStorage survives refresh/navigation in the same tab, but is removed
   // when that tab is closed. This lets us lock only after the program tab closes.
   let tabSessionWasOpen = false;
@@ -1243,7 +1444,7 @@
   }catch(e){}
 
   // ============ LOGIN / ROLE PERMISSIONS ============
-  // v3.9.6 keeps v3.9 salted password hashes and locks only after closing the tab.
+  // v3.9.7 keeps v3.9 salted password hashes and locks only after closing the tab.
   let currentUser = null; // { username, name, role, token, expiresAt }
   let logoLoadPromise = null;
   let lastAuthenticatedUsername = "";
@@ -1459,7 +1660,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.9.6 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 3.9.7 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -2966,7 +3167,7 @@
     document.querySelectorAll("[data-import-type]").forEach(b=>b.classList.toggle("active", b.dataset.importType===type));
     document.getElementById("batch-import-file").value = "";
     document.getElementById("import-file-name").textContent = "ยังไม่ได้เลือกไฟล์";
-    document.getElementById("import-sheet-hint").textContent = `ไฟล์ต้องมีชีทชื่อ “${IMPORT_CONFIG[type].sheet}” และใช้หัวคอลัมน์ตามแม่แบบ` + (type==="parts"?" · เว้นรหัสอะไหล่ไว้ได้ ระบบจะแจก SKU อัตโนมัติ":"");
+    document.getElementById("import-sheet-hint").textContent = `ไฟล์ต้องมีชีทชื่อ “${IMPORT_CONFIG[type].sheet}” และใช้หัวคอลัมน์ตามแม่แบบ`;
     document.getElementById("import-preview-panel").style.display = "none";
   }
 
@@ -2977,7 +3178,7 @@
     if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
     const guide = [
-      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v3.9.6 Controlled Warehouse"],
+      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v3.9 Controlled Warehouse"],
       ["วิธีใช้","ใช้ไฟล์เดียวได้ทุกห้อง เลือกประเภทในโปรแกรมแล้วอัปโหลดไฟล์เดิม ระบบจะอ่านเฉพาะชีทที่ตรงกัน"],
       ["ลำดับแนะนำ","จังหวัด → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
       ["การสร้าง SKU","ในชีท “เพิ่มอะไหล่” สามารถเว้นคอลัมน์รหัสอะไหล่ไว้ ระบบจะสร้าง SKU จากหมวดหมู่ + ประเภทไอเท็ม + เลขลำดับต่อจากข้อมูลเดิมให้อัตโนมัติ"],
@@ -2992,7 +3193,7 @@
       ws["!autofilter"]={ref:"A1:"+XLSX.utils.encode_col(cfg.headers.length-1)+"1"};
       XLSX.utils.book_append_sheet(wb,ws,cfg.sheet);
     });
-    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v3.9.6.xlsx");
+    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v3.9.xlsx");
     toast("ดาวน์โหลดแม่แบบรวมเรียบร้อย");
   }
   document.getElementById("btn-download-import-template").addEventListener("click",downloadFullTemplate);
@@ -3289,6 +3490,7 @@
     renderRequests();
     renderBackups();
     renderHistory();
+    initSortableTableObservers();
   }
 
   function initAppAfterLogin(){
