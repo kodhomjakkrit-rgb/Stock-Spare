@@ -523,6 +523,18 @@
   .document-actions{position:sticky;bottom:10px;z-index:6;margin:14px -6px -4px;padding:10px;background:rgba(21,31,36,.92);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.22);}
   .document-actions button:last-child{min-width:150px;}
   .doc-total{font-weight:600;}.doc-total span:last-child{color:var(--text);font-family:'IBM Plex Mono',monospace;}
+  .line-part-search{position:relative;margin:0 0 10px;}
+  .line-part-search-control{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;}
+  .line-part-search-control input{width:100%;}
+  .line-part-search-results{position:absolute;left:0;right:0;top:calc(100% + 5px);z-index:24;max-height:300px;overflow:auto;padding:5px;background:var(--panel);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow);}
+  .line-part-search-results[hidden]{display:none;}
+  .line-part-search-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;padding:9px 10px;border:0;border-radius:8px;background:transparent;color:var(--text);text-align:left;}
+  .line-part-search-item:hover,.line-part-search-item:focus-visible{background:var(--brand-dim);outline:none;}
+  .line-part-search-copy{min-width:0;}
+  .line-part-search-copy strong,.line-part-search-copy span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .line-part-search-copy strong{font-size:12.5px;}.line-part-search-copy span{margin-top:2px;color:var(--text-dim);font-size:11px;}
+  .line-part-search-stock{color:var(--success);font:700 11.5px 'IBM Plex Mono',monospace;white-space:nowrap;}
+  .line-part-search-empty{padding:12px;color:var(--text-dim);font-size:12px;text-align:center;}
 
   /* Mobile bottom bar / sheet */
   .mobile-nav,#mobile-more-overlay{display:none;}
@@ -562,6 +574,9 @@
     .document-panel{padding:14px}.document-actions{bottom:78px;}
     .alert-banner{align-items:flex-start;flex-direction:column;}.alert-action{width:100%;}
     .gauge{min-width:130px;}
+    .line-part-search-results{position:static;max-height:240px;margin-top:6px;}
+    .line-part-search-item{padding:10px 9px;gap:7px;}
+    .line-part-search-stock{font-size:10.5px;}
   }
   /* ================= v4.2.7 Stock Card shortcut ================= */
   .status-pill.draft{background:#26333a;color:#b6c5c1}.status-pill.pending{background:var(--accent-dim);color:#ffd071}
@@ -1186,7 +1201,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.3.3</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.3.4</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1221,7 +1236,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.3.3</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.3.4</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -1512,6 +1527,10 @@
         </div>
       </div>
       <div class="section-caption"><span>2</span>รายการอะไหล่</div>
+      <div class="line-part-search" data-line-search="issue">
+        <div class="line-part-search-control"><input id="issue-part-search" type="search" autocomplete="off" placeholder="ค้นหาด้วยรหัสหรือชื่ออะไหล่ แล้วเลือกเพื่อเพิ่มรายการ"><button class="small" id="btn-issue-part-search-clear" type="button">ล้าง</button></div>
+        <div class="line-part-search-results" id="issue-part-search-results" hidden></div>
+      </div>
       <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่</th><th style="width:150px">จำนวนเบิก</th><th style="width:125px">คงเหลือ</th><th style="width:72px"></th></tr></thead><tbody id="issue-lines-body"></tbody></table><div class="doc-total"><span id="issue-line-count">0 รายการ</span><span id="issue-total-qty">รวม 0 หน่วย</span></div></div>
       <div class="form-actions document-actions">
         <button id="btn-issue-add-line">+ เพิ่มรายการ</button>
@@ -1548,6 +1567,10 @@
         <div class="field"><label>วัตถุประสงค์ *</label><input id="req-purpose" placeholder="งาน/เครื่องจักรที่นำไปใช้"></div>
       </div>
       <div class="section-caption"><span>1</span>รายการที่ขอเบิก</div>
+      <div class="line-part-search" data-line-search="request">
+        <div class="line-part-search-control"><input id="request-part-search" type="search" autocomplete="off" placeholder="ค้นหาด้วยรหัสหรือชื่ออะไหล่ แล้วเลือกเพื่อเพิ่มรายการ"><button class="small" id="btn-request-part-search-clear" type="button">ล้าง</button></div>
+        <div class="line-part-search-results" id="request-part-search-results" hidden></div>
+      </div>
       <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่</th><th style="width:140px">จำนวน</th><th style="width:170px">พร้อมเบิก</th><th style="width:72px"></th></tr></thead><tbody id="request-lines-body"></tbody></table><div class="doc-total"><span id="request-line-count">0 รายการ</span><span id="request-total-qty">รวม 0 หน่วย</span></div></div>
       <div class="form-actions document-actions"><button id="btn-request-clear">ล้างฟอร์ม</button><button id="btn-request-add-line">+ เพิ่มรายการ</button><button class="primary" id="btn-request-submit">ส่งคำขออนุมัติ</button></div>
     </div>
@@ -2529,7 +2552,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.3.3 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.3.4 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -3605,6 +3628,43 @@
   document.getElementById("btn-request-clear").addEventListener("click",clearRequestForm);
   document.addEventListener("change",e=>{if(e.target.dataset.requestPart===undefined&&e.target.dataset.requestQty===undefined)return;const line=requestLines.find(x=>x.id===e.target.dataset.lineId);if(!line)return;if(e.target.dataset.requestPart!==undefined)line.partId=e.target.value;else line.qty=e.target.value;renderRequestLines();});
   document.addEventListener("click",e=>{if(e.target.dataset.requestRemove===undefined)return;requestLines=requestLines.filter(x=>x.id!==e.target.dataset.lineId);renderRequestLines();});
+  // ================= SEARCH AND ADD PARTS TO ISSUE / REQUISITION =================
+  const linePartSearchConfig={
+    issue:{inputId:"issue-part-search",resultsId:"issue-part-search-results"},
+    request:{inputId:"request-part-search",resultsId:"request-part-search-results"}
+  };
+  function linePartSearchElements(type){const config=linePartSearchConfig[type];return config?{input:document.getElementById(config.inputId),results:document.getElementById(config.resultsId)}:{input:null,results:null};}
+  function linePartSearchLines(type){return type==="issue"?issueLines:requestLines;}
+  function linePartSearchAvailable(type,partId){return type==="request"?availableQty(partId,document.getElementById("req-id").value):availableQty(partId);}
+  function closeLinePartSearch(type,clearInput=false){const {input,results}=linePartSearchElements(type);if(clearInput&&input)input.value="";if(results){results.hidden=true;results.innerHTML="";}}
+  function renderLinePartSearch(type){
+    const {input,results}=linePartSearchElements(type);if(!input||!results)return;
+    const q=String(input.value||"").trim().toLowerCase();
+    if(!q){closeLinePartSearch(type);return;}
+    const selectedIds=new Set(linePartSearchLines(type).map(x=>x.partId).filter(Boolean));
+    const allMatches=state.parts.filter(p=>p.isActive!==false&&`${p.code} ${p.name}`.toLowerCase().includes(q)).sort((a,b)=>{const aStarts=String(a.code).toLowerCase().startsWith(q)||String(a.name).toLowerCase().startsWith(q),bStarts=String(b.code).toLowerCase().startsWith(q)||String(b.name).toLowerCase().startsWith(q);return Number(bStarts)-Number(aStarts)||String(a.code).localeCompare(String(b.code),'th',{numeric:true});});
+    const matches=allMatches.filter(p=>!selectedIds.has(p.id)).slice(0,12);
+    if(!matches.length){results.innerHTML=`<div class="line-part-search-empty">${allMatches.length?"ไอเทมที่ค้นหาถูกเพิ่มในรายการแล้ว":"ไม่พบไอเทมตามรหัสหรือชื่อที่ค้นหา"}</div>`;results.hidden=false;return;}
+    results.innerHTML=matches.map(p=>`<button class="line-part-search-item" type="button" data-line-search-pick="${escapeHTML(p.id)}" data-line-search-type="${type}"><span class="line-part-search-copy"><strong><span class="mono" style="display:inline">${escapeHTML(p.code)}</span> — ${escapeHTML(p.name)}</strong><span>${escapeHTML(p.category||"ไม่ระบุหมวดหมู่")} · ${escapeHTML(p.unit||"ไม่ระบุหน่วย")}</span></span><span class="line-part-search-stock">พร้อมเบิก ${fmtMoney(linePartSearchAvailable(type,p.id))}</span></button>`).join("");
+    results.hidden=false;
+  }
+  function addLinePartFromSearch(type,partId){
+    const p=partById(partId);if(!p||p.isActive===false){toast("ไม่พบไอเทมที่พร้อมใช้งาน",true);renderLinePartSearch(type);return;}
+    const lines=linePartSearchLines(type),duplicate=lines.find(x=>x.partId===p.id);
+    if(duplicate){toast(`${p.code} มีอยู่ในรายการแล้ว — ระบบไม่เพิ่มซ้ำ`);closeLinePartSearch(type,true);focusScannedQty(type==="issue"?"out":"requisitions",duplicate.id);return;}
+    let line=lines.find(x=>!x.partId&&!String(x.qty||"").trim());
+    if(line)line.partId=p.id;else{line={id:uid(),partId:p.id,qty:""};lines.push(line);}
+    if(type==="issue")renderDocumentLines("out");else renderRequestLines();
+    closeLinePartSearch(type,true);saveWorkingDraft();focusScannedQty(type==="issue"?"out":"requisitions",line.id);
+    toast(`เพิ่ม ${p.code} — ${p.name} แล้ว`);
+  }
+  Object.keys(linePartSearchConfig).forEach(type=>{
+    const {input}=linePartSearchElements(type),clearButton=document.getElementById(`btn-${type}-part-search-clear`);
+    input?.addEventListener("input",()=>renderLinePartSearch(type));
+    input?.addEventListener("keydown",e=>{if(e.key==="Escape"){closeLinePartSearch(type,true);input.blur();}else if(e.key==="Enter"){const first=linePartSearchElements(type).results?.querySelector("[data-line-search-pick]");if(first){e.preventDefault();first.click();}}});
+    clearButton?.addEventListener("click",()=>{closeLinePartSearch(type,true);input?.focus();});
+  });
+  document.addEventListener("click",e=>{const pick=e.target.closest("[data-line-search-pick]");if(pick){addLinePartFromSearch(pick.dataset.lineSearchType,pick.dataset.lineSearchPick);return;}if(!e.target.closest(".line-part-search"))Object.keys(linePartSearchConfig).forEach(type=>closeLinePartSearch(type));});
   function mergeRequestResult(result){
     if(!result||!result.requisition)return;const i=state.requisitions.findIndex(x=>x.id===result.requisition.id);if(i>=0)state.requisitions[i]={...state.requisitions[i],...result.requisition};else state.requisitions.push(result.requisition);
     if(Array.isArray(result.items)){state.requisitionItems=state.requisitionItems.filter(x=>x.requisitionId!==result.requisition.id).concat(result.items);}
@@ -4655,7 +4715,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.3.3`;
+    document.title=`${meta.title} | Stock Control v4.3.4`;
   }
 
   function selectLabel(el){
