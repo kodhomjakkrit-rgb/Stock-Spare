@@ -1201,7 +1201,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.3.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.3.5</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1218,13 +1218,6 @@
         <svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 6.2A10.6 10.6 0 0112 6c6 0 9.5 6 9.5 6a16 16 0 01-3 3.7M7.1 7.1C4.1 9 2.5 12 2.5 12s3.5 6 9.5 6c1.2 0 2.3-.2 3.3-.6M9.9 9.9a3 3 0 004.2 4.2"/></svg>
       </button>
     </div>
-    <details class="login-settings">
-      <summary>ตั้งค่า Web App URL (ใช้เมื่อติดตั้งครั้งแรก)</summary>
-      <div class="field">
-        <label>Web App URL ของ Google Apps Script</label>
-        <input type="text" id="login-script-url" placeholder="https://script.google.com/macros/s/xxxxx/exec">
-      </div>
-    </details>
     <div class="hint" id="login-error" style="color:var(--danger);min-height:16px;margin-bottom:10px;"></div>
     <button type="submit" id="btn-login-submit" class="primary" style="width:100%;padding:11px;">เข้าสู่ระบบ</button>
   </form>
@@ -1236,7 +1229,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.3.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.3.5</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -1254,7 +1247,7 @@
         <div class="user-menu-popover">
           <div class="user-menu-title">บัญชีและเครื่องมือ</div>
           <button id="btn-change-password" class="menu-action"><svg class="tab-ic" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3M12 14v2"/></svg>เปลี่ยนรหัสผ่าน</button>
-          <button id="btn-settings" class="menu-action" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.4-2.4 1a7 7 0 00-1.7-1L14.5 3h-5l-.4 3.1a7 7 0 00-1.7 1L5 6.1 3 9.5 5 11a7 7 0 000 2l-2 1.5 2 3.4 2.4-1a7 7 0 001.7 1l.4 3.1h5l.4-3.1a7 7 0 001.7-1l2.4 1 2-3.4-2-1.5a7 7 0 00.1-1z"/></svg>ตั้งค่า Google Sheets</button>
+          <button id="btn-settings" class="menu-action" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.4-2.4 1a7 7 0 00-1.7-1L14.5 3h-5l-.4 3.1a7 7 0 00-1.7 1L5 6.1 3 9.5 5 11a7 7 0 000 2l-2 1.5 2 3.4 2.4-1a7 7 0 001.7 1l.4 3.1h5l.4-3.1a7 7 0 001.7-1l2.4 1 2-3.4-2-1.5a7 7 0 00.1-1z"/></svg>ตรวจสอบการเชื่อมต่อ</button>
           <button id="btn-import" class="menu-action" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM12 7v7m0 0l-3-3m3 3l3-3M8 17h8"/></svg>นำเข้าข้อมูล Excel</button>
           <button id="btn-export" class="menu-action" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM12 17v-7m0 0l-3 3m3-3l3 3M8 7h8"/></svg>ส่งออกข้อมูล Excel</button>
           <div class="menu-separator"></div>
@@ -1964,18 +1957,17 @@
 <!-- Settings modal -->
 <div id="settings-modal-overlay">
   <div class="modal">
-    <h3>ตั้งค่าการเชื่อมต่อ Google Sheets</h3>
+    <h3>ตรวจสอบการเชื่อมต่อ Google Sheets</h3>
     <div class="field-grid">
       <div class="field span2">
         <label>Web App URL ของ Google Apps Script</label>
-        <input type="text" id="cfg-script-url" placeholder="https://script.google.com/macros/s/xxxxx/exec">
-        <div class="hint">คัดลอก URL ที่ได้จากการ Deploy &gt; Web app ใน Apps Script แล้ววางที่นี่ ทุกคนที่ใช้แอปนี้ต้องใส่ URL เดียวกันเพื่อบันทึกลง Sheet เดียวกัน</div>
+        <input type="text" id="cfg-script-url" placeholder="ระบบกำลังอ่าน URL อัตโนมัติ" readonly>
+        <div class="hint">ระบบอ่าน URL ของ Deployment ปัจจุบันอัตโนมัติ หากจำเป็นต้องบังคับ URL ให้แก้ค่า WEB_APP_URL_OVERRIDE ใน Code.gs แล้ว Deploy เป็น New version</div>
       </div>
     </div>
     <div class="form-actions">
       <button id="btn-settings-test">ทดสอบการเชื่อมต่อ</button>
-      <button id="btn-settings-cancel">ยกเลิก</button>
-      <button class="primary" id="btn-settings-save">บันทึกและซิงก์</button>
+      <button class="primary" id="btn-settings-cancel">ปิด</button>
     </div>
   </div>
 </div>
@@ -2495,7 +2487,6 @@
     document.getElementById("login-overlay").classList.remove("hide");
     document.getElementById("app").classList.remove("unlocked");
     if(prefillName) document.getElementById("login-name").value = prefillName;
-    document.getElementById("login-script-url").value = getScriptURL();
     const passwordInput=document.getElementById("login-password"),toggle=document.getElementById("btn-toggle-login-password");
     passwordInput.value = "";
     passwordInput.type = "password";
@@ -2532,16 +2523,11 @@
     e.preventDefault();
     const username = document.getElementById("login-name").value.trim();
     const password = document.getElementById("login-password").value;
-    const enteredURL = document.getElementById("login-script-url").value.trim();
     const errorEl = document.getElementById("login-error");
     if(!username){ errorEl.textContent = "กรุณากรอกชื่อผู้ใช้งาน"; return; }
     if(!password){ errorEl.textContent = "กรุณากรอกรหัสผ่าน"; return; }
-    if(enteredURL){
-      setScriptURL(enteredURL);
-      loadLogoFromDrive();
-    }
     if(!hasScriptURL()){
-      errorEl.textContent = "กรุณาเปิด 'ตั้งค่า Web App URL' และใส่ URL ก่อนเข้าสู่ระบบ";
+      errorEl.textContent = "ไม่พบ Web App URL กรุณาเปิดโปรแกรมจากลิงก์ /exec ของ Deployment และตรวจว่า Code.gs กับ index.html เป็นเวอร์ชันเดียวกัน";
       return;
     }
     const btn = document.getElementById("btn-login-submit");
@@ -2552,7 +2538,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.3.4 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.3.5 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -2615,7 +2601,13 @@
   let pendingDeepLinkCode=String(APP_BOOTSTRAP.partCode||"").trim();
   let pendingDeepLinkHandled=false;
 
-  function getScriptURL(){ return normalizeScriptURL(localStorage.getItem(SCRIPT_URL_KEY) || ""); }
+  function getBootstrapScriptURL(){
+    const apiUrl=String(APP_BOOTSTRAP.apiUrl||"").trim();
+    try{ return apiUrl ? validateScriptURL(apiUrl) : ""; }catch(e){ return ""; }
+  }
+  function getScriptURL(){
+    return getBootstrapScriptURL() || normalizeScriptURL(localStorage.getItem(SCRIPT_URL_KEY) || "");
+  }
   function setScriptURL(url){ localStorage.setItem(SCRIPT_URL_KEY, normalizeScriptURL(url)); }
   function hasScriptURL(){ return !!getScriptURL(); }
   function applyBootstrapSettings(){
@@ -2822,23 +2814,13 @@
     btn.disabled = true; btn.textContent = "กำลังทดสอบ...";
     try{
       await apiCall("getAll", {});
-      toast("เชื่อมต่อสำเร็จ! กด \"บันทึกและซิงก์\" เพื่อใช้งาน");
+      toast("เชื่อมต่อ Google Sheets สำเร็จ");
     }catch(err){
       toast("เชื่อมต่อไม่สำเร็จ: " + err.message, true);
       setScriptURL(prevUrl);
     }finally{
       btn.disabled = false; btn.textContent = "ทดสอบการเชื่อมต่อ";
     }
-  });
-
-  document.getElementById("btn-settings-save").addEventListener("click", async ()=>{
-    const url = document.getElementById("cfg-script-url").value.trim();
-    if(!url){ toast("กรุณากรอก URL ก่อน", true); return; }
-    setScriptURL(url);
-    closeSettingsModal();
-    loadLogoFromDrive();
-    const ok = await syncFromSheet(true);
-    if(ok){ toast("ตั้งค่าและซิงก์ข้อมูลจาก Google Sheets เรียบร้อย"); startPolling(); }
   });
 
   function seed(){
@@ -4715,7 +4697,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.3.4`;
+    document.title=`${meta.title} | Stock Control v4.3.5`;
   }
 
   function selectLabel(el){
@@ -5137,7 +5119,7 @@
     if(hasScriptURL()){
       syncFromSheet(true).then(ok=>{if(!ok)processPendingDeepLink(true);startPolling();});
     } else {
-      setSyncBadge("off", "ยังไม่ได้เชื่อมต่อ Sheets — กด ⚙ ตั้งค่า Sheets");
+      setSyncBadge("off", "ไม่พบ Web App URL — กรุณาเปิดผ่านลิงก์ /exec");
     }
   }
 
