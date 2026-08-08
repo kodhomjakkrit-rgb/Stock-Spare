@@ -1219,7 +1219,7 @@
     #view-dashboard .personal-workspace-panel{transform:none!important;transition:none!important;}
   }
 
-  /* ================= v4.4.7 Mobile QR Receive & Issue / automatic connection ================= */
+  /* ================= v4.4.8 Mobile QR Receive & Issue / automatic connection ================= */
   body{
     font-size:15px;
     line-height:1.65;
@@ -1314,7 +1314,7 @@
     .search-bar input,.search-bar select,.doc-lines select,.doc-lines input{font-size:16px;}
   }
 
-  /* ================= v4.4.7 Mobile QR Receive & Issue ================= */
+  /* ================= v4.4.8 Mobile QR Receive & Issue ================= */
   #mobile-part-overlay{
     position:fixed;inset:0;z-index:1200;display:none;overflow:auto;
     background:linear-gradient(180deg,#eaf7f5 0,#f8fafc 210px,#eef2f7 100%);
@@ -1371,6 +1371,91 @@
   @media(max-width:420px){.mobile-part-shell{padding:10px 10px 24px}.mobile-part-hero{padding:18px;border-radius:17px}.mobile-part-hero h2{font-size:22px}.mobile-part-kpi{padding:13px}.mobile-part-kpi strong{font-size:20px}.mobile-part-details{grid-template-columns:1fr}.mobile-part-actions{grid-template-columns:1fr}.mobile-part-topbar{align-items:flex-start}.mobile-part-brand span{max-width:175px}}
   @media(prefers-reduced-motion:reduce){#mobile-part-overlay.show{animation:none}}
 
+  /* ================= v4.4.8 Mobile UI Clarity ================= */
+  .mobile-part-kpi.key{border-color:#99d8cf;box-shadow:0 9px 24px rgba(15,118,110,.10);}
+  .mobile-part-kpi.key span{font-weight:700;color:#315a55;}
+  .mobile-part-kpi.secondary{background:#f8fafc;box-shadow:none;}
+  .mobile-part-collapsible{padding:0;overflow:hidden;}
+  .mobile-part-collapsible>summary{
+    list-style:none;cursor:pointer;padding:15px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    color:#1e293b;font:700 15px 'Kanit',sans-serif;min-height:52px;
+  }
+  .mobile-part-collapsible>summary::-webkit-details-marker{display:none;}
+  .mobile-part-collapsible>summary::after{content:"ดู";font:600 12px 'Noto Sans Thai',sans-serif;color:#0f766e;background:#eaf7f5;border-radius:999px;padding:4px 10px;}
+  .mobile-part-collapsible[open]>summary::after{content:"ซ่อน";}
+  .mobile-part-collapsible>summary+*{padding:0 16px 16px;}
+  .mobile-part-actions{
+    position:sticky;bottom:0;z-index:8;margin:14px -4px 0;padding:10px 4px calc(10px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,rgba(238,242,247,0),rgba(238,242,247,.96) 22%,#eef2f7 100%);
+  }
+  .mobile-part-actions button{min-height:58px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;box-shadow:0 8px 18px rgba(15,23,42,.12);}
+  .mobile-part-actions button strong{font:700 16px 'Kanit',sans-serif;}
+  .mobile-part-actions button span{font-size:11.5px;font-weight:500;opacity:.9;}
+  .mobile-part-actions button:disabled{background:#cbd5e1!important;border-color:#cbd5e1!important;color:#64748b!important;box-shadow:none;cursor:not-allowed;}
+  .mobile-part-secondary-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px;}
+  .mobile-part-secondary-actions button{min-height:44px;background:#fff;color:#334155;border-color:#cbd5e1;font-weight:700;}
+  .mobile-part-action-note{margin:9px 0 0;text-align:center;}
+  .mobile-doc-context{display:none;border:1px solid #99d8cf;border-radius:13px;background:#effaf8;padding:12px;margin:0 0 14px;}
+  .mobile-doc-context-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .mobile-doc-context-kicker{display:block;color:#0f766e;font-size:11.5px;font-weight:700;margin-bottom:2px;}
+  .mobile-doc-context strong{display:block;color:#123f3a;font:700 15px/1.4 'Kanit',sans-serif;overflow-wrap:anywhere;}
+  .mobile-doc-context p{margin:7px 0 0;color:#49605d;font-size:12.5px;line-height:1.55;}
+  .mobile-doc-context button{flex:0 0 auto;padding:7px 9px;background:#fff;color:#0f766e;border-color:#99d8cf;}
+  .mobile-form-more{display:none;grid-column:1/-1;}
+  .mobile-form-more button{width:100%;background:#f8fafc;color:#334155;border:1px dashed #94a3b8;text-align:left;min-height:44px;}
+  .confirm-summary-action{display:inline-flex;align-items:center;border-radius:999px;padding:5px 10px;margin:-2px 0 10px;font-size:12px;font-weight:800;}
+  .confirm-summary-action.receive{background:#eaf8ef;color:#15803d;}
+  .confirm-summary-action.issue{background:#fff3dc;color:#b45309;}
+
+  @media(max-width:640px){
+    #mobile-part-overlay{padding-bottom:0;}
+    .mobile-part-shell{padding-bottom:8px;}
+    .mobile-part-topbar{position:sticky;top:0;z-index:10;margin:0 -10px 10px;padding:8px 10px;background:rgba(238,248,247,.94);backdrop-filter:blur(10px);border-bottom:1px solid rgba(153,216,207,.55);}
+    .mobile-part-brand img{width:38px;height:38px;}
+    .mobile-part-brand strong{font-size:15px;}
+    .mobile-part-brand span{font-size:11px;}
+    .mobile-part-hero{box-shadow:0 10px 24px rgba(15,118,110,.16);}
+    .mobile-part-kpis{gap:8px;margin:10px 0;}
+    .mobile-part-kpi{padding:12px;border-radius:13px;}
+    .mobile-part-kpi span{font-size:11.5px;}
+    .mobile-part-kpi strong{font-size:19px;}
+    .mobile-part-panel{margin-top:9px;}
+    .mobile-part-actions{grid-template-columns:1fr 1fr;margin-top:10px;}
+    .mobile-part-action-note{font-size:11.5px;}
+    body.mobile-qr-workflow .mobile-doc-context{display:block;}
+    body.mobile-qr-workflow .mobile-form-more{display:block;}
+    body.mobile-qr-workflow:not(.mobile-optional-open) .mobile-optional-field{display:none!important;}
+    body.mobile-qr-workflow .document-panel>h2 .sub{display:none;}
+    body.mobile-qr-workflow .document-panel{border-top-width:4px;}
+    #view-receive .doc-lines,#view-issue .doc-lines{border:0;overflow:visible;background:transparent;}
+    #view-receive .doc-lines table,#view-issue .doc-lines table{display:block;min-width:0;width:100%;}
+    #view-receive .doc-lines thead,#view-issue .doc-lines thead{display:none;}
+    #view-receive .doc-lines tbody,#view-issue .doc-lines tbody{display:grid;gap:10px;}
+    #view-receive .doc-lines tr,#view-issue .doc-lines tr{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;background:#f8fafc;border:1px solid #dfe6ee;border-radius:12px;box-shadow:0 4px 12px rgba(15,23,42,.05);}
+    #view-receive .doc-lines tr::before,#view-issue .doc-lines tr::before{content:"รายการที่ " attr(data-line-number);grid-column:1/-1;color:#0f766e;font-size:12px;font-weight:800;}
+    #view-receive .doc-lines td,#view-issue .doc-lines td{display:block;padding:0;border:0;min-width:0;}
+    #view-receive .doc-lines td::before,#view-issue .doc-lines td::before{content:attr(data-label);display:block;margin-bottom:5px;color:#64748b;font-size:11.5px;font-weight:700;}
+    #view-receive .doc-lines .doc-line-index,#view-issue .doc-lines .doc-line-index{display:none;}
+    #view-receive .doc-lines .doc-line-part,#view-issue .doc-lines .doc-line-part{grid-column:1/-1;}
+    #view-receive .doc-lines .doc-line-amount,#view-issue .doc-lines .doc-line-amount{grid-column:1/-1;background:#fff;border-radius:8px;padding:8px;}
+    #view-receive .doc-lines .doc-line-action,#view-issue .doc-lines .doc-line-action{grid-column:1/-1;text-align:right;}
+    #view-receive .doc-lines select,#view-issue .doc-lines select,#view-receive .doc-lines input,#view-issue .doc-lines input{min-height:46px;font-size:16px;}
+    #view-receive .doc-lines .doc-line-balance,#view-issue .doc-lines .doc-line-balance{padding:8px;background:#fff;border-radius:8px;}
+    #view-receive .doc-total,#view-issue .doc-total{border:1px solid #dfe6ee;border-radius:10px;margin-top:8px;justify-content:space-between;flex-wrap:wrap;font-size:12.5px;}
+    #view-receive .document-actions,#view-issue .document-actions{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:8px;bottom:72px;margin-left:-2px;margin-right:-2px;padding:9px;}
+    #view-receive .document-actions button,#view-issue .document-actions button{min-width:0;min-height:48px;font-weight:700;}
+    .confirm-summary-modal{padding-bottom:0;}
+    .confirm-summary-table{overflow:visible;}
+    .confirm-summary-table table,.confirm-summary-table tbody{display:block;min-width:0;}
+    .confirm-summary-table thead{display:none;}
+    .confirm-summary-table tr{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 0;border-bottom:1px solid #e2e8f0;}
+    .confirm-summary-table td{display:block;padding:0;border:0;min-width:0;overflow-wrap:anywhere;}
+    .confirm-summary-table td::before{content:attr(data-label);display:block;color:#64748b;font-size:11px;margin-bottom:2px;}
+    .confirm-summary-table .confirm-item-name,.confirm-summary-table .confirm-item-after{grid-column:1/-1;}
+    .confirm-summary-modal .form-actions{position:sticky;bottom:0;margin:12px -16px 0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1.25fr;background:#fff;}
+    .confirm-summary-modal .form-actions button{min-height:48px;}
+  }
+
 </style>
 </head>
 <body>
@@ -1380,7 +1465,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.4.7</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.4.8</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1403,7 +1488,7 @@
   </form>
 </div>
 
-<!-- v4.4.7 Mobile QR stock summary with permission-controlled receive / issue actions -->
+<!-- v4.4.8 Mobile QR stock summary with clear, touch-friendly actions -->
 <div id="mobile-part-overlay" aria-hidden="true">
   <div class="mobile-part-shell">
     <div class="mobile-part-topbar">
@@ -1422,29 +1507,31 @@
         <div id="mobile-part-sync" class="mobile-part-sync">กำลังดึงข้อมูลล่าสุดจาก Google Sheets</div>
       </section>
       <div class="mobile-part-kpis">
-        <div class="mobile-part-kpi balance"><span>คงเหลือปัจจุบัน</span><strong id="mobile-part-balance">0</strong></div>
-        <div class="mobile-part-kpi month"><span>ใช้ไปเดือนนี้</span><strong id="mobile-part-used-month">0</strong></div>
-        <div class="mobile-part-kpi total"><span>ใช้ไปสะสมทั้งหมด</span><strong id="mobile-part-used-total">0</strong></div>
-        <div class="mobile-part-kpi available"><span>พร้อมเบิก</span><strong id="mobile-part-available">0</strong></div>
+        <div class="mobile-part-kpi available key"><span>พร้อมเบิก</span><strong id="mobile-part-available">0</strong></div>
+        <div class="mobile-part-kpi balance key"><span>คงเหลือปัจจุบัน</span><strong id="mobile-part-balance">0</strong></div>
+        <div class="mobile-part-kpi month secondary"><span>ใช้ไปเดือนนี้</span><strong id="mobile-part-used-month">0</strong></div>
+        <div class="mobile-part-kpi total secondary"><span>ใช้ไปสะสมทั้งหมด</span><strong id="mobile-part-used-total">0</strong></div>
       </div>
-      <section class="mobile-part-panel">
-        <h3>รายละเอียดอะไหล่</h3>
+      <div class="mobile-part-actions" aria-label="ทำรายการอะไหล่">
+        <button type="button" id="mobile-part-receive" class="receive"><strong>รับเข้า</strong><span>เพิ่มยอดเข้าสต๊อก</span></button>
+        <button type="button" id="mobile-part-issue" class="issue"><strong>เบิก / จ่าย</strong><span>ตัดยอดออกจากสต๊อก</span></button>
+      </div>
+      <div id="mobile-part-action-note" class="mobile-part-action-note">เลือกงานที่ต้องการ ระบบจะใส่อะไหล่รายการนี้ให้และให้ตรวจสอบก่อนบันทึก</div>
+      <details class="mobile-part-panel mobile-part-collapsible">
+        <summary>รายละเอียดอะไหล่</summary>
         <div class="mobile-part-details">
           <div class="mobile-part-detail"><span>หน่วยนับ</span><strong id="mobile-part-unit">-</strong></div>
           <div class="mobile-part-detail"><span>ยอดจอง</span><strong id="mobile-part-reserved">0</strong></div>
           <div class="mobile-part-detail"><span>จุดสั่งซื้อ</span><strong id="mobile-part-reorder">0</strong></div>
           <div class="mobile-part-detail"><span>อัปเดตล่าสุด</span><strong id="mobile-part-updated">-</strong></div>
         </div>
-      </section>
-      <section class="mobile-part-panel">
-        <h3>รับเข้า–เบิกออกล่าสุด 5 รายการ</h3>
+      </details>
+      <details class="mobile-part-panel mobile-part-collapsible">
+        <summary>รับเข้า–เบิกออกล่าสุด 5 รายการ</summary>
         <div id="mobile-part-movements" class="mobile-part-movements"><div class="mobile-part-empty">กำลังโหลดรายการ...</div></div>
-      </section>
-      <div id="mobile-part-action-note" class="mobile-part-action-note">ปุ่มรับเข้าและเบิก/จ่ายจะเปิดฟอร์มของโปรแกรมพร้อมเลือกอะไหล่รายการนี้ให้แล้ว กรุณาตรวจรายละเอียดก่อนยืนยันบันทึก</div>
-      <div class="mobile-part-actions">
-        <button type="button" id="mobile-part-receive" class="receive">รับเข้า</button>
-        <button type="button" id="mobile-part-issue" class="issue">เบิก / จ่าย</button>
-        <button type="button" id="mobile-part-stock-card" class="primary">ดู Stock Card</button>
+      </details>
+      <div class="mobile-part-secondary-actions">
+        <button type="button" id="mobile-part-stock-card">ดู Stock Card</button>
         <button type="button" id="mobile-part-close">เข้าสู่โปรแกรมหลัก</button>
       </div>
     </div>
@@ -1458,7 +1545,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.4.7</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.4.8</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -1669,6 +1756,10 @@
   <section class="view" id="view-receive">
     <div class="panel document-panel receive-document">
       <h2>ใบรับเข้าอะไหล่ <span class="sub">เพิ่มได้หลายรายการในเอกสารเดียว</span></h2>
+      <div class="mobile-doc-context" id="mobile-receive-context">
+        <div class="mobile-doc-context-head"><div><span class="mobile-doc-context-kicker">ขั้นตอน 1 จาก 2 · กรอกข้อมูล</span><strong id="mobile-receive-context-part">อะไหล่จาก QR</strong></div><button type="button" data-mobile-qr-return>กลับไปดูยอด</button></div>
+        <p id="mobile-receive-context-stock">กรอกจำนวนรับ ตรวจรายละเอียด แล้วกดบันทึกเพื่อไปหน้าสรุปยืนยัน</p>
+      </div>
       <div class="section-caption"><span>1</span>ข้อมูลหัวเอกสาร</div>
       <div class="field-grid">
         <div class="field">
@@ -1679,22 +1770,23 @@
           <label>ผู้ส่ง/ซัพพลายเออร์</label>
           <div class="inline-control"><select id="rec-supplier"></select><button class="small" type="button" data-quick-master="suppliers" data-admin-only>+ ใหม่</button></div>
         </div>
-        <div class="field">
+        <div class="mobile-form-more"><button type="button" data-mobile-optional-toggle aria-expanded="false">＋ รายละเอียดเพิ่มเติม (รถ / เอกสาร / หมายเหตุ)</button></div>
+        <div class="field mobile-optional-field">
           <label>รถบรรทุก</label>
           <div class="inline-control"><select id="rec-truck"></select><button class="small" type="button" data-quick-master="trucks" data-admin-only>+ ใหม่</button></div>
         </div>
-        <div class="field">
+        <div class="field mobile-optional-field">
           <label>จังหวัด</label>
           <div class="inline-control"><select id="rec-province"></select><button class="small" type="button" data-quick-master="provinces" data-admin-only>+ ใหม่</button></div>
         </div>
-        <div class="field"><label>เลขที่ PR</label><select id="rec-pr"></select></div>
-        <div class="field"><label>เลขที่ PO</label><select id="rec-po"></select></div>
-        <div class="field"><label>เลขที่ IV</label><div class="inline-control"><select id="rec-iv"></select><button class="small" type="button" data-quick-master="documents" data-admin-only>+ ใหม่</button></div></div>
-        <div class="field span2">
+        <div class="field mobile-optional-field"><label>เลขที่ PR</label><select id="rec-pr"></select></div>
+        <div class="field mobile-optional-field"><label>เลขที่ PO</label><select id="rec-po"></select></div>
+        <div class="field mobile-optional-field"><label>เลขที่ IV</label><div class="inline-control"><select id="rec-iv"></select><button class="small" type="button" data-quick-master="documents" data-admin-only>+ ใหม่</button></div></div>
+        <div class="field span2 mobile-optional-field">
           <label>ผู้ส่ง/ผู้ติดต่อ (ถ้ามี)</label>
           <input type="text" id="rec-contact" placeholder="ชื่อผู้ส่งหรือผู้ติดต่อ">
         </div>
-        <div class="field span2">
+        <div class="field span2 mobile-optional-field">
           <label>หมายเหตุ</label>
           <textarea id="rec-note" placeholder="เลขที่ใบกำกับ, รายละเอียดเพิ่มเติม..."></textarea>
         </div>
@@ -1722,6 +1814,10 @@
   <section class="view" id="view-issue">
     <div class="panel document-panel issue-document">
       <h2>ใบเบิกอะไหล่ <span class="sub">ตรวจสต๊อกครบทุกบรรทัดก่อนบันทึก</span></h2>
+      <div class="mobile-doc-context" id="mobile-issue-context">
+        <div class="mobile-doc-context-head"><div><span class="mobile-doc-context-kicker">ขั้นตอน 1 จาก 2 · กรอกข้อมูล</span><strong id="mobile-issue-context-part">อะไหล่จาก QR</strong></div><button type="button" data-mobile-qr-return>กลับไปดูยอด</button></div>
+        <p id="mobile-issue-context-stock">เลือกวัตถุประสงค์ กรอกจำนวนเบิก แล้วตรวจยอดก่อนบันทึก</p>
+      </div>
       <div class="section-caption"><span>1</span>ข้อมูลหัวเอกสาร</div>
       <div class="field-grid">
         <div class="field">
@@ -1747,30 +1843,31 @@
           <label>ผู้เบิก / แผนก</label>
           <input type="text" id="iss-person" placeholder="ชื่อผู้เบิก หรือแผนก">
         </div>
-        <div class="field"><label>ผู้รับสินค้า</label><input type="text" id="iss-receiver" placeholder="ชื่อผู้รับสินค้า (ถ้ามี)"></div>
-        <div class="field"><label>แผนก</label><input type="text" id="iss-department" placeholder="เช่น ซ่อมบำรุง"></div>
-        <div class="field"><label>เครื่องจักร / โครงการ</label><input type="text" id="iss-project" placeholder="เช่น เครื่องบรรจุ 1"></div>
-        <div class="field"><label>เลขที่อ้างอิง</label><input type="text" id="iss-reference" placeholder="ใบงาน / เลขคำสั่งซื้อ / อื่น ๆ"></div>
-        <div class="field span2 choice-field">
+        <div class="mobile-form-more"><button type="button" data-mobile-optional-toggle aria-expanded="false">＋ รายละเอียดเพิ่มเติม (ผู้รับ / รถ / เอกสาร)</button></div>
+        <div class="field mobile-optional-field"><label>ผู้รับสินค้า</label><input type="text" id="iss-receiver" placeholder="ชื่อผู้รับสินค้า (ถ้ามี)"></div>
+        <div class="field mobile-optional-field"><label>แผนก</label><input type="text" id="iss-department" placeholder="เช่น ซ่อมบำรุง"></div>
+        <div class="field mobile-optional-field"><label>เครื่องจักร / โครงการ</label><input type="text" id="iss-project" placeholder="เช่น เครื่องบรรจุ 1"></div>
+        <div class="field mobile-optional-field"><label>เลขที่อ้างอิง</label><input type="text" id="iss-reference" placeholder="ใบงาน / เลขคำสั่งซื้อ / อื่น ๆ"></div>
+        <div class="field span2 choice-field mobile-optional-field">
           <label class="choice-option" for="iss-use-vehicle">
             <input type="checkbox" id="iss-use-vehicle">
             <span class="choice-copy"><strong>ใช้รถในการรับหรือจัดส่งสินค้า</strong><span>เลือกเมื่อรายการนี้มีรถเกี่ยวข้อง ระบบจะแสดงช่องทะเบียนรถ เลขไมล์ ผู้ขับ และจุดหมาย</span></span>
           </label>
         </div>
-        <div class="field" data-issue-vehicle-field hidden>
+        <div class="field mobile-optional-field" data-issue-vehicle-field hidden>
           <label>รถบรรทุกที่นำไปใช้</label>
           <div class="inline-control"><select id="iss-truck"></select><button class="small" type="button" data-quick-master="trucks" data-admin-only>+ ใหม่</button></div>
         </div>
-        <div class="field" data-issue-vehicle-field hidden>
+        <div class="field mobile-optional-field" data-issue-vehicle-field hidden>
           <label>จังหวัด</label>
           <div class="inline-control"><select id="iss-province"></select><button class="small" type="button" data-quick-master="provinces" data-admin-only>+ ใหม่</button></div>
         </div>
-        <div class="field" data-issue-vehicle-field hidden><label>เลขไมล์ปัจจุบัน (กม.) *</label><input type="number" id="iss-mileage" min="0" step="1" placeholder="0"></div>
-        <div class="field" data-issue-vehicle-field hidden><label>ผู้ขับรถ</label><input type="text" id="iss-driver" placeholder="ชื่อผู้ขับ"></div>
-        <div class="field span2" data-issue-vehicle-field hidden><label>จุดหมาย / สถานที่จัดส่ง</label><input type="text" id="iss-destination" placeholder="สถานที่ปลายทาง"></div>
-        <div class="field"><label>เลขที่ PR</label><select id="iss-pr"></select></div>
-        <div class="field"><label>เลขที่ PO</label><select id="iss-po"></select></div>
-        <div class="field"><label>เลขที่ IV</label><select id="iss-iv"></select></div>
+        <div class="field mobile-optional-field" data-issue-vehicle-field hidden><label>เลขไมล์ปัจจุบัน (กม.) *</label><input type="number" id="iss-mileage" min="0" step="1" placeholder="0"></div>
+        <div class="field mobile-optional-field" data-issue-vehicle-field hidden><label>ผู้ขับรถ</label><input type="text" id="iss-driver" placeholder="ชื่อผู้ขับ"></div>
+        <div class="field span2 mobile-optional-field" data-issue-vehicle-field hidden><label>จุดหมาย / สถานที่จัดส่ง</label><input type="text" id="iss-destination" placeholder="สถานที่ปลายทาง"></div>
+        <div class="field mobile-optional-field"><label>เลขที่ PR</label><select id="iss-pr"></select></div>
+        <div class="field mobile-optional-field"><label>เลขที่ PO</label><select id="iss-po"></select></div>
+        <div class="field mobile-optional-field"><label>เลขที่ IV</label><select id="iss-iv"></select></div>
         <div class="field span2">
           <label>หมายเหตุ</label>
           <textarea id="iss-note" placeholder="เหตุผลหรือรายละเอียดเพิ่มเติม (บังคับสำหรับ อื่น ๆ และชำรุด/ตัดจำหน่าย)"></textarea>
@@ -2254,6 +2351,7 @@
 
 <div id="confirm-summary-overlay" class="modal-overlay" aria-hidden="true" hidden><div class="modal confirm-summary-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-summary-title">
   <h3 id="confirm-summary-title">ตรวจสอบรายการก่อนยืนยัน</h3>
+  <div id="confirm-summary-action" class="confirm-summary-action">ยังไม่บันทึก</div>
   <p class="confirm-summary-intro" id="confirm-summary-intro"></p>
   <div class="confirm-summary-meta" id="confirm-summary-meta"></div>
   <div class="confirm-summary-table"><table><thead><tr><th>รหัส</th><th>รายการ</th><th>จำนวน</th><th>ยอดหลังทำรายการ</th></tr></thead><tbody id="confirm-summary-body"></tbody></table></div>
@@ -2825,7 +2923,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.4.7 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.4.8 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -2901,6 +2999,8 @@
   let pendingDeepLinkCode=readPartCodeFromLocation()||String(APP_BOOTSTRAP.partCode||"").trim();
   let pendingDeepLinkHandled=false;
   let mobilePartSummaryId="";
+  let mobileWorkflowPartId="";
+  let mobileWorkflowType="";
 
   function getBootstrapScriptURL(){
     const apiUrl=String(APP_BOOTSTRAP.apiUrl||"").trim();
@@ -3775,9 +3875,10 @@
     const body=document.getElementById(type==="in"?"receive-lines-body":"issue-lines-body");
     body.innerHTML=lines.map((line,index)=>{
       const p=partById(line.partId);
-      const base=`<td class="mono">${index+1}</td><td><select data-doc-part="${type}" data-line-id="${line.id}">${documentPartOptions(line.partId)}</select></td><td><input class="qty-input" type="number" min="0" step="any" value="${escapeHTML(line.qty)}" data-doc-qty="${type}" data-line-id="${line.id}" placeholder="0"></td><td class="mono">${p?`${type==="out"?availableQty(p.id):p.qty} ${escapeHTML(p.unit)}${type==="out"&&reservedQty(p.id)>0?`<div class="reserved-note">จอง ${fmtMoney(reservedQty(p.id))}</div>`:""}`:'-'}</td>`;
-      const pricing=type==="out"?`<td><input class="qty-input" type="number" min="0" step="0.01" value="${escapeHTML(line.unitPrice??"")}" data-doc-price="out" data-line-id="${line.id}" placeholder="0.00"></td><td><input class="qty-input" type="number" min="0" step="0.01" value="${escapeHTML(line.discount??"")}" data-doc-discount="out" data-line-id="${line.id}" placeholder="0.00"></td><td class="mono">${fmtMoney(Math.max(0,(Number(line.qty)||0)*(Number(line.unitPrice)||0)-(Number(line.discount)||0)))}</td>`:"";
-      return `<tr>${base}${pricing}<td><button class="small danger-ghost" data-doc-remove="${type}" data-line-id="${line.id}" ${lines.length===1?'disabled':''}>ลบ</button></td></tr>`;
+      const balanceLabel=type==="out"?"พร้อมเบิก":"คงเหลือก่อนรับ";
+      const base=`<td class="mono doc-line-index" data-label="ลำดับ">${index+1}</td><td class="doc-line-part" data-label="อะไหล่"><select data-doc-part="${type}" data-line-id="${line.id}" aria-label="เลือกอะไหล่รายการที่ ${index+1}">${documentPartOptions(line.partId)}</select></td><td class="doc-line-qty" data-label="${type==="out"?"จำนวนเบิก":"จำนวนรับ"}"><input class="qty-input" type="number" min="0" step="any" inputmode="decimal" value="${escapeHTML(line.qty)}" data-doc-qty="${type}" data-line-id="${line.id}" placeholder="0" aria-label="${type==="out"?"จำนวนเบิก":"จำนวนรับ"}รายการที่ ${index+1}"></td><td class="mono doc-line-balance" data-label="${balanceLabel}">${p?`${type==="out"?availableQty(p.id):p.qty} ${escapeHTML(p.unit)}${type==="out"&&reservedQty(p.id)>0?`<div class="reserved-note">จอง ${fmtMoney(reservedQty(p.id))}</div>`:""}`:'-'}</td>`;
+      const pricing=type==="out"?`<td class="doc-line-price" data-label="ราคา/หน่วย"><input class="qty-input" type="number" min="0" step="0.01" inputmode="decimal" value="${escapeHTML(line.unitPrice??"")}" data-doc-price="out" data-line-id="${line.id}" placeholder="0.00" aria-label="ราคาต่อหน่วยรายการที่ ${index+1}"></td><td class="doc-line-discount" data-label="ส่วนลด"><input class="qty-input" type="number" min="0" step="0.01" inputmode="decimal" value="${escapeHTML(line.discount??"")}" data-doc-discount="out" data-line-id="${line.id}" placeholder="0.00" aria-label="ส่วนลดรายการที่ ${index+1}"></td><td class="mono doc-line-amount" data-label="รวมสุทธิ">${fmtMoney(Math.max(0,(Number(line.qty)||0)*(Number(line.unitPrice)||0)-(Number(line.discount)||0)))} บาท</td>`:"";
+      return `<tr data-line-number="${index+1}">${base}${pricing}<td class="doc-line-action" data-label="จัดการ"><button class="small danger-ghost" data-doc-remove="${type}" data-line-id="${line.id}" ${lines.length===1?'disabled':''}>ลบรายการนี้</button></td></tr>`;
     }).join("");
     const valid=lines.filter(x=>x.partId&&Number(x.qty)>0);
     document.getElementById(type==="in"?"receive-line-count":"issue-line-count").textContent=`${valid.length} รายการ`;
@@ -3894,6 +3995,7 @@
         document.getElementById("iss-person").value=currentUser?currentUser.name:"";document.getElementById("iss-note").value="";
         ["iss-purpose","iss-customer-search","iss-customer","iss-receiver","iss-department","iss-project","iss-reference","iss-truck","iss-province","iss-mileage","iss-driver","iss-destination"].forEach(id=>document.getElementById(id).value="");document.getElementById("iss-use-vehicle").checked=false;updateIssuePurposeUI();updateIssueVehicleUI();
       }
+      if(mobileWorkflowType===type)clearMobileQrWorkflow(false);
       clearSmartDirty();
       renderDocumentLines(type);
       if(type==="in")renderReceiveLog();else renderIssueLog();
@@ -4161,12 +4263,33 @@
     return !!currentUser&&["admin","staff"].includes(currentUser.role);
   }
   function updateMobileStockActionPermissions(){
-    const allowed=canCreateMobileStockDocument();
+    const allowed=canCreateMobileStockDocument(),p=partById(mobilePartSummaryId),noAvailable=p?availableQty(p.id)<=0:false;
     ["mobile-part-receive","mobile-part-issue"].forEach(id=>{document.getElementById(id).hidden=!allowed;});
+    const issueBtn=document.getElementById("mobile-part-issue");
+    issueBtn.disabled=allowed&&noAvailable;
+    issueBtn.title=noAvailable?"ไม่มีสต๊อกพร้อมเบิก":"ตัดยอดออกจากสต๊อก";
+    issueBtn.querySelector("span").textContent=noAvailable?"ไม่มีสต๊อกพร้อมเบิก":"ตัดยอดออกจากสต๊อก";
     const note=document.getElementById("mobile-part-action-note");
     note.textContent=allowed
-      ? "รับเข้าและเบิก/จ่ายจะใช้ฟอร์ม การตรวจสอบ และการบันทึกชุดเดียวกับโปรแกรมหลัก กรุณาตรวจทุกรายละเอียดก่อนยืนยัน"
+      ? (noAvailable?"รายการนี้ไม่มีสต๊อกพร้อมเบิก แต่ยังสามารถรับเข้าได้":"เลือกงานที่ต้องการ ระบบจะใส่อะไหล่รายการนี้ให้และให้ตรวจสอบก่อนบันทึก")
       : "บัญชีนี้ดูข้อมูลได้อย่างเดียว หากต้องการรับเข้าหรือเบิก/จ่าย กรุณาติดต่อผู้ดูแลระบบ";
+  }
+  function setMobileQrWorkflow(partId,type){
+    const p=partById(partId);if(!p)return;
+    mobileWorkflowPartId=partId;mobileWorkflowType=type;
+    document.body.classList.add("mobile-qr-workflow");document.body.classList.remove("mobile-optional-open");
+    document.querySelectorAll("[data-mobile-optional-toggle]").forEach(btn=>{btn.setAttribute("aria-expanded","false");btn.textContent=btn.closest(".receive-document")?"＋ รายละเอียดเพิ่มเติม (รถ / เอกสาร / หมายเหตุ)":"＋ รายละเอียดเพิ่มเติม (ผู้รับ / รถ / เอกสาร)";});
+    const prefix=type==="in"?"mobile-receive":"mobile-issue",unit=p.unit||"หน่วย";
+    document.getElementById(`${prefix}-context-part`).textContent=`${p.code} · ${p.name}`;
+    document.getElementById(`${prefix}-context-stock`).textContent=type==="in"
+      ? `คงเหลือก่อนรับ ${fmtMoney(p.qty)} ${unit} · กรอกจำนวนรับ แล้วตรวจสรุปก่อนยืนยัน`
+      : `พร้อมเบิก ${fmtMoney(availableQty(p.id))} ${unit} · กรอกจำนวนเบิก แล้วตรวจยอดหลังรายการก่อนยืนยัน`;
+  }
+  function clearMobileQrWorkflow(reopenSummary=false){
+    const partId=mobileWorkflowPartId;
+    mobileWorkflowPartId="";mobileWorkflowType="";
+    document.body.classList.remove("mobile-qr-workflow","mobile-optional-open");
+    if(reopenSummary&&partId){mobilePartSummaryId=partId;renderMobilePartSummary(!navigator.onLine);}
   }
   function openMobileStockDocument(type){
     if(!canCreateMobileStockDocument()){toast("บัญชีนี้ไม่มีสิทธิ์ทำรายการรับเข้า–เบิก/จ่าย",true);return;}
@@ -4176,6 +4299,7 @@
     const existingValid=lines.filter(x=>x.partId&&Number(x.qty)>0).length;
     const result=addScannedLine(lines,p);
     closeMobilePartSummary(true);
+    setMobileQrWorkflow(partId,type);
     activateView(isReceive?"receive":"issue");
     renderDocumentLines(type);
     if(!isReceive&&currentUser&&!document.getElementById("iss-person").value.trim())document.getElementById("iss-person").value=currentUser.name;
@@ -4203,6 +4327,12 @@
       if(ok&&mobilePartSummaryId){renderMobilePartSummary(false);toast("อัปเดตข้อมูลอะไหล่ล่าสุดแล้ว");}
     }finally{btn.disabled=false;btn.textContent="↻";}
   });
+  document.querySelectorAll("[data-mobile-optional-toggle]").forEach(btn=>btn.addEventListener("click",()=>{
+    const open=!document.body.classList.contains("mobile-optional-open");
+    document.body.classList.toggle("mobile-optional-open",open);btn.setAttribute("aria-expanded",String(open));
+    btn.textContent=open?"－ ซ่อนรายละเอียดเพิ่มเติม":(btn.closest(".receive-document")?"＋ รายละเอียดเพิ่มเติม (รถ / เอกสาร / หมายเหตุ)":"＋ รายละเอียดเพิ่มเติม (ผู้รับ / รถ / เอกสาร)");
+  }));
+  document.querySelectorAll("[data-mobile-qr-return]").forEach(btn=>btn.addEventListener("click",()=>clearMobileQrWorkflow(true)));
   function useScannedCode(raw){const code=scannedCode(raw);if(!code){toast("กรุณาสแกนหรือกรอกรหัสอะไหล่",true);return;}const p=state.parts.find(x=>String(x.code||"").toLowerCase()===code.toLowerCase());if(!p){toast(`ไม่พบรหัสอะไหล่ ${code}`,true);return;}if(p.isActive===false){toast(`${p.code} ถูกหยุดใช้งาน จึงไม่สามารถเพิ่มลงรายการได้`,true);return;}showScanResult(p);}
   function applyPendingScan(){const p=partById(pendingScanPartId);if(!p||p.isActive===false){toast("ไม่พบอะไหล่ที่พร้อมใช้งาน กรุณาสแกนใหม่",true);return;}const action=document.getElementById("scan-action").value;if(action==="stockcount"&&!isAdmin()){toast("ตรวจนับใช้ได้เฉพาะ Admin",true);return;}stopScanner();let result=null;if(action==="parts"){activateView("parts");document.getElementById("part-search").value=p.code;renderParts();}else if(action==="receive"){result=addScannedLine(receiveLines,p);activateView("receive");renderDocumentLines("in");focusScannedQty("in",result.line.id);}else if(action==="issue"){result=addScannedLine(issueLines,p);activateView("issue");renderDocumentLines("out");focusScannedQty("out",result.line.id);}else if(action==="requisitions"){result=addScannedLine(requestLines,p);activateView("requisitions");renderRequestLines();focusScannedQty("requisitions",result.line.id);}else if(action==="stockcount"){activateView("stockcount");document.getElementById("count-search").value=p.code;renderStockCount();}else{activateView("history");document.getElementById("stock-card-part").value=p.id;renderStockCard();}toast(result&&!result.added?`${p.code} มีอยู่ในรายการแล้ว — ระบบไม่เพิ่มซ้ำ`:`พบ ${p.code} — ${p.name}`);}
   function isCameraPermissionError(err){return ["NotAllowedError","SecurityError","PermissionDeniedError"].includes(String(err?.name||""));}
@@ -5184,7 +5314,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.4.7`;
+    document.title=`${meta.title} | Stock Control v4.4.8`;
   }
 
   function selectLabel(el){
@@ -5466,9 +5596,10 @@
   function showSummaryModal(config){
     const overlay=document.getElementById("confirm-summary-overlay");if(!overlay)return Promise.resolve(confirm(config.title||"ยืนยันทำรายการ?"));
     document.getElementById("confirm-summary-title").textContent=config.title||"ตรวจสอบรายการก่อนยืนยัน";
+    const action=document.getElementById("confirm-summary-action");action.className=`confirm-summary-action ${config.actionType||""}`.trim();action.textContent=config.actionLabel||"ขั้นตอน 2 จาก 2 · ตรวจสอบก่อนบันทึก";
     document.getElementById("confirm-summary-intro").textContent=config.intro||"กรุณาตรวจสอบข้อมูลให้ถูกต้องก่อนบันทึกจริง";
     document.getElementById("confirm-summary-meta").innerHTML=(config.meta||[]).map(x=>`<div><span>${escapeHTML(x.label)}</span><strong>${escapeHTML(x.value||"-")}</strong></div>`).join("");
-    document.getElementById("confirm-summary-body").innerHTML=(config.items||[]).map(x=>`<tr><td class="mono">${escapeHTML(x.code||"-")}</td><td>${escapeHTML(x.name||"-")}</td><td class="mono">${escapeHTML(x.qtyText||String(x.qty||0))}</td><td class="mono">${escapeHTML(x.afterText||"-")}</td></tr>`).join("");
+    document.getElementById("confirm-summary-body").innerHTML=(config.items||[]).map(x=>`<tr><td class="mono confirm-item-code" data-label="รหัส">${escapeHTML(x.code||"-")}</td><td class="confirm-item-name" data-label="รายการ">${escapeHTML(x.name||"-")}</td><td class="mono confirm-item-qty" data-label="จำนวน">${escapeHTML(x.qtyText||String(x.qty||0))}</td><td class="mono confirm-item-after" data-label="ยอดหลังทำรายการ">${escapeHTML(x.afterText||"-")}</td></tr>`).join("");
     document.getElementById("confirm-summary-total").textContent=config.totalText||"0 หน่วย";document.getElementById("confirm-summary-ok").textContent=config.confirmText||"ยืนยันทำรายการ";overlay.hidden=false;overlay.setAttribute("aria-hidden","false");overlay.classList.add("show");
     return new Promise(resolve=>{summaryResolver=resolve;setTimeout(()=>document.getElementById("confirm-summary-ok")?.focus(),30);});
   }
@@ -5477,7 +5608,7 @@
     const isIn=type==="in",items=payload.items.map(x=>{const p=partById(x.partId),before=Number(p?.qty||0),after=before+(isIn?Number(x.qty):-Number(x.qty)),amount=Number(x.qty||0)*Number(x.unitPrice||0)-Number(x.discount||0);return{code:p?.code||"-",name:p?.name||"-",qtyText:`${fmtMoney(x.qty)} ${p?.unit||""}${!isIn?` · ${fmtMoney(amount)} บาท`:""}`,afterText:`${fmtMoney(after)} ${p?.unit||""}`};});
     const total=payload.items.reduce((s,x)=>s+Number(x.qty||0),0),truck=truckById(payload.truckId),province=provinceById(payload.provinceId);
     const amount=payload.items.reduce((s,x)=>s+Number(x.qty||0)*Number(x.unitPrice||0)-Number(x.discount||0),0),customer=customerById(payload.customerId);
-    return showSummaryModal({title:isIn?"ตรวจสอบใบรับเข้า":"ตรวจสอบใบเบิกออก",intro:isIn?"ยอดหลังทำรายการจะเพิ่มเข้าสต๊อก":"ระบบจะตัดยอดสต๊อกทันทีเมื่อยืนยัน",meta:[{label:"วันที่",value:fmtDate(payload.date)},{label:isIn?"ซัพพลายเออร์":"ผู้เบิก",value:isIn?(payload.supplier||"ไม่ระบุ"):(payload.person||"ไม่ระบุ")},...(!isIn?[{label:"วัตถุประสงค์ / ลูกค้า",value:[ISSUE_PURPOSE_TEXT[payload.issuePurpose],customer?.name].filter(Boolean).join(" · ")||"ไม่ระบุ"}]:[]),{label:"เอกสารอ้างอิง",value:[payload.referenceNo,payload.prNo&&`PR ${payload.prNo}`,payload.poNo&&`PO ${payload.poNo}`,payload.ivNo&&`IV ${payload.ivNo}`].filter(Boolean).join(" · ")||"ไม่ระบุ"},{label:"รถ / เลขไมล์",value:[truck?.plateNo,payload.mileage!==""?`${fmtMoney(payload.mileage)} กม.`:"",province?.name].filter(Boolean).join(" · ")||"ไม่ใช้รถ"}],items,totalText:`${fmtMoney(total)} หน่วย · ${items.length} รายการ${!isIn?` · ${fmtMoney(amount)} บาท`:""}`,confirmText:isIn?"ยืนยันรับเข้า":"ยืนยันเบิกออก"});
+    return showSummaryModal({title:isIn?"ตรวจสอบใบรับเข้า":"ตรวจสอบใบเบิกออก",actionType:isIn?"receive":"issue",actionLabel:isIn?"ขั้นตอน 2 จาก 2 · รับเข้า":"ขั้นตอน 2 จาก 2 · เบิก / จ่าย",intro:isIn?"ตรวจจำนวนและยอดหลังรับเข้าให้ถูกต้อง ก่อนเพิ่มเข้าสต๊อก":"ตรวจจำนวนและยอดหลังเบิกให้ถูกต้อง ระบบจะตัดสต๊อกเมื่อยืนยัน",meta:[{label:"วันที่",value:fmtDate(payload.date)},{label:isIn?"ซัพพลายเออร์":"ผู้เบิก",value:isIn?(payload.supplier||"ไม่ระบุ"):(payload.person||"ไม่ระบุ")},...(!isIn?[{label:"วัตถุประสงค์ / ลูกค้า",value:[ISSUE_PURPOSE_TEXT[payload.issuePurpose],customer?.name].filter(Boolean).join(" · ")||"ไม่ระบุ"}]:[]),{label:"เอกสารอ้างอิง",value:[payload.referenceNo,payload.prNo&&`PR ${payload.prNo}`,payload.poNo&&`PO ${payload.poNo}`,payload.ivNo&&`IV ${payload.ivNo}`].filter(Boolean).join(" · ")||"ไม่ระบุ"},{label:"รถ / เลขไมล์",value:[truck?.plateNo,payload.mileage!==""?`${fmtMoney(payload.mileage)} กม.`:"",province?.name].filter(Boolean).join(" · ")||"ไม่ใช้รถ"}],items,totalText:`${fmtMoney(total)} หน่วย · ${items.length} รายการ${!isIn?` · ${fmtMoney(amount)} บาท`:""}`,confirmText:isIn?"ยืนยันรับเข้า":"ยืนยันเบิกออก"});
   }
   function confirmRequestSummary(payload){
     const items=payload.items.map(x=>{const p=partById(x.partId);return{code:p?.code||"-",name:p?.name||"-",qtyText:`${fmtMoney(x.qty)} ${p?.unit||""}`,afterText:`พร้อมเบิก ${fmtMoney(availableQty(x.partId))} ${p?.unit||""}`};});
