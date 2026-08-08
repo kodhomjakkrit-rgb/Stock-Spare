@@ -1219,7 +1219,7 @@
     #view-dashboard .personal-workspace-panel{transform:none!important;transition:none!important;}
   }
 
-  /* ================= v4.4.4 GitHub Pages Connection Compatibility ================= */
+  /* ================= v4.4.5 Automatic GitHub Pages Connection ================= */
   body{
     font-size:15px;
     line-height:1.65;
@@ -1323,7 +1323,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.4.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.4.5</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1340,14 +1340,6 @@
         <svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 6.2A10.6 10.6 0 0112 6c6 0 9.5 6 9.5 6a16 16 0 01-3 3.7M7.1 7.1C4.1 9 2.5 12 2.5 12s3.5 6 9.5 6c1.2 0 2.3-.2 3.3-.6M9.9 9.9a3 3 0 004.2 4.2"/></svg>
       </button>
     </div>
-    <details class="login-settings" id="login-connection-settings" hidden>
-      <summary>ตั้งค่าการเชื่อมต่อ Google Sheets</summary>
-      <div class="field">
-        <label>Web App URL ของ Google Apps Script</label>
-        <input type="url" id="login-script-url" inputmode="url" autocomplete="url" placeholder="https://script.google.com/macros/s/xxxxx/exec">
-        <div class="hint">ใช้เมื่อเปิดโปรแกรมผ่าน GitHub Pages · วางลิงก์ที่ลงท้ายด้วย /exec เพียงครั้งแรก ระบบจะจำไว้ในเบราว์เซอร์เครื่องนี้</div>
-      </div>
-    </details>
     <div class="hint" id="login-error" style="color:var(--danger);min-height:16px;margin-bottom:10px;"></div>
     <button type="submit" id="btn-login-submit" class="primary" style="width:100%;padding:11px;">เข้าสู่ระบบ</button>
   </form>
@@ -1359,7 +1351,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.4.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.4.5</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -2145,13 +2137,7 @@
 <div id="settings-modal-overlay">
   <div class="modal">
     <h3>ตรวจสอบการเชื่อมต่อ Google Sheets</h3>
-    <div class="field-grid">
-      <div class="field span2">
-        <label>Web App URL ของ Google Apps Script</label>
-        <input type="text" id="cfg-script-url" placeholder="ระบบกำลังอ่าน URL อัตโนมัติ" readonly>
-        <div class="hint" id="cfg-script-url-hint">ระบบอ่าน URL ของ Deployment ปัจจุบันอัตโนมัติ หากจำเป็นต้องบังคับ URL ให้แก้ค่า WEB_APP_URL_OVERRIDE ใน Code.gs แล้ว Deploy เป็น New version</div>
-      </div>
-    </div>
+    <p class="hint" id="cfg-connection-summary">ระบบตั้งค่าการเชื่อมต่ออัตโนมัติแล้ว กดปุ่มด้านล่างเพื่อตรวจสอบสถานะได้</p>
     <div class="form-actions">
       <button id="btn-settings-test">ทดสอบการเชื่อมต่อ</button>
       <button class="primary" id="btn-settings-cancel">ปิด</button>
@@ -2175,7 +2161,8 @@
   "use strict";
 
   const STORAGE_KEY = "sparepartsStock_v1";
-  const SCRIPT_URL_KEY = "sparepartsStock_scriptURL";
+  const LEGACY_SCRIPT_URL_KEY = "sparepartsStock_scriptURL";
+  const STATIC_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwR5eKttpQ4liBnAEdjgFX8Dw0X6xR3f_5b2PTnGeH1VYgyJ7LM1KlpTDe30z5ocFHM/exec";
   // ดึงข้อมูลอัตโนมัติทุก 60 วินาที ลดภาระ Apps Script/Sheets
   // ผู้ใช้ยังกดป้ายสถานะเพื่อซิงก์ทันทีได้ตลอดเวลา
   const POLL_INTERVAL_MS = 60000;
@@ -2714,23 +2701,11 @@
     e.preventDefault();
     const username = document.getElementById("login-name").value.trim();
     const password = document.getElementById("login-password").value;
-    const enteredURL = document.getElementById("login-script-url")?.value.trim() || "";
     const errorEl = document.getElementById("login-error");
     if(!username){ errorEl.textContent = "กรุณากรอกชื่อผู้ใช้งาน"; return; }
     if(!password){ errorEl.textContent = "กรุณากรอกรหัสผ่าน"; return; }
-    if(enteredURL){
-      try{
-        setScriptURL(validateScriptURL(enteredURL));
-      }catch(err){
-        errorEl.textContent = err.message;
-        document.getElementById("login-connection-settings").open = true;
-        return;
-      }
-    }
     if(!hasScriptURL()){
-      const settings=document.getElementById("login-connection-settings");
-      settings.hidden=false;settings.open=true;
-      errorEl.textContent = "กรุณาวาง Web App URL ที่ลงท้ายด้วย /exec ก่อนเข้าสู่ระบบ";
+      errorEl.textContent = "ระบบเชื่อมต่อฐานข้อมูลไม่ได้ กรุณาแจ้งผู้ดูแลระบบ";
       return;
     }
     const btn = document.getElementById("btn-login-submit");
@@ -2741,7 +2716,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.4.4 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.4.5 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -2816,31 +2791,19 @@
     try{ return apiUrl ? validateScriptURL(apiUrl) : ""; }catch(e){ return ""; }
   }
   function getScriptURL(){
-    return getBootstrapScriptURL() || normalizeScriptURL(localStorage.getItem(SCRIPT_URL_KEY) || "");
+    const bootstrapUrl=getBootstrapScriptURL();
+    if(bootstrapUrl) return bootstrapUrl;
+    try{ return validateScriptURL(STATIC_WEB_APP_URL); }catch(e){ return ""; }
   }
-  function setScriptURL(url){ localStorage.setItem(SCRIPT_URL_KEY, normalizeScriptURL(url)); }
   function hasScriptURL(){ return !!getScriptURL(); }
   function applyBootstrapSettings(){
-    const apiUrl=String(APP_BOOTSTRAP.apiUrl||"").trim();
-    if(!apiUrl) return;
-    try{ setScriptURL(validateScriptURL(apiUrl)); }catch(e){}
+    try{ localStorage.removeItem(LEGACY_SCRIPT_URL_KEY); }catch(e){}
   }
-  function isExternalStaticHost(){ return !getBootstrapScriptURL(); }
   function updateConnectionSettingsUI(){
-    const external=isExternalStaticHost();
-    const loginSettings=document.getElementById("login-connection-settings");
-    const loginInput=document.getElementById("login-script-url");
-    if(loginSettings){
-      loginSettings.hidden=!external;
-      loginSettings.open=external&&!hasScriptURL();
-    }
-    if(loginInput) loginInput.value=getScriptURL();
-    const cfgInput=document.getElementById("cfg-script-url");
-    const cfgHint=document.getElementById("cfg-script-url-hint");
-    if(cfgInput) cfgInput.readOnly=!external;
-    if(cfgHint) cfgHint.textContent=external
-      ? "หน้า GitHub Pages จะจำ URL นี้ไว้ในเบราว์เซอร์เครื่องปัจจุบัน หากเปลี่ยน Deployment สามารถวาง URL ใหม่แล้วกดทดสอบการเชื่อมต่อ"
-      : "ระบบอ่าน URL ของ Deployment ปัจจุบันอัตโนมัติ หากจำเป็นต้องบังคับ URL ให้แก้ค่า WEB_APP_URL_OVERRIDE ใน Code.gs แล้ว Deploy เป็น New version";
+    const summary=document.getElementById("cfg-connection-summary");
+    if(summary) summary.textContent=hasScriptURL()
+      ? "ระบบตั้งค่าการเชื่อมต่ออัตโนมัติแล้ว กดปุ่มด้านล่างเพื่อตรวจสอบสถานะได้"
+      : "ระบบยังไม่พร้อมเชื่อมต่อ กรุณาแจ้งผู้ดูแลระบบ";
   }
 
   function setSyncBadge(mode, text, detail){
@@ -3027,7 +2990,6 @@
   function openSettingsModal(){
     if(!requireAdmin()) return;
     updateConnectionSettingsUI();
-    document.getElementById("cfg-script-url").value = getScriptURL();
     document.getElementById("settings-modal-overlay").classList.add("show");
   }
   function closeSettingsModal(){ document.getElementById("settings-modal-overlay").classList.remove("show"); }
@@ -3040,10 +3002,7 @@
   document.getElementById("settings-modal-overlay").addEventListener("click", (e)=>{ if(e.target.id==="settings-modal-overlay") closeSettingsModal(); });
 
   document.getElementById("btn-settings-test").addEventListener("click", async ()=>{
-    const url = document.getElementById("cfg-script-url").value.trim();
-    if(!url){ toast("กรุณากรอก URL ก่อน", true); return; }
-    const prevUrl = getScriptURL();
-    setScriptURL(url);
+    if(!hasScriptURL()){ toast("ระบบยังไม่พร้อมเชื่อมต่อ กรุณาแจ้งผู้ดูแลระบบ", true); return; }
     const btn = document.getElementById("btn-settings-test");
     btn.disabled = true; btn.textContent = "กำลังทดสอบ...";
     try{
@@ -3051,7 +3010,6 @@
       toast("เชื่อมต่อ Google Sheets สำเร็จ");
     }catch(err){
       toast("เชื่อมต่อไม่สำเร็จ: " + err.message, true);
-      setScriptURL(prevUrl);
     }finally{
       btn.disabled = false; btn.textContent = "ทดสอบการเชื่อมต่อ";
     }
@@ -4998,7 +4956,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.4.4`;
+    document.title=`${meta.title} | Stock Control v4.4.5`;
   }
 
   function selectLabel(el){
@@ -5421,7 +5379,7 @@
     if(hasScriptURL()){
       syncFromSheet(true).then(ok=>{if(!ok)processPendingDeepLink(true);startPolling();});
     } else {
-      setSyncBadge("off", "ไม่พบ Web App URL — กรุณาเปิดผ่านลิงก์ /exec");
+      setSyncBadge("off", "ระบบยังไม่พร้อมเชื่อมต่อ — กรุณาแจ้งผู้ดูแลระบบ");
     }
   }
 
