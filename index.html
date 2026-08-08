@@ -1201,7 +1201,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.3.5</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.3.6</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1229,7 +1229,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.3.5</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.3.6</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -1962,7 +1962,7 @@
       <div class="field span2">
         <label>Web App URL ของ Google Apps Script</label>
         <input type="text" id="cfg-script-url" placeholder="ระบบกำลังอ่าน URL อัตโนมัติ" readonly>
-        <div class="hint">ระบบอ่าน URL ของ Deployment ปัจจุบันอัตโนมัติ หากจำเป็นต้องบังคับ URL ให้แก้ค่า WEB_APP_URL_OVERRIDE ใน Code.gs แล้ว Deploy เป็น New version</div>
+        <div class="hint">ระบบกำหนด URL จาก Deployment ที่กำลังเปิดโดยอัตโนมัติ ไม่รับ URL จากเบราว์เซอร์และไม่ต้องกรอกเอง</div>
       </div>
     </div>
     <div class="form-actions">
@@ -1988,7 +1988,6 @@
   "use strict";
 
   const STORAGE_KEY = "sparepartsStock_v1";
-  const SCRIPT_URL_KEY = "sparepartsStock_scriptURL";
   // ดึงข้อมูลอัตโนมัติทุก 60 วินาที ลดภาระ Apps Script/Sheets
   // ผู้ใช้ยังกดป้ายสถานะเพื่อซิงก์ทันทีได้ตลอดเวลา
   const POLL_INTERVAL_MS = 60000;
@@ -2538,7 +2537,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.3.5 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.3.6 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -2606,14 +2605,13 @@
     try{ return apiUrl ? validateScriptURL(apiUrl) : ""; }catch(e){ return ""; }
   }
   function getScriptURL(){
-    return getBootstrapScriptURL() || normalizeScriptURL(localStorage.getItem(SCRIPT_URL_KEY) || "");
+    return getBootstrapScriptURL();
   }
-  function setScriptURL(url){ localStorage.setItem(SCRIPT_URL_KEY, normalizeScriptURL(url)); }
   function hasScriptURL(){ return !!getScriptURL(); }
   function applyBootstrapSettings(){
-    const apiUrl=String(APP_BOOTSTRAP.apiUrl||"").trim();
-    if(!apiUrl) return;
-    try{ setScriptURL(validateScriptURL(apiUrl)); }catch(e){}
+    // ไม่ใช้ URL ที่เคยบันทึกในเบราว์เซอร์อีกต่อไป เพื่อไม่ให้ QR หรือ API
+    // ย้อนกลับไป Deployment เก่าเมื่อเปิดจากกล้องมือถือ
+    try{ localStorage.removeItem("sparepartsStock_scriptURL"); }catch(e){}
   }
 
   function setSyncBadge(mode, text, detail){
@@ -2806,10 +2804,8 @@
   document.getElementById("settings-modal-overlay").addEventListener("click", (e)=>{ if(e.target.id==="settings-modal-overlay") closeSettingsModal(); });
 
   document.getElementById("btn-settings-test").addEventListener("click", async ()=>{
-    const url = document.getElementById("cfg-script-url").value.trim();
-    if(!url){ toast("กรุณากรอก URL ก่อน", true); return; }
-    const prevUrl = getScriptURL();
-    setScriptURL(url);
+    const url = getScriptURL();
+    if(!url){ toast("ไม่พบ URL จาก Deployment กรุณาเปิดโปรแกรมผ่านลิงก์ /exec", true); return; }
     const btn = document.getElementById("btn-settings-test");
     btn.disabled = true; btn.textContent = "กำลังทดสอบ...";
     try{
@@ -2817,7 +2813,6 @@
       toast("เชื่อมต่อ Google Sheets สำเร็จ");
     }catch(err){
       toast("เชื่อมต่อไม่สำเร็จ: " + err.message, true);
-      setScriptURL(prevUrl);
     }finally{
       btn.disabled = false; btn.textContent = "ทดสอบการเชื่อมต่อ";
     }
@@ -3680,7 +3675,7 @@
   function labelSizeMM(){const size=document.getElementById("label-size").value;if(size==="small")return{width:70,height:40};if(size==="custom")return{width:Number(document.getElementById("label-width-mm").value),height:Number(document.getElementById("label-height-mm").value)};return{width:100,height:60};}
   function filteredLabelParts(){const q=(document.getElementById("label-search").value||"").trim().toLowerCase(),cat=document.getElementById("label-category").value;return activeLabelParts().filter(p=>(!cat||p.category===cat)&&(!q||`${p.code} ${p.name} ${p.location||""}`.toLowerCase().includes(q)));}
   function selectedLabelItems(){return activeLabelParts().filter(p=>labelSelection.has(p.id)).map(p=>({part:p,copies:Math.max(1,Math.min(99,Number(labelSelection.get(p.id))||1))}));}
-  function renderQRCode(target,text,size=160){target.innerHTML="";if(typeof QRCode==="undefined"){target.textContent="QR ไม่พร้อม";return false;}new QRCode(target,{text,width:size,height:size,colorDark:"#111111",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});return true;}
+  function renderQRCode(target,text,size=160){target.innerHTML="";if(!text){target.textContent="เปิดโปรแกรมผ่าน /exec เพื่อสร้าง QR";return false;}if(typeof QRCode==="undefined"){target.textContent="QR ไม่พร้อม";return false;}new QRCode(target,{text,width:size,height:size,colorDark:"#111111",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});return true;}
   function partDeepLink(code){
     const clean=String(code||"").trim();
     if(!clean) return "";
@@ -3688,7 +3683,7 @@
       const url=new URL(validateScriptURL(getScriptURL()));
       url.searchParams.set("p",clean);
       return url.toString();
-    }catch(e){ return `SPAREPART:${clean}`; }
+    }catch(e){ return ""; }
   }
   function refreshLabelCategoryOptions(){const sel=document.getElementById("label-category"),current=sel.value,categories=[...new Set(activeLabelParts().map(p=>p.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'th'));sel.innerHTML=`<option value="">ทุกหมวดหมู่</option>`+categories.map(c=>`<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("");sel.value=categories.includes(current)?current:"";}
   function renderLabelPreview(){const preview=document.getElementById("part-label-preview"),first=selectedLabelItems()[0]?.part;if(!first){preview.innerHTML=`<div class="label-empty-preview">เลือกอะไหล่ทางซ้ายเพื่อดูตัวอย่างป้าย</div>`;return;}preview.innerHTML=`<div class="label-qr-wrap" id="label-preview-qr"></div><div class="label-detail"><div class="label-code">${escapeHTML(first.code)}</div><h3>${escapeHTML(first.name)}</h3><div class="label-meta">ตำแหน่ง: ${escapeHTML(first.location||"ไม่ระบุ")}</div><div class="label-meta">หน่วย: ${escapeHTML(first.unit||"-")}</div><div class="label-barcode">${code39SVG(first.code)}</div></div>`;renderQRCode(document.getElementById("label-preview-qr"),partDeepLink(first.code),180);}
@@ -3700,7 +3695,7 @@
   function makePrintLabel(part,config){const el=document.createElement("article");el.className="print-part-label"+(config.width<=75||config.height<=45?" compact":"");el.style.setProperty("--label-width",`${config.width}mm`);el.style.setProperty("--label-height",`${config.height}mm`);el.innerHTML=`<div class="print-label-qr"></div><div class="print-label-detail"><div class="print-label-code">${escapeHTML(part.code)}</div><h3>${escapeHTML(part.name)}</h3><div class="print-label-meta">ตำแหน่ง: ${escapeHTML(part.location||"ไม่ระบุ")}</div><div class="print-label-meta">หน่วย: ${escapeHTML(part.unit||"-")}</div><div class="print-label-barcode">${code39SVG(part.code)}</div></div>`;el.dataset.qr=partDeepLink(part.code);return el;}
   async function printSelectedLabels(){try{const items=selectedLabelItems();if(!items.length)throw new Error("กรุณาเลือกอะไหล่อย่างน้อย 1 รายการ");if(typeof QRCode==="undefined")throw new Error("ไลบรารี QR ยังโหลดไม่สำเร็จ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่");const config=labelPrintConfig(),area=document.getElementById("label-print-area");area.innerHTML="";area.className=config.mode==="sticker"?"sticker-print":"a4-print";area.style.gridTemplateColumns=config.mode==="a4"?`repeat(${config.columns}, ${config.width}mm)`:"none";area.style.gap=config.mode==="a4"?`${config.gap}mm`:"0";items.forEach(({part,copies})=>{for(let i=0;i<copies;i++)area.appendChild(makePrintLabel(part,config));});area.querySelectorAll(".print-part-label").forEach(el=>renderQRCode(el.querySelector(".print-label-qr"),el.dataset.qr,180));document.getElementById("label-page-style")?.remove();const style=document.createElement("style");style.id="label-page-style";style.textContent=config.mode==="a4"?`@page{size:A4 portrait;margin:${config.margin}mm}`:`@page{size:${config.width}mm ${config.height}mm;margin:0}`;document.head.appendChild(style);document.body.classList.add("print-label-mode");if(document.fonts?.ready)await document.fonts.ready;await new Promise(resolve=>setTimeout(resolve,120));window.print();setTimeout(()=>{document.body.classList.remove("print-label-mode");style.remove();},700);}catch(err){toast(err.message||"สร้างหน้าพิมพ์ไม่สำเร็จ",true);}}
   document.getElementById("label-search").addEventListener("input",renderLabelPartList);document.getElementById("label-category").addEventListener("change",renderLabelPartList);document.getElementById("label-part-list").addEventListener("change",e=>{const partId=e.target.dataset.labelPart||e.target.dataset.labelCopy;if(!partId)return;if(e.target.dataset.labelPart!==undefined){if(e.target.checked)labelSelection.set(partId,Math.max(1,Number(labelSelection.get(partId))||1));else labelSelection.delete(partId);}else{const copies=Math.max(1,Math.min(99,Math.floor(Number(e.target.value)||1)));e.target.value=copies;labelSelection.set(partId,copies);}renderLabelPartList();});
-  document.getElementById("btn-label-select-visible").addEventListener("click",()=>{filteredLabelParts().forEach(p=>{if(!labelSelection.has(p.id))labelSelection.set(p.id,1);});renderLabelPartList();});document.getElementById("btn-label-clear").addEventListener("click",()=>{labelSelection.clear();renderLabelPartList();});document.getElementById("label-size").addEventListener("change",()=>{updateLabelPrintControls();renderLabelPreview();});document.getElementById("label-print-mode").addEventListener("change",updateLabelPrintControls);document.getElementById("btn-print-label").addEventListener("click",printSelectedLabels);
+  document.getElementById("btn-label-select-visible").addEventListener("click",()=>{filteredLabelParts().forEach(p=>{if(!labelSelection.has(p.id))labelSelection.set(p.id,1);});renderLabelPartList();});document.getElementById("btn-label-clear").addEventListener("click",()=>{labelSelection.clear();renderLabelPartList();});document.getElementById("label-size").addEventListener("change",()=>{updateLabelPrintControls();renderLabelPreview();});document.getElementById("label-print-mode").addEventListener("change",updateLabelPrintControls);document.getElementById("btn-print-label").addEventListener("click",()=>{if(!hasScriptURL()){toast("ไม่พบ URL ของ Deployment กรุณาเปิดโปรแกรมผ่านลิงก์ /exec",true);return;}printSelectedLabels();});
   let scannerStream=null,scannerTimer=null,scannerDetector=null,scannerFallback=null,scannerBackend="",scannerSession=0,pendingScanPartId="";
   const scanActionLabels={parts:"ค้นหาอะไหล่",receive:"เพิ่มในใบรับเข้า",issue:"เพิ่มในใบเบิกออก",requisitions:"เพิ่มในคำขอเบิก",stockcount:"เปิดตรวจนับ",stockcard:"ดู Stock Card"};
   function stopNativeScanner(){if(scannerTimer)cancelAnimationFrame(scannerTimer);scannerTimer=null;if(scannerStream)scannerStream.getTracks().forEach(t=>t.stop());scannerStream=null;scannerDetector=null;const video=document.getElementById("scanner-video");if(video){video.pause();video.srcObject=null;}}
@@ -4697,7 +4692,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.3.5`;
+    document.title=`${meta.title} | Stock Control v4.3.6`;
   }
 
   function selectLabel(el){
