@@ -1111,7 +1111,6 @@
   #view-dashboard .quick-action,
   #view-dashboard .attention-card,
   #view-dashboard .charts-row>.panel,
-  #view-dashboard #reorder-panel,
   #view-dashboard .personal-workspace-panel{
     --tilt-x:0deg;
     --tilt-y:0deg;
@@ -1175,14 +1174,12 @@
   #view-dashboard .attention-panel,
   #view-dashboard .personal-workspace-panel,
   #view-dashboard .charts-row>.panel,
-  #view-dashboard #reorder-panel,
   #view-dashboard>.panel:last-child{
     border-color:rgba(148,163,184,.22);
     background:linear-gradient(150deg,#fff 0%,#fcfdff 72%,#f7fafc 100%);
     box-shadow:0 15px 32px rgba(15,23,42,.065),0 4px 0 rgba(148,163,184,.08),inset 0 1px 0 #fff;
   }
   #view-dashboard .charts-row>.panel,
-  #view-dashboard #reorder-panel,
   #view-dashboard .personal-workspace-panel{
     transform:perspective(1100px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
   }
@@ -1211,7 +1208,6 @@
     #view-dashboard .quick-action,
     #view-dashboard .attention-card,
     #view-dashboard .charts-row>.panel,
-    #view-dashboard #reorder-panel,
     #view-dashboard .personal-workspace-panel{transform:none!important;will-change:auto;}
   }
   @media(prefers-reduced-motion:reduce){
@@ -1220,8 +1216,102 @@
     #view-dashboard .quick-action,
     #view-dashboard .attention-card,
     #view-dashboard .charts-row>.panel,
-    #view-dashboard #reorder-panel,
     #view-dashboard .personal-workspace-panel{transform:none!important;transition:none!important;}
+  }
+
+  /* ================= v4.4.3 Readable Typography & Simple Reorder List ================= */
+  body{
+    font-size:15px;
+    line-height:1.65;
+    text-rendering:optimizeLegibility;
+  }
+  button{font-size:14px;line-height:1.45;}
+  button.small{font-size:12.5px;}
+  .brand h1{font-size:20px;line-height:1.35;}
+  .brand p{font-size:13px;line-height:1.5;}
+  nav.tabs button.tab{font-size:14px;line-height:1.45;}
+  .nav-group-label{font-size:11.5px;line-height:1.45;}
+  .panel h2{font-size:17px;line-height:1.45;}
+  .panel h2 .sub{font-size:13px;line-height:1.55;}
+  .kpi .label{font-size:13px;line-height:1.5;}
+  .quick-action strong{font-size:14px;line-height:1.45;}
+  .quick-action small{font-size:12.5px;line-height:1.5;}
+  table{font-size:13.5px;line-height:1.55;}
+  th{font-size:12.5px;line-height:1.45;letter-spacing:.15px;}
+  td{line-height:1.55;}
+  .tag{font-size:12px;line-height:1.4;}
+  .field{gap:6px;}
+  .field label{font-size:13px;line-height:1.45;color:#3f4e60;}
+  .field input,.field select,.field textarea,
+  .search-bar input,.search-bar select,.doc-lines select,.doc-lines input,
+  .backup-actions select{font-size:14px;line-height:1.5;}
+  .hint,.panel h2 .sub,.role-note,.import-note,.label-print-hint,
+  .scan-result-note,.reserved-note{font-size:12.5px;line-height:1.65;}
+  .choice-copy strong{font-size:13.5px;line-height:1.45;}
+  .choice-copy span{font-size:12.5px;line-height:1.55;}
+  .status-pill,.row-status,.sync-badge,.activity-pill,.draft-pill{font-size:12.5px;line-height:1.4;}
+  .workspace-title{font-size:23px;line-height:1.35;}
+  .workspace-description{font-size:13px;line-height:1.5;}
+  .breadcrumb,.breadcrumb button{font-size:12.5px;line-height:1.45;}
+  .attention-head p{font-size:13px;line-height:1.55;}
+  .attention-card .attention-label{font-size:12.5px;line-height:1.45;}
+  .table-count{font-size:12.5px;}
+  .filter-chip,.clear-filters{font-size:11.5px;}
+  .empty-state strong{font-size:14px;}
+  .empty-state p{font-size:12.5px;line-height:1.6;}
+  .empty-state-actions button{font-size:12.5px;}
+  .toast-copy strong{font-size:13.5px;}
+  .toast-copy span{font-size:12.5px;line-height:1.55;}
+  .import-type strong,.master-type strong{font-size:14.5px;}
+  .import-type span,.master-type span,.import-workflow .file-name{font-size:12.5px;line-height:1.6;}
+  .global-search-shell input{font-size:14px;}
+  .global-search-heading{font-size:11px;}
+  .global-search-item strong{font-size:13.5px;}
+  .global-search-item small{font-size:11.5px;}
+  .global-search-item .search-kind{font-size:12px;}
+  .user-menu-title{font-size:12px;line-height:1.45;}
+  .line-part-search-copy strong{font-size:13.5px;line-height:1.45;}
+  .line-part-search-copy span,.line-part-search-stock{font-size:12px;line-height:1.5;}
+  .mobile-sheet-head small{font-size:12.5px;line-height:1.5;}
+  .label-selection-summary,.label-pick-copy,.label-pick-name span{font-size:12px;line-height:1.5;}
+  .scan-stock-card span{font-size:12px;line-height:1.45;}
+  .role-dashboard-banner strong{font-size:14.5px;}
+  .role-dashboard-banner span{font-size:12.5px;line-height:1.55;}
+  .role-dashboard-badge{font-size:11.5px;}
+  .personal-workspace-head p{font-size:12.5px;line-height:1.55;}
+  .personal-block-title,.personal-chip,.personal-empty{font-size:12px;line-height:1.5;}
+  .table-pref-tools select,.table-pref-tools button,.table-pref-tools summary{font-size:11.5px;}
+  .column-menu-title,.column-menu-list label{font-size:12px;line-height:1.45;}
+  .confirm-summary-intro{font-size:13px;line-height:1.55;}
+  .confirm-summary-meta span{font-size:11.5px;}
+  .confirm-summary-meta strong{font-size:13px;line-height:1.5;}
+
+  /* รายการสั่งซื้อเป็นตารางงานแบบเรียบ: ไม่มี 3D, tilt, shine หรือเงาลอย */
+  #view-dashboard #reorder-panel{
+    transform:none!important;
+    transform-style:flat!important;
+    will-change:auto!important;
+    transition:none!important;
+    background:#fff!important;
+    border:1px solid #dfe6ee!important;
+    box-shadow:none!important;
+  }
+  #view-dashboard #reorder-panel::before,
+  #view-dashboard #reorder-panel::after{display:none!important;content:none!important;}
+  #reorder-panel .table-wrap{border-radius:8px;box-shadow:none;}
+  #reorder-panel tbody tr{transition:none;transform:none;}
+  #reorder-panel tbody tr:hover{background:#f8fafc!important;}
+
+  @media(max-width:640px){
+    body{font-size:14.5px;line-height:1.65;}
+    .brand h1{font-size:17px;}
+    .panel h2{font-size:16px;}
+    .workspace-title{font-size:19px;}
+    .mobile-tab{font-size:11.5px;line-height:1.35;}
+    table{font-size:13px;}
+    th{font-size:12px;}
+    .field input,.field select,.field textarea,
+    .search-bar input,.search-bar select,.doc-lines select,.doc-lines input{font-size:16px;}
   }
 
 </style>
@@ -1233,7 +1323,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.4.1</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.4.3</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1261,7 +1351,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.4.1</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.4.3</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -1297,7 +1387,7 @@
       <div class="workspace-description" id="workspace-description">ติดตามสถานะสต๊อก งานค้าง และความเคลื่อนไหวล่าสุด</div>
     </div>
     <div class="workspace-status">
-      <span class="draft-pill" id="draft-pill" title="ระบบบันทึกร่างไว้ในเครื่องอัตโนมัติ"><span>●</span><span id="draft-pill-text">มีรายการที่ยังไม่ได้ยืนยัน</span></span>
+      <span class="draft-pill" id="draft-pill" title="ข้อมูลนี้เก็บไว้เฉพาะเบราว์เซอร์เครื่องนี้ ยังไม่ได้ส่งไป Google Sheets และยังไม่กระทบยอดสต๊อก"><span>●</span><span id="draft-pill-text">กำลังแก้ไข · ยังไม่บันทึกเข้าระบบ</span></span>
       <span class="activity-pill" id="global-activity"><span class="activity-dot"></span><span id="global-activity-text">พร้อมใช้งาน</span></span>
     </div>
   </div>
@@ -1476,7 +1566,7 @@
       <div class="field-grid">
         <div class="field">
           <label>วันที่</label>
-          <input type="date" id="rec-date">
+          <input type="date" id="rec-date" data-default-today title="ระบบใส่วันที่ปัจจุบันให้อัตโนมัติ และสามารถเลือกวันที่อื่นได้">
         </div>
         <div class="field">
           <label>ผู้ส่ง/ซัพพลายเออร์</label>
@@ -1529,7 +1619,7 @@
       <div class="field-grid">
         <div class="field">
           <label>วันที่</label>
-          <input type="date" id="iss-date">
+          <input type="date" id="iss-date" data-default-today title="ระบบใส่วันที่ปัจจุบันให้อัตโนมัติ และสามารถเลือกวันที่อื่นได้">
         </div>
         <div class="field">
           <label>วัตถุประสงค์การเบิก *</label>
@@ -1614,7 +1704,7 @@
       <h2>สร้างคำขอเบิก <span class="sub">แก้ไขได้จนกว่าจะอนุมัติ</span></h2>
       <input type="hidden" id="req-id"><input type="hidden" id="req-version">
       <div class="field-grid">
-        <div class="field"><label>วันที่ขอ</label><input type="date" id="req-date"></div>
+        <div class="field"><label>วันที่ขอ</label><input type="date" id="req-date" data-default-today title="ระบบใส่วันที่ปัจจุบันให้อัตโนมัติ และสามารถเลือกวันที่อื่นได้"></div>
         <div class="field"><label>ผู้ขอเบิก</label><input id="req-requester" placeholder="ชื่อผู้ขอเบิก"></div>
         <div class="field"><label>แผนก *</label><input id="req-department" placeholder="เช่น ซ่อมบำรุง"></div>
         <div class="field"><label>วัตถุประสงค์ *</label><input id="req-purpose" placeholder="งาน/เครื่องจักรที่นำไปใช้"></div>
@@ -1682,7 +1772,7 @@
     <div class="panel">
       <h2>ตรวจนับและปรับยอดสต๊อก <span class="sub">เฉพาะ Admin · บันทึก Audit Log อัตโนมัติ</span></h2>
       <div class="field-grid">
-        <div class="field"><label>วันที่ตรวจนับ</label><input type="date" id="count-date"></div>
+        <div class="field"><label>วันที่ตรวจนับ</label><input type="date" id="count-date" data-default-today title="ระบบใส่วันที่ปัจจุบันให้อัตโนมัติ และสามารถเลือกวันที่อื่นได้"></div>
         <div class="field"><label>ผู้ตรวจนับ</label><input id="count-by" placeholder="ชื่อผู้ตรวจนับ"></div>
         <div class="field"><label>ผู้อนุมัติ</label><input id="count-approved" placeholder="ชื่อผู้อนุมัติ"></div>
         <div class="field"><label>เหตุผล / รอบตรวจนับ *</label><input id="count-reason" placeholder="เช่น ตรวจนับสิ้นเดือน สิงหาคม 2569"></div>
@@ -1820,8 +1910,8 @@
         <select id="hist-purpose-filter"><option value="">ทุกวัตถุประสงค์</option><option value="sale">ขาย</option><option value="service">งานซ่อม / บริการ</option><option value="internal">ใช้ภายใน</option><option value="sample">ตัวอย่าง / ทดลอง</option><option value="damage">ชำรุด / ตัดจำหน่าย</option><option value="transfer">โอนย้าย</option><option value="other">อื่น ๆ</option></select>
         <select id="hist-customer-filter"><option value="">ลูกค้าทั้งหมด</option></select>
         <select id="hist-truck-filter"><option value="">รถทั้งหมด</option></select>
-        <input type="date" id="hist-from">
-        <input type="date" id="hist-to">
+        <input type="date" id="hist-from" data-default-today title="ค่าเริ่มต้นเป็นวันที่ปัจจุบัน สามารถล้างเพื่อดูทุกวันได้">
+        <input type="date" id="hist-to" data-default-today title="ค่าเริ่มต้นเป็นวันที่ปัจจุบัน สามารถล้างเพื่อดูทุกวันได้">
         <input type="text" id="hist-search" placeholder="ค้นหาชื่ออะไหล่ / หมายเหตุ...">
       </div>
       <div class="table-wrap">
@@ -2028,7 +2118,7 @@
     <div class="field-grid master-form-group" id="master-form-documents">
       <div class="field"><label>ประเภทเอกสาร *</label><select id="mf-doc-type"><option>PR</option><option>PO</option><option>IV</option></select></div>
       <div class="field"><label>เลขที่เอกสาร *</label><input id="mf-doc-no" placeholder="เช่น PO-2026-001"></div>
-      <div class="field"><label>วันที่</label><input type="date" id="mf-doc-date"></div>
+      <div class="field"><label>วันที่</label><input type="date" id="mf-doc-date" data-default-today title="ระบบใส่วันที่ปัจจุบันให้อัตโนมัติ และสามารถเลือกวันที่อื่นได้"></div>
       <div class="field"><label>ซัพพลายเออร์</label><select id="mf-doc-supplier"></select></div>
       <div class="field span2"><label>หมายเหตุ</label><textarea id="mf-doc-note"></textarea></div>
     </div>
@@ -2526,6 +2616,8 @@
         if(el.type==="checkbox" || el.type==="radio") el.checked=!!saved.checked;
         else if(saved.value!=null) el.value=String(saved.value);
       });
+      // ร่างที่ตั้งใจเลือกวันที่ไว้ยังคงเดิม แต่ถ้าช่องใดว่างให้กลับมาใช้วันที่วันนี้
+      applyDefaultCurrentDates();
       updateIssuePurposeUI();updateIssueVehicleUI();
       const allowedView=document.getElementById("view-"+draft.activeView)?draft.activeView:"dashboard";
       activateView(allowedView);
@@ -2628,7 +2720,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.4.1 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.4.3 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -2644,10 +2736,17 @@
   });
 
   const todayISO = () => {
-    const now = new Date();
-    const local = new Date(now.getTime() - now.getTimezoneOffset()*60000);
-    return local.toISOString().slice(0,10);
+    const parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone:"Asia/Bangkok", year:"numeric", month:"2-digit", day:"2-digit"
+    }).formatToParts(new Date()).reduce((out,part)=>{out[part.type]=part.value;return out;},{});
+    return `${parts.year}-${parts.month}-${parts.day}`;
   };
+  function applyDefaultCurrentDates(){
+    const today=todayISO();
+    document.querySelectorAll('input[type="date"][data-default-today]').forEach(input=>{
+      if(!input.value) input.value=today;
+    });
+  }
 
   let state = { parts: [], transactions: [], customers: [], suppliers: [], trucks: [], provinces: [], documents: [], stockCounts: [], requisitions: [], requisitionItems: [], backups: [], users: [], auditLogs: [] };
   const charts = {};
@@ -3591,9 +3690,7 @@
   document.getElementById("btn-receive-add-line").addEventListener("click",()=>{receiveLines.push({id:uid(),partId:"",qty:""});renderDocumentLines("in");});
   document.getElementById("btn-issue-add-line").addEventListener("click",()=>{issueLines.push({id:uid(),partId:"",qty:"",unitPrice:"",discount:""});renderDocumentLines("out");});
 
-  document.getElementById("rec-date").value = todayISO();
-  document.getElementById("iss-date").value = todayISO();
-  document.getElementById("count-date").value = todayISO();
+  applyDefaultCurrentDates();
   document.getElementById("rec-supplier").addEventListener("change", ()=>{
     const s=supplierById(document.getElementById("rec-supplier").value);
     if(s&&s.provinceId) document.getElementById("rec-province").value=s.provinceId;
@@ -3676,9 +3773,11 @@
       normalized.transactions.forEach(t=>{if(!existingIds.has(t.id))state.transactions.push(t);});
       if(type==="in"){
         receiveLines=[{id:uid(),partId:"",qty:""}];receiveRequestId=uid();
+        document.getElementById("rec-date").value=todayISO();
         document.getElementById("rec-contact").value="";document.getElementById("rec-note").value="";
       }else{
         issueLines=[{id:uid(),partId:"",qty:"",unitPrice:"",discount:""}];issueRequestId=uid();
+        document.getElementById("iss-date").value=todayISO();
         document.getElementById("iss-person").value=currentUser?currentUser.name:"";document.getElementById("iss-note").value="";
         ["iss-purpose","iss-customer-search","iss-customer","iss-receiver","iss-department","iss-project","iss-reference","iss-truck","iss-province","iss-mileage","iss-driver","iss-destination"].forEach(id=>document.getElementById(id).value="");document.getElementById("iss-use-vehicle").checked=false;updateIssuePurposeUI();updateIssueVehicleUI();
       }
@@ -3959,7 +4058,7 @@
       if(!hasScriptURL())throw new Error("การตรวจนับต้องเชื่อมต่อ Google Sheets เพื่อเก็บ Audit Log");
       const saved=await apiCall("saveStockCount",{count}),normalized=normalizeFromSheet({parts:saved.parts,transactions:saved.transactions,stockCounts:saved.stockCounts});
       normalized.parts.forEach(x=>{const p=partById(x.id);if(p)Object.assign(p,x);});state.transactions.push(...normalized.transactions);state.stockCounts.push(...normalized.stockCounts);
-      Object.keys(countDraft).forEach(k=>delete countDraft[k]);document.getElementById("count-reason").value="";cacheSave();renderAll();clearSmartDirty();saveWorkingDraft();toast(`บันทึกตรวจนับ ${saved.countNo} เรียบร้อย`);
+      Object.keys(countDraft).forEach(k=>delete countDraft[k]);document.getElementById("count-date").value=todayISO();document.getElementById("count-reason").value="";cacheSave();renderAll();clearSmartDirty();saveWorkingDraft();toast(`บันทึกตรวจนับ ${saved.countNo} เรียบร้อย`);
     }catch(err){toast("บันทึกตรวจนับไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="ยืนยันและปรับยอด";}
   });
 
@@ -4827,13 +4926,13 @@
   function setSmartDirty(context){
     smartDirty=true;smartDraftSaved=false;
     const pill=document.getElementById("draft-pill"),text=document.getElementById("draft-pill-text");
-    if(pill&&text){pill.className="draft-pill show";text.textContent=`${context||"มีรายการ"}ที่ยังไม่ได้ยืนยัน`;}
+    if(pill&&text){pill.className="draft-pill show";pill.title="กำลังแก้ไขข้อมูล ข้อมูลยังไม่ได้ส่งไป Google Sheets และยังไม่กระทบยอดสต๊อก";text.textContent=`${context||"ข้อมูล"}กำลังแก้ไข · ยังไม่บันทึกเข้าระบบ`;}
   }
   function markSmartDraftSaved(){
     if(!smartDirty)return;
     smartDraftSaved=true;
     const pill=document.getElementById("draft-pill"),text=document.getElementById("draft-pill-text");
-    if(pill&&text){const time=new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});pill.className="draft-pill show is-saved";pill.title=`บันทึกร่างล่าสุด ${time} น.`;text.innerHTML=`บันทึกร่างล่าสุด <span class="draft-time">${time} น.</span> · ยังไม่ได้ยืนยัน`;}
+    if(pill&&text){const time=new Date().toLocaleTimeString("th-TH",{timeZone:"Asia/Bangkok",hour:"2-digit",minute:"2-digit"});pill.className="draft-pill show is-saved";pill.title="เก็บข้อมูลที่กำลังกรอกไว้เฉพาะเบราว์เซอร์เครื่องนี้ เพื่อกลับมาทำต่อได้ ยังไม่ได้ส่งไป Google Sheets และยังไม่กระทบยอดสต๊อก";text.innerHTML=`เก็บงานชั่วคราวในเครื่อง <span class="draft-time">${time} น.</span> · ยังไม่บันทึกจริง`;}
   }
   function clearSmartDirty(){
     smartDirty=false;smartDraftSaved=false;
@@ -4860,7 +4959,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.4.1`;
+    document.title=`${meta.title} | Stock Control v4.4.3`;
   }
 
   function selectLabel(el){
@@ -5217,7 +5316,7 @@
     const root=document.getElementById("view-dashboard");
     if(!root||root.dataset.dashboard3dReady==="1")return;
     root.dataset.dashboard3dReady="1";
-    const selector=".kpi,.quick-action,.attention-card,.charts-row>.panel,#reorder-panel,.personal-workspace-panel";
+    const selector=".kpi,.quick-action,.attention-card,.charts-row>.panel,.personal-workspace-panel";
     const motionOK=window.matchMedia("(hover:hover) and (pointer:fine)").matches&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if(!motionOK)return;
     const reset=card=>{
