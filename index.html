@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f172a">
 <title>คลังอะไหล่ | Stock Control</title>
+<script id="app-bootstrap" type="application/json"><?!= initialBootstrapJson ?></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -1185,7 +1186,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.3.2</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.3.3</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1220,7 +1221,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.3.2</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.3.3</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -1582,7 +1583,7 @@
             <div class="field"><label>ช่องว่างระหว่างป้าย (มม.)</label><input id="label-gap-mm" type="number" min="0" max="20" step="1" value="2"></div>
           </div>
           <div class="label-print-hint" id="label-print-hint">A4 จะจัดจำนวนคอลัมน์ให้อัตโนมัติ และป้องกันป้ายถูกตัดข้ามหน้า</div>
-          <div class="import-note">QR บันทึกค่า <span class="mono">SPAREPART:รหัสอะไหล่</span> ส่วน Barcode ใช้มาตรฐาน CODE 39 โดยไม่ใส่ยอดคงเหลือไว้บนป้าย</div>
+          <div class="import-note">QR บันทึกลิงก์ Web App พร้อมรหัสอะไหล่ เพื่อเปิดหน้าสรุปจากกล้องมือถือทั่วไป ส่วน Barcode ใช้มาตรฐาน CODE 39 โดยไม่ใส่ยอดคงเหลือไว้บนป้าย</div>
           <div class="form-actions"><button id="btn-print-label" class="primary">ดูตัวอย่างและพิมพ์</button><button id="btn-label-scan">เปิดเครื่องสแกน</button></div>
         </div>
         <div class="part-label" id="part-label-preview"><div class="label-empty-preview">เลือกอะไหล่ทางซ้ายเพื่อดูตัวอย่างป้าย</div></div>
@@ -2528,7 +2529,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.3.2 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.3.3 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -2579,9 +2580,26 @@
     return url;
   }
 
+  function readAppBootstrap(){
+    try{
+      const raw=String(document.getElementById("app-bootstrap")?.textContent||"").trim();
+      if(!raw || raw.includes("initialBootstrapJson")) return {};
+      const parsed=JSON.parse(raw);
+      return parsed&&typeof parsed==="object"?parsed:{};
+    }catch(e){ return {}; }
+  }
+  const APP_BOOTSTRAP=readAppBootstrap();
+  let pendingDeepLinkCode=String(APP_BOOTSTRAP.partCode||"").trim();
+  let pendingDeepLinkHandled=false;
+
   function getScriptURL(){ return normalizeScriptURL(localStorage.getItem(SCRIPT_URL_KEY) || ""); }
   function setScriptURL(url){ localStorage.setItem(SCRIPT_URL_KEY, normalizeScriptURL(url)); }
   function hasScriptURL(){ return !!getScriptURL(); }
+  function applyBootstrapSettings(){
+    const apiUrl=String(APP_BOOTSTRAP.apiUrl||"").trim();
+    if(!apiUrl) return;
+    try{ setScriptURL(validateScriptURL(apiUrl)); }catch(e){}
+  }
 
   function setSyncBadge(mode, text, detail){
     const b = document.getElementById("sync-badge");
@@ -2710,6 +2728,7 @@
         state = normalizeFromSheet(data);
         cacheSave();
         renderAll();
+        processPendingDeepLink(false);
         const time = new Date().toLocaleTimeString("th-TH", {hour:"2-digit", minute:"2-digit"});
         setSyncBadge("on", "ซิงก์แล้ว " + time, "เชื่อมต่อ Google Sheets แล้ว — คลิกเพื่อซิงก์ทันที");
         return true;
@@ -3620,14 +3639,23 @@
   function filteredLabelParts(){const q=(document.getElementById("label-search").value||"").trim().toLowerCase(),cat=document.getElementById("label-category").value;return activeLabelParts().filter(p=>(!cat||p.category===cat)&&(!q||`${p.code} ${p.name} ${p.location||""}`.toLowerCase().includes(q)));}
   function selectedLabelItems(){return activeLabelParts().filter(p=>labelSelection.has(p.id)).map(p=>({part:p,copies:Math.max(1,Math.min(99,Number(labelSelection.get(p.id))||1))}));}
   function renderQRCode(target,text,size=160){target.innerHTML="";if(typeof QRCode==="undefined"){target.textContent="QR ไม่พร้อม";return false;}new QRCode(target,{text,width:size,height:size,colorDark:"#111111",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});return true;}
+  function partDeepLink(code){
+    const clean=String(code||"").trim();
+    if(!clean) return "";
+    try{
+      const url=new URL(validateScriptURL(getScriptURL()));
+      url.searchParams.set("p",clean);
+      return url.toString();
+    }catch(e){ return `SPAREPART:${clean}`; }
+  }
   function refreshLabelCategoryOptions(){const sel=document.getElementById("label-category"),current=sel.value,categories=[...new Set(activeLabelParts().map(p=>p.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'th'));sel.innerHTML=`<option value="">ทุกหมวดหมู่</option>`+categories.map(c=>`<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("");sel.value=categories.includes(current)?current:"";}
-  function renderLabelPreview(){const preview=document.getElementById("part-label-preview"),first=selectedLabelItems()[0]?.part;if(!first){preview.innerHTML=`<div class="label-empty-preview">เลือกอะไหล่ทางซ้ายเพื่อดูตัวอย่างป้าย</div>`;return;}preview.innerHTML=`<div class="label-qr-wrap" id="label-preview-qr"></div><div class="label-detail"><div class="label-code">${escapeHTML(first.code)}</div><h3>${escapeHTML(first.name)}</h3><div class="label-meta">ตำแหน่ง: ${escapeHTML(first.location||"ไม่ระบุ")}</div><div class="label-meta">หน่วย: ${escapeHTML(first.unit||"-")}</div><div class="label-barcode">${code39SVG(first.code)}</div></div>`;renderQRCode(document.getElementById("label-preview-qr"),`SPAREPART:${first.code}`,180);}
+  function renderLabelPreview(){const preview=document.getElementById("part-label-preview"),first=selectedLabelItems()[0]?.part;if(!first){preview.innerHTML=`<div class="label-empty-preview">เลือกอะไหล่ทางซ้ายเพื่อดูตัวอย่างป้าย</div>`;return;}preview.innerHTML=`<div class="label-qr-wrap" id="label-preview-qr"></div><div class="label-detail"><div class="label-code">${escapeHTML(first.code)}</div><h3>${escapeHTML(first.name)}</h3><div class="label-meta">ตำแหน่ง: ${escapeHTML(first.location||"ไม่ระบุ")}</div><div class="label-meta">หน่วย: ${escapeHTML(first.unit||"-")}</div><div class="label-barcode">${code39SVG(first.code)}</div></div>`;renderQRCode(document.getElementById("label-preview-qr"),partDeepLink(first.code),180);}
   function renderLabelSelectionSummary(){const items=selectedLabelItems(),copies=items.reduce((sum,x)=>sum+x.copies,0);document.getElementById("label-selection-summary").textContent=`เลือก ${items.length} รายการ · ${copies} ป้าย`;}
   function renderLabelPartList(){const list=filteredLabelParts(),root=document.getElementById("label-part-list");root.innerHTML=list.length?list.map(p=>{const selected=labelSelection.has(p.id),copies=Math.max(1,Number(labelSelection.get(p.id))||1);return `<label class="label-pick-row"><input type="checkbox" data-label-part="${p.id}" ${selected?"checked":""}><span class="label-pick-name"><strong class="mono">${escapeHTML(p.code)}</strong><span>${escapeHTML(p.name)} · ${escapeHTML(p.location||"ไม่ระบุตำแหน่ง")}</span></span><span class="label-pick-copy">× <input type="number" min="1" max="99" step="1" value="${copies}" data-label-copy="${p.id}" ${selected?"":"disabled"} aria-label="จำนวนสำเนา ${escapeHTML(p.code)}"></span></label>`;}).join(""):`<div class="empty-row" style="padding:14px">ไม่พบอะไหล่ตามเงื่อนไข</div>`;renderLabelSelectionSummary();renderLabelPreview();}
   function updateLabelPrintControls(){const custom=document.getElementById("label-size").value==="custom",a4=document.getElementById("label-print-mode").value==="a4";document.getElementById("label-custom-size").hidden=!custom;document.getElementById("label-a4-settings").hidden=!a4;document.getElementById("label-print-hint").textContent=a4?"A4 จะจัดจำนวนคอลัมน์ให้อัตโนมัติ และป้องกันป้ายถูกตัดข้ามหน้า":"ตั้งค่ากระดาษในไดรเวอร์เครื่องพิมพ์ให้ตรงกับขนาดป้าย และเลือกสเกล 100%";}
   function renderLabels(){const validIds=new Set(activeLabelParts().map(p=>p.id));[...labelSelection.keys()].forEach(id=>{if(!validIds.has(id))labelSelection.delete(id);});refreshLabelCategoryOptions();renderLabelPartList();updateLabelPrintControls();}
   function labelPrintConfig(){const mode=document.getElementById("label-print-mode").value,{width,height}=labelSizeMM(),margin=Number(document.getElementById("label-margin-mm").value),gap=Number(document.getElementById("label-gap-mm").value);if(!Number.isFinite(width)||width<40||width>210)throw new Error("ความกว้างป้ายต้องอยู่ระหว่าง 40–210 มม.");if(!Number.isFinite(height)||height<25||height>297)throw new Error("ความสูงป้ายต้องอยู่ระหว่าง 25–297 มม.");if(!Number.isFinite(margin)||margin<0||margin>20)throw new Error("ขอบกระดาษต้องอยู่ระหว่าง 0–20 มม.");if(!Number.isFinite(gap)||gap<0||gap>20)throw new Error("ช่องว่างต้องอยู่ระหว่าง 0–20 มม.");if(mode==="a4"&&(width>210-(margin*2)||height>297-(margin*2)))throw new Error("ขนาดป้ายใหญ่เกินพื้นที่พิมพ์ของกระดาษ A4");const columns=mode==="a4"?Math.max(1,Math.floor((210-(margin*2)+gap)/(width+gap))):1;return{mode,width,height,margin,gap,columns};}
-  function makePrintLabel(part,config){const el=document.createElement("article");el.className="print-part-label"+(config.width<=75||config.height<=45?" compact":"");el.style.setProperty("--label-width",`${config.width}mm`);el.style.setProperty("--label-height",`${config.height}mm`);el.innerHTML=`<div class="print-label-qr"></div><div class="print-label-detail"><div class="print-label-code">${escapeHTML(part.code)}</div><h3>${escapeHTML(part.name)}</h3><div class="print-label-meta">ตำแหน่ง: ${escapeHTML(part.location||"ไม่ระบุ")}</div><div class="print-label-meta">หน่วย: ${escapeHTML(part.unit||"-")}</div><div class="print-label-barcode">${code39SVG(part.code)}</div></div>`;el.dataset.qr=`SPAREPART:${part.code}`;return el;}
+  function makePrintLabel(part,config){const el=document.createElement("article");el.className="print-part-label"+(config.width<=75||config.height<=45?" compact":"");el.style.setProperty("--label-width",`${config.width}mm`);el.style.setProperty("--label-height",`${config.height}mm`);el.innerHTML=`<div class="print-label-qr"></div><div class="print-label-detail"><div class="print-label-code">${escapeHTML(part.code)}</div><h3>${escapeHTML(part.name)}</h3><div class="print-label-meta">ตำแหน่ง: ${escapeHTML(part.location||"ไม่ระบุ")}</div><div class="print-label-meta">หน่วย: ${escapeHTML(part.unit||"-")}</div><div class="print-label-barcode">${code39SVG(part.code)}</div></div>`;el.dataset.qr=partDeepLink(part.code);return el;}
   async function printSelectedLabels(){try{const items=selectedLabelItems();if(!items.length)throw new Error("กรุณาเลือกอะไหล่อย่างน้อย 1 รายการ");if(typeof QRCode==="undefined")throw new Error("ไลบรารี QR ยังโหลดไม่สำเร็จ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่");const config=labelPrintConfig(),area=document.getElementById("label-print-area");area.innerHTML="";area.className=config.mode==="sticker"?"sticker-print":"a4-print";area.style.gridTemplateColumns=config.mode==="a4"?`repeat(${config.columns}, ${config.width}mm)`:"none";area.style.gap=config.mode==="a4"?`${config.gap}mm`:"0";items.forEach(({part,copies})=>{for(let i=0;i<copies;i++)area.appendChild(makePrintLabel(part,config));});area.querySelectorAll(".print-part-label").forEach(el=>renderQRCode(el.querySelector(".print-label-qr"),el.dataset.qr,180));document.getElementById("label-page-style")?.remove();const style=document.createElement("style");style.id="label-page-style";style.textContent=config.mode==="a4"?`@page{size:A4 portrait;margin:${config.margin}mm}`:`@page{size:${config.width}mm ${config.height}mm;margin:0}`;document.head.appendChild(style);document.body.classList.add("print-label-mode");if(document.fonts?.ready)await document.fonts.ready;await new Promise(resolve=>setTimeout(resolve,120));window.print();setTimeout(()=>{document.body.classList.remove("print-label-mode");style.remove();},700);}catch(err){toast(err.message||"สร้างหน้าพิมพ์ไม่สำเร็จ",true);}}
   document.getElementById("label-search").addEventListener("input",renderLabelPartList);document.getElementById("label-category").addEventListener("change",renderLabelPartList);document.getElementById("label-part-list").addEventListener("change",e=>{const partId=e.target.dataset.labelPart||e.target.dataset.labelCopy;if(!partId)return;if(e.target.dataset.labelPart!==undefined){if(e.target.checked)labelSelection.set(partId,Math.max(1,Number(labelSelection.get(partId))||1));else labelSelection.delete(partId);}else{const copies=Math.max(1,Math.min(99,Math.floor(Number(e.target.value)||1)));e.target.value=copies;labelSelection.set(partId,copies);}renderLabelPartList();});
   document.getElementById("btn-label-select-visible").addEventListener("click",()=>{filteredLabelParts().forEach(p=>{if(!labelSelection.has(p.id))labelSelection.set(p.id,1);});renderLabelPartList();});document.getElementById("btn-label-clear").addEventListener("click",()=>{labelSelection.clear();renderLabelPartList();});document.getElementById("label-size").addEventListener("change",()=>{updateLabelPrintControls();renderLabelPreview();});document.getElementById("label-print-mode").addEventListener("change",updateLabelPrintControls);document.getElementById("btn-print-label").addEventListener("click",printSelectedLabels);
@@ -3637,11 +3665,40 @@
   async function pauseScannerCamera(){scannerSession+=1;stopNativeScanner();const fallback=scannerFallback;scannerFallback=null;scannerBackend="";const video=document.getElementById("scanner-video"),fallbackRoot=document.getElementById("scanner-fallback");if(video)video.hidden=false;if(fallbackRoot)fallbackRoot.hidden=true;if(fallback){try{await fallback.stop();}catch(e){}try{fallback.clear();}catch(e){}}if(fallbackRoot)fallbackRoot.innerHTML="";}
   function resetScanResult(){pendingScanPartId="";document.getElementById("scan-result").classList.remove("show");document.getElementById("scanner-frame").hidden=false;document.getElementById("scan-input-field").hidden=false;document.getElementById("btn-scanner-manual").hidden=false;document.getElementById("btn-scanner-retry").hidden=true;document.getElementById("btn-scanner-confirm").hidden=true;}
   function stopScanner(){pauseScannerCamera();resetScanResult();document.getElementById("scanner-modal-overlay").classList.remove("show");}
-  function scannedCode(raw){return String(raw||"").trim().replace(/^SPAREPART:/i,"").trim();}
+  function scannedCode(raw){
+    const value=String(raw||"").trim();
+    if(!value) return "";
+    if(/^SPAREPART:/i.test(value)) return value.replace(/^SPAREPART:/i,"").trim();
+    if(/^https?:\/\//i.test(value)){
+      try{
+        const url=new URL(value);
+        return String(url.searchParams.get("p")||url.searchParams.get("part")||url.searchParams.get("sparepart")||"").trim();
+      }catch(e){ return ""; }
+    }
+    return value;
+  }
   function addScannedLine(lines,part){const duplicate=lines.find(x=>x.partId===part.id);if(duplicate)return{line:duplicate,added:false};let line=lines.find(x=>!x.partId&&!String(x.qty||"").trim());if(line)line.partId=part.id;else{line={id:uid(),partId:part.id,qty:""};lines.push(line);}return{line,added:true};}
   function focusScannedQty(kind,lineId){requestAnimationFrame(()=>{const selector=kind==="requisitions"?`[data-request-qty][data-line-id="${lineId}"]`:`[data-doc-qty="${kind}"][data-line-id="${lineId}"]`;document.querySelector(selector)?.focus();});}
   function updatePendingScanAction(){document.getElementById("scan-result-action").textContent=scanActionLabels[document.getElementById("scan-action").value]||"ดำเนินการต่อ";}
   function showScanResult(p){pauseScannerCamera();pendingScanPartId=p.id;document.getElementById("scan-result-name").textContent=p.name;document.getElementById("scan-result-code").textContent=p.code;document.getElementById("scan-result-unit").textContent=p.unit||"ไม่ระบุหน่วย";document.getElementById("scan-result-used").textContent=`${fmtMoney(usedQty(p.id))} ${p.unit||""}`.trim();document.getElementById("scan-result-balance").textContent=`${fmtMoney(p.qty)} ${p.unit||""}`.trim();document.getElementById("scan-result-reserved").textContent=`${fmtMoney(reservedQty(p.id))} ${p.unit||""}`.trim();document.getElementById("scan-result-available").textContent=`${fmtMoney(availableQty(p.id))} ${p.unit||""}`.trim();updatePendingScanAction();document.getElementById("scan-result").classList.add("show");document.getElementById("scanner-frame").hidden=true;document.getElementById("scan-input-field").hidden=true;document.getElementById("btn-scanner-manual").hidden=true;document.getElementById("btn-scanner-retry").hidden=false;document.getElementById("btn-scanner-confirm").hidden=false;document.getElementById("scanner-status").textContent="ตรวจสอบยอดก่อน แล้วกดยืนยันดำเนินการต่อ";}
+  function processPendingDeepLink(useCachedData=false){
+    if(pendingDeepLinkHandled||!pendingDeepLinkCode||!currentUser) return false;
+    const code=scannedCode(pendingDeepLinkCode);
+    const p=state.parts.find(x=>String(x.code||"").toLowerCase()===code.toLowerCase());
+    if(!p){
+      pendingDeepLinkHandled=true;
+      toast(`ไม่พบรหัสอะไหล่ ${code||pendingDeepLinkCode}${useCachedData?" ในข้อมูลล่าสุดในเครื่อง":""}`,true);
+      return false;
+    }
+    if(p.isActive===false){pendingDeepLinkHandled=true;toast(`${p.code} ถูกหยุดใช้งาน`,true);return false;}
+    pendingDeepLinkHandled=true;
+    document.getElementById("scan-action").value="parts";
+    document.getElementById("scanner-modal-overlay").classList.add("show");
+    resetScanResult();
+    showScanResult(p);
+    document.getElementById("scanner-status").textContent=useCachedData?"เปิดจาก QR · ใช้ข้อมูลล่าสุดในเครื่อง":"เปิดจาก QR · ข้อมูลซิงก์ล่าสุดแล้ว";
+    return true;
+  }
   function useScannedCode(raw){const code=scannedCode(raw);if(!code){toast("กรุณาสแกนหรือกรอกรหัสอะไหล่",true);return;}const p=state.parts.find(x=>String(x.code||"").toLowerCase()===code.toLowerCase());if(!p){toast(`ไม่พบรหัสอะไหล่ ${code}`,true);return;}if(p.isActive===false){toast(`${p.code} ถูกหยุดใช้งาน จึงไม่สามารถเพิ่มลงรายการได้`,true);return;}showScanResult(p);}
   function applyPendingScan(){const p=partById(pendingScanPartId);if(!p||p.isActive===false){toast("ไม่พบอะไหล่ที่พร้อมใช้งาน กรุณาสแกนใหม่",true);return;}const action=document.getElementById("scan-action").value;if(action==="stockcount"&&!isAdmin()){toast("ตรวจนับใช้ได้เฉพาะ Admin",true);return;}stopScanner();let result=null;if(action==="parts"){activateView("parts");document.getElementById("part-search").value=p.code;renderParts();}else if(action==="receive"){result=addScannedLine(receiveLines,p);activateView("receive");renderDocumentLines("in");focusScannedQty("in",result.line.id);}else if(action==="issue"){result=addScannedLine(issueLines,p);activateView("issue");renderDocumentLines("out");focusScannedQty("out",result.line.id);}else if(action==="requisitions"){result=addScannedLine(requestLines,p);activateView("requisitions");renderRequestLines();focusScannedQty("requisitions",result.line.id);}else if(action==="stockcount"){activateView("stockcount");document.getElementById("count-search").value=p.code;renderStockCount();}else{activateView("history");document.getElementById("stock-card-part").value=p.id;renderStockCard();}toast(result&&!result.added?`${p.code} มีอยู่ในรายการแล้ว — ระบบไม่เพิ่มซ้ำ`:`พบ ${p.code} — ${p.name}`);}
   function isCameraPermissionError(err){return ["NotAllowedError","SecurityError","PermissionDeniedError"].includes(String(err?.name||""));}
@@ -4598,7 +4655,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.3.2`;
+    document.title=`${meta.title} | Stock Control v4.3.3`;
   }
 
   function selectLabel(el){
@@ -5018,12 +5075,13 @@
     clearMasterImport();
     renderAll();
     if(hasScriptURL()){
-      syncFromSheet(true).then(()=> startPolling());
+      syncFromSheet(true).then(ok=>{if(!ok)processPendingDeepLink(true);startPolling();});
     } else {
       setSyncBadge("off", "ยังไม่ได้เชื่อมต่อ Sheets — กด ⚙ ตั้งค่า Sheets");
     }
   }
 
+  applyBootstrapSettings();
   const savedAuth = loadAuth();
   const rememberedUsername=(savedAuth&&savedAuth.username)||localStorage.getItem(LAST_USER_KEY)||"";
   const hasSavedWork=rememberedUsername&&localStorage.getItem(draftKey(rememberedUsername));
