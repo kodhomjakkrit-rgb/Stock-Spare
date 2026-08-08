@@ -774,6 +774,38 @@
   .search-bar input:focus,.search-bar select:focus,.doc-lines select:focus,.doc-lines input:focus{
     outline:3px solid rgba(20,163,148,.14);border-color:#14a394;box-shadow:none;
   }
+
+  /* Compact choice controls: keep checkbox/radio from inheriting full-width text-field styles. */
+  input[type="checkbox"],input[type="radio"]{
+    -webkit-appearance:auto!important;appearance:auto!important;
+    box-sizing:border-box;width:18px!important;min-width:18px!important;max-width:18px!important;
+    height:18px!important;min-height:18px!important;max-height:18px!important;
+    flex:0 0 18px;padding:0!important;margin:2px 0 0!important;border:0!important;
+    border-radius:4px!important;background:transparent!important;box-shadow:none!important;
+    accent-color:#0f8f82;cursor:pointer;
+  }
+  input[type="radio"]{border-radius:50%!important;}
+  input[type="checkbox"]:focus-visible,input[type="radio"]:focus-visible{
+    outline:3px solid rgba(20,163,148,.20)!important;outline-offset:2px;
+  }
+  input[type="checkbox"]:disabled,input[type="radio"]:disabled{cursor:not-allowed;opacity:.5;}
+  .choice-field{gap:0;}
+  .field .choice-option{
+    display:flex;align-items:flex-start;gap:10px;width:100%;padding:11px 12px;
+    border:1px solid #dbe3ec;border-radius:10px;background:#f8fafc;color:#334155;
+    cursor:pointer;transition:border-color .15s ease,background-color .15s ease,box-shadow .15s ease;
+  }
+  .field .choice-option:hover{border-color:#9bcfc5;background:#f1faf8;}
+  .field .choice-option:has(input:focus-visible){border-color:#14a394;box-shadow:0 0 0 3px rgba(20,163,148,.12);}
+  .choice-copy{display:block;min-width:0;line-height:1.45;}
+  .choice-copy strong{display:block;color:#263447;font-size:13px;font-weight:700;}
+  .choice-copy span{display:block;margin-top:2px;color:#718096;font-size:11.5px;font-weight:400;}
+  .choice-option input:checked + .choice-copy strong{color:#0f766e;}
+  .choice-option input:checked + .choice-copy span{color:#4f6f6b;}
+  .label-pick-row input[type="checkbox"],.column-menu-list input[type="checkbox"]{
+    width:16px!important;min-width:16px!important;max-width:16px!important;
+    height:16px!important;min-height:16px!important;max-height:16px!important;margin:0!important;flex-basis:16px;
+  }
   .doc-lines{background:#fff;border-color:var(--border);}
   .doc-total{background:#f8fafc;color:#64748b;border-top:1px solid #edf1f5;}
   .doc-total span:last-child{color:#0f172a;}
@@ -1201,7 +1233,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.4.0</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.4.1</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1229,7 +1261,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.4.0</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.4.1</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -1522,7 +1554,12 @@
         <div class="field"><label>แผนก</label><input type="text" id="iss-department" placeholder="เช่น ซ่อมบำรุง"></div>
         <div class="field"><label>เครื่องจักร / โครงการ</label><input type="text" id="iss-project" placeholder="เช่น เครื่องบรรจุ 1"></div>
         <div class="field"><label>เลขที่อ้างอิง</label><input type="text" id="iss-reference" placeholder="ใบงาน / เลขคำสั่งซื้อ / อื่น ๆ"></div>
-        <div class="field span2"><label><input type="checkbox" id="iss-use-vehicle"> ใช้รถในการรับ / จัดส่งสินค้า</label></div>
+        <div class="field span2 choice-field">
+          <label class="choice-option" for="iss-use-vehicle">
+            <input type="checkbox" id="iss-use-vehicle">
+            <span class="choice-copy"><strong>ใช้รถในการรับหรือจัดส่งสินค้า</strong><span>เลือกเมื่อรายการนี้มีรถเกี่ยวข้อง ระบบจะแสดงช่องทะเบียนรถ เลขไมล์ ผู้ขับ และจุดหมาย</span></span>
+          </label>
+        </div>
         <div class="field" data-issue-vehicle-field hidden>
           <label>รถบรรทุกที่นำไปใช้</label>
           <div class="inline-control"><select id="iss-truck"></select><button class="small" type="button" data-quick-master="trucks" data-admin-only>+ ใหม่</button></div>
@@ -1842,7 +1879,12 @@
     <div class="field"><label>ชื่อที่แสดง *</label><input id="uf-name" placeholder="ชื่อพนักงาน"></div>
     <div class="field"><label>ระดับสิทธิ์</label><select id="uf-role"><option value="staff">Staff — รับเข้า/ขอเบิก</option><option value="admin">Admin — อนุมัติและจัดการทั้งหมด</option></select></div>
     <div class="field" id="uf-password-wrap"><label>รหัสผ่านเริ่มต้น *</label><input type="password" id="uf-password" autocomplete="new-password"><div class="hint">อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข</div></div>
-    <div class="field span2"><label><input type="checkbox" id="uf-must-change"> บังคับเปลี่ยนรหัสผ่านเมื่อเข้าสู่ระบบ</label></div>
+    <div class="field span2 choice-field">
+      <label class="choice-option" for="uf-must-change">
+        <input type="checkbox" id="uf-must-change">
+        <span class="choice-copy"><strong>บังคับเปลี่ยนรหัสผ่านเมื่อเข้าสู่ระบบครั้งถัดไป</strong><span>เหมาะสำหรับบัญชีใหม่หรือบัญชีที่ผู้ดูแลเพิ่งรีเซ็ตรหัสผ่าน</span></span>
+      </label>
+    </div>
   </div>
   <div class="form-actions"><button id="btn-user-cancel">ยกเลิก</button><button class="primary" id="btn-user-save">บันทึก</button></div>
 </div></div>
@@ -1991,7 +2033,12 @@
       <div class="field span2"><label>หมายเหตุ</label><textarea id="mf-doc-note"></textarea></div>
     </div>
 
-    <div class="field"><label><input type="checkbox" id="mf-active" checked> เปิดใช้งาน</label></div>
+    <div class="field choice-field">
+      <label class="choice-option" for="mf-active">
+        <input type="checkbox" id="mf-active" checked>
+        <span class="choice-copy"><strong>เปิดใช้งานข้อมูลนี้</strong><span>นำไปเลือกใช้ในรายการใหม่ได้ทันที หากเอาเครื่องหมายออก ข้อมูลเดิมยังคงอยู่แต่จะไม่แสดงเป็นตัวเลือกใหม่</span></span>
+      </label>
+    </div>
     <div class="form-actions"><button id="btn-master-modal-cancel">ยกเลิก</button><button class="primary" id="btn-master-modal-save">บันทึก</button></div>
   </div>
 </div>
@@ -2581,7 +2628,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.4.0 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.4.1 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -4813,7 +4860,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.4.0`;
+    document.title=`${meta.title} | Stock Control v4.4.1`;
   }
 
   function selectLabel(el){
