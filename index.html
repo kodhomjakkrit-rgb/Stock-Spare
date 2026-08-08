@@ -1219,7 +1219,7 @@
     #view-dashboard .personal-workspace-panel{transform:none!important;transition:none!important;}
   }
 
-  /* ================= v4.4.5 Automatic GitHub Pages Connection ================= */
+  /* ================= v4.4.6 Mobile QR Stock View / automatic connection ================= */
   body{
     font-size:15px;
     line-height:1.65;
@@ -1314,6 +1314,60 @@
     .search-bar input,.search-bar select,.doc-lines select,.doc-lines input{font-size:16px;}
   }
 
+  /* ================= v4.4.6 Mobile QR Stock View ================= */
+  #mobile-part-overlay{
+    position:fixed;inset:0;z-index:1200;display:none;overflow:auto;
+    background:linear-gradient(180deg,#eaf7f5 0,#f8fafc 210px,#eef2f7 100%);
+    color:#172033;padding:0 0 calc(24px + env(safe-area-inset-bottom));
+  }
+  #mobile-part-overlay.show{display:block;animation:mobile-part-in .2s ease;}
+  @keyframes mobile-part-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .mobile-part-shell{width:min(100%,680px);margin:0 auto;padding:14px 14px 30px;}
+  .mobile-part-topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;}
+  .mobile-part-brand{display:flex;align-items:center;gap:10px;min-width:0;}
+  .mobile-part-brand img{width:44px;height:44px;border-radius:11px;background:#fff;border:1px solid #d8e1ea;padding:3px;object-fit:contain;}
+  .mobile-part-brand strong{display:block;font:700 16px 'Kanit',sans-serif;color:#0f3f3a;}
+  .mobile-part-brand span{display:block;font-size:11.5px;color:#64748b;}
+  .mobile-part-tools{display:flex;gap:7px;}
+  .mobile-part-tools button{min-width:42px;padding:8px 10px;background:#fff;color:#334155;border-color:#cbd5e1;}
+  .mobile-part-hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#0f766e,#0d9488);color:#fff;border-radius:20px;padding:20px;box-shadow:0 18px 38px rgba(15,118,110,.2);}
+  .mobile-part-hero::after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;right:-62px;top:-72px;background:rgba(255,255,255,.12);}
+  .mobile-part-status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 10px;background:rgba(255,255,255,.16);font-size:12px;font-weight:700;position:relative;z-index:1;}
+  .mobile-part-status::before{content:"";width:8px;height:8px;border-radius:50%;background:#86efac;box-shadow:0 0 0 3px rgba(134,239,172,.18);}
+  .mobile-part-status.low::before{background:#fde047;box-shadow:0 0 0 3px rgba(253,224,71,.18);}
+  .mobile-part-status.out::before{background:#fca5a5;box-shadow:0 0 0 3px rgba(252,165,165,.2);}
+  .mobile-part-code{font:600 13px 'IBM Plex Mono',monospace;opacity:.88;margin-top:17px;overflow-wrap:anywhere;}
+  .mobile-part-hero h2{font:700 25px/1.35 'Kanit',sans-serif;margin:4px 0 10px;position:relative;z-index:1;}
+  .mobile-part-hero-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:12.5px;opacity:.92;position:relative;z-index:1;}
+  .mobile-part-hero-meta span{padding:4px 9px;border-radius:8px;background:rgba(0,0,0,.12);}
+  .mobile-part-sync{font-size:11.5px;margin-top:13px;opacity:.82;position:relative;z-index:1;}
+  .mobile-part-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0;}
+  .mobile-part-kpi{background:#fff;border:1px solid #dce5ed;border-radius:15px;padding:15px;box-shadow:0 7px 20px rgba(15,23,42,.055);min-width:0;}
+  .mobile-part-kpi span{display:block;font-size:12px;color:#64748b;margin-bottom:5px;}
+  .mobile-part-kpi strong{display:block;font:700 23px/1.2 'Kanit',sans-serif;color:#0f172a;overflow-wrap:anywhere;}
+  .mobile-part-kpi.balance strong{color:#0f766e;}.mobile-part-kpi.month strong{color:#b45309;}.mobile-part-kpi.total strong{color:#7c3aed;}.mobile-part-kpi.available strong{color:#0369a1;}
+  .mobile-part-panel{background:#fff;border:1px solid #dce5ed;border-radius:16px;padding:16px;margin-top:12px;box-shadow:0 7px 20px rgba(15,23,42,.045);}
+  .mobile-part-panel h3{font:700 16px 'Kanit',sans-serif;margin:0 0 11px;color:#1e293b;}
+  .mobile-part-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;}
+  .mobile-part-detail{background:#f8fafc;border-radius:10px;padding:10px;min-width:0;}
+  .mobile-part-detail span{display:block;color:#64748b;font-size:11.5px;margin-bottom:3px;}
+  .mobile-part-detail strong{display:block;color:#1e293b;font-size:13.5px;overflow-wrap:anywhere;}
+  .mobile-part-movements{display:grid;gap:8px;}
+  .mobile-part-movement{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #edf1f5;}
+  .mobile-part-movement:last-child{border-bottom:0;}
+  .mobile-part-move-type{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-weight:800;font-size:12px;background:#eaf8ef;color:#15803d;}
+  .mobile-part-move-type.out{background:#fff3dc;color:#b45309;}
+  .mobile-part-move-copy{min-width:0;}.mobile-part-move-copy strong{display:block;font-size:13px;color:#1e293b;overflow-wrap:anywhere;}.mobile-part-move-copy span{display:block;font-size:11.5px;color:#64748b;margin-top:2px;overflow-wrap:anywhere;}
+  .mobile-part-move-qty{font:700 14px 'IBM Plex Mono',monospace;color:#15803d;text-align:right;}.mobile-part-move-qty.out{color:#b45309;}
+  .mobile-part-empty{text-align:center;color:#64748b;padding:18px 8px;font-size:13px;}
+  .mobile-part-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px;}
+  .mobile-part-actions button{padding:12px;font-weight:700;}.mobile-part-actions .primary{background:#0f766e;border-color:#0f766e;color:#fff;}
+  .mobile-part-error{display:none;background:#fff;border:1px solid #fecaca;border-radius:16px;padding:24px;text-align:center;color:#991b1b;box-shadow:0 10px 24px rgba(127,29,29,.08);}
+  .mobile-part-error.show{display:block;}.mobile-part-error strong{display:block;font:700 20px 'Kanit',sans-serif;margin-bottom:6px;}.mobile-part-error p{margin:0 0 14px;color:#7f1d1d;}
+  body.mobile-part-open{overflow:hidden;}
+  @media(max-width:420px){.mobile-part-shell{padding:10px 10px 24px}.mobile-part-hero{padding:18px;border-radius:17px}.mobile-part-hero h2{font-size:22px}.mobile-part-kpi{padding:13px}.mobile-part-kpi strong{font-size:20px}.mobile-part-details{grid-template-columns:1fr}.mobile-part-actions{grid-template-columns:1fr}.mobile-part-topbar{align-items:flex-start}.mobile-part-brand span{max-width:175px}}
+  @media(prefers-reduced-motion:reduce){#mobile-part-overlay.show{animation:none}}
+
 </style>
 </head>
 <body>
@@ -1323,7 +1377,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.4.5</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.4.6</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1341,8 +1395,52 @@
       </button>
     </div>
     <div class="hint" id="login-error" style="color:var(--danger);min-height:16px;margin-bottom:10px;"></div>
+    <div class="hint" id="login-qr-note" hidden style="margin:-2px 0 10px;color:#0f766e;background:#eaf7f5;border-radius:8px;padding:8px 10px;">เข้าสู่ระบบแล้วระบบจะเปิดข้อมูลอะไหล่จาก QR ให้อัตโนมัติ</div>
     <button type="submit" id="btn-login-submit" class="primary" style="width:100%;padding:11px;">เข้าสู่ระบบ</button>
   </form>
+</div>
+
+<!-- v4.4.6 Mobile QR stock summary: read-only and shown after authentication -->
+<div id="mobile-part-overlay" aria-hidden="true">
+  <div class="mobile-part-shell">
+    <div class="mobile-part-topbar">
+      <div class="mobile-part-brand">
+        <img data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
+        <div><strong>ข้อมูลอะไหล่ล่าสุด</strong><span>สแกนจาก QR · ดูข้อมูลอย่างเดียว</span></div>
+      </div>
+      <div class="mobile-part-tools"><button type="button" id="mobile-part-refresh" aria-label="อัปเดตข้อมูล" title="อัปเดตข้อมูล">↻</button><button type="button" id="mobile-part-close-top" aria-label="ปิดหน้าสรุป" title="ปิด">×</button></div>
+    </div>
+    <div id="mobile-part-content">
+      <section class="mobile-part-hero">
+        <span id="mobile-part-status" class="mobile-part-status">ปกติ</span>
+        <div id="mobile-part-code" class="mobile-part-code">-</div>
+        <h2 id="mobile-part-name">กำลังโหลดข้อมูล...</h2>
+        <div class="mobile-part-hero-meta"><span id="mobile-part-category">-</span><span id="mobile-part-location">-</span></div>
+        <div id="mobile-part-sync" class="mobile-part-sync">กำลังดึงข้อมูลล่าสุดจาก Google Sheets</div>
+      </section>
+      <div class="mobile-part-kpis">
+        <div class="mobile-part-kpi balance"><span>คงเหลือปัจจุบัน</span><strong id="mobile-part-balance">0</strong></div>
+        <div class="mobile-part-kpi month"><span>ใช้ไปเดือนนี้</span><strong id="mobile-part-used-month">0</strong></div>
+        <div class="mobile-part-kpi total"><span>ใช้ไปสะสมทั้งหมด</span><strong id="mobile-part-used-total">0</strong></div>
+        <div class="mobile-part-kpi available"><span>พร้อมเบิก</span><strong id="mobile-part-available">0</strong></div>
+      </div>
+      <section class="mobile-part-panel">
+        <h3>รายละเอียดอะไหล่</h3>
+        <div class="mobile-part-details">
+          <div class="mobile-part-detail"><span>หน่วยนับ</span><strong id="mobile-part-unit">-</strong></div>
+          <div class="mobile-part-detail"><span>ยอดจอง</span><strong id="mobile-part-reserved">0</strong></div>
+          <div class="mobile-part-detail"><span>จุดสั่งซื้อ</span><strong id="mobile-part-reorder">0</strong></div>
+          <div class="mobile-part-detail"><span>อัปเดตล่าสุด</span><strong id="mobile-part-updated">-</strong></div>
+        </div>
+      </section>
+      <section class="mobile-part-panel">
+        <h3>รับเข้า–เบิกออกล่าสุด 5 รายการ</h3>
+        <div id="mobile-part-movements" class="mobile-part-movements"><div class="mobile-part-empty">กำลังโหลดรายการ...</div></div>
+      </section>
+      <div class="mobile-part-actions"><button type="button" id="mobile-part-stock-card" class="primary">ดู Stock Card</button><button type="button" id="mobile-part-close">เข้าสู่โปรแกรมหลัก</button></div>
+    </div>
+    <div id="mobile-part-error" class="mobile-part-error" role="alert"><strong>ไม่พบข้อมูลอะไหล่</strong><p id="mobile-part-error-message">กรุณาตรวจสอบ QR Code อีกครั้ง</p><button type="button" id="mobile-part-error-close">เข้าสู่โปรแกรมหลัก</button></div>
+  </div>
 </div>
 
 <div id="app">
@@ -1351,7 +1449,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.4.5</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.4.6</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -2163,6 +2261,7 @@
   const STORAGE_KEY = "sparepartsStock_v1";
   const LEGACY_SCRIPT_URL_KEY = "sparepartsStock_scriptURL";
   const STATIC_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwR5eKttpQ4liBnAEdjgFX8Dw0X6xR3f_5b2PTnGeH1VYgyJ7LM1KlpTDe30z5ocFHM/exec";
+  const STATIC_PUBLIC_APP_URL = "https://kodhomjakkrit-rgb.github.io/Stock-Spare/";
   // ดึงข้อมูลอัตโนมัติทุก 60 วินาที ลดภาระ Apps Script/Sheets
   // ผู้ใช้ยังกดป้ายสถานะเพื่อซิงก์ทันทีได้ตลอดเวลา
   const POLL_INTERVAL_MS = 60000;
@@ -2673,6 +2772,7 @@
     toggle.setAttribute("aria-label","แสดงรหัสผ่าน");
     toggle.title="แสดงรหัสผ่าน";
     document.getElementById("login-error").textContent = errorMessage || "";
+    document.getElementById("login-qr-note").hidden = !pendingDeepLinkCode;
     loadLogoFromDrive();
     document.getElementById("login-password").focus();
   }
@@ -2716,7 +2816,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.4.5 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.4.6 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -2783,8 +2883,15 @@
     }catch(e){ return {}; }
   }
   const APP_BOOTSTRAP=readAppBootstrap();
-  let pendingDeepLinkCode=String(APP_BOOTSTRAP.partCode||"").trim();
+  function readPartCodeFromLocation(){
+    try{
+      const params=new URLSearchParams(window.location.search||"");
+      return String(params.get("p")||params.get("part")||params.get("sparepart")||"").trim();
+    }catch(e){ return ""; }
+  }
+  let pendingDeepLinkCode=readPartCodeFromLocation()||String(APP_BOOTSTRAP.partCode||"").trim();
   let pendingDeepLinkHandled=false;
+  let mobilePartSummaryId="";
 
   function getBootstrapScriptURL(){
     const apiUrl=String(APP_BOOTSTRAP.apiUrl||"").trim();
@@ -3919,7 +4026,7 @@
     const clean=String(code||"").trim();
     if(!clean) return "";
     try{
-      const url=new URL(validateScriptURL(getScriptURL()));
+      const url=new URL(STATIC_PUBLIC_APP_URL);
       url.searchParams.set("p",clean);
       return url.toString();
     }catch(e){ return `SPAREPART:${clean}`; }
@@ -3957,24 +4064,104 @@
   function focusScannedQty(kind,lineId){requestAnimationFrame(()=>{const selector=kind==="requisitions"?`[data-request-qty][data-line-id="${lineId}"]`:`[data-doc-qty="${kind}"][data-line-id="${lineId}"]`;document.querySelector(selector)?.focus();});}
   function updatePendingScanAction(){document.getElementById("scan-result-action").textContent=scanActionLabels[document.getElementById("scan-action").value]||"ดำเนินการต่อ";}
   function showScanResult(p){pauseScannerCamera();pendingScanPartId=p.id;document.getElementById("scan-result-name").textContent=p.name;document.getElementById("scan-result-code").textContent=p.code;document.getElementById("scan-result-unit").textContent=p.unit||"ไม่ระบุหน่วย";document.getElementById("scan-result-used").textContent=`${fmtMoney(usedQty(p.id))} ${p.unit||""}`.trim();document.getElementById("scan-result-balance").textContent=`${fmtMoney(p.qty)} ${p.unit||""}`.trim();document.getElementById("scan-result-reserved").textContent=`${fmtMoney(reservedQty(p.id))} ${p.unit||""}`.trim();document.getElementById("scan-result-available").textContent=`${fmtMoney(availableQty(p.id))} ${p.unit||""}`.trim();updatePendingScanAction();document.getElementById("scan-result").classList.add("show");document.getElementById("scanner-frame").hidden=true;document.getElementById("scan-input-field").hidden=true;document.getElementById("btn-scanner-manual").hidden=true;document.getElementById("btn-scanner-retry").hidden=false;document.getElementById("btn-scanner-confirm").hidden=false;document.getElementById("scanner-status").textContent="ตรวจสอบยอดก่อน แล้วกดยืนยันดำเนินการต่อ";}
+
+  function usedQtyThisMonth(partId){
+    const month=todayISO().slice(0,7);
+    return state.transactions.filter(t=>t.partId===partId&&t.type==="out"&&t.status!=="cancelled"&&String(t.date||"").slice(0,7)===month).reduce((sum,t)=>sum+(Number(t.qty)||0),0);
+  }
+  function mobilePartStatus(p){
+    const qty=Number(p?.qty)||0,threshold=Number(p?.reorderPoint||p?.minQty)||0;
+    if(qty<=0)return{key:"out",label:"หมดสต๊อก"};
+    if(threshold>0&&qty<=threshold)return{key:"low",label:"ใกล้หมด"};
+    return{key:"normal",label:"ปกติ"};
+  }
+  function formatMobileUpdated(value){
+    if(!value)return"ไม่พบเวลาบันทึก";
+    const d=new Date(value);
+    return Number.isNaN(d.getTime())?String(value):d.toLocaleString("th-TH",{timeZone:"Asia/Bangkok",day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+  }
+  function recentPartMovements(partId){
+    return state.transactions.filter(t=>t.partId===partId&&t.status!=="cancelled").sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))||String(b.createdAt||"").localeCompare(String(a.createdAt||""))||(Number(b.lineNo)||0)-(Number(a.lineNo)||0)).slice(0,5);
+  }
+  function showMobilePartError(message){
+    mobilePartSummaryId="";
+    document.getElementById("mobile-part-content").hidden=true;
+    document.getElementById("mobile-part-error-message").textContent=message||"กรุณาตรวจสอบ QR Code อีกครั้ง";
+    document.getElementById("mobile-part-error").classList.add("show");
+    const overlay=document.getElementById("mobile-part-overlay");
+    overlay.classList.add("show");overlay.setAttribute("aria-hidden","false");
+    document.body.classList.add("mobile-part-open");
+  }
+  function renderMobilePartSummary(useCachedData=false){
+    if(!mobilePartSummaryId)return false;
+    const p=partById(mobilePartSummaryId);
+    if(!p){showMobilePartError("ไม่พบอะไหล่รายการนี้ในข้อมูลล่าสุด");return false;}
+    if(p.isActive===false){showMobilePartError(`${p.code} ถูกหยุดใช้งาน กรุณาติดต่อผู้ดูแลระบบ`);return false;}
+    const unit=p.unit||"หน่วย",status=mobilePartStatus(p),reserved=reservedQty(p.id),tx=recentPartMovements(p.id);
+    const latestTx=state.transactions.filter(t=>t.partId===p.id).map(t=>String(t.createdAt||t.date||"")).filter(Boolean).sort().pop()||"";
+    const updated=[String(p.updatedAt||""),latestTx].filter(Boolean).sort().pop()||p.updatedAt||p.createdAt;
+    const statusEl=document.getElementById("mobile-part-status");
+    statusEl.className=`mobile-part-status ${status.key}`.trim();statusEl.textContent=status.label;
+    document.getElementById("mobile-part-code").textContent=p.code;
+    document.getElementById("mobile-part-name").textContent=p.name;
+    document.getElementById("mobile-part-category").textContent=p.category||"ไม่ระบุหมวดหมู่";
+    document.getElementById("mobile-part-location").textContent=`ตำแหน่ง ${p.location||"ไม่ระบุ"}`;
+    document.getElementById("mobile-part-sync").textContent=useCachedData?"ออฟไลน์ · แสดงข้อมูลล่าสุดที่บันทึกไว้ในเครื่อง":`อัปเดตจาก Google Sheets · ${new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"})} น.`;
+    document.getElementById("mobile-part-balance").textContent=`${fmtMoney(p.qty)} ${unit}`;
+    document.getElementById("mobile-part-used-month").textContent=`${fmtMoney(usedQtyThisMonth(p.id))} ${unit}`;
+    document.getElementById("mobile-part-used-total").textContent=`${fmtMoney(usedQty(p.id))} ${unit}`;
+    document.getElementById("mobile-part-available").textContent=`${fmtMoney(availableQty(p.id))} ${unit}`;
+    document.getElementById("mobile-part-unit").textContent=unit;
+    document.getElementById("mobile-part-reserved").textContent=`${fmtMoney(reserved)} ${unit}`;
+    document.getElementById("mobile-part-reorder").textContent=`${fmtMoney(Number(p.reorderPoint||p.minQty)||0)} ${unit}`;
+    document.getElementById("mobile-part-updated").textContent=formatMobileUpdated(updated);
+    document.getElementById("mobile-part-movements").innerHTML=tx.length?tx.map(t=>{
+      const isOut=t.type==="out",context=txContext(t)||t.person||t.supplier||"ไม่มีรายละเอียด",reference=t.docNo||t.referenceNo||"ไม่ระบุเลขที่";
+      return `<div class="mobile-part-movement"><span class="mobile-part-move-type ${isOut?"out":""}">${isOut?"OUT":"IN"}</span><div class="mobile-part-move-copy"><strong>${escapeHTML(reference)} · ${fmtDate(t.date)}</strong><span>${escapeHTML(context)}</span></div><span class="mobile-part-move-qty ${isOut?"out":""}">${isOut?"−":"+"}${fmtMoney(t.qty)} ${escapeHTML(unit)}</span></div>`;
+    }).join(""):`<div class="mobile-part-empty">ยังไม่มีรายการรับเข้า–เบิกออกของอะไหล่นี้</div>`;
+    document.getElementById("mobile-part-content").hidden=false;
+    document.getElementById("mobile-part-error").classList.remove("show");
+    const overlay=document.getElementById("mobile-part-overlay");
+    overlay.classList.add("show");overlay.setAttribute("aria-hidden","false");overlay.scrollTop=0;
+    document.body.classList.add("mobile-part-open");
+    return true;
+  }
+  function closeMobilePartSummary(clearQuery=true){
+    document.getElementById("mobile-part-overlay").classList.remove("show");
+    document.getElementById("mobile-part-overlay").setAttribute("aria-hidden","true");
+    document.body.classList.remove("mobile-part-open");
+    mobilePartSummaryId="";pendingDeepLinkCode="";pendingDeepLinkHandled=true;
+    if(clearQuery){try{const url=new URL(window.location.href);["p","part","sparepart"].forEach(key=>url.searchParams.delete(key));history.replaceState(null,"",url.pathname+(url.search||"")+url.hash);}catch(e){}}
+  }
   function processPendingDeepLink(useCachedData=false){
     if(pendingDeepLinkHandled||!pendingDeepLinkCode||!currentUser) return false;
     const code=scannedCode(pendingDeepLinkCode);
     const p=state.parts.find(x=>String(x.code||"").toLowerCase()===code.toLowerCase());
     if(!p){
       pendingDeepLinkHandled=true;
-      toast(`ไม่พบรหัสอะไหล่ ${code||pendingDeepLinkCode}${useCachedData?" ในข้อมูลล่าสุดในเครื่อง":""}`,true);
+      showMobilePartError(`ไม่พบรหัสอะไหล่ ${code||pendingDeepLinkCode}${useCachedData?" ในข้อมูลล่าสุดในเครื่อง":""}`);
       return false;
     }
-    if(p.isActive===false){pendingDeepLinkHandled=true;toast(`${p.code} ถูกหยุดใช้งาน`,true);return false;}
+    if(p.isActive===false){pendingDeepLinkHandled=true;showMobilePartError(`${p.code} ถูกหยุดใช้งาน กรุณาติดต่อผู้ดูแลระบบ`);return false;}
     pendingDeepLinkHandled=true;
-    document.getElementById("scan-action").value="parts";
-    document.getElementById("scanner-modal-overlay").classList.add("show");
-    resetScanResult();
-    showScanResult(p);
-    document.getElementById("scanner-status").textContent=useCachedData?"เปิดจาก QR · ใช้ข้อมูลล่าสุดในเครื่อง":"เปิดจาก QR · ข้อมูลซิงก์ล่าสุดแล้ว";
-    return true;
+    mobilePartSummaryId=p.id;
+    return renderMobilePartSummary(useCachedData);
   }
+  ["mobile-part-close-top","mobile-part-close","mobile-part-error-close"].forEach(id=>document.getElementById(id).addEventListener("click",()=>closeMobilePartSummary(true)));
+  document.getElementById("mobile-part-stock-card").addEventListener("click",()=>{
+    const partId=mobilePartSummaryId;
+    closeMobilePartSummary(true);
+    if(partId)openPartStockCard(partId);
+  });
+  document.getElementById("mobile-part-refresh").addEventListener("click",async event=>{
+    const btn=event.currentTarget;
+    if(!mobilePartSummaryId||btn.disabled)return;
+    btn.disabled=true;btn.textContent="…";
+    try{
+      const ok=await syncFromSheet(true);
+      if(ok&&mobilePartSummaryId){renderMobilePartSummary(false);toast("อัปเดตข้อมูลอะไหล่ล่าสุดแล้ว");}
+    }finally{btn.disabled=false;btn.textContent="↻";}
+  });
   function useScannedCode(raw){const code=scannedCode(raw);if(!code){toast("กรุณาสแกนหรือกรอกรหัสอะไหล่",true);return;}const p=state.parts.find(x=>String(x.code||"").toLowerCase()===code.toLowerCase());if(!p){toast(`ไม่พบรหัสอะไหล่ ${code}`,true);return;}if(p.isActive===false){toast(`${p.code} ถูกหยุดใช้งาน จึงไม่สามารถเพิ่มลงรายการได้`,true);return;}showScanResult(p);}
   function applyPendingScan(){const p=partById(pendingScanPartId);if(!p||p.isActive===false){toast("ไม่พบอะไหล่ที่พร้อมใช้งาน กรุณาสแกนใหม่",true);return;}const action=document.getElementById("scan-action").value;if(action==="stockcount"&&!isAdmin()){toast("ตรวจนับใช้ได้เฉพาะ Admin",true);return;}stopScanner();let result=null;if(action==="parts"){activateView("parts");document.getElementById("part-search").value=p.code;renderParts();}else if(action==="receive"){result=addScannedLine(receiveLines,p);activateView("receive");renderDocumentLines("in");focusScannedQty("in",result.line.id);}else if(action==="issue"){result=addScannedLine(issueLines,p);activateView("issue");renderDocumentLines("out");focusScannedQty("out",result.line.id);}else if(action==="requisitions"){result=addScannedLine(requestLines,p);activateView("requisitions");renderRequestLines();focusScannedQty("requisitions",result.line.id);}else if(action==="stockcount"){activateView("stockcount");document.getElementById("count-search").value=p.code;renderStockCount();}else{activateView("history");document.getElementById("stock-card-part").value=p.id;renderStockCard();}toast(result&&!result.added?`${p.code} มีอยู่ในรายการแล้ว — ระบบไม่เพิ่มซ้ำ`:`พบ ${p.code} — ${p.name}`);}
   function isCameraPermissionError(err){return ["NotAllowedError","SecurityError","PermissionDeniedError"].includes(String(err?.name||""));}
@@ -4956,7 +5143,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.4.5`;
+    document.title=`${meta.title} | Stock Control v4.4.6`;
   }
 
   function selectLabel(el){
@@ -5367,6 +5554,7 @@
     initReportExcelExports();
     renderSmartUX();
     renderProductivityUX();
+    if(mobilePartSummaryId) renderMobilePartSummary(false);
   }
 
   function initAppAfterLogin(){
