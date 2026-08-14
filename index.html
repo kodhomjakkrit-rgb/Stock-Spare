@@ -1756,7 +1756,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.6.0</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.6.1</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1836,7 +1836,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.6.0</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.6.1</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -3407,7 +3407,9 @@
     const fields = {};
     document.querySelectorAll("#app input[id],#app select[id],#app textarea[id]").forEach(el=>{
       if(el.type==="password" || el.type==="file") return;
-      fields[el.id] = el.type==="checkbox" || el.type==="radio" ? {checked:el.checked} : {value:el.value};
+      fields[el.id] = el.type==="checkbox" || el.type==="radio"
+        ? {checked:el.checked}
+        : {value:el.value,autoToday:el.type==="date"&&el.dataset.autoTodayValue===el.value};
     });
     const activeView = document.querySelector(".view.active")?.id.replace("view-","") || "dashboard";
     const draft = {
@@ -3448,7 +3450,8 @@
         const el=document.getElementById(id);
         if(!el || el.type==="password" || el.type==="file") return;
         if(el.type==="checkbox" || el.type==="radio") el.checked=!!saved.checked;
-        else if(saved.value!=null) el.value=String(saved.value);
+        else if(el.type==="date"&&saved.autoToday===true) setDateInputToCurrent(el,true);
+        else if(saved.value!=null){el.value=String(saved.value);if(el.type==="date")delete el.dataset.autoTodayValue;}
       });
       // ร่างที่ตั้งใจเลือกวันที่ไว้ยังคงเดิม แต่ถ้าช่องใดว่างให้กลับมาใช้วันที่วันนี้
       applyDefaultCurrentDates();
@@ -3556,7 +3559,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.6.0 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.6.1 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -3577,12 +3580,32 @@
     }).formatToParts(new Date()).reduce((out,part)=>{out[part.type]=part.value;return out;},{});
     return `${parts.year}-${parts.month}-${parts.day}`;
   };
-  function applyDefaultCurrentDates(){
+  function setDateInputToCurrent(inputOrId,force=false){
+    const input=typeof inputOrId==="string"?document.getElementById(inputOrId):inputOrId;
+    if(!input||input.type!=="date")return false;
     const today=todayISO();
+    const previousAuto=input.dataset.autoTodayValue||"";
+    if(!force&&input.value&&input.value!==previousAuto)return false;
+    input.value=today;
+    input.dataset.autoTodayValue=today;
+    return true;
+  }
+  function setStoredDateInput(inputOrId,value){
+    const input=typeof inputOrId==="string"?document.getElementById(inputOrId):inputOrId;
+    if(!input||input.type!=="date")return;
+    input.value=String(value||"");
+    delete input.dataset.autoTodayValue;
+  }
+  function applyDefaultCurrentDates(){
     document.querySelectorAll('input[type="date"][data-default-today]').forEach(input=>{
-      if(!input.value) input.value=today;
+      setDateInputToCurrent(input);
     });
   }
+  document.addEventListener("input",event=>{
+    const input=event.target.closest?.('input[type="date"][data-default-today]');
+    if(input)delete input.dataset.autoTodayValue;
+  });
+  window.setInterval(applyDefaultCurrentDates,60000);
 
   let state = { parts: [], transactions: [], customers: [], suppliers: [], trucks: [], provinces: [], documents: [], partCategories: [], stockCounts: [], requisitions: [], requisitionItems: [], backups: [], users: [], auditLogs: [] };
   const charts = {};
@@ -3930,10 +3953,12 @@
   document.addEventListener("visibilitychange", ()=>{
     if(document.hidden){
       if(currentUser) saveWorkingDraft();
-    }else if(currentUser && hasScriptURL() && !isSyncing && activeWrites===0){
-      syncFromSheet(false);
+    }else{
+      applyDefaultCurrentDates();
+      if(currentUser && hasScriptURL() && !isSyncing && activeWrites===0)syncFromSheet(false);
     }
   });
+  window.addEventListener("focus",applyDefaultCurrentDates);
   window.addEventListener("pagehide",()=>{ if(currentUser) saveWorkingDraft(); });
   window.addEventListener("beforeunload",()=>{
     if(currentUser){
@@ -4116,6 +4141,7 @@
     if(group&&SYSTEM_VIEW_NAMES.has(viewName)) group.open=true;
   }
   function activateView(viewName){
+    applyDefaultCurrentDates();
     const previousView=document.querySelector(".view.active")?.id.replace("view-","")||"";
     if(["stockcount","master","import","users","backups"].includes(viewName) && !isAdmin()){
       toast("เมนูนี้ใช้ได้เฉพาะผู้ดูแลระบบ", true);
@@ -4807,11 +4833,11 @@
       normalized.transactions.forEach(t=>{if(!existingIds.has(t.id))state.transactions.push(t);});
       if(type==="in"){
         receiveLines=[{id:uid(),partId:"",qty:""}];receiveRequestId=uid();
-        document.getElementById("rec-date").value=todayISO();
+        setDateInputToCurrent("rec-date",true);
         document.getElementById("rec-contact").value="";document.getElementById("rec-note").value="";
       }else{
         issueLines=[{id:uid(),partId:"",qty:"",unitPrice:"",discount:""}];issueRequestId=uid();
-        document.getElementById("iss-date").value=todayISO();
+        setDateInputToCurrent("iss-date",true);
         document.getElementById("iss-person").value=currentUser?currentUser.name:"";document.getElementById("iss-note").value="";
         ["iss-purpose","iss-customer-search","iss-customer","iss-receiver","iss-department","iss-project","iss-reference","iss-truck","iss-province","iss-mileage","iss-driver","iss-destination"].forEach(id=>document.getElementById(id).value="");document.getElementById("iss-use-vehicle").checked=false;updateIssuePurposeUI();updateIssueVehicleUI();
       }
@@ -4876,8 +4902,8 @@
     body.innerHTML=requestLines.map((line,index)=>{const p=partById(line.partId),available=p?availableQty(p.id,editingId):0;return `<tr><td class="mono">${index+1}</td><td><select data-request-part data-line-id="${line.id}">${documentPartOptions(line.partId)}</select></td><td><input class="qty-input" type="number" min="0" step="any" value="${escapeHTML(line.qty)}" data-request-qty data-line-id="${line.id}" placeholder="0"></td><td>${p?`<span class="available-qty mono">${fmtMoney(available)} ${escapeHTML(p.unit)}</span>${reservedQty(p.id,editingId)>0?`<div class="reserved-note">จองอื่น ${fmtMoney(reservedQty(p.id,editingId))}</div>`:""}`:"-"}</td><td><button class="small danger-ghost" data-request-remove data-line-id="${line.id}" ${requestLines.length===1?'disabled':''}>ลบ</button></td></tr>`;}).join("");
     const valid=requestLines.filter(x=>x.partId&&Number(x.qty)>0);document.getElementById("request-line-count").textContent=`${valid.length} รายการ`;document.getElementById("request-total-qty").textContent=`รวม ${fmtMoney(valid.reduce((s,x)=>s+Number(x.qty),0))} หน่วย`;
   }
-  function clearRequestForm(){document.getElementById("req-id").value="";document.getElementById("req-version").value="";document.getElementById("req-date").value=todayISO();document.getElementById("req-requester").value=currentUser?currentUser.name:"";document.getElementById("req-department").value="";document.getElementById("req-purpose").value="";requestLines=[{id:uid(),partId:"",qty:""}];renderRequestLines();document.getElementById("btn-request-submit").textContent="ส่งคำขออนุมัติ";clearSmartDirty();saveWorkingDraft();}
-  document.getElementById("req-date").value=todayISO();
+  function clearRequestForm(){document.getElementById("req-id").value="";document.getElementById("req-version").value="";setDateInputToCurrent("req-date",true);document.getElementById("req-requester").value=currentUser?currentUser.name:"";document.getElementById("req-department").value="";document.getElementById("req-purpose").value="";requestLines=[{id:uid(),partId:"",qty:""}];renderRequestLines();document.getElementById("btn-request-submit").textContent="ส่งคำขออนุมัติ";clearSmartDirty();saveWorkingDraft();}
+  setDateInputToCurrent("req-date",true);
   document.getElementById("btn-request-add-line").addEventListener("click",()=>{requestLines.push({id:uid(),partId:"",qty:""});renderRequestLines();});
   document.getElementById("btn-request-clear").addEventListener("click",clearRequestForm);
   document.addEventListener("change",e=>{if(e.target.dataset.requestPart===undefined&&e.target.dataset.requestQty===undefined)return;const line=requestLines.find(x=>x.id===e.target.dataset.lineId);if(!line)return;if(e.target.dataset.requestPart!==undefined)line.partId=e.target.value;else line.qty=e.target.value;renderRequestLines();});
@@ -4932,7 +4958,7 @@
     const btn=document.getElementById("btn-request-submit");btn.disabled=true;btn.textContent="กำลังส่งคำขอ...";
     try{const result=await apiCall("saveRequisition",{requisition:{id,expectedVersion:version,date:document.getElementById("req-date").value,requester:document.getElementById("req-requester").value.trim(),department:document.getElementById("req-department").value.trim(),purpose:document.getElementById("req-purpose").value.trim(),status:"pending",items}});mergeRequestResult(result);cacheSave();clearRequestForm();renderAll();toast(`ส่งคำขอ ${result.requisition.reqNo} เรียบร้อย`);}catch(err){toast("บันทึกคำขอไม่สำเร็จ: "+err.message,true);if(err.code==="VERSION_CONFLICT")syncFromSheet(false);}finally{btn.disabled=false;if(!document.getElementById("req-id").value)btn.textContent="ส่งคำขออนุมัติ";}
   });
-  function editRequest(id){const req=state.requisitions.find(x=>x.id===id);if(!req)return;document.getElementById("req-id").value=req.id;document.getElementById("req-version").value=req.version;document.getElementById("req-date").value=req.date;document.getElementById("req-requester").value=req.requester;document.getElementById("req-department").value=req.department;document.getElementById("req-purpose").value=req.purpose;requestLines=requestItems(req.id).map(x=>({id:uid(),serverId:x.id,partId:x.partId,qty:x.qty}));if(!requestLines.length)requestLines=[{id:uid(),partId:"",qty:""}];renderRequestLines();document.getElementById("btn-request-submit").textContent="บันทึกและส่งใหม่";window.scrollTo({top:0,behavior:"smooth"});}
+  function editRequest(id){const req=state.requisitions.find(x=>x.id===id);if(!req)return;document.getElementById("req-id").value=req.id;document.getElementById("req-version").value=req.version;setStoredDateInput("req-date",req.date);document.getElementById("req-requester").value=req.requester;document.getElementById("req-department").value=req.department;document.getElementById("req-purpose").value=req.purpose;requestLines=requestItems(req.id).map(x=>({id:uid(),serverId:x.id,partId:x.partId,qty:x.qty}));if(!requestLines.length)requestLines=[{id:uid(),partId:"",qty:""}];renderRequestLines();document.getElementById("btn-request-submit").textContent="บันทึกและส่งใหม่";window.scrollTo({top:0,behavior:"smooth"});}
   async function requestAction(id,action){const req=state.requisitions.find(x=>x.id===id);if(!req)return;let api,payload={id:req.id,expectedVersion:req.version};if(action==="approve"){if(!confirm(`อนุมัติ ${req.reqNo} และจองสต๊อก?`))return;api="approveRequisition";payload.decision="approve";}else if(action==="reject"){const reason=prompt(`เหตุผลที่ไม่อนุมัติ ${req.reqNo}`);if(reason===null)return;api="approveRequisition";payload.decision="reject";payload.reason=reason;}else if(action==="issue"){if(!confirm(`ยืนยันจ่ายของตาม ${req.reqNo}? ระบบจะตัดสต๊อกและออกเลข IS`))return;api="issueRequisition";}else{const reason=prompt(`เหตุผลยกเลิก ${req.reqNo}`);if(reason===null)return;api="cancelRequisition";payload.reason=reason;}
     try{const result=await apiCall(api,payload);mergeRequestResult(result);cacheSave();renderAll();toast(action==="approve"?"อนุมัติและจองสต๊อกแล้ว":action==="issue"?`จ่ายของแล้ว เลขที่ ${result.docNo}`:action==="reject"?"บันทึกไม่อนุมัติแล้ว":"ยกเลิกคำขอแล้ว");}catch(err){toast("ทำรายการไม่สำเร็จ: "+err.message,true);if(err.code==="VERSION_CONFLICT")syncFromSheet(false);}
   }
@@ -5282,7 +5308,7 @@
       if(!hasScriptURL())throw new Error("การตรวจนับต้องเชื่อมต่อ Google Sheets เพื่อเก็บ Audit Log");
       const saved=await apiCall("saveStockCount",{count}),normalized=normalizeFromSheet({parts:saved.parts,transactions:saved.transactions,stockCounts:saved.stockCounts});
       normalized.parts.forEach(x=>{const p=partById(x.id);if(p)Object.assign(p,x);});state.transactions.push(...normalized.transactions);state.stockCounts.push(...normalized.stockCounts);
-      Object.keys(countDraft).forEach(k=>delete countDraft[k]);document.getElementById("count-date").value=todayISO();document.getElementById("count-reason").value="";cacheSave();renderAll();clearSmartDirty();saveWorkingDraft();toast(`บันทึกตรวจนับ ${saved.countNo} เรียบร้อย`);
+      Object.keys(countDraft).forEach(k=>delete countDraft[k]);setDateInputToCurrent("count-date",true);document.getElementById("count-reason").value="";cacheSave();renderAll();clearSmartDirty();saveWorkingDraft();toast(`บันทึกตรวจนับ ${saved.countNo} เรียบร้อย`);
     }catch(err){toast("บันทึกตรวจนับไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="ยืนยันและปรับยอด";}
   });
 
@@ -5379,7 +5405,7 @@
     }
     else{
       document.getElementById("mf-doc-type").value=x?x.docType:"PR"; document.getElementById("mf-doc-no").value=x?x.docNo:"";
-      document.getElementById("mf-doc-date").value=x?x.date:todayISO(); document.getElementById("mf-doc-supplier").value=x?x.supplierId:"";
+      if(x)setStoredDateInput("mf-doc-date",x.date);else setDateInputToCurrent("mf-doc-date",true); document.getElementById("mf-doc-supplier").value=x?x.supplierId:"";
       document.getElementById("mf-doc-note").value=x?x.note:"";
     }
     document.getElementById("master-modal-overlay").classList.add("show");
@@ -6378,7 +6404,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.6.0`;
+    document.title=`${meta.title} | Stock Control v4.6.1`;
   }
 
   function selectLabel(el){
@@ -6518,7 +6544,7 @@
         if(a==="pending"||a==="approved"){activateView("requisitions");document.getElementById("request-status-filter").value=a;renderRequests();}
         else if(a==="low"){activateView("dashboard");setTimeout(()=>document.getElementById("reorder-panel")?.scrollIntoView({behavior:"smooth",block:"start"}),60);}
         else if(a==="requests"){activateView("requisitions");document.getElementById("request-status-filter").value="";renderRequests();}
-        else if(a==="today"){activateView("history");document.getElementById("hist-from").value=todayISO();document.getElementById("hist-to").value=todayISO();renderHistory();}
+        else if(a==="today"){activateView("history");setDateInputToCurrent("hist-from",true);setDateInputToCurrent("hist-to",true);renderHistory();}
       }
     });
     document.addEventListener("click",e=>{
