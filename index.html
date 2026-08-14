@@ -378,16 +378,57 @@
   tr.cancelled-row{opacity:.65;text-decoration:none;}
   .doc-summary{border:1px solid var(--border);background:var(--panel-alt);border-radius:9px;padding:14px;line-height:1.8;margin:10px 0;}
   #print-area{display:none;}
+  #print-area.print-voucher{font-family:'Noto Sans Thai',sans-serif;color:#111;background:#fff;}
+  #print-area .voucher-a4{
+    box-sizing:border-box;width:210mm;height:297mm;padding:5mm 7mm;background:#fff;color:#111;
+    display:grid;grid-template-rows:minmax(0,1fr) 5mm minmax(0,1fr);overflow:hidden;
+  }
+  #print-area .voucher-a4:not(:last-child){page-break-after:always;break-after:page;}
+  #print-area .voucher-copy{
+    box-sizing:border-box;min-height:0;border:.35mm solid #1f2937;border-radius:1.2mm;
+    padding:2.5mm 3mm;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto auto;gap:1.2mm;overflow:hidden;
+  }
+  #print-area .voucher-head{display:grid;grid-template-columns:18mm minmax(0,1fr) 38mm;gap:2mm;align-items:center;border-bottom:.35mm solid #1f2937;padding-bottom:1.4mm;}
+  #print-area .voucher-brand{width:17mm;height:11mm;display:grid;place-items:center;overflow:hidden;}
+  #print-area .voucher-brand img{display:block;max-width:100%;max-height:100%;object-fit:contain;}
+  #print-area .voucher-brand-fallback{font:800 4.3mm 'Kanit',sans-serif;color:#0f766e;letter-spacing:.2mm;}
+  #print-area .voucher-title{text-align:center;line-height:1.15;}
+  #print-area .voucher-title h1{margin:0;font-size:4.2mm;font-weight:800;letter-spacing:.1mm;}
+  #print-area .voucher-title div{margin-top:.5mm;font-size:2.2mm;color:#475569;}
+  #print-area .voucher-copy-label{text-align:right;font-size:2.25mm;line-height:1.35;}
+  #print-area .voucher-copy-label strong{display:block;color:#0f766e;font-size:2.7mm;}
+  #print-area .voucher-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:.2mm solid #9ca3af;border-right:0;border-bottom:0;}
+  #print-area .voucher-field{min-width:0;min-height:7mm;padding:.8mm 1.2mm;border-right:.2mm solid #9ca3af;border-bottom:.2mm solid #9ca3af;font-size:2.05mm;line-height:1.3;overflow:hidden;}
+  #print-area .voucher-field.span2{grid-column:span 2;}
+  #print-area .voucher-field span{display:block;color:#64748b;font-size:1.8mm;line-height:1.1;}
+  #print-area .voucher-field b{display:block;margin-top:.45mm;font-size:2.25mm;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #print-area .voucher-items{min-height:0;overflow:hidden;}
+  #print-area .voucher-items table{width:100%;height:100%;border-collapse:collapse;table-layout:fixed;margin:0;}
+  #print-area .voucher-items th,#print-area .voucher-items td{border:.2mm solid #6b7280;padding:.45mm .55mm;color:#111;text-align:center;vertical-align:middle;line-height:1.15;overflow:hidden;}
+  #print-area .voucher-items th{height:6.3mm;background:#e6f4f1;font-size:1.82mm;font-weight:800;}
+  #print-area .voucher-items td{height:5.6mm;font-size:1.95mm;white-space:nowrap;text-overflow:ellipsis;}
+  #print-area .voucher-items td.item{text-align:left;white-space:normal;}
+  #print-area .voucher-note{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);border:.2mm solid #9ca3af;min-height:9.5mm;}
+  #print-area .voucher-note>div{padding:.8mm 1.1mm;font-size:1.9mm;line-height:1.35;overflow:hidden;}
+  #print-area .voucher-note>div+div{border-left:.2mm solid #9ca3af;}
+  #print-area .voucher-note b{font-size:2mm;}
+  #print-area .voucher-checks{white-space:normal;word-spacing:.35mm;}
+  #print-area .voucher-signatures{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.5mm;text-align:center;font-size:1.8mm;line-height:1.25;}
+  #print-area .voucher-signatures>div{padding-top:3.5mm;border-top:.2mm solid #6b7280;}
+  #print-area .voucher-cut{display:flex;align-items:center;gap:2mm;color:#64748b;font-size:1.9mm;white-space:nowrap;}
+  #print-area .voucher-cut::before,#print-area .voucher-cut::after{content:"";height:0;border-top:.25mm dashed #94a3b8;flex:1;}
   @media print{
-    body{background:#fff;color:#111;}
+    @page{size:A4 portrait;margin:0;}
+    html,body{margin:0!important;padding:0!important;background:#fff!important;color:#111;}
     body>*{display:none!important;}
-    #print-area{display:block!important;padding:20mm 16mm;font-family:'Noto Sans Thai',sans-serif;color:#111;}
-    #print-area .print-head{display:flex;align-items:center;gap:14px;border-bottom:2px solid #111;padding-bottom:12px;margin-bottom:18px;}
-    #print-area img{width:68px;height:68px;object-fit:contain;}
-    #print-area h1{font-size:22px;margin:0;} #print-area h2{font-size:18px;margin:4px 0 0;}
-    #print-area table{border-collapse:collapse;width:100%;margin-top:16px;}
-    #print-area th,#print-area td{border:1px solid #999;padding:8px;color:#111;text-transform:none;letter-spacing:0;}
-    #print-area .print-sign{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:70px;text-align:center;}
+    #print-area{display:block!important;font-family:'Noto Sans Thai',sans-serif;color:#111;}
+    #print-area.print-standard{padding:20mm 16mm;}
+    #print-area.print-standard .print-head{display:flex;align-items:center;gap:14px;border-bottom:2px solid #111;padding-bottom:12px;margin-bottom:18px;}
+    #print-area.print-standard img{width:68px;height:68px;object-fit:contain;}
+    #print-area.print-standard h1{font-size:22px;margin:0;} #print-area.print-standard h2{font-size:18px;margin:4px 0 0;}
+    #print-area.print-standard table{border-collapse:collapse;width:100%;margin-top:16px;}
+    #print-area.print-standard th,#print-area.print-standard td{border:1px solid #999;padding:8px;color:#111;text-transform:none;letter-spacing:0;}
+    #print-area.print-standard .print-sign{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:70px;text-align:center;}
   }
 
   /* ================= v3.8 UI refresh ================= */
@@ -1549,7 +1590,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.5.2</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.5.3</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1629,7 +1670,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.5.2</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.5.3</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -1964,6 +2005,7 @@
       </div>
       <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่</th><th style="width:120px">จำนวนเบิก</th><th style="width:125px">คงเหลือ</th><th style="width:125px">ราคา/หน่วย</th><th style="width:115px">ส่วนลด</th><th style="width:125px">รวม</th><th style="width:72px"></th></tr></thead><tbody id="issue-lines-body"></tbody></table><div class="doc-total"><span id="issue-line-count">0 รายการ</span><span><span id="issue-total-qty">รวม 0 หน่วย</span> · <strong id="issue-total-amount">0.00 บาท</strong></span></div></div>
       <div class="form-actions document-actions">
+        <button type="button" id="btn-issue-blank-form">ดาวน์โหลด / พิมพ์แบบฟอร์ม A4</button>
         <button id="btn-issue-add-line">+ เพิ่มรายการ</button>
         <button class="warn" id="btn-issue-submit">บันทึกเบิกออก</button>
       </div>
@@ -3245,7 +3287,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.5.2 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.5.3 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -5218,7 +5260,7 @@
         <td class="mono">${t.type==="in" ? "+" : "-"}${t.qty}</td>
         <td>${escapeHTML(t.person||t.supplier||"-")}</td>
         <td><span class="status-pill ${cancelled?'cancelled':'active'}">${cancelled?'ยกเลิกแล้ว':'ปกติ'}</span>${cancelled?`<div class="hint">${escapeHTML(t.cancelReason||"")}</div>`:""}</td>
-        <td class="row-actions"><button class="small" data-print-tx="${t.id}">พิมพ์ใบ</button>${isAdmin()&&!cancelled?`<button class="small danger-ghost" data-cancel-tx="${t.id}">ยกเลิกรายการ</button>${t.docNo?`<button class="small danger-ghost" data-cancel-doc="${escapeHTML(t.docNo)}">ยกเลิกทั้งใบ</button>`:""}`:""}</td>
+        <td class="row-actions"><button class="small" data-print-tx="${t.id}">${t.type==="out"?"A4 สองส่วน":"พิมพ์ใบ"}</button>${isAdmin()&&!cancelled?`<button class="small danger-ghost" data-cancel-tx="${t.id}">ยกเลิกรายการ</button>${t.docNo?`<button class="small danger-ghost" data-cancel-doc="${escapeHTML(t.docNo)}">ยกเลิกทั้งใบ</button>`:""}`:""}</td>
       </tr>`;
     }).join("") : `<tr class="empty-row"><td colspan="8">ไม่พบรายการตามเงื่อนไขที่เลือก</td></tr>`;
     body.querySelectorAll("[data-print-tx]").forEach(b=>b.addEventListener("click",()=>printTransactionById(b.dataset.printTx)));
@@ -5250,16 +5292,85 @@
   document.getElementById("btn-success-detail").addEventListener("click",()=>{document.getElementById("success-modal-overlay").classList.remove("show");activateView("history");});
   document.getElementById("btn-success-print").addEventListener("click",()=>printDocumentByNo(lastSavedDocNo));
 
+  function voucherText(value,fallback="-"){const text=String(value??"").trim();return text||fallback;}
+  function voucherField(label,value,span2=false){return `<div class="voucher-field${span2?' span2':''}"><span>${escapeHTML(label)}</span><b>${escapeHTML(voucherText(value))}</b></div>`;}
+  function transactionOrderKey(tx){return [String(tx.createdAt||tx.date||""),String(tx.docNo||""),String(Number(tx.lineNo)||0).padStart(5,"0"),String(tx.id||"")].join("|");}
+  function issueBalanceAfter(line){
+    if(!line||line.status==="cancelled")return "-";
+    const part=partById(line.partId);if(!part)return "-";
+    const targetKey=transactionOrderKey(line);
+    const laterEffect=state.transactions.reduce((sum,tx)=>{
+      if(tx.partId!==line.partId||tx.status==="cancelled"||transactionOrderKey(tx)<=targetKey)return sum;
+      return sum+(tx.type==="in"?Number(tx.qty)||0:-(Number(tx.qty)||0));
+    },0);
+    return fmtMoney((Number(part.qty)||0)-laterEffect);
+  }
+  function voucherRows(lines){
+    const padded=[...(lines||[])];while(padded.length<7)padded.push(null);
+    return padded.slice(0,7).map((line,index)=>{
+      const part=line?partById(line.partId):null;
+      return `<tr><td>${index+1}</td><td class="mono">${escapeHTML(line&&part?part.code:"")}</td><td class="item">${escapeHTML(line&&part?part.name:"")}</td><td>${escapeHTML(line&&part?part.unit:"")}</td><td>${line?fmtMoney(line.qty):""}</td><td>${line?fmtMoney(line.qty):""}</td><td>${line?issueBalanceAfter(line):""}</td><td>${escapeHTML(line&&line.status==="cancelled"?"ยกเลิก":"")}</td></tr>`;
+    }).join("");
+  }
+  function voucherCopy(copyLabel,tx,lines,pageNo,totalPages){
+    const blank=!tx,customer=blank?null:customerById(tx.customerId),truck=blank?null:truckById(tx.truckId),province=blank?null:provinceById(tx.provinceId);
+    const logo=document.querySelector("[data-drive-logo]"),logoSrc=logo&&logo.src?logo.src:"";
+    const purpose=blank?"ขาย / งานซ่อม / ใช้ภายใน / โอนย้าย / อื่น ๆ":(ISSUE_PURPOSE_TEXT[tx.issuePurpose]||"ข้อมูลเก่า");
+    const vehicle=blank?"":(tx.useVehicle?[truck?.plateNo,province?.name].filter(Boolean).join(" · "):"ไม่ใช้รถ");
+    const references=blank?"":([tx.referenceNo,tx.prNo&&"PR "+tx.prNo,tx.poNo&&"PO "+tx.poNo,tx.ivNo&&"IV "+tx.ivNo].filter(Boolean).join(" · "));
+    const totalAmount=blank?0:lines.reduce((sum,line)=>sum+Number(line.lineAmount||0),0);
+    const cancelled=!blank&&lines.length&&lines.every(line=>line.status==="cancelled");
+    const status=blank?"□ ครบถ้วน  □ จ่ายบางส่วน  □ ยังไม่จ่าย  □ ยกเลิก":(cancelled?"□ ครบถ้วน  □ จ่ายบางส่วน  □ ยังไม่จ่าย  ☑ ยกเลิก":"☑ ครบถ้วน  □ จ่ายบางส่วน  □ ยังไม่จ่าย  □ ยกเลิก");
+    return `<section class="voucher-copy">
+      <header class="voucher-head">
+        <div class="voucher-brand">${logoSrc?`<img src="${escapeHTML(logoSrc)}" alt="H.O.B">`:'<div class="voucher-brand-fallback">H.O.B</div>'}</div>
+        <div class="voucher-title"><h1>ใบเบิก - จ่ายอะไหล่</h1><div>SPARE PARTS ISSUE VOUCHER · H.O.B Stock Control</div></div>
+        <div class="voucher-copy-label"><strong>${escapeHTML(copyLabel)}</strong>หน้า ${pageNo}/${totalPages}</div>
+      </header>
+      <div class="voucher-meta">
+        ${voucherField("เลขที่เอกสาร",blank?"________________":tx.docNo)}${voucherField("วันที่",blank?"____ / ____ / ______":fmtDate(tx.date))}${voucherField("ผู้เบิก",blank?"":tx.person)}${voucherField("วัตถุประสงค์",purpose)}
+        ${voucherField("ผู้รับสินค้า",blank?"":tx.receiverName)}${voucherField("แผนก",blank?"":tx.department)}${voucherField("เครื่องจักร / โครงการ",blank?"":tx.project)}${voucherField("ลูกค้า",blank?"":customer?.name)}
+        ${voucherField("รถ / จังหวัด",vehicle)}${voucherField("เลขไมล์",blank?"":(tx.mileage!==""?fmtMoney(tx.mileage)+" กม.":""))}${voucherField("จุดหมาย / สถานที่ใช้งาน",blank?"":tx.destination,true)}
+        ${voucherField("เลขอ้างอิง / PR / PO / IV",references,true)}${voucherField("มูลค่ารวม",totalAmount>0?fmtMoney(totalAmount)+" บาท":"",true)}
+      </div>
+      <div class="voucher-items"><table><colgroup><col style="width:4%"><col style="width:13%"><col style="width:27%"><col style="width:7%"><col style="width:8%"><col style="width:8%"><col style="width:11%"><col style="width:22%"></colgroup><thead><tr><th>ลำดับ</th><th>SKU / รหัส</th><th>รายการ / รายละเอียด</th><th>หน่วย</th><th>จำนวน<br>ขอเบิก</th><th>จำนวน<br>จ่ายจริง</th><th>คงเหลือ<br>หลังจ่าย</th><th>หมายเหตุ</th></tr></thead><tbody>${voucherRows(lines)}</tbody></table></div>
+      <div class="voucher-note"><div><b>หมายเหตุเพิ่มเติม:</b> ${escapeHTML(blank?"":voucherText(tx.note,""))}</div><div><b>ผลการจ่าย:</b> <span class="voucher-checks">${status}</span><br><b>เจ้าหน้าที่คีย์:</b> ${escapeHTML(blank?"________________":voucherText(tx.createdBy,currentUser?.username||"-"))} · <b>เลขที่:</b> ${escapeHTML(blank?"____________":voucherText(tx.docNo))}</div></div>
+      <div class="voucher-signatures"><div>ผู้ขอเบิก<br>วันที่ ____/____/____</div><div>ผู้อนุมัติ<br>วันที่ ____/____/____</div><div>ผู้จ่ายสินค้า<br>วันที่ ____/____/____</div><div>ผู้รับสินค้า<br>วันที่ ____/____/____</div></div>
+    </section>`;
+  }
+  function buildIssueVoucher(tx,lines){
+    const chunks=[];if(lines&&lines.length){for(let i=0;i<lines.length;i+=7)chunks.push(lines.slice(i,i+7));}else chunks.push([]);
+    return chunks.map((chunk,index)=>`<article class="voucher-a4">${voucherCopy("ต้นฉบับ - คลังอะไหล่",tx,chunk,index+1,chunks.length)}<div class="voucher-cut">✂ ตัดตามรอยประ</div>${voucherCopy("สำเนา - ผู้เบิก / ผู้รับ",tx,chunk,index+1,chunks.length)}</article>`).join("");
+  }
+  async function openPrintDialog(message){
+    if(document.fonts?.ready)await document.fonts.ready;
+    await new Promise(resolve=>setTimeout(resolve,100));
+    toast(message||"เลือกเครื่องพิมพ์ หรือเลือก “บันทึกเป็น PDF” เพื่อดาวน์โหลดไฟล์");
+    window.print();
+  }
+  async function printBlankIssueVoucher(){
+    const area=document.getElementById("print-area");area.className="print-voucher";area.innerHTML=buildIssueVoucher(null,[]);
+    await openPrintDialog("แบบฟอร์ม A4 พร้อมแล้ว เลือก “บันทึกเป็น PDF” เพื่อดาวน์โหลด หรือเลือกเครื่องพิมพ์เพื่อพิมพ์ทันที");
+  }
+  async function printIssueVoucher(docNo){
+    let lines=state.transactions.filter(x=>x.docNo===docNo&&x.type==="out");if(!lines.length){const one=state.transactions.find(x=>x.id===docNo&&x.type==="out");if(one)lines=[one];}
+    const tx=lines[0];if(!tx){toast("ไม่พบใบเบิกสำหรับพิมพ์",true);return;}
+    const area=document.getElementById("print-area");area.className="print-voucher";area.innerHTML=buildIssueVoucher(tx,lines);
+    await openPrintDialog("ใบเบิก A4 แบบสองส่วนพร้อมแล้ว เลือก “บันทึกเป็น PDF” หรือพิมพ์ที่สเกล 100%");
+  }
+  document.getElementById("btn-issue-blank-form").addEventListener("click",printBlankIssueVoucher);
+
   function printTransactionById(id){
     const tx=state.transactions.find(x=>x.id===id);if(!tx){toast("ไม่พบรายการสำหรับพิมพ์",true);return;}printDocumentByNo(tx.docNo||tx.id);
   }
   function printDocumentByNo(docNo){
     let lines=state.transactions.filter(x=>x.docNo===docNo);if(!lines.length){const one=state.transactions.find(x=>x.id===docNo);if(one)lines=[one];}const tx=lines[0];if(!tx){toast("ไม่พบรายการสำหรับพิมพ์",true);return;}
+    if(tx.type==="out"){printIssueVoucher(docNo);return;}
     const logo=document.querySelector("[data-drive-logo]");
     const title=tx.type==="in"?"ใบรับเข้าอะไหล่":"ใบเบิกอะไหล่";
     const party=tx.type==="in"?(tx.supplier||tx.person||"-"):(tx.person||"-");
     const rows=lines.map((line,index)=>{const p=partById(line.partId);return `<tr><td>${index+1}</td><td>${escapeHTML(p?p.code:"-")}</td><td>${escapeHTML(p?p.name:"-")}</td><td>${line.qty}</td><td>${escapeHTML(p?p.unit:"")}</td>${tx.type==="out"?`<td>${fmtMoney(line.unitPrice)}</td><td>${fmtMoney(line.discount)}</td><td>${fmtMoney(line.lineAmount)}</td>`:""}<td>${escapeHTML(line.note||"-")}</td></tr>`;}).join("");
-    document.getElementById("print-area").innerHTML=`
+    const printArea=document.getElementById("print-area");printArea.className="print-standard";printArea.innerHTML=`
       <div class="print-head"><img src="${escapeHTML(logo?logo.src:"")}"><div><h1>H.O.B Stock Control</h1><h2>${title}</h2></div></div>
       <div><b>เลขที่เอกสาร:</b> ${escapeHTML(tx.docNo||"-")} &nbsp; <b>วันที่:</b> ${fmtDate(tx.date)}</div>
       <div><b>${tx.type==="in"?"ผู้ส่ง/ซัพพลายเออร์":"ผู้เบิก/แผนก"}:</b> ${escapeHTML(party)}</div>
@@ -5268,7 +5379,7 @@
       ${tx.type==="out"?`<p style="text-align:right"><b>มูลค่ารวม ${fmtMoney(lines.reduce((s,x)=>s+Number(x.lineAmount||0),0))} บาท</b></p>`:""}
       ${lines.every(x=>x.status==="cancelled")?`<p><b>สถานะ: ยกเลิกแล้ว</b> — ${escapeHTML(tx.cancelReason||"")}</p>`:""}
       <div class="print-sign"><div>ลงชื่อ ____________________<br>ผู้ทำรายการ</div><div>ลงชื่อ ____________________<br>ผู้ตรวจสอบ/อนุมัติ</div></div>`;
-    window.print();
+    openPrintDialog("เลือกเครื่องพิมพ์ หรือเลือก “บันทึกเป็น PDF” เพื่อดาวน์โหลดไฟล์");
   }
 
   async function cancelTransactionUI(id){
@@ -5779,7 +5890,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.5.2`;
+    document.title=`${meta.title} | Stock Control v4.5.3`;
   }
 
   function selectLabel(el){
