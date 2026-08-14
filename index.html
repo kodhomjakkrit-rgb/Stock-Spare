@@ -2110,6 +2110,50 @@
   @media(max-width:640px){
     html[data-theme="dark"] .searchable-select-backdrop.show{background:rgba(0,0,0,.72);}
   }
+
+  /* ================= v4.6.4 Dark table readability ================= */
+  html[data-theme="dark"] .table-wrap{
+    background:#101a22;
+    border-color:#314451;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+  }
+  html[data-theme="dark"] .table-wrap table{
+    background:#101a22;
+    color:#e4edf5;
+  }
+  html[data-theme="dark"] .table-wrap thead th{
+    background:#172731;
+    color:#d3dee8;
+    border-bottom-color:#3a4d5a;
+    font-weight:700;
+  }
+  html[data-theme="dark"] .table-wrap tbody tr:not(.empty-row){
+    background:#101a22;
+  }
+  html[data-theme="dark"] .table-wrap tbody tr:nth-child(even):not(.empty-row){
+    background:#14232c;
+  }
+  html[data-theme="dark"] .table-wrap tbody tr:hover:not(.empty-row){
+    background:#19363a!important;
+  }
+  html[data-theme="dark"] .table-wrap tbody td{
+    color:#e1eaf2;
+    border-bottom-color:#2c3d48;
+  }
+  html[data-theme="dark"] .table-wrap .empty-row,
+  html[data-theme="dark"] .table-wrap .empty-row td{
+    background:#101a22;
+    color:#91a3b4;
+  }
+  html[data-theme="dark"] .table-wrap table.sortable-table thead th.sortable-column:hover,
+  html[data-theme="dark"] .table-wrap table.sortable-table thead th.sortable-column:focus-visible,
+  html[data-theme="dark"] .table-wrap table.sortable-table thead th.sortable-column.sort-asc,
+  html[data-theme="dark"] .table-wrap table.sortable-table thead th.sortable-column.sort-desc{
+    background:#1c3538;
+    color:#8ce4da;
+  }
+  html[data-theme="dark"] .table-wrap::-webkit-scrollbar-track{background:#0d171e;}
+  html[data-theme="dark"] .table-wrap::-webkit-scrollbar-thumb{background:#3b4f5c;border-color:#0d171e;}
   @media print{
     html[data-theme="dark"],html[data-theme="dark"] body{color-scheme:light;background:#fff!important;color:#111!important;}
   }
@@ -2123,7 +2167,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.6.3</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.6.4</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -2203,7 +2247,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.6.3</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.6.4</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -3939,7 +3983,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.6.3 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.6.4 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -6840,7 +6884,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.6.3`;
+    document.title=`${meta.title} | Stock Control v4.6.4`;
   }
 
   function selectLabel(el){
