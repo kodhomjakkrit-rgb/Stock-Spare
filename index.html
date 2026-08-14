@@ -1549,7 +1549,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.5.1</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.5.2</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1629,7 +1629,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.5.1</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.5.2</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -2083,6 +2083,7 @@
         <button class="master-type" data-master-type="trucks"><strong>รถบรรทุก</strong><span>ทะเบียนรถ จังหวัด และผู้ขับ</span></button>
         <button class="master-type" data-master-type="provinces"><strong>จังหวัด</strong><span>รายการจังหวัดสำหรับเลือกใช้</span></button>
         <button class="master-type" data-master-type="documents"><strong>PR / PO / IV</strong><span>เลขที่เอกสารอ้างอิง</span></button>
+        <button class="master-type" data-master-type="partCategories"><strong>หมวดหมู่ SKU</strong><span>ระบบรถ ชื่อตัวเลือก และตัวย่อรหัส 3 ตัว</span></button>
       </div>
       <div class="search-bar">
         <input type="text" id="master-search" placeholder="ค้นหาข้อมูล...">
@@ -2311,7 +2312,7 @@
       <div class="field"><label>ชื่ออะไหล่</label><input type="text" id="pf-name" placeholder="ชื่ออะไหล่" autocomplete="off"></div>
       <div class="field">
         <label>หมวดหมู่</label>
-        <select id="pf-category">
+        <div class="inline-control"><select id="pf-category">
           <option>เครื่องยนต์</option>
           <option>ระบบไฟฟ้า</option>
           <option>ระบบเบรก</option>
@@ -2322,7 +2323,7 @@
           <option>น้ำมันและสารหล่อลื่น</option>
           <option>อุปกรณ์ทั่วไป</option>
           <option value="__custom__">+ เพิ่มหมวดหมู่ใหม่...</option>
-        </select>
+        </select><button class="small" type="button" data-quick-master="partCategories" data-admin-only>+ หมวดหมู่</button></div>
         <input type="text" id="pf-category-custom" placeholder="พิมพ์ชื่อหมวดหมู่ใหม่" style="display:none;margin-top:6px;">
       </div>
       <div class="field">
@@ -2409,6 +2410,13 @@
       <div class="field"><label>วันที่</label><input type="date" id="mf-doc-date" data-default-today title="ระบบใส่วันที่ปัจจุบันให้อัตโนมัติ และสามารถเลือกวันที่อื่นได้"></div>
       <div class="field"><label>ซัพพลายเออร์</label><select id="mf-doc-supplier"></select></div>
       <div class="field span2"><label>หมายเหตุ</label><textarea id="mf-doc-note"></textarea></div>
+    </div>
+
+    <div class="field-grid master-form-group" id="master-form-partCategories">
+      <div class="field"><label>ชื่อหมวดหมู่ *</label><input id="mf-category-name" placeholder="เช่น ระบบเชื้อเพลิง"></div>
+      <div class="field"><label>ตัวย่อ SKU 3 ตัว *</label><input id="mf-category-prefix" maxlength="3" placeholder="เช่น FUE" style="text-transform:uppercase" autocomplete="off"></div>
+      <div class="field span2"><label>คำอธิบาย</label><textarea id="mf-category-description" placeholder="ระบุขอบเขตอะไหล่ในหมวดนี้"></textarea></div>
+      <div class="field span2"><div class="import-note">ตัวย่อนี้ใช้สร้าง SKU ใหม่ เช่น FUE-PMP-001 การแก้ไขตัวย่อจะไม่เปลี่ยนรหัสอะไหล่เดิม</div></div>
     </div>
 
     <div class="field choice-field">
@@ -3123,7 +3131,7 @@
       requestLines=restoredRequest.length?restoredRequest:[{id:uid(),partId:"",qty:""}];
       Object.keys(countDraft).forEach(k=>delete countDraft[k]);
       Object.assign(countDraft,draft.countDraft&&typeof draft.countDraft==="object"?draft.countDraft:{});
-      if(["customers","suppliers","trucks","provinces","documents"].includes(draft.currentMasterType)) currentMasterType=draft.currentMasterType;
+      if(["customers","suppliers","trucks","provinces","documents","partCategories"].includes(draft.currentMasterType)) currentMasterType=draft.currentMasterType;
       renderAll();
       Object.entries(draft.fields||{}).forEach(([id,saved])=>{
         const el=document.getElementById(id);
@@ -3237,7 +3245,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.5.1 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.5.2 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -3265,7 +3273,7 @@
     });
   }
 
-  let state = { parts: [], transactions: [], customers: [], suppliers: [], trucks: [], provinces: [], documents: [], stockCounts: [], requisitions: [], requisitionItems: [], backups: [], users: [], auditLogs: [] };
+  let state = { parts: [], transactions: [], customers: [], suppliers: [], trucks: [], provinces: [], documents: [], partCategories: [], stockCounts: [], requisitions: [], requisitionItems: [], backups: [], users: [], auditLogs: [] };
   const charts = {};
   const CHART_FONT_TH = "'Noto Sans Thai', sans-serif";
   const CHART_FONT_MONO = "'IBM Plex Mono', monospace";
@@ -3448,13 +3456,15 @@
     const trucks = (data.trucks||[]).map(x=>({id:String(x.id||""),plateNo:String(x.plateNo||""),provinceId:String(x.provinceId||""),description:String(x.description||""),driver:String(x.driver||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.plateNo);
     const provinces = (data.provinces||[]).map(x=>({id:String(x.id||""),name:String(x.name||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.name);
     const documents = (data.documents||[]).map(x=>({id:String(x.id||""),docType:String(x.docType||"").toUpperCase(),docNo:String(x.docNo||""),supplierId:String(x.supplierId||""),date:String(x.date||"").slice(0,10),note:String(x.note||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.docNo);
+    const partCategories = (data.partCategories||[]).map(x=>({id:String(x.id||""),name:String(x.name||""),prefix:String(x.prefix||"").trim().toUpperCase(),description:String(x.description||""),isActive:truthyActive(x.isActive),isSystem:x.isSystem===true||String(x.isSystem).toLowerCase()==="true"||String(x.isSystem)==="1",createdAt:String(x.createdAt||""),updatedAt:String(x.updatedAt||"")})).filter(x=>x.id&&x.name&&/^[A-Z0-9]{3}$/.test(x.prefix));
+    if(!partCategories.length && typeof DEFAULT_PART_CATEGORIES!=="undefined") DEFAULT_PART_CATEGORIES.forEach(x=>partCategories.push({...x,id:"default-"+x.prefix,isActive:true,isSystem:true,createdAt:"",updatedAt:""}));
     const stockCounts = (data.stockCounts||[]).map(x=>({id:String(x.id||""),countNo:String(x.countNo||""),date:String(x.date||"").slice(0,10),partId:String(x.partId||""),systemQty:Number(x.systemQty)||0,actualQty:Number(x.actualQty)||0,difference:Number(x.difference)||0,reason:String(x.reason||""),countedBy:String(x.countedBy||""),approvedBy:String(x.approvedBy||""),status:String(x.status||"approved"),createdAt:String(x.createdAt||""),createdBy:String(x.createdBy||"")})).filter(x=>x.id&&x.partId);
     const requisitions = (data.requisitions||[]).map(x=>({id:String(x.id||""),reqNo:String(x.reqNo||""),date:String(x.date||"").slice(0,10),requester:String(x.requester||""),department:String(x.department||""),purpose:String(x.purpose||""),status:String(x.status||"pending"),approvedBy:String(x.approvedBy||""),approvedAt:String(x.approvedAt||""),issuedBy:String(x.issuedBy||""),issuedAt:String(x.issuedAt||""),cancelReason:String(x.cancelReason||""),createdAt:String(x.createdAt||""),createdBy:String(x.createdBy||""),updatedAt:String(x.updatedAt||""),version:Number(x.version)||1})).filter(x=>x.id);
     const requisitionItems = (data.requisitionItems||[]).map(x=>({id:String(x.id||""),requisitionId:String(x.requisitionId||""),lineNo:Number(x.lineNo)||0,partId:String(x.partId||""),qty:Number(x.qty)||0,approvedQty:Number(x.approvedQty)||0,reservedQty:Number(x.reservedQty)||0,issuedQty:Number(x.issuedQty)||0,note:String(x.note||"")})).filter(x=>x.id&&x.requisitionId&&x.partId);
     const backups = (data.backups||[]).map(x=>({id:String(x.id||""),timestamp:String(x.timestamp||""),fileId:String(x.fileId||""),fileName:String(x.fileName||""),fileUrl:String(x.fileUrl||""),createdBy:String(x.createdBy||""),reason:String(x.reason||""),status:String(x.status||"ready")})).filter(x=>x.id);
     const users = (data.users||[]).map(x=>({id:String(x.id||""),username:String(x.username||""),name:String(x.name||""),role:x.role==="admin"?"admin":"staff",isActive:truthyActive(x.isActive),mustChangePassword:!!x.mustChangePassword,failedAttempts:Number(x.failedAttempts)||0,lockedUntil:String(x.lockedUntil||""),createdAt:String(x.createdAt||""),updatedAt:String(x.updatedAt||"")})).filter(x=>x.id&&x.username);
     const auditLogs = (data.auditLogs||[]).map(x=>({id:String(x.id||""),timestamp:String(x.timestamp||""),username:String(x.username||""),userName:String(x.userName||""),role:String(x.role||""),action:String(x.action||""),entityType:String(x.entityType||""),entityId:String(x.entityId||""),detail:String(x.detail||"")}));
-    return { parts, transactions, customers, suppliers, trucks, provinces, documents, stockCounts, requisitions, requisitionItems, backups, users, auditLogs };
+    return { parts, transactions, customers, suppliers, trucks, provinces, documents, partCategories, stockCounts, requisitions, requisitionItems, backups, users, auditLogs };
   }
 
   async function syncFromSheet(showToastOnFail){
@@ -3564,6 +3574,7 @@
     state.customers = [];
     state.trucks = [];
     state.documents = [];
+    state.partCategories = DEFAULT_PART_CATEGORIES.map(x=>({...x,id:uid(),isActive:true,isSystem:true,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()}));
     state.stockCounts = [];
     state.requisitions = [];
     state.requisitionItems = [];
@@ -3953,11 +3964,43 @@
   document.getElementById("part-cat-filter").addEventListener("change", renderParts);
   document.getElementById("btn-add-part").addEventListener("click", ()=> openPartModal(null));
 
-  const DEFAULT_CATEGORIES = ["เครื่องจักร","ไฟฟ้า","บรรจุภัณฑ์","ท่อ-วาล์ว","อื่นๆ"];
+  const DEFAULT_PART_CATEGORIES = [
+    {name:"เครื่องจักร",prefix:"MCH",description:"เครื่องจักรและอุปกรณ์งานซ่อมทั่วไป"},
+    {name:"บรรจุภัณฑ์",prefix:"PKG",description:"วัสดุบรรจุภัณฑ์เดิมของระบบ"},
+    {name:"ท่อ-วาล์ว",prefix:"PIP",description:"ท่อ วาล์ว และข้อต่อ"},
+    {name:"เครื่องยนต์",prefix:"ENG",description:"ชิ้นส่วนภายในและภายนอกเครื่องยนต์"},
+    {name:"ระบบเชื้อเพลิง",prefix:"FUE",description:"ปั๊มเชื้อเพลิง หัวฉีด ถัง ท่อ และกรองเชื้อเพลิง"},
+    {name:"ระบบไฟฟ้า",prefix:"ELE",description:"สายไฟ รีเลย์ ฟิวส์ เซนเซอร์ และอุปกรณ์ไฟฟ้า"},
+    {name:"ระบบสตาร์ทและชาร์จ",prefix:"STC",description:"แบตเตอรี่ ไดสตาร์ท ไดชาร์จ และอุปกรณ์ชาร์จ"},
+    {name:"ระบบเบรก",prefix:"BRK",description:"ผ้าเบรก จานเบรก ปั๊มเบรก และอุปกรณ์เบรก"},
+    {name:"ช่วงล่าง",prefix:"SUS",description:"โช้ค สปริง ลูกหมาก บูช และชิ้นส่วนช่วงล่าง"},
+    {name:"ระบบบังคับเลี้ยว",prefix:"STR",description:"พวงมาลัย แร็ค ปั๊ม และอุปกรณ์บังคับเลี้ยว"},
+    {name:"ระบบส่งกำลัง",prefix:"TRN",description:"เกียร์ ชุดส่งกำลัง และอุปกรณ์เกี่ยวข้อง"},
+    {name:"ระบบคลัตช์",prefix:"CLT",description:"ชุดคลัตช์ แม่ปั๊ม ลูกปั๊ม และอุปกรณ์คลัตช์"},
+    {name:"ระบบเพลาขับและเฟืองท้าย",prefix:"DRV",description:"เพลาขับ กากบาท เฟืองท้าย และลูกปืนเพลา"},
+    {name:"ระบบหล่อเย็น",prefix:"COL",description:"หม้อน้ำ ปั๊มน้ำ เทอร์โมสตัท ท่อ และน้ำยาหล่อเย็น"},
+    {name:"ระบบแอร์",prefix:"AIR",description:"คอมเพรสเซอร์ คอยล์ ท่อ และอุปกรณ์ปรับอากาศ"},
+    {name:"ระบบไอเสีย",prefix:"EXH",description:"ท่อไอเสีย หม้อพัก แคตตาไลติก และอุปกรณ์ควบคุมไอเสีย"},
+    {name:"ล้อและยาง",prefix:"WHL",description:"ยาง ล้อ น็อตล้อ ดุม และอุปกรณ์ล้อ"},
+    {name:"ระบบไฮดรอลิก",prefix:"HYD",description:"ปั๊ม กระบอก สาย และวาล์วไฮดรอลิก"},
+    {name:"ระบบลมและนิวเมติก",prefix:"PNE",description:"ปั๊มลม ถังลม วาล์ว และระบบเบรกลม"},
+    {name:"ตัวถัง",prefix:"BDY",description:"ตัวถัง กันชน ประตู ฝากระโปรง และโครงสร้าง"},
+    {name:"ห้องโดยสารและอุปกรณ์ภายใน",prefix:"CAB",description:"เบาะ แผงหน้าปัด สวิตช์ และอุปกรณ์ภายใน"},
+    {name:"กระจกและที่ปัดน้ำฝน",prefix:"WIP",description:"กระจก มอเตอร์ ใบปัด และระบบฉีดน้ำล้างกระจก"},
+    {name:"ระบบความปลอดภัย",prefix:"SAF",description:"เข็มขัดนิรภัย ถุงลม สัญญาณเตือน และอุปกรณ์ความปลอดภัย"},
+    {name:"ไส้กรอง",prefix:"FIL",description:"กรองอากาศ กรองน้ำมัน กรองเชื้อเพลิง และกรองอื่น ๆ"},
+    {name:"น้ำมันและสารหล่อลื่น",prefix:"LUB",description:"น้ำมันเครื่อง น้ำมันเกียร์ จาระบี และของเหลวหล่อลื่น"},
+    {name:"อุปกรณ์ทั่วไป",prefix:"ACC",description:"น็อต คลิป สายรัด และอุปกรณ์ทั่วไป"},
+    {name:"อื่นๆ",prefix:"OTH",description:"รายการที่ยังไม่เข้าหมวดหมู่เฉพาะ"}
+  ];
+  const DEFAULT_CATEGORIES = DEFAULT_PART_CATEGORIES.map(x=>x.name);
   const DEFAULT_UNITS = ["ชิ้น","ชุด","ม้วน","เมตร","กก.","ลิตร","กล่อง"];
 
   function populateSelectWithCustomOption(selectEl, defaults, currentValue, customLabel){
-    const known = new Set(defaults);
+    const categoryDefaults=selectEl.id==="pf-category"&&state.partCategories?.length
+      ? state.partCategories.filter(x=>x.isActive!==false).map(x=>x.name)
+      : defaults;
+    const known = new Set(categoryDefaults);
     state.parts.forEach(p=>{
       const v = selectEl.id === "pf-category" ? p.category : p.unit;
       if(v) known.add(v);
@@ -3965,7 +4008,7 @@
     if(currentValue) known.add(currentValue);
     const opts = [...known].map(v=>`<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`).join("");
     selectEl.innerHTML = opts + `<option value="__custom__">${customLabel}</option>`;
-    selectEl.value = currentValue && known.has(currentValue) ? currentValue : (defaults[0]||"");
+    selectEl.value = currentValue && known.has(currentValue) ? currentValue : (categoryDefaults[0]||defaults[0]||"");
   }
 
   function toggleCustomField(selectId, customInputId){
@@ -3987,13 +4030,18 @@
     const en=txt.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,3); if(en) return en.padEnd(3,"X");
     return fallback;
   }
+  function categoryPrefix(value){
+    const name=String(value||"").trim();
+    const configured=[...(state.partCategories||[]),...DEFAULT_PART_CATEGORIES].find(x=>x.name.trim().toLowerCase()===name.toLowerCase());
+    return configured?.prefix||SKU_CATEGORY_CODES[name]||cleanSkuToken(name,"OTH");
+  }
   function currentPartCategory(){
     const sel=document.getElementById("pf-category");
     return sel.value==="__custom__" ? document.getElementById("pf-category-custom").value.trim() : sel.value;
   }
   function skuSuggestion(){
     const cat=currentPartCategory(); const typ=document.getElementById("pf-item-type").value.trim();
-    const cp=SKU_CATEGORY_CODES[cat]||cleanSkuToken(cat,"OTH");
+    const cp=categoryPrefix(cat);
     const tp=SKU_TYPE_CODES[typ]||cleanSkuToken(typ,"ITM");
     const prefix=cp+"-"+tp+"-";
     let max=0;
@@ -4813,7 +4861,8 @@
     suppliers:{title:"รายชื่อซัพพลายเออร์",headers:["รหัส","ซัพพลายเออร์","ผู้ติดต่อ","โทรศัพท์","จังหวัด","สถานะ",""]},
     trucks:{title:"ทะเบียนรถบรรทุก",headers:["ทะเบียนรถ","จังหวัด","รายละเอียด","ผู้ขับ","สถานะ",""]},
     provinces:{title:"รายชื่อจังหวัด",headers:["จังหวัด","สถานะ",""]},
-    documents:{title:"เลขอ้างอิง PR / PO / IV",headers:["ประเภท","เลขที่เอกสาร","วันที่","ซัพพลายเออร์","หมายเหตุ","สถานะ",""]}
+    documents:{title:"เลขอ้างอิง PR / PO / IV",headers:["ประเภท","เลขที่เอกสาร","วันที่","ซัพพลายเออร์","หมายเหตุ","สถานะ",""]},
+    partCategories:{title:"หมวดหมู่อะไหล่และตัวย่อ SKU",headers:["หมวดหมู่","ตัวย่อ SKU","คำอธิบาย","ที่มา","สถานะ",""]}
   };
 
   function clearMasterImport(){
@@ -4836,6 +4885,7 @@
     if(currentMasterType==="suppliers") return `${x.code} ${x.name} ${x.contact} ${x.phone} ${x.taxId} ${provinceById(x.provinceId)?.name||""}`;
     if(currentMasterType==="trucks") return `${x.plateNo} ${x.description} ${x.driver} ${provinceById(x.provinceId)?.name||""}`;
     if(currentMasterType==="provinces") return x.name;
+    if(currentMasterType==="partCategories") return `${x.name} ${x.prefix} ${x.description}`;
     return `${x.docType} ${x.docNo} ${x.date} ${x.note} ${supplierById(x.supplierId)?.name||""}`;
   }
   function masterRecordKey(type,x){
@@ -4843,6 +4893,7 @@
     if(type==="suppliers")return String(x.code||x.name||"").trim().toLowerCase();
     if(type==="trucks")return `${x.plateNo||""}|${x.provinceId||""}`.trim().toLowerCase();
     if(type==="provinces")return String(x.name||"").trim().toLowerCase();
+    if(type==="partCategories")return String(x.name||"").trim().toLowerCase();
     return `${x.docType||""}|${x.docNo||""}`.trim().toLowerCase();
   }
 
@@ -4860,6 +4911,7 @@
       if(currentMasterType==="suppliers") return `<tr><td class="mono">${escapeHTML(x.code||"-")}</td><td>${escapeHTML(x.name)}</td><td>${escapeHTML(x.contact||"-")}</td><td class="mono">${escapeHTML(x.phone||"-")}</td><td>${escapeHTML(provinceById(x.provinceId)?.name||"-")}</td><td>${status}</td>${actions}</tr>`;
       if(currentMasterType==="trucks") return `<tr><td class="mono">${escapeHTML(x.plateNo)}</td><td>${escapeHTML(provinceById(x.provinceId)?.name||"-")}</td><td>${escapeHTML(x.description||"-")}</td><td>${escapeHTML(x.driver||"-")}</td><td>${status}</td>${actions}</tr>`;
       if(currentMasterType==="provinces") return `<tr><td>${escapeHTML(x.name)}</td><td>${status}</td>${actions}</tr>`;
+      if(currentMasterType==="partCategories") return `<tr><td>${escapeHTML(x.name)}</td><td class="mono"><strong>${escapeHTML(x.prefix)}</strong></td><td>${escapeHTML(x.description||"-")}</td><td>${x.isSystem?'<span class="tag low">แนะนำ</span>':'กำหนดเอง'}</td><td>${status}</td>${actions}</tr>`;
       return `<tr><td><span class="tag ok">${escapeHTML(x.docType)}</span></td><td class="mono">${escapeHTML(x.docNo)}</td><td>${fmtDate(x.date)}</td><td>${escapeHTML(supplierById(x.supplierId)?.name||"-")}</td><td>${escapeHTML(x.note||"-")}</td><td>${status}</td>${actions}</tr>`;
     }).join(""):`<tr class="empty-row"><td colspan="${ui.headers.length}">ยังไม่มีข้อมูล</td></tr>`;
     document.querySelectorAll("[data-master-edit]").forEach(b=>b.addEventListener("click",()=>openMasterModal(currentMasterType,b.dataset.masterEdit)));
@@ -4886,6 +4938,11 @@
       document.getElementById("mf-truck-plate").value=x?x.plateNo:""; document.getElementById("mf-truck-province").value=x?x.provinceId:"";
       document.getElementById("mf-truck-description").value=x?x.description:""; document.getElementById("mf-truck-driver").value=x?x.driver:"";
     }else if(type==="provinces") document.getElementById("mf-province-name").value=x?x.name:"";
+    else if(type==="partCategories"){
+      document.getElementById("mf-category-name").value=x?x.name:"";
+      document.getElementById("mf-category-prefix").value=x?x.prefix:"";
+      document.getElementById("mf-category-description").value=x?x.description:"";
+    }
     else{
       document.getElementById("mf-doc-type").value=x?x.docType:"PR"; document.getElementById("mf-doc-no").value=x?x.docNo:"";
       document.getElementById("mf-doc-date").value=x?x.date:todayISO(); document.getElementById("mf-doc-supplier").value=x?x.supplierId:"";
@@ -4901,6 +4958,7 @@
     if(modalMasterType==="suppliers") return {...base,code:document.getElementById("mf-supplier-code").value.trim(),name:document.getElementById("mf-supplier-name").value.trim(),contact:document.getElementById("mf-supplier-contact").value.trim(),phone:document.getElementById("mf-supplier-phone").value.trim(),taxId:document.getElementById("mf-supplier-tax").value.trim(),address:document.getElementById("mf-supplier-address").value.trim(),provinceId:document.getElementById("mf-supplier-province").value};
     if(modalMasterType==="trucks") return {...base,plateNo:document.getElementById("mf-truck-plate").value.trim(),provinceId:document.getElementById("mf-truck-province").value,description:document.getElementById("mf-truck-description").value.trim(),driver:document.getElementById("mf-truck-driver").value.trim()};
     if(modalMasterType==="provinces") return {...base,name:document.getElementById("mf-province-name").value.trim()};
+    if(modalMasterType==="partCategories") return {...base,name:document.getElementById("mf-category-name").value.trim(),prefix:document.getElementById("mf-category-prefix").value.trim().toUpperCase(),description:document.getElementById("mf-category-description").value.trim(),isSystem:(state.partCategories||[]).find(x=>x.id===base.id)?.isSystem===true,updatedAt:new Date().toISOString()};
     return {...base,docType:document.getElementById("mf-doc-type").value,docNo:document.getElementById("mf-doc-no").value.trim(),date:document.getElementById("mf-doc-date").value,supplierId:document.getElementById("mf-doc-supplier").value,note:document.getElementById("mf-doc-note").value.trim()};
   }
 
@@ -4925,12 +4983,20 @@
     if(modalMasterType==="suppliers"&&!record.name){toast("กรุณาระบุชื่อซัพพลายเออร์",true);return;}
     if(modalMasterType==="trucks"&&!record.plateNo){toast("กรุณาระบุทะเบียนรถ",true);return;}
     if(modalMasterType==="provinces"&&!record.name){toast("กรุณาระบุชื่อจังหวัด",true);return;}
+    if(modalMasterType==="partCategories"&&!record.name){toast("กรุณาระบุชื่อหมวดหมู่",true);return;}
+    if(modalMasterType==="partCategories"&&!/^[A-Z0-9]{3}$/.test(record.prefix)){toast("ตัวย่อ SKU ต้องเป็น A-Z หรือ 0-9 จำนวน 3 ตัว",true);return;}
     if(modalMasterType==="documents"&&!record.docNo){toast("กรุณาระบุเลขที่เอกสาร",true);return;}
     if((state[modalMasterType]||[]).some(x=>x.id!==record.id&&masterRecordKey(modalMasterType,x)===masterRecordKey(modalMasterType,record))){toast("ข้อมูลนี้มีอยู่ในฐานข้อมูลแล้ว",true);return;}
+    if(modalMasterType==="partCategories"&&(state.partCategories||[]).some(x=>x.id!==record.id&&x.prefix===record.prefix)){toast("ตัวย่อ SKU นี้ถูกใช้กับหมวดหมู่อื่นแล้ว",true);return;}
     const btn=document.getElementById("btn-master-modal-save");btn.disabled=true;btn.textContent="กำลังบันทึก...";
     try{
       const saved=hasScriptURL()?await apiCall("saveMaster",{masterType:modalMasterType,record}):record;
       const list=state[modalMasterType],idx=list.findIndex(x=>x.id===saved.id);if(idx>=0)list[idx]=saved;else list.push(saved);
+      if(modalMasterType==="partCategories"&&document.getElementById("modal-overlay").classList.contains("show")){
+        populateSelectWithCustomOption(document.getElementById("pf-category"),DEFAULT_CATEGORIES,saved.name,"+ เพิ่มหมวดหมู่ใหม่...");
+        document.getElementById("pf-category-custom").style.display="none";
+        refreshPartHelpers(true);
+      }
       cacheSave();clearSmartDirty();closeMasterModal();renderAll();toast("บันทึกฐานข้อมูลเรียบร้อย"+(hasScriptURL()?" และซิงก์กับ Sheets แล้ว":""));
     }catch(err){toast("บันทึกไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="บันทึก";}
   });
@@ -4941,9 +5007,12 @@
       if(type==="suppliers")return String(x.code||x.name).toLowerCase();
       if(type==="trucks")return `${x.plateNo}|${x.provinceId}`.toLowerCase();
       if(type==="provinces")return x.name.toLowerCase();
+      if(type==="partCategories")return x.name.toLowerCase();
       return `${x.docType}|${x.docNo}`.toLowerCase();
     }));
     const seen=new Set();
+    const existingPrefixes=new Set(type==="partCategories"?(state.partCategories||[]).map(x=>x.prefix):[]);
+    const seenPrefixes=new Set();
     return rawRows.map((raw,i)=>{
       const errors=[];let record={id:uid(),isActive:String(raw["สถานะ"]||"ใช้งาน").trim()!=="หยุดใช้",createdAt:new Date().toISOString()},key="",primary="",detail="";
       const provinceText=String(raw["จังหวัด"]||"").trim(),province=findByText(activeRows("provinces"),["name"],provinceText);
@@ -4959,6 +5028,13 @@
         if(!record.plateNo)errors.push("กรุณาระบุทะเบียนรถ");key=`${record.plateNo}|${record.provinceId}`.toLowerCase();primary=record.plateNo;detail=[provinceText,record.description].filter(Boolean).join(" · ")||"-";
       }else if(type==="provinces"){
         record={...record,name:String(raw["จังหวัด"]||"").trim()};if(!record.name)errors.push("กรุณาระบุจังหวัด");key=record.name.toLowerCase();primary=record.name;detail="จังหวัด";
+      }else if(type==="partCategories"){
+        record={...record,name:String(raw["ชื่อหมวดหมู่"]||"").trim(),prefix:String(raw["ตัวย่อ SKU"]||"").trim().toUpperCase(),description:String(raw["คำอธิบาย"]||"").trim(),isSystem:false,updatedAt:new Date().toISOString()};
+        if(!record.name)errors.push("กรุณาระบุชื่อหมวดหมู่");
+        if(!/^[A-Z0-9]{3}$/.test(record.prefix))errors.push("ตัวย่อ SKU ต้องเป็น A-Z หรือ 0-9 จำนวน 3 ตัว");
+        if(record.prefix&&(existingPrefixes.has(record.prefix)||seenPrefixes.has(record.prefix)))errors.push("ตัวย่อ SKU ซ้ำกับในระบบหรือซ้ำในไฟล์");
+        if(record.prefix)seenPrefixes.add(record.prefix);
+        key=record.name.toLowerCase();primary=record.name;detail=[record.prefix,record.description].filter(Boolean).join(" · ")||"หมวดหมู่ SKU";
       }else{
         const supplierText=String(raw["ซัพพลายเออร์"]||"").trim(),supplier=findByText(activeRows("suppliers"),["name","code"],supplierText);
         if(supplierText&&!supplier)errors.push("ไม่พบซัพพลายเออร์ในฐานข้อมูล");
@@ -5248,6 +5324,7 @@
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.trucks.map(x=>({"ทะเบียนรถ":x.plateNo,"จังหวัด":provinceById(x.provinceId)?.name||"","รายละเอียดรถ":x.description,"ผู้ขับ":x.driver,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "รถบรรทุก");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.provinces.map(x=>({"จังหวัด":x.name,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "จังหวัด");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.documents.map(x=>({"ประเภท":x.docType,"เลขที่เอกสาร":x.docNo,"วันที่":x.date,"ซัพพลายเออร์":supplierById(x.supplierId)?.name||"","หมายเหตุ":x.note,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "PR-PO-IV");
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet((state.partCategories||[]).map(x=>({"ชื่อหมวดหมู่":x.name,"ตัวย่อ SKU":x.prefix,"คำอธิบาย":x.description,"สถานะ":x.isActive!==false?"ใช้งาน":"หยุดใช้"}))), "หมวดหมู่ SKU");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet((state.stockCounts||[]).map(x=>{const p=partById(x.partId);return{"เลขที่ตรวจนับ":x.countNo,"วันที่":x.date,"รหัสอะไหล่":p?.code||"","ชื่ออะไหล่":p?.name||"","ยอดระบบ":x.systemQty,"ยอดจริง":x.actualQty,"ผลต่าง":x.difference,"เหตุผล":x.reason,"ผู้ตรวจ":x.countedBy,"ผู้อนุมัติ":x.approvedBy};})), "ตรวจนับสต๊อก");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet((state.requisitions||[]).map(r=>({"เลขที่คำขอ":r.reqNo,"วันที่":r.date,"ผู้ขอ":r.requester,"แผนก":r.department,"วัตถุประสงค์":r.purpose,"สถานะ":requestStatusText[r.status]||r.status,"ผู้อนุมัติ":r.approvedBy,"ผู้จ่าย":r.issuedBy,"เหตุผลยกเลิก/ไม่อนุมัติ":r.cancelReason}))), "คำขอเบิก");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet((state.requisitionItems||[]).map(x=>{const r=state.requisitions.find(v=>v.id===x.requisitionId),p=partById(x.partId);return{"เลขที่คำขอ":r?.reqNo||"","ลำดับ":x.lineNo,"รหัสอะไหล่":p?.code||"","ชื่ออะไหล่":p?.name||"","จำนวนขอ":x.qty,"จำนวนอนุมัติ":x.approvedQty,"จำนวนจอง":x.reservedQty,"จำนวนจ่าย":x.issuedQty};})), "รายการคำขอเบิก");
@@ -5278,7 +5355,8 @@
     suppliers:{sheet:"ซัพพลายเออร์",label:"ซัพพลายเออร์",headers:["รหัส","ชื่อซัพพลายเออร์","ผู้ติดต่อ","โทรศัพท์","เลขผู้เสียภาษี","ที่อยู่","จังหวัด","สถานะ"],example:["SUP-001","บริษัทตัวอย่าง จำกัด","สมชาย","0812345678","0105559999999","99/9 หมู่ 1","ราชบุรี","ใช้งาน"]},
     trucks:{sheet:"รถบรรทุก",label:"รถบรรทุก",headers:["ทะเบียนรถ","จังหวัด","รายละเอียดรถ","ผู้ขับ","สถานะ"],example:["70-1234","ราชบุรี","Hino 6 ล้อ","สมศักดิ์","ใช้งาน"]},
     provinces:{sheet:"จังหวัด",label:"จังหวัด",headers:["จังหวัด","สถานะ"],example:["ราชบุรี","ใช้งาน"]},
-    documents:{sheet:"PR-PO-IV",label:"PR / PO / IV",headers:["ประเภท","เลขที่เอกสาร","วันที่","ซัพพลายเออร์","หมายเหตุ","สถานะ"],example:["PO","PO-2026-001",todayISO(),"บริษัทตัวอย่าง จำกัด","ซื้ออะไหล่ประจำเดือน","ใช้งาน"]}
+    documents:{sheet:"PR-PO-IV",label:"PR / PO / IV",headers:["ประเภท","เลขที่เอกสาร","วันที่","ซัพพลายเออร์","หมายเหตุ","สถานะ"],example:["PO","PO-2026-001",todayISO(),"บริษัทตัวอย่าง จำกัด","ซื้ออะไหล่ประจำเดือน","ใช้งาน"]},
+    partCategories:{sheet:"หมวดหมู่ SKU",label:"หมวดหมู่ SKU",headers:["ชื่อหมวดหมู่","ตัวย่อ SKU","คำอธิบาย","สถานะ"],example:["ระบบเชื้อเพลิง","FUE","ปั๊มเชื้อเพลิง หัวฉีด ถัง ท่อ และกรองเชื้อเพลิง","ใช้งาน"]}
   };
   let importDraft = { type:"parts", rawRows:[], rows:[], fileName:"" };
 
@@ -5299,9 +5377,9 @@
     if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
     const guide = [
-      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.4.0 Customer & Issue Purpose Management"],
+      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.5.2 Custom Vehicle Repair Categories"],
       ["วิธีใช้","ใช้ไฟล์เดียวได้ทุกห้อง เลือกประเภทในโปรแกรมแล้วอัปโหลดไฟล์เดิม ระบบจะอ่านเฉพาะชีทที่ตรงกัน"],
-      ["ลำดับแนะนำ","จังหวัด → ลูกค้า → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
+      ["ลำดับแนะนำ","จังหวัด → ลูกค้า → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → หมวดหมู่ SKU → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
       ["การสร้าง SKU","ในชีท “เพิ่มอะไหล่” สามารถเว้นคอลัมน์รหัสอะไหล่ไว้ ระบบจะสร้าง SKU จากหมวดหมู่ + ประเภทไอเท็ม + เลขลำดับต่อจากข้อมูลเดิมให้อัตโนมัติ"],
       ["ข้อควรระวัง","ห้ามเปลี่ยนชื่อชีทและหัวคอลัมน์ วันที่แนะนำ yyyy-mm-dd และข้อมูลอ้างอิงควรตรงกับฐานข้อมูลกลาง"]
     ];
@@ -5314,7 +5392,7 @@
       ws["!autofilter"]={ref:"A1:"+XLSX.utils.encode_col(cfg.headers.length-1)+"1"};
       XLSX.utils.book_append_sheet(wb,ws,cfg.sheet);
     });
-    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.4.0.xlsx");
+    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.5.2.xlsx");
     toast("ดาวน์โหลดแม่แบบรวมเรียบร้อย");
   }
   document.getElementById("btn-download-import-template").addEventListener("click",downloadFullTemplate);
@@ -5409,7 +5487,7 @@
   }
 
   function nextImportSku(category,itemType,unavailableCodes){
-    const cp=SKU_CATEGORY_CODES[String(category||"").trim()]||cleanSkuToken(category,"OTH");
+    const cp=categoryPrefix(category);
     const tp=SKU_TYPE_CODES[String(itemType||"").trim()]||cleanSkuToken(itemType,"ITM");
     const prefix=cp+"-"+tp+"-";
     const escaped=prefix.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
@@ -5701,7 +5779,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.5.1`;
+    document.title=`${meta.title} | Stock Control v4.5.2`;
   }
 
   function selectLabel(el){
