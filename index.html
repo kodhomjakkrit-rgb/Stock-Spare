@@ -385,36 +385,45 @@
   }
   #print-area .voucher-a4:not(:last-child){page-break-after:always;break-after:page;}
   #print-area .voucher-copy{
-    box-sizing:border-box;min-height:0;border:.35mm solid #1f2937;border-radius:1.2mm;
-    padding:2.5mm 3mm;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto auto;gap:1.2mm;overflow:hidden;
+    box-sizing:border-box;min-height:0;border:.35mm solid #164e63;border-radius:1.4mm;
+    padding:2.3mm 2.8mm;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto auto auto;gap:1mm;overflow:hidden;
+    box-shadow:inset 0 0 0 .2mm #dbeafe;print-color-adjust:exact;-webkit-print-color-adjust:exact;
   }
-  #print-area .voucher-head{display:grid;grid-template-columns:18mm minmax(0,1fr) 38mm;gap:2mm;align-items:center;border-bottom:.35mm solid #1f2937;padding-bottom:1.4mm;}
+  #print-area .voucher-head{display:grid;grid-template-columns:18mm minmax(0,1fr) 41mm;gap:2mm;align-items:center;border-bottom:.5mm solid #0f766e;padding:0 0 1.5mm;}
   #print-area .voucher-brand{width:17mm;height:11mm;display:grid;place-items:center;overflow:hidden;}
   #print-area .voucher-brand img{display:block;max-width:100%;max-height:100%;object-fit:contain;}
   #print-area .voucher-brand-fallback{font:800 4.3mm 'Kanit',sans-serif;color:#0f766e;letter-spacing:.2mm;}
   #print-area .voucher-title{text-align:center;line-height:1.15;}
-  #print-area .voucher-title h1{margin:0;font-size:4.2mm;font-weight:800;letter-spacing:.1mm;}
-  #print-area .voucher-title div{margin-top:.5mm;font-size:2.2mm;color:#475569;}
-  #print-area .voucher-copy-label{text-align:right;font-size:2.25mm;line-height:1.35;}
-  #print-area .voucher-copy-label strong{display:block;color:#0f766e;font-size:2.7mm;}
-  #print-area .voucher-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:.2mm solid #9ca3af;border-right:0;border-bottom:0;}
-  #print-area .voucher-field{min-width:0;min-height:7mm;padding:.8mm 1.2mm;border-right:.2mm solid #9ca3af;border-bottom:.2mm solid #9ca3af;font-size:2.05mm;line-height:1.3;overflow:hidden;}
+  #print-area .voucher-title h1{margin:0;font-size:4.35mm;font-weight:800;letter-spacing:.08mm;color:#0f172a;}
+  #print-area .voucher-title div{margin-top:.55mm;font-size:2mm;color:#64748b;letter-spacing:.05mm;}
+  #print-area .voucher-copy-label{text-align:right;font-size:2.05mm;line-height:1.35;color:#475569;}
+  #print-area .voucher-copy-label strong{display:inline-block;margin-bottom:.65mm;padding:.65mm 1.5mm;border-radius:.8mm;background:#0f766e;color:#fff;font-size:2.45mm;}
+  #print-area .voucher-copy-label span{display:block;font-size:1.75mm;color:#64748b;}
+  #print-area .voucher-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:.2mm solid #94a3b8;border-right:0;border-bottom:0;background:#fff;}
+  #print-area .voucher-field{min-width:0;min-height:6.6mm;padding:.75mm 1.15mm;border-right:.2mm solid #94a3b8;border-bottom:.2mm solid #94a3b8;font-size:2.05mm;line-height:1.25;overflow:hidden;}
   #print-area .voucher-field.span2{grid-column:span 2;}
-  #print-area .voucher-field span{display:block;color:#64748b;font-size:1.8mm;line-height:1.1;}
-  #print-area .voucher-field b{display:block;margin-top:.45mm;font-size:2.25mm;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #print-area .voucher-field span{display:block;color:#64748b;font-size:1.68mm;line-height:1.1;font-weight:600;}
+  #print-area .voucher-field b{display:block;margin-top:.4mm;font-size:2.18mm;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#0f172a;}
   #print-area .voucher-items{min-height:0;overflow:hidden;}
   #print-area .voucher-items table{width:100%;height:100%;border-collapse:collapse;table-layout:fixed;margin:0;}
-  #print-area .voucher-items th,#print-area .voucher-items td{border:.2mm solid #6b7280;padding:.45mm .55mm;color:#111;text-align:center;vertical-align:middle;line-height:1.15;overflow:hidden;}
-  #print-area .voucher-items th{height:6.3mm;background:#e6f4f1;font-size:1.82mm;font-weight:800;}
-  #print-area .voucher-items td{height:5.6mm;font-size:1.95mm;white-space:nowrap;text-overflow:ellipsis;}
+  #print-area .voucher-items th,#print-area .voucher-items td{border:.2mm solid #64748b;padding:.42mm .55mm;color:#111;text-align:center;vertical-align:middle;line-height:1.15;overflow:hidden;}
+  #print-area .voucher-items th{height:6.1mm;background:#dff5f1;color:#134e4a;font-size:1.78mm;font-weight:800;}
+  #print-area .voucher-items td{height:5.25mm;font-size:1.9mm;white-space:nowrap;text-overflow:ellipsis;}
   #print-area .voucher-items td.item{text-align:left;white-space:normal;}
-  #print-area .voucher-note{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);border:.2mm solid #9ca3af;min-height:9.5mm;}
-  #print-area .voucher-note>div{padding:.8mm 1.1mm;font-size:1.9mm;line-height:1.35;overflow:hidden;}
-  #print-area .voucher-note>div+div{border-left:.2mm solid #9ca3af;}
-  #print-area .voucher-note b{font-size:2mm;}
+  #print-area .voucher-totals{display:grid;grid-template-columns:1fr 1fr 1.25fr;align-items:center;min-height:6mm;border:.2mm solid #94a3b8;background:#f8fafc;font-size:1.9mm;}
+  #print-area .voucher-totals>span{padding:.8mm 1.15mm;border-right:.2mm solid #cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #print-area .voucher-totals>span:last-child{border-right:0;text-align:right;background:#ecfdf5;color:#134e4a;font-weight:800;}
+  #print-area .voucher-note{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);border:.2mm solid #94a3b8;min-height:8.5mm;}
+  #print-area .voucher-note>div{padding:.7mm 1.05mm;font-size:1.82mm;line-height:1.3;overflow:hidden;}
+  #print-area .voucher-note>div+div{border-left:.2mm solid #94a3b8;background:#f8fafc;}
+  #print-area .voucher-note b{font-size:1.92mm;color:#334155;}
   #print-area .voucher-checks{white-space:normal;word-spacing:.35mm;}
-  #print-area .voucher-signatures{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.5mm;text-align:center;font-size:1.8mm;line-height:1.25;}
-  #print-area .voucher-signatures>div{padding-top:3.5mm;border-top:.2mm solid #6b7280;}
+  #print-area .voucher-signatures{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.5mm;padding-top:.3mm;text-align:center;font-size:1.72mm;line-height:1.2;}
+  #print-area .voucher-signature{min-width:0;padding:0 .8mm;}
+  #print-area .voucher-sign-line{display:flex;align-items:flex-end;gap:.8mm;height:5.3mm;color:#334155;white-space:nowrap;}
+  #print-area .voucher-sign-line i{display:block;flex:1;height:4.8mm;border-bottom:.3mm solid #111;}
+  #print-area .voucher-signature strong{display:block;margin-top:.65mm;color:#0f172a;font-size:1.85mm;}
+  #print-area .voucher-signature small{display:block;margin-top:.35mm;color:#475569;font-size:1.58mm;}
   #print-area .voucher-cut{display:flex;align-items:center;gap:2mm;color:#64748b;font-size:1.9mm;white-space:nowrap;}
   #print-area .voucher-cut::before,#print-area .voucher-cut::after{content:"";height:0;border-top:.25mm dashed #94a3b8;flex:1;}
   @media print{
@@ -1747,7 +1756,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.5.9</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.6.0</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1827,7 +1836,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.5.9</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.6.0</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -3547,7 +3556,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.5.9 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.6.0 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -5786,35 +5795,40 @@
       return `<tr><td>${index+1}</td><td class="mono">${escapeHTML(line&&part?part.code:"")}</td><td class="item">${escapeHTML(line&&part?part.name:"")}</td><td>${escapeHTML(line&&part?part.unit:"")}</td><td>${line?fmtMoney(line.qty):""}</td><td>${line?fmtMoney(line.qty):""}</td><td>${line?issueBalanceAfter(line):""}</td><td>${escapeHTML(line&&line.status==="cancelled"?"ยกเลิก":"")}</td></tr>`;
     }).join("");
   }
-  function voucherCopy(copyLabel,tx,lines,pageNo,totalPages){
+  function voucherSignature(role){
+    return `<div class="voucher-signature"><div class="voucher-sign-line"><span>ลงชื่อ</span><i></i></div><strong>${escapeHTML(role)}</strong><small>วันที่ ____ / ____ / ______</small></div>`;
+  }
+  function voucherCopy(copyLabel,tx,lines,pageNo,totalPages,documentTotals={}){
     const blank=!tx,customer=blank?null:customerById(tx.customerId),truck=blank?null:truckById(tx.truckId),province=blank?null:provinceById(tx.provinceId);
     const logo=document.querySelector("[data-drive-logo]"),logoSrc=logo&&logo.src?logo.src:"";
     const purpose=blank?"ขาย / งานซ่อม / ใช้ภายใน / โอนย้าย / อื่น ๆ":(ISSUE_PURPOSE_TEXT[tx.issuePurpose]||"ข้อมูลเก่า");
     const vehicle=blank?"":(tx.useVehicle?[truck?.plateNo,province?.name].filter(Boolean).join(" · "):"ไม่ใช้รถ");
     const references=blank?"":([tx.referenceNo,tx.prNo&&"PR "+tx.prNo,tx.poNo&&"PO "+tx.poNo,tx.ivNo&&"IV "+tx.ivNo].filter(Boolean).join(" · "));
-    const totalAmount=blank?0:lines.reduce((sum,line)=>sum+Number(line.lineAmount||0),0);
-    const cancelled=!blank&&lines.length&&lines.every(line=>line.status==="cancelled");
+    const totalLines=blank?0:Number(documentTotals.lines||0),totalQty=blank?0:Number(documentTotals.qty||0),totalAmount=blank?0:Number(documentTotals.amount||0);
+    const cancelled=!blank&&documentTotals.cancelled===true;
     const status=blank?"□ ครบถ้วน  □ จ่ายบางส่วน  □ ยังไม่จ่าย  □ ยกเลิก":(cancelled?"□ ครบถ้วน  □ จ่ายบางส่วน  □ ยังไม่จ่าย  ☑ ยกเลิก":"☑ ครบถ้วน  □ จ่ายบางส่วน  □ ยังไม่จ่าย  □ ยกเลิก");
     return `<section class="voucher-copy">
       <header class="voucher-head">
         <div class="voucher-brand">${logoSrc?`<img src="${escapeHTML(logoSrc)}" alt="H.O.B">`:'<div class="voucher-brand-fallback">H.O.B</div>'}</div>
         <div class="voucher-title"><h1>ใบเบิก - จ่ายอะไหล่</h1><div>SPARE PARTS ISSUE VOUCHER · H.O.B Stock Control</div></div>
-        <div class="voucher-copy-label"><strong>${escapeHTML(copyLabel)}</strong>หน้า ${pageNo}/${totalPages}</div>
+        <div class="voucher-copy-label"><strong>${escapeHTML(copyLabel)}</strong><span>เอกสารควบคุมภายใน</span>หน้า ${pageNo}/${totalPages}</div>
       </header>
       <div class="voucher-meta">
         ${voucherField("เลขที่เอกสาร",blank?"________________":tx.docNo)}${voucherField("วันที่",blank?"____ / ____ / ______":fmtDate(tx.date))}${voucherField("ผู้เบิก",blank?"":tx.person)}${voucherField("วัตถุประสงค์",purpose)}
         ${voucherField("ผู้รับสินค้า",blank?"":tx.receiverName)}${voucherField("แผนก",blank?"":tx.department)}${voucherField("เครื่องจักร / โครงการ",blank?"":tx.project)}${voucherField("ลูกค้า",blank?"":customer?.name)}
         ${voucherField("รถ / จังหวัด",vehicle)}${voucherField("เลขไมล์",blank?"":(tx.mileage!==""?fmtMoney(tx.mileage)+" กม.":""))}${voucherField("จุดหมาย / สถานที่ใช้งาน",blank?"":tx.destination,true)}
-        ${voucherField("เลขอ้างอิง / PR / PO / IV",references,true)}${voucherField("มูลค่ารวม",totalAmount>0?fmtMoney(totalAmount)+" บาท":"",true)}
+        ${voucherField("เลขอ้างอิง / PR / PO / IV",references,true)}${voucherField("สถานะเอกสาร",blank?"________________":(cancelled?"ยกเลิกแล้ว":"ใช้งาน"),true)}
       </div>
       <div class="voucher-items"><table><colgroup><col style="width:4%"><col style="width:13%"><col style="width:27%"><col style="width:7%"><col style="width:8%"><col style="width:8%"><col style="width:11%"><col style="width:22%"></colgroup><thead><tr><th>ลำดับ</th><th>SKU / รหัส</th><th>รายการ / รายละเอียด</th><th>หน่วย</th><th>จำนวน<br>ขอเบิก</th><th>จำนวน<br>จ่ายจริง</th><th>คงเหลือ<br>หลังจ่าย</th><th>หมายเหตุ</th></tr></thead><tbody>${voucherRows(lines)}</tbody></table></div>
+      <div class="voucher-totals"><span><b>รวมรายการ:</b> ${blank?"____":fmtMoney(totalLines)} รายการ</span><span><b>จำนวนรวม:</b> ${blank?"________":fmtMoney(totalQty)} หน่วย</span><span><b>มูลค่ารวม:</b> ${blank?"____________":fmtMoney(totalAmount)} บาท</span></div>
       <div class="voucher-note"><div><b>หมายเหตุเพิ่มเติม:</b> ${escapeHTML(blank?"":voucherText(tx.note,""))}</div><div><b>ผลการจ่าย:</b> <span class="voucher-checks">${status}</span><br><b>เจ้าหน้าที่คีย์:</b> ${escapeHTML(blank?"________________":voucherText(tx.createdBy,currentUser?.username||"-"))} · <b>เลขที่:</b> ${escapeHTML(blank?"____________":voucherText(tx.docNo))}</div></div>
-      <div class="voucher-signatures"><div>ผู้ขอเบิก<br>วันที่ ____/____/____</div><div>ผู้อนุมัติ<br>วันที่ ____/____/____</div><div>ผู้จ่ายสินค้า<br>วันที่ ____/____/____</div><div>ผู้รับสินค้า<br>วันที่ ____/____/____</div></div>
+      <div class="voucher-signatures" aria-label="ช่องลงลายมือชื่อ">${voucherSignature("ผู้ขอเบิก")}${voucherSignature("ผู้อนุมัติ")}${voucherSignature("ผู้จ่ายสินค้า")}${voucherSignature("ผู้รับสินค้า")}</div>
     </section>`;
   }
   function buildIssueVoucher(tx,lines){
-    const chunks=[];if(lines&&lines.length){for(let i=0;i<lines.length;i+=7)chunks.push(lines.slice(i,i+7));}else chunks.push([]);
-    return chunks.map((chunk,index)=>`<article class="voucher-a4">${voucherCopy("ต้นฉบับ - คลังอะไหล่",tx,chunk,index+1,chunks.length)}<div class="voucher-cut">✂ ตัดตามรอยประ</div>${voucherCopy("สำเนา - ผู้เบิก / ผู้รับ",tx,chunk,index+1,chunks.length)}</article>`).join("");
+    const sourceLines=Array.isArray(lines)?lines:[],chunks=[];if(sourceLines.length){for(let i=0;i<sourceLines.length;i+=7)chunks.push(sourceLines.slice(i,i+7));}else chunks.push([]);
+    const documentTotals={lines:sourceLines.length,qty:sourceLines.reduce((sum,line)=>sum+Number(line.qty||0),0),amount:sourceLines.reduce((sum,line)=>sum+Number(line.lineAmount||0),0),cancelled:sourceLines.length>0&&sourceLines.every(line=>line.status==="cancelled")};
+    return chunks.map((chunk,index)=>`<article class="voucher-a4">${voucherCopy("ต้นฉบับ - คลังอะไหล่",tx,chunk,index+1,chunks.length,documentTotals)}<div class="voucher-cut">✂ ตัดตามรอยประ</div>${voucherCopy("สำเนา - ผู้เบิก / ผู้รับ",tx,chunk,index+1,chunks.length,documentTotals)}</article>`).join("");
   }
   async function openPrintDialog(message){
     if(document.fonts?.ready)await document.fonts.ready;
@@ -6364,7 +6378,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.5.9`;
+    document.title=`${meta.title} | Stock Control v4.6.0`;
   }
 
   function selectLabel(el){
