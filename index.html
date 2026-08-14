@@ -1680,6 +1680,39 @@
   .field.entry-field-invalid>label::after{background:#dc2626;}
   @media(prefers-reduced-motion:reduce){.entry-feedback{transition:none;}}
 
+  /* ================= v4.5.6 Compact Navigation Sidebar ================= */
+  nav.tabs{gap:2px;padding:10px 9px;}
+  .nav-group-label{padding:9px 10px 4px;color:#718096;font-size:10px;letter-spacing:.7px;}
+  .nav-group-label:first-child{padding-top:3px;}
+  nav.tabs button.tab{position:relative;min-height:40px;padding:7px 10px;gap:9px;line-height:1.25;}
+  nav.tabs button.tab.active{color:#fff;background:rgba(20,184,166,.19);border-color:rgba(94,234,212,.32);box-shadow:inset 3px 0 0 #2dd4bf;}
+  .tab-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .nav-badge{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-width:20px;height:20px;margin-left:auto;padding:0 6px;border-radius:999px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;line-height:1;box-shadow:0 0 0 2px var(--sidebar);}
+  .nav-badge[hidden]{display:none;}
+  .nav-badge-warn{background:#f59e0b;color:#291b00;}
+  .nav-collapsible-group{display:block;margin-top:3px;}
+  .nav-collapsible-group[hidden]{display:none;}
+  .nav-group-toggle{position:relative;display:flex;align-items:center;gap:9px;width:100%;min-height:40px;padding:7px 10px;border:1px solid transparent;border-radius:9px;color:var(--sidebar-text);font-size:13px;font-weight:600;cursor:pointer;list-style:none;user-select:none;transition:background-color .15s ease,color .15s ease,border-color .15s ease;}
+  .nav-group-toggle::-webkit-details-marker{display:none;}
+  .nav-group-toggle:hover{background:var(--sidebar-hover);color:#fff;}
+  .nav-group-toggle .tab-ic{width:18px;height:18px;flex:0 0 auto;}
+  .nav-chevron{margin-left:auto;color:#94a3b8;font-size:14px;transition:transform .16s ease;}
+  .nav-collapsible-group[open] .nav-chevron{transform:rotate(180deg);}
+  .nav-group-items{display:grid;gap:2px;padding:2px 0 0 8px;}
+  .nav-collapsible-group:not([open]) .nav-group-items{display:none;}
+  .nav-collapsible-group[open]>.nav-group-toggle{color:#fff;background:rgba(255,255,255,.04);}
+  @media(min-width:981px) and (max-width:1100px){
+    #app.unlocked{grid-template-columns:78px minmax(0,1fr);gap:0 18px;}
+    nav.tabs{padding:9px 7px;}
+    nav.tabs button.tab,.nav-group-toggle{justify-content:center;min-height:42px;padding:8px;}
+    nav.tabs button.tab .tab-ic,.nav-group-toggle .tab-ic{width:20px;height:20px;}
+    nav.tabs .tab-label,.nav-group-toggle .tab-label,.nav-chevron{display:none;}
+    .nav-group-label{height:9px;margin:5px 8px 3px;padding:0;border-top:1px solid rgba(148,163,184,.2);font-size:0;}
+    .nav-group-label:first-child{margin-top:1px;padding:0;border-top:0;}
+    .nav-group-items{padding:2px 0 0;}
+    .nav-badge{position:absolute;top:3px;right:3px;min-width:17px;height:17px;margin:0;padding:0 4px;font-size:9px;}
+  }
+
 </style>
 </head>
 <body>
@@ -1689,7 +1722,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.5.5</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.5.6</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1769,7 +1802,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.5.5</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.5.6</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -1812,21 +1845,25 @@
 
 
   <nav class="tabs" aria-label="เมนูหลัก">
-    <span class="nav-group-label">งานประจำ</span>
-    <button class="tab active" data-view="dashboard"><svg class="tab-ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.3"/><rect x="14" y="3" width="7" height="7" rx="1.3"/><rect x="3" y="14" width="7" height="7" rx="1.3"/><rect x="14" y="14" width="7" height="7" rx="1.3"/></svg>ภาพรวม</button>
-    <button class="tab" data-view="parts"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>รายการอะไหล่</button>
-    <button class="tab" data-view="receive"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v6H4z"/><path d="M12 10v8m0 0l-3.5-3.5M12 18l3.5-3.5"/></svg>รับเข้า</button>
-    <button class="tab" data-view="issue"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 14h16v6H4z"/><path d="M12 14V6m0 0l-3.5 3.5M12 6l3.5 3.5"/></svg>เบิกออก</button>
-    <button class="tab" data-view="requisitions"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 8h6M9 12h6M9 16h3"/></svg>คำขอเบิก</button>
-    <button class="tab" data-view="labels"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v14H4zM7 8v8M10 8v8M14 8v8M17 8v8"/></svg>ป้าย QR / Barcode</button>
-    <button class="tab" data-view="stockcount" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg>ตรวจนับ</button>
-    <span class="nav-group-label">ข้อมูลและผู้ดูแล</span>
-    <button class="tab" data-view="master" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v4H4zM4 11h16v8H4z"/><path d="M8 13v4m4-4v4m4-4v4"/></svg>ฐานข้อมูล</button>
-    <button class="tab" data-view="import" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M12 7v7m0 0l-3-3m3 3l3-3M8 17h8"/></svg>นำเข้าข้อมูล</button>
-    <button class="tab" data-view="users" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.5-4 2.3-6 5.5-6s5 2 5.5 6M17 8h4m-2-2v4"/></svg>ผู้ใช้ / Audit</button>
-    <button class="tab" data-view="backups" data-admin-only><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h8M8 17h5"/><path d="M17 3v5"/></svg>สำรอง / กู้คืน</button>
-    <span class="nav-group-label">รายงาน</span>
-    <button class="tab" data-view="history"><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>ประวัติ/รายงาน</button>
+    <span class="nav-group-label"><span>งานประจำ</span></span>
+    <button class="tab active" data-view="dashboard" title="ภาพรวม"><svg class="tab-ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.3"/><rect x="14" y="3" width="7" height="7" rx="1.3"/><rect x="3" y="14" width="7" height="7" rx="1.3"/><rect x="14" y="14" width="7" height="7" rx="1.3"/></svg><span class="tab-label">ภาพรวม</span></button>
+    <button class="tab" data-view="parts" title="คลังอะไหล่"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg><span class="tab-label">คลังอะไหล่</span><span class="nav-badge nav-badge-warn" id="nav-low-stock-badge" hidden>0</span></button>
+    <button class="tab" data-view="receive" title="รับเข้า"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v6H4z"/><path d="M12 10v8m0 0l-3.5-3.5M12 18l3.5-3.5"/></svg><span class="tab-label">รับเข้า</span></button>
+    <button class="tab" data-view="issue" title="เบิกออก"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 14h16v6H4z"/><path d="M12 14V6m0 0l-3.5 3.5M12 6l3.5 3.5"/></svg><span class="tab-label">เบิกออก</span></button>
+    <button class="tab" data-view="requisitions" title="คำขอเบิก"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 8h6M9 12h6M9 16h3"/></svg><span class="tab-label">คำขอเบิก</span><span class="nav-badge" id="nav-request-badge" hidden>0</span></button>
+    <button class="tab" data-view="stockcount" data-admin-only title="ตรวจนับ"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg><span class="tab-label">ตรวจนับ</span></button>
+    <span class="nav-group-label"><span>เครื่องมือ</span></span>
+    <button class="tab" data-view="labels" title="ป้าย QR / Barcode"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v14H4zM7 8v8M10 8v8M14 8v8M17 8v8"/></svg><span class="tab-label">ป้าย QR / Barcode</span></button>
+    <button class="tab" data-view="history" title="รายงานและประวัติ"><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span class="tab-label">รายงานและประวัติ</span></button>
+    <details class="nav-collapsible-group" id="nav-system-group" data-admin-only>
+      <summary class="nav-group-toggle" title="จัดการระบบ"><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21h-4v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3v-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 001.9.3 1.7 1.7 0 001-1.5V3h4v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 00-.3 1.9 1.7 1.7 0 001.5 1h.1v4h-.1a1.7 1.7 0 00-1.5 1z"/></svg><span class="tab-label">จัดการระบบ</span><span class="nav-chevron">⌄</span></summary>
+      <div class="nav-group-items">
+        <button class="tab" data-view="master" data-admin-only title="ฐานข้อมูล"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v4H4zM4 11h16v8H4z"/><path d="M8 13v4m4-4v4m4-4v4"/></svg><span class="tab-label">ฐานข้อมูล</span></button>
+        <button class="tab" data-view="import" data-admin-only title="นำเข้าข้อมูล"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M12 7v7m0 0l-3-3m3 3l3-3M8 17h8"/></svg><span class="tab-label">นำเข้าข้อมูล</span></button>
+        <button class="tab" data-view="users" data-admin-only title="ผู้ใช้และบันทึกระบบ"><svg class="tab-ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.5-4 2.3-6 5.5-6s5 2 5.5 6M17 8h4m-2-2v4"/></svg><span class="tab-label">ผู้ใช้และบันทึกระบบ</span></button>
+        <button class="tab" data-view="backups" data-admin-only title="สำรองและกู้คืน"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h8M8 17h5"/><path d="M17 3v5"/></svg><span class="tab-label">สำรองและกู้คืน</span></button>
+      </div>
+    </details>
   </nav>
 
   <!-- DASHBOARD -->
@@ -2369,13 +2406,13 @@
     <div class="mobile-sheet-head"><div><strong>เมนูเพิ่มเติม</strong><small>รายงานและเครื่องมือผู้ดูแล</small></div><button id="btn-mobile-more-close" aria-label="ปิด">×</button></div>
     <div class="mobile-more-grid">
       <button data-mobile-view="requisitions"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 8h6M9 12h6M9 16h3"/></svg><span>คำขอเบิก</span></button>
-      <button data-mobile-view="labels"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM7 8v8M10 8v8M14 8v8M17 8v8"/></svg><span>QR / Barcode</span></button>
-      <button data-mobile-view="history"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span>ประวัติ/รายงาน</span></button>
+      <button data-mobile-view="labels"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM7 8v8M10 8v8M14 8v8M17 8v8"/></svg><span>ป้าย QR / Barcode</span></button>
+      <button data-mobile-view="history"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span>รายงานและประวัติ</span></button>
       <button data-mobile-view="stockcount" data-admin-only><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg><span>ตรวจนับ</span></button>
       <button data-mobile-view="master" data-admin-only><svg viewBox="0 0 24 24"><path d="M4 5h16v4H4zM4 11h16v8H4zM8 13v4m4-4v4m4-4v4"/></svg><span>ฐานข้อมูล</span></button>
       <button data-mobile-view="import" data-admin-only><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM12 7v7m0 0l-3-3m3 3l3-3M8 17h8"/></svg><span>นำเข้าข้อมูล</span></button>
-      <button data-mobile-view="users" data-admin-only><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.5-4 2.3-6 5.5-6s5 2 5.5 6M17 8h4m-2-2v4"/></svg><span>ผู้ใช้ / Audit</span></button>
-      <button data-mobile-view="backups" data-admin-only><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h8M8 17h5"/></svg><span>สำรอง / กู้คืน</span></button>
+      <button data-mobile-view="users" data-admin-only><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.5-4 2.3-6 5.5-6s5 2 5.5 6M17 8h4m-2-2v4"/></svg><span>ผู้ใช้และบันทึกระบบ</span></button>
+      <button data-mobile-view="backups" data-admin-only><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h8M8 17h5"/></svg><span>สำรองและกู้คืน</span></button>
     </div>
   </div>
 </div>
@@ -3480,7 +3517,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.5.5 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.5.6 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -4034,6 +4071,11 @@
   }
 
   // ---------- Tab navigation ----------
+  const SYSTEM_VIEW_NAMES=new Set(["master","import","users","backups"]);
+  function syncSidebarSystemGroup(viewName){
+    const group=document.getElementById("nav-system-group");
+    if(group&&SYSTEM_VIEW_NAMES.has(viewName)) group.open=true;
+  }
   function activateView(viewName){
     const previousView=document.querySelector(".view.active")?.id.replace("view-","")||"";
     if(["stockcount","master","import","users","backups"].includes(viewName) && !isAdmin()){
@@ -4041,6 +4083,7 @@
       viewName = "dashboard";
     }
     document.querySelectorAll("nav.tabs .tab").forEach(b=>b.classList.toggle("active", b.dataset.view===viewName));
+    syncSidebarSystemGroup(viewName);
     document.querySelectorAll(".mobile-tab[data-mobile-view]").forEach(b=>b.classList.toggle("active", b.dataset.mobileView===viewName));
     document.getElementById("btn-mobile-more").classList.toggle("active", !["dashboard","parts","receive","issue"].includes(viewName));
     document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active", v.id==="view-"+viewName));
@@ -6105,13 +6148,13 @@
     receive:{group:"งานประจำ",title:"รับเข้าอะไหล่",description:"บันทึกการซื้อหรือรับสินค้าเข้าสต๊อกแบบหลายรายการ"},
     issue:{group:"งานประจำ",title:"เบิกออกอะไหล่",description:"ตัดสต๊อกพร้อมตรวจยอดคงเหลือก่อนยืนยัน"},
     requisitions:{group:"งานประจำ",title:"คำขอเบิกและการอนุมัติ",description:"ส่งคำขอ จองสต๊อก อนุมัติ และจ่ายของตามขั้นตอน"},
-    labels:{group:"งานประจำ",title:"ป้าย QR / Barcode",description:"สร้างและพิมพ์ป้ายสำหรับชั้นวางหรือชิ้นงาน"},
-    stockcount:{group:"ข้อมูลและผู้ดูแล",title:"ตรวจนับและปรับยอด",description:"เทียบยอดจริงกับระบบและเก็บประวัติผู้อนุมัติ"},
-    master:{group:"ข้อมูลและผู้ดูแล",title:"ฐานข้อมูลกลาง",description:"จัดการลูกค้า ซัพพลายเออร์ รถ จังหวัด และเลขที่เอกสาร"},
-    import:{group:"ข้อมูลและผู้ดูแล",title:"นำเข้าข้อมูล Excel",description:"ตรวจสอบและนำเข้าข้อมูลหลายรายการอย่างปลอดภัย"},
-    users:{group:"ข้อมูลและผู้ดูแล",title:"ผู้ใช้งานและ Audit Log",description:"จัดการสิทธิ์ บัญชี และตรวจสอบกิจกรรมย้อนหลัง"},
-    backups:{group:"ข้อมูลและผู้ดูแล",title:"สำรองและกู้คืนข้อมูล",description:"สร้างจุดสำรองและกู้คืน Google Sheets อย่างปลอดภัย"},
-    history:{group:"รายงาน",title:"รายงานและ Stock Card",description:"วิเคราะห์การเบิก ความเคลื่อนไหว และยอดคงเหลือรายตัว"}
+    labels:{group:"เครื่องมือ",title:"ป้าย QR / Barcode",description:"สร้างและพิมพ์ป้ายสำหรับชั้นวางหรือชิ้นงาน"},
+    stockcount:{group:"งานประจำ",title:"ตรวจนับและปรับยอด",description:"เทียบยอดจริงกับระบบและเก็บประวัติผู้อนุมัติ"},
+    master:{group:"จัดการระบบ",title:"ฐานข้อมูลกลาง",description:"จัดการลูกค้า ซัพพลายเออร์ รถ จังหวัด และเลขที่เอกสาร"},
+    import:{group:"จัดการระบบ",title:"นำเข้าข้อมูล Excel",description:"ตรวจสอบและนำเข้าข้อมูลหลายรายการอย่างปลอดภัย"},
+    users:{group:"จัดการระบบ",title:"ผู้ใช้และบันทึกระบบ",description:"จัดการสิทธิ์ บัญชี และตรวจสอบกิจกรรมย้อนหลัง"},
+    backups:{group:"จัดการระบบ",title:"สำรองและกู้คืนข้อมูล",description:"สร้างจุดสำรองและกู้คืน Google Sheets อย่างปลอดภัย"},
+    history:{group:"เครื่องมือ",title:"รายงานและประวัติ",description:"วิเคราะห์การเบิก ความเคลื่อนไหว และยอดคงเหลือรายตัว"}
   };
   const SMART_FILTERS={
     "parts-body":[["part-search","คำค้นหา"],["part-cat-filter","หมวด"]],
@@ -6200,7 +6243,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.5.5`;
+    document.title=`${meta.title} | Stock Control v4.5.6`;
   }
 
   function selectLabel(el){
@@ -6603,6 +6646,24 @@
   }
 
   // ================= RENDER ALL =================
+  function setNavigationBadge(id,count,label){
+    const badge=document.getElementById(id);
+    if(!badge)return;
+    const value=Math.max(0,Number(count)||0);
+    badge.hidden=value===0;
+    badge.textContent=value>99?"99+":String(value);
+    badge.setAttribute("aria-label",value?`${label} ${value} รายการ`:label);
+  }
+  function renderSidebarBadges(){
+    const lowStock=state.parts.filter(part=>part.isActive!==false&&stockStatus(part)!=="ok").length;
+    const pending=state.requisitions.filter(request=>request.status==="pending"&&(isAdmin()||request.createdBy===currentUser?.username)).length;
+    setNavigationBadge("nav-low-stock-badge",lowStock,"อะไหล่ต่ำกว่าระดับปกติ");
+    setNavigationBadge("nav-request-badge",pending,"คำขอเบิกรอดำเนินการ");
+    const partsTab=document.querySelector('nav.tabs [data-view="parts"]');
+    const requestTab=document.querySelector('nav.tabs [data-view="requisitions"]');
+    if(partsTab)partsTab.title=lowStock?`คลังอะไหล่ · ต่ำกว่าระดับปกติ ${lowStock} รายการ`:"คลังอะไหล่";
+    if(requestTab)requestTab.title=pending?`คำขอเบิก · รอดำเนินการ ${pending} รายการ`:"คำขอเบิก";
+  }
   function renderAll(options={}){
     const viewport=options.preserveViewport?captureViewportState():null;
     renderDashboard();
@@ -6621,6 +6682,7 @@
     initReportExcelExports();
     renderSmartUX();
     renderProductivityUX();
+    renderSidebarBadges();
     if(mobilePartSummaryId) renderMobilePartSummary(false);
     refreshEntryFeedback();
     if(viewport)restoreViewportState(viewport);
