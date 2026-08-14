@@ -1639,6 +1639,47 @@
     .workspace-title{white-space:normal;overflow:visible;text-overflow:clip;}
   }
 
+  /* ================= v4.5.5 Color Form Feedback ================= */
+  .entry-feedback{
+    transition:background-color .16s ease,border-color .16s ease,color .16s ease,
+      box-shadow .16s ease,outline-color .16s ease;
+  }
+  .entry-feedback.entry-touched.entry-has-value:not(.entry-invalid):not(:focus),
+  .searchable-select-trigger.entry-touched.entry-has-value:not(.entry-invalid){
+    background:#eff8ff;color:#0c4a6e;border-color:#7dd3fc;
+    box-shadow:inset 3px 0 0 #0284c7,0 1px 2px rgba(2,132,199,.06);
+  }
+  .entry-feedback:focus,
+  .searchable-select.is-open .searchable-select-trigger.entry-feedback{
+    background:#ecfdf9;color:#134e4a;border-color:#14a394;
+    outline:3px solid rgba(20,163,148,.16);outline-offset:0;
+    box-shadow:inset 3px 0 0 #0f766e;
+  }
+  .entry-feedback.entry-invalid,
+  .entry-feedback.entry-invalid:focus,
+  .searchable-select-trigger.entry-invalid,
+  .searchable-select.is-open .searchable-select-trigger.entry-invalid{
+    background:#fff1f2;color:#991b1b;border-color:#f87171;
+    outline:3px solid rgba(239,68,68,.12);outline-offset:0;
+    box-shadow:inset 3px 0 0 #dc2626;
+  }
+  .entry-feedback:disabled,
+  .searchable-select-trigger.entry-feedback:disabled{
+    background:#f1f5f9;color:#94a3b8;border-color:#d8e0e9;box-shadow:none;outline:0;
+  }
+  .field.entry-field-editing>label{color:#0f766e;}
+  .field.entry-field-filled:not(.entry-field-editing):not(.entry-field-invalid)>label{color:#0369a1;}
+  .field.entry-field-invalid>label{color:#b91c1c;}
+  .field.entry-field-editing>label::after,
+  .field.entry-field-filled>label::after,
+  .field.entry-field-invalid>label::after{
+    content:"";display:inline-block;width:7px;height:7px;margin-left:7px;border-radius:50%;
+    vertical-align:middle;background:#0f766e;
+  }
+  .field.entry-field-filled:not(.entry-field-editing):not(.entry-field-invalid)>label::after{background:#0284c7;}
+  .field.entry-field-invalid>label::after{background:#dc2626;}
+  @media(prefers-reduced-motion:reduce){.entry-feedback{transition:none;}}
+
 </style>
 </head>
 <body>
@@ -1648,7 +1689,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.5.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.5.5</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1728,7 +1769,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.5.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.5.5</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -2624,6 +2665,7 @@
     trigger.classList.toggle("is-placeholder",!selected||selected.value==="");
     trigger.setAttribute("aria-label",`${searchableSelectName(select)}: ${label}. กดเพื่อค้นหา`);
     trigger.setAttribute("aria-expanded",searchableSelectActive===select?"true":"false");
+    updateEntryFeedback(select,false);
   }
   function syncAllSearchableSelects(){
     document.querySelectorAll("select[data-searchable-select-ready]").forEach(syncSearchableSelect);
@@ -2721,6 +2763,7 @@
     if(searchableSelectActive&&searchableSelectActive!==select)closeSearchableSelect(false);
     searchableSelectActive=select;
     searchableSelectControl(select)?.closest(".searchable-select")?.classList.add("is-open");
+    updateEntryFeedback(select,false);
     const popup=document.getElementById("searchable-select-popup"),backdrop=document.getElementById("searchable-select-backdrop"),input=document.getElementById("searchable-select-search");
     input.value="";
     input.placeholder=`ค้นหา${searchableSelectName(select).replace(/\s*\*\s*$/g,"")}...`;
@@ -2737,6 +2780,7 @@
     document.getElementById("searchable-select-popup")?.classList.remove("show");
     document.getElementById("searchable-select-backdrop")?.classList.remove("show");
     searchableSelectActive=null;searchableSelectVisibleOptions=[];searchableSelectActiveIndex=-1;
+    if(select)updateEntryFeedback(select,false);
     if(refocus&&trigger?.isConnected)setTimeout(()=>trigger.focus({preventScroll:true}),0);
   }
   function renderSearchableSelectOptions(){
@@ -2822,6 +2866,89 @@
     document.addEventListener("reset",()=>setTimeout(syncAllSearchableSelects,0),true);
     window.addEventListener("resize",scheduleSearchableSelectPopupPosition,{passive:true});
     window.addEventListener("scroll",scheduleSearchableSelectPopupPosition,{passive:true,capture:true});
+  }
+
+  // ================= v4.5.5 COLOR FORM FEEDBACK =================
+  const ENTRY_FEEDBACK_SELECTOR='input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]),select:not([multiple]),textarea';
+
+  function isEntryFeedbackControl(control){
+    return !!control?.matches?.(ENTRY_FEEDBACK_SELECTOR);
+  }
+
+  function entryHasValue(control){
+    return String(control?.value??"").trim()!=="";
+  }
+
+  function entryVisualControl(control){
+    return control instanceof HTMLSelectElement ? (searchableSelectControl(control)||control) : control;
+  }
+
+  function updateEntryFieldState(field){
+    if(!field)return;
+    const controls=Array.from(field.querySelectorAll(ENTRY_FEEDBACK_SELECTOR));
+    const editing=controls.some(control=>document.activeElement===control||control.closest(".searchable-select")?.classList.contains("is-open"));
+    const invalid=controls.some(control=>control.classList.contains("entry-invalid"));
+    const filled=controls.some(control=>control.dataset.entryTouched==="1"&&entryHasValue(control));
+    field.classList.toggle("entry-field-editing",editing);
+    field.classList.toggle("entry-field-invalid",invalid);
+    field.classList.toggle("entry-field-filled",filled);
+  }
+
+  function updateEntryFeedback(control,touch=false){
+    if(!isEntryFeedbackControl(control))return;
+    if(touch)control.dataset.entryTouched="1";
+    const visual=entryVisualControl(control),touched=control.dataset.entryTouched==="1";
+    const invalid=touched&&(control.dataset.entryCustomInvalid==="1"||!control.checkValidity());
+    [control,visual].filter(Boolean).forEach(node=>{
+      node.classList.add("entry-feedback");
+      node.classList.toggle("entry-touched",touched);
+      node.classList.toggle("entry-has-value",entryHasValue(control));
+      node.classList.toggle("entry-invalid",invalid);
+    });
+    if(invalid)control.setAttribute("aria-invalid","true");
+    else control.removeAttribute("aria-invalid");
+    updateEntryFieldState(control.closest(".field"));
+  }
+
+  function setEntryInvalid(control,invalid=true){
+    if(!isEntryFeedbackControl(control))return;
+    control.dataset.entryTouched="1";
+    control.dataset.entryCustomInvalid=invalid?"1":"0";
+    updateEntryFeedback(control,true);
+  }
+
+  function refreshEntryFeedback(scope=document){
+    scope.querySelectorAll?.(ENTRY_FEEDBACK_SELECTOR).forEach(control=>updateEntryFeedback(control,false));
+  }
+
+  function resetEntryFeedback(scope=document){
+    scope.querySelectorAll?.(ENTRY_FEEDBACK_SELECTOR).forEach(control=>{
+      delete control.dataset.entryTouched;
+      delete control.dataset.entryCustomInvalid;
+      control.removeAttribute("aria-invalid");
+      updateEntryFeedback(control,false);
+    });
+  }
+
+  function initColorFormFeedback(){
+    if(document.documentElement.dataset.colorFormFeedbackReady==="1")return;
+    document.documentElement.dataset.colorFormFeedbackReady="1";
+    document.addEventListener("focusin",event=>{
+      if(isEntryFeedbackControl(event.target))updateEntryFeedback(event.target,false);
+    },true);
+    document.addEventListener("focusout",event=>{
+      if(isEntryFeedbackControl(event.target))setTimeout(()=>updateEntryFeedback(event.target,false),0);
+    },true);
+    ["input","change"].forEach(type=>document.addEventListener(type,event=>{
+      if(!isEntryFeedbackControl(event.target))return;
+      event.target.dataset.entryCustomInvalid="0";
+      updateEntryFeedback(event.target,true);
+    },true));
+    document.addEventListener("invalid",event=>{
+      if(isEntryFeedbackControl(event.target))updateEntryFeedback(event.target,true);
+    },true);
+    document.addEventListener("reset",event=>setTimeout(()=>resetEntryFeedback(event.target),0),true);
+    refreshEntryFeedback();
   }
 
 
@@ -3353,7 +3480,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.5.4 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.5.5 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -4279,11 +4406,13 @@
     if(!id&&syncSuggestion&&(partSkuAutoManaged||!currentCode||currentCode===lastSkuSuggestion)){
       codeInput.value=suggested;
       partSkuAutoManaged=true;
+      updateEntryFeedback(codeInput,true);
     }
     lastSkuSuggestion=suggested;
     const code=codeInput.value.trim();
     document.getElementById("sku-preview").textContent=suggested;
     const dup=code && state.parts.find(p=>p.id!==id&&String(p.code).toLowerCase()===code.toLowerCase());
+    if(codeInput.dataset.entryTouched==="1")setEntryInvalid(codeInput,!!dup);
     const status=document.getElementById("sku-status");
     status.textContent=dup?"✕ รหัสซ้ำ":(!id&&code===suggested?"✓ ใส่ในช่อง SKU อัตโนมัติแล้ว":(code?"✓ รหัสพร้อมใช้":""));
     status.className="sku-status "+(dup?"bad":"ok");
@@ -4324,6 +4453,7 @@
   function openPartModal(id){
     if(!requireAdmin()) return;
     const p = id ? partById(id) : null;
+    resetEntryFeedback(document.getElementById("modal-overlay"));
     populateMasterSelects();
     document.getElementById("modal-title").textContent = p ? "แก้ไขอะไหล่" : "เพิ่มอะไหล่ใหม่";
     document.getElementById("pf-id").value = p ? p.id : "";
@@ -4351,6 +4481,7 @@
     if(!p) document.getElementById("pf-code").value=lastSkuSuggestion;
     document.getElementById("modal-overlay").classList.add("show");
     refreshPartHelpers(false);
+    updateEntryFeedback(document.getElementById("pf-code"),!p);
     partModalInitialSnapshot=partModalSnapshot();
   }
   function closeModal(force=false){
@@ -4378,20 +4509,24 @@
     }
     const code = codeInput.value.trim();
     const name = document.getElementById("pf-name").value.trim();
-    if(!code || !name){ toast("กรุณากรอกรหัสและชื่ออะไหล่", true); return; }
+    if(!code || !name){
+      setEntryInvalid(codeInput,!code);
+      setEntryInvalid(document.getElementById("pf-name"),!name);
+      toast("กรุณากรอกรหัสและชื่ออะไหล่", true); return;
+    }
 
     const dup = state.parts.find(p=> p.code.toLowerCase()===code.toLowerCase() && p.id!==id);
-    if(dup){ toast("รหัสอะไหล่นี้มีอยู่แล้ว", true); return; }
+    if(dup){ setEntryInvalid(codeInput,true);toast("รหัสอะไหล่นี้มีอยู่แล้ว", true); return; }
 
     let category = document.getElementById("pf-category").value;
     if(category === "__custom__"){
       category = document.getElementById("pf-category-custom").value.trim();
-      if(!category){ toast("กรุณากรอกชื่อหมวดหมู่ใหม่", true); return; }
+      if(!category){ setEntryInvalid(document.getElementById("pf-category-custom"),true);toast("กรุณากรอกชื่อหมวดหมู่ใหม่", true); return; }
     }
     let unit = document.getElementById("pf-unit").value;
     if(unit === "__custom__"){
       unit = document.getElementById("pf-unit-custom").value.trim();
-      if(!unit){ toast("กรุณากรอกหน่วยนับใหม่", true); return; }
+      if(!unit){ setEntryInvalid(document.getElementById("pf-unit-custom"),true);toast("กรุณากรอกหน่วยนับใหม่", true); return; }
     }
     const possibleDuplicates = similarParts();
     if(!id && possibleDuplicates.length && !confirm("พบสินค้าที่อาจซ้ำ " + possibleDuplicates.length + " รายการ\n\n" + possibleDuplicates.map(p=>p.code+" — "+p.name).join("\n") + "\n\nยืนยันสร้างไอเท็มใหม่หรือไม่?")) return;
@@ -6065,7 +6200,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.5.4`;
+    document.title=`${meta.title} | Stock Control v4.5.5`;
   }
 
   function selectLabel(el){
@@ -6487,6 +6622,7 @@
     renderSmartUX();
     renderProductivityUX();
     if(mobilePartSummaryId) renderMobilePartSummary(false);
+    refreshEntryFeedback();
     if(viewport)restoreViewportState(viewport);
   }
 
@@ -6506,6 +6642,7 @@
 
   applyBootstrapSettings();
   initSearchableDropdowns();
+  initColorFormFeedback();
   initStableScrollUX();
   const savedAuth = loadAuth();
   const rememberedUsername=(savedAuth&&savedAuth.username)||localStorage.getItem(LAST_USER_KEY)||"";
