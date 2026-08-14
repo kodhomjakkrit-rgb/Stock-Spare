@@ -1713,6 +1713,29 @@
     .nav-badge{position:absolute;top:3px;right:3px;min-width:17px;height:17px;margin:0;padding:0 4px;font-size:9px;}
   }
 
+  /* ================= v4.5.7 Compact Paginated Reports ================= */
+  .report-pagination{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    margin-top:11px;padding:9px 10px;border:1px solid #e2e8f0;border-radius:10px;
+    background:#f8fafc;color:#64748b;font-size:11px;
+  }
+  .report-pagination[hidden]{display:none;}
+  .report-page-summary strong{color:#0f172a;font-weight:800;}
+  .report-page-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap;}
+  .report-page-size-label{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+  .report-page-size-label select{width:auto;min-width:68px;min-height:32px;padding:5px 26px 5px 8px;font-size:11px;}
+  .report-page-indicator{min-width:74px;text-align:center;color:#475569;font-weight:700;white-space:nowrap;}
+  .report-page-button{min-height:32px;padding:5px 10px;background:#fff;color:#334155;border-color:#cbd5e1;font-size:11px;}
+  .report-page-button:hover:not(:disabled){background:#ecfdf9;color:#0f766e;border-color:#5eead4;}
+  .report-page-button:disabled{opacity:.42;cursor:not-allowed;}
+  @media(max-width:640px){
+    .report-pagination{align-items:stretch;padding:9px;}
+    .report-page-summary{width:100%;text-align:center;}
+    .report-page-actions{width:100%;justify-content:space-between;}
+    .report-page-size-label{order:3;width:100%;justify-content:center;margin-top:2px;}
+    .report-page-button{flex:1;}
+  }
+
 </style>
 </head>
 <body>
@@ -1722,7 +1745,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.5.6</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.5.7</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -1802,7 +1825,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.5.6</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.5.7</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -3082,7 +3105,9 @@
     if(!columns.length){toast("ตารางนี้ไม่มีคอลัมน์สำหรับส่งออก",true);return;}
 
     const visibleRows=Array.from(tbody.rows).filter(row=>{
-      if(row.classList.contains("empty-row")||row.classList.contains("total-row")||row.hidden) return false;
+      if(row.classList.contains("empty-row")||row.classList.contains("total-row")) return false;
+      if(row.dataset.reportPaginationHidden==="1") return true;
+      if(row.hidden) return false;
       return getComputedStyle(row).display!=="none";
     });
     if(!visibleRows.length){toast("ไม่มีข้อมูลตามเงื่อนไขที่เลือกสำหรับส่งออก",true);return;}
@@ -3228,6 +3253,7 @@
     sortingBodyIds.add(bodyId);
     sortRowsForColumn(tbody,state.columnIndex,state.direction);
     updateSortHeader(table,th,state.direction);
+    if(typeof refreshReportPagination==="function"&&PAGINATED_REPORT_BODIES?.has(bodyId))refreshReportPagination(bodyId);
     setTimeout(()=>sortingBodyIds.delete(bodyId),0);
   }
 
@@ -3239,6 +3265,7 @@
     const previous=tableSortState.get(info.bodyId);
     const direction=previous&&previous.columnIndex===columnIndex&&previous.direction==="asc"?"desc":"asc";
     tableSortState.set(info.bodyId,{columnIndex,direction});
+    if(typeof resetReportPagination==="function"&&PAGINATED_REPORT_BODIES?.has(info.bodyId))resetReportPagination(info.bodyId);
     applyStoredTableSort(info.bodyId);
   }
 
@@ -3517,7 +3544,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.5.6 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.5.7 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -5533,12 +5560,67 @@
   });
 
   // ================= HISTORY / REPORTS =================
+  const PAGINATED_REPORT_BODIES=new Map([
+    ["inactive-parts-body",10],
+    ["stock-card-body",20],
+    ["history-body",20]
+  ]);
+  const reportPaginationState=new Map();
+  function reportPageStorageKey(bodyId){return `stock-report-page-size:${bodyId}`;}
+  function getReportPaginationState(bodyId){
+    if(reportPaginationState.has(bodyId))return reportPaginationState.get(bodyId);
+    const fallback=PAGINATED_REPORT_BODIES.get(bodyId)||20;
+    let pageSize=fallback;
+    try{const saved=Number(localStorage.getItem(reportPageStorageKey(bodyId)));if([10,20,50,100].includes(saved))pageSize=saved;}catch(_){/* ใช้ค่าเริ่มต้นเมื่อเบราว์เซอร์ไม่อนุญาต storage */}
+    const state={page:1,pageSize,total:0,start:0,end:0,pages:1};
+    reportPaginationState.set(bodyId,state);
+    return state;
+  }
+  function reportDataRows(bodyId){
+    const tbody=document.getElementById(bodyId);
+    return Array.from(tbody?.rows||[]).filter(row=>!row.classList.contains("empty-row")&&!row.classList.contains("total-row"));
+  }
+  function ensureReportPagination(bodyId){
+    const tbody=document.getElementById(bodyId),wrap=tbody?.closest(".table-wrap");
+    if(!tbody||!wrap)return null;
+    let controls=wrap.nextElementSibling;
+    if(!controls||!controls.classList.contains("report-pagination")||controls.dataset.bodyId!==bodyId){
+      controls=document.createElement("div");
+      controls.className="report-pagination";
+      controls.dataset.bodyId=bodyId;
+      controls.innerHTML=`<span class="report-page-summary" data-report-page-summary></span><span class="report-page-actions"><label class="report-page-size-label">แถวต่อหน้า <select data-report-page-size aria-label="จำนวนแถวต่อหน้า"><option value="10">10</option><option value="20">20</option><option value="50">50</option><option value="100">100</option></select></label><button type="button" class="report-page-button" data-report-page-prev>‹ ก่อนหน้า</button><span class="report-page-indicator" data-report-page-indicator></span><button type="button" class="report-page-button" data-report-page-next>ถัดไป ›</button></span>`;
+      wrap.insertAdjacentElement("afterend",controls);
+      controls.querySelector("[data-report-page-prev]").addEventListener("click",()=>{const state=getReportPaginationState(bodyId);state.page=Math.max(1,state.page-1);refreshReportPagination(bodyId);});
+      controls.querySelector("[data-report-page-next]").addEventListener("click",()=>{const state=getReportPaginationState(bodyId);state.page=Math.min(state.pages,state.page+1);refreshReportPagination(bodyId);});
+      controls.querySelector("[data-report-page-size]").addEventListener("change",event=>{const state=getReportPaginationState(bodyId);state.pageSize=Number(event.target.value)||PAGINATED_REPORT_BODIES.get(bodyId)||20;state.page=1;try{localStorage.setItem(reportPageStorageKey(bodyId),String(state.pageSize));}catch(_){/* ใช้งานต่อได้แม้บันทึกค่าไม่ได้ */}refreshReportPagination(bodyId);});
+    }
+    return controls;
+  }
+  function resetReportPagination(bodyId){const state=getReportPaginationState(bodyId);state.page=1;}
+  function refreshReportPagination(bodyId){
+    if(!PAGINATED_REPORT_BODIES.has(bodyId))return;
+    const rows=reportDataRows(bodyId),state=getReportPaginationState(bodyId),controls=ensureReportPagination(bodyId);
+    state.total=rows.length;
+    state.pages=Math.max(1,Math.ceil(state.total/state.pageSize));
+    state.page=Math.min(Math.max(1,state.page),state.pages);
+    state.start=state.total?(state.page-1)*state.pageSize+1:0;
+    state.end=Math.min(state.page*state.pageSize,state.total);
+    rows.forEach((row,index)=>{const visible=index>=state.start-1&&index<state.end;row.hidden=!visible;if(visible)delete row.dataset.reportPaginationHidden;else row.dataset.reportPaginationHidden="1";});
+    if(!controls)return;
+    controls.hidden=state.total===0;
+    controls.querySelector("[data-report-page-summary]").innerHTML=`แสดง <strong>${state.start.toLocaleString("th-TH")}–${state.end.toLocaleString("th-TH")}</strong> จาก <strong>${state.total.toLocaleString("th-TH")}</strong> รายการ`;
+    controls.querySelector("[data-report-page-indicator]").textContent=`หน้า ${state.page.toLocaleString("th-TH")} / ${state.pages.toLocaleString("th-TH")}`;
+    controls.querySelector("[data-report-page-size]").value=String(state.pageSize);
+    controls.querySelector("[data-report-page-prev]").disabled=state.page<=1;
+    controls.querySelector("[data-report-page-next]").disabled=state.page>=state.pages;
+    if(typeof refreshTableMeta==="function")refreshTableMeta(bodyId);
+  }
   ["hist-type-filter","hist-purpose-filter","hist-customer-filter","hist-truck-filter","hist-from","hist-to","hist-search"].forEach(id=>{
-    document.getElementById(id).addEventListener("input", renderHistory);
-    document.getElementById(id).addEventListener("change", renderHistory);
+    document.getElementById(id).addEventListener("input",()=>{resetReportPagination("history-body");renderHistory();});
+    document.getElementById(id).addEventListener("change",()=>{resetReportPagination("history-body");renderHistory();});
   });
-  document.getElementById("inactive-days").addEventListener("change",renderManagementReports);
-  document.getElementById("stock-card-part").addEventListener("change",renderStockCard);
+  document.getElementById("inactive-days").addEventListener("change",()=>{resetReportPagination("inactive-parts-body");renderManagementReports();});
+  document.getElementById("stock-card-part").addEventListener("change",()=>{resetReportPagination("stock-card-body");renderStockCard();});
 
   function renderStockCardPartOptions(){
     const sel=document.getElementById("stock-card-part");if(!sel)return;const prev=sel.value;
@@ -5558,9 +5640,13 @@
     let balance=p.qty-tx.reduce((s,t)=>s+(t.type==="in"?t.qty:-t.qty),0);
     return tx.map(t=>{balance+=t.type==="in"?t.qty:-t.qty;return{...t,balance};});
   }
+  let paginatedStockCardPartId="";
   function renderStockCard(){
-    const rows=stockCardRows(document.getElementById("stock-card-part").value),body=document.getElementById("stock-card-body");
+    const partId=document.getElementById("stock-card-part").value;
+    if(partId!==paginatedStockCardPartId){paginatedStockCardPartId=partId;resetReportPagination("stock-card-body");}
+    const rows=stockCardRows(partId),body=document.getElementById("stock-card-body");
     body.innerHTML=rows.length?rows.map(t=>`<tr><td>${fmtDate(t.date)}</td><td class="mono">${escapeHTML(t.docNo||"-")}</td><td class="mono diff-pos">${t.type==="in"?t.qty:"-"}</td><td class="mono diff-neg">${t.type==="out"?t.qty:"-"}</td><td class="mono">${fmtMoney(t.balance)}</td><td>${escapeHTML(txContext(t)||t.note||"-")}</td></tr>`).join(""):`<tr class="empty-row"><td colspan="6">เลือกอะไหล่เพื่อดู Stock Card</td></tr>`;
+    refreshReportPagination("stock-card-body");
   }
   function renderManagementReports(){
     const activeTx=state.transactions.filter(t=>t.status!=="cancelled"),cutoff90=new Date();cutoff90.setDate(cutoff90.getDate()-90);const cutoffISO=cutoff90.toISOString().slice(0,10),totals={};
@@ -5570,6 +5656,7 @@
     const days=Number(document.getElementById("inactive-days").value)||90,cutoff=new Date();cutoff.setDate(cutoff.getDate()-days);const limit=cutoff.toISOString().slice(0,10);
     const inactive=state.parts.filter(p=>p.isActive!==false).map(p=>{const latest=activeTx.filter(t=>t.partId===p.id).sort((a,b)=>b.date.localeCompare(a.date))[0];return{p,latest:latest?latest.date:""};}).filter(x=>!x.latest||x.latest<limit).sort((a,b)=>(a.latest||"").localeCompare(b.latest||""));
     document.getElementById("inactive-parts-body").innerHTML=inactive.length?inactive.map(x=>`<tr><td>${tagHTML(x.p)}</td><td>${escapeHTML(x.p.name)}</td><td>${x.latest?fmtDate(x.latest):"ไม่เคยเคลื่อนไหว"}</td><td class="mono">${x.p.qty} ${escapeHTML(x.p.unit)}</td></tr>`).join(""):`<tr class="empty-row"><td colspan="4">ไม่มีรายการไม่เคลื่อนไหวเกิน ${days} วัน</td></tr>`;
+    refreshReportPagination("inactive-parts-body");
     renderStockCard();
   }
   document.getElementById("btn-stock-card-export").addEventListener("click",()=>{
@@ -5619,6 +5706,7 @@
     body.querySelectorAll("[data-print-tx]").forEach(b=>b.addEventListener("click",()=>printTransactionById(b.dataset.printTx)));
     body.querySelectorAll("[data-cancel-tx]").forEach(b=>b.addEventListener("click",()=>cancelTransactionUI(b.dataset.cancelTx)));
     body.querySelectorAll("[data-cancel-doc]").forEach(b=>b.addEventListener("click",()=>cancelDocumentUI(b.dataset.cancelDoc)));
+    refreshReportPagination("history-body");
     renderManagementReports();
   }
 
@@ -6243,7 +6331,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.5.6`;
+    document.title=`${meta.title} | Stock Control v4.5.7`;
   }
 
   function selectLabel(el){
@@ -6276,7 +6364,7 @@
   }
   function refreshTableMeta(bodyId){
     const tbody=document.getElementById(bodyId),meta=ensureTableMeta(bodyId);if(!tbody||!meta)return;
-    const count=countDataRows(tbody),countEl=meta.querySelector("[data-table-count]");if(countEl)countEl.textContent=count.toLocaleString("th-TH");
+    const pageState=reportPaginationState?.get(bodyId),count=pageState?pageState.total:countDataRows(tbody),countEl=meta.querySelector("[data-table-count]");if(countEl)countEl.textContent=count.toLocaleString("th-TH");
     const chips=meta.querySelector("[data-filter-chips]");if(!chips)return;
     const filters=(SMART_FILTERS[bodyId]||[]).map(([id,label])=>({el:document.getElementById(id),label})).filter(x=>isMeaningfulFilter(x.el));
     chips.innerHTML=filters.map(x=>`<span class="filter-chip">${escapeHTML(x.label)}: ${escapeHTML(selectLabel(x.el))}<button type="button" data-clear-filter="${escapeHTML(x.el.id)}" aria-label="ล้างตัวกรอง">×</button></span>`).join("");
