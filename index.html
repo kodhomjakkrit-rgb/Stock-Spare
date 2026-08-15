@@ -2184,11 +2184,14 @@
   .job-line-row{padding-top:9px;padding-bottom:9px;border-top:1px solid var(--border)}
   .task-line-columns,.task-line-row{grid-template-columns:minmax(220px,2fr) 145px 130px minmax(160px,1fr) 52px}
   .purchase-line-columns,.purchase-line-row{grid-template-columns:minmax(210px,2fr) 100px 88px 140px 120px 115px 52px}
+  .transfer-line-columns,.transfer-line-row{grid-template-columns:minmax(280px,2fr) minmax(145px,.8fr) minmax(130px,.7fr) 52px}
   .line-field{display:block;min-width:0;margin:0}.line-field>span{display:none;margin:0 0 5px;color:var(--text-dim);font-size:10.5px;font-weight:700;line-height:1.25}
   .line-field input,.line-field select{width:100%;min-width:0}
   .line-remove{min-width:42px;height:42px;align-self:end;padding:0;font-size:15px}.line-remove .remove-text{display:none}
   .jp-line-summary{grid-column:1/-1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 9px;border-radius:8px;background:var(--panel-alt);color:var(--text-dim);font-size:11px}
   .jp-line-summary strong{color:var(--text)}.jp-line-summary .line-summary-sep{color:var(--border)}
+  .transfer-available{min-height:42px;display:flex;align-items:center;padding:8px 10px;border:1px solid var(--border);border-radius:9px;background:var(--panel-alt);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700}
+  .transfer-available.is-low{color:var(--danger);border-color:rgba(220,38,38,.45);background:rgba(239,68,68,.065)}
   .jp-line-summary .line-error{color:var(--danger);font-weight:700}.job-line-row.line-has-error{background:rgba(239,68,68,.055)}
   .job-finance-grid,.job-detail-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.job-detail-kpis>div{padding:12px;border:1px solid var(--border);border-radius:11px;background:var(--panel-alt)}.job-detail-kpis span{display:block;color:var(--text-dim);font-size:11px}.job-detail-kpis strong{font-size:18px}.profit-positive{color:var(--success)!important}.profit-negative{color:var(--danger)!important}
   .detail-section{margin-top:16px}.detail-section h4{margin:0 0 8px}.detail-list{border:1px solid var(--border);border-radius:10px;overflow:auto;max-height:260px}.detail-list table{margin:0}.vehicle-caption{font-size:11px;color:var(--text-dim);margin-top:5px}
@@ -2198,10 +2201,10 @@
   html[data-theme="dark"] .stock-type-pill.resale{background:#172f42;color:#90c8ef;}
   html[data-theme="dark"] .status-pill.open{background:#172f42;color:#90c8ef}html[data-theme="dark"] .status-pill.in_progress{background:#153d3a;color:#79ded3}html[data-theme="dark"] .status-pill.wait_parts{background:#493617;color:#f6c665}html[data-theme="dark"] .status-pill.completed{background:#163b2d;color:#72d99c}
   @media(max-width:1180px){
-    .job-line-columns{display:none}.task-line-row,.purchase-line-row{grid-template-columns:repeat(2,minmax(0,1fr))}.job-line-row .line-wide,.jp-line-summary{grid-column:1/-1}.line-field>span{display:block}.line-remove{grid-column:1/-1;width:100%;height:38px}.line-remove .remove-mark{display:none}.line-remove .remove-text{display:inline}.job-line-guide{display:block}.job-line-guide strong{display:block;margin-bottom:2px}
+    .job-line-columns{display:none}.task-line-row,.purchase-line-row,.transfer-line-row{grid-template-columns:repeat(2,minmax(0,1fr))}.job-line-row .line-wide,.jp-line-summary{grid-column:1/-1}.line-field>span{display:block}.line-remove{grid-column:1/-1;width:100%;height:38px}.line-remove .remove-mark{display:none}.line-remove .remove-text{display:inline}.job-line-guide{display:block}.job-line-guide strong{display:block;margin-bottom:2px}
   }
   @media(max-width:760px){.stock-room-summary{grid-template-columns:repeat(2,minmax(0,1fr));}.job-grid{grid-template-columns:1fr}.job-grid .span2{grid-column:auto}.job-finance-grid,.job-detail-kpis{grid-template-columns:repeat(2,minmax(0,1fr));}}
-  @media(max-width:560px){.task-line-row,.purchase-line-row{grid-template-columns:1fr}.job-line-row .line-wide,.jp-line-summary,.line-remove{grid-column:1}.job-line-editor-head{align-items:flex-start}.job-line-editor-head button{white-space:nowrap}}
+  @media(max-width:560px){.task-line-row,.purchase-line-row,.transfer-line-row{grid-template-columns:1fr}.job-line-row .line-wide,.jp-line-summary,.line-remove{grid-column:1}.job-line-editor-head{align-items:flex-start}.job-line-editor-head button{white-space:nowrap}}
   @media print{
     html[data-theme="dark"],html[data-theme="dark"] body{color-scheme:light;background:#fff!important;color:#111!important;}
   }
@@ -2241,7 +2244,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.8.3</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.8.4</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -2321,7 +2324,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.8.3</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.8.4</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -2573,11 +2576,15 @@
         <div class="field"><label>Job ที่เกี่ยวข้อง</label><select id="transfer-job"></select></div>
         <div class="field"><label>จากสต๊อก</label><select id="transfer-from"><option value="INTERNAL">ใช้ภายใน</option><option value="RESALE">เพื่อขาย</option></select></div>
         <div class="field"><label>ไปยังสต๊อก</label><select id="transfer-to"><option value="RESALE">เพื่อขาย</option><option value="INTERNAL">ใช้ภายใน</option></select></div>
-        <div class="field"><label>อะไหล่ *</label><select id="transfer-part"></select></div>
-        <div class="field"><label>จำนวนโอน *</label><input type="number" id="transfer-qty" min="0" step="any" placeholder="0"></div>
         <div class="field span2"><label>เหตุผลการโอน *</label><textarea id="transfer-reason" placeholder="เช่น โอนสินค้า 5 ชิ้นเพื่อเตรียมขายลูกค้า"></textarea></div>
       </div>
-      <div class="form-actions"><button class="primary" id="btn-transfer-save">ยืนยันการโอน</button></div>
+      <div class="job-line-editor transfer-line-editor">
+        <div class="job-line-editor-head"><strong>รายการอะไหล่ที่ต้องการโอน</strong><button type="button" class="small" id="btn-transfer-add-line">+ เพิ่มรายการอะไหล่</button></div>
+        <div class="job-line-guide"><strong>วิธีกรอก</strong><span>หนึ่งแถวต่อหนึ่ง SKU · ค้นหาอะไหล่ ระบุจำนวน และตรวจยอดพร้อมโอนจากสต๊อกต้นทางก่อนยืนยัน · หนึ่งใบโอนได้สูงสุด 100 รายการ</span></div>
+        <div class="job-line-columns transfer-line-columns" aria-hidden="true"><span>อะไหล่ *</span><span>พร้อมโอนจากต้นทาง</span><span>จำนวนโอน *</span><span></span></div>
+        <div id="transfer-lines"></div>
+      </div>
+      <div class="form-actions"><button id="btn-transfer-clear">ล้างฟอร์ม</button><button class="primary" id="btn-transfer-save">ยืนยันการโอน</button></div>
     </div>
     <div class="panel"><h2>ประวัติใบโอนล่าสุด</h2><div class="table-wrap"><table><thead><tr><th>เลขที่</th><th>วันที่</th><th>ต้นทาง → ปลายทาง</th><th>รายการ</th><th>Job</th><th>สถานะ</th><th></th></tr></thead><tbody id="stock-transfer-body"></tbody></table></div></div>
   </section>
@@ -4024,6 +4031,10 @@
       const line=requestLines.find(x=>x.id===el.dataset.lineId);if(!line)return;
       if(el.dataset.requestPart!==undefined)line.partId=el.value;else line.qty=el.value;
     });
+    document.querySelectorAll("[data-transfer-part],[data-transfer-qty]").forEach(el=>{
+      const line=stockTransferLines.find(x=>x.id===el.dataset.lineId);if(!line)return;
+      if(el.dataset.transferPart!==undefined)line.partId=el.value;else line.qty=el.value;
+    });
     document.querySelectorAll("[data-count-part]").forEach(el=>{countDraft[el.dataset.countPart]=el.value;});
     const fields = {};
     document.querySelectorAll("#app input[id],#app select[id],#app textarea[id]").forEach(el=>{
@@ -4036,6 +4047,7 @@
     const draft = {
       schema:1,username,savedAt:new Date().toISOString(),activeView,scrollY:window.scrollY||0,fields,
       receiveLines:safeDraftLines(receiveLines),issueLines:safeDraftLines(issueLines),requestLines:safeDraftLines(requestLines),
+      stockTransferLines:safeDraftLines(stockTransferLines),
       countDraft:{...countDraft},currentMasterType
     };
     try{
@@ -4059,10 +4071,11 @@
     if(!draft || draft.username!==username) return false;
     restoringDraft=true;
     try{
-      const restoredReceive=safeDraftLines(draft.receiveLines),restoredIssue=safeDraftLines(draft.issueLines),restoredRequest=safeDraftLines(draft.requestLines);
+      const restoredReceive=safeDraftLines(draft.receiveLines),restoredIssue=safeDraftLines(draft.issueLines),restoredRequest=safeDraftLines(draft.requestLines),restoredTransfer=safeDraftLines(draft.stockTransferLines);
       receiveLines=restoredReceive.length?restoredReceive:[{id:uid(),partId:"",qty:""}];
       issueLines=restoredIssue.length?restoredIssue:[{id:uid(),partId:"",qty:""}];
       requestLines=restoredRequest.length?restoredRequest:[{id:uid(),partId:"",qty:""}];
+      stockTransferLines=restoredTransfer.length?restoredTransfer:[{id:uid(),partId:"",qty:""}];
       Object.keys(countDraft).forEach(k=>delete countDraft[k]);
       Object.assign(countDraft,draft.countDraft&&typeof draft.countDraft==="object"?draft.countDraft:{});
       if(["customers","suppliers","trucks","provinces","documents","partCategories"].includes(draft.currentMasterType)) currentMasterType=draft.currentMasterType;
@@ -4077,6 +4090,7 @@
       // ร่างที่ตั้งใจเลือกวันที่ไว้ยังคงเดิม แต่ถ้าช่องใดว่างให้กลับมาใช้วันที่วันนี้
       applyDefaultCurrentDates();
       updateIssuePurposeUI();updateIssueVehicleUI();
+      updateAllStockTransferLines();
       const allowedView=document.getElementById("view-"+draft.activeView)?draft.activeView:"dashboard";
       activateView(allowedView);
       requestAnimationFrame(()=>window.scrollTo({top:Number(draft.scrollY)||0,behavior:"auto"}));
@@ -4183,7 +4197,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.8.3 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.8.4 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -4836,7 +4850,6 @@
     setSelectOptions("jp-supplier",suppliers,x=>(x.code?x.code+" — ":"")+x.name,undefined,"— ไม่ระบุร้านค้า —");
     setSelectOptions("jp-job",state.repairJobs.filter(x=>!["completed","cancelled"].includes(x.status)).sort((a,b)=>b.jobDate.localeCompare(a.jobDate)),x=>x.jobNo+" — "+(customerById(x.customerId)?.name||truckById(x.truckId)?.plateNo||x.symptom),undefined,"— เลือก JOB ที่ยังเปิดอยู่ —");
     setSelectOptions("jpt-part",state.parts.filter(x=>x.isActive!==false).sort((a,b)=>a.code.localeCompare(b.code,'th',{numeric:true})),x=>x.code+" — "+x.name,undefined,"— เลือก SKU ปลายทาง —");
-    setSelectOptions("transfer-part",state.parts.filter(x=>x.isActive!==false).sort((a,b)=>a.code.localeCompare(b.code,'th',{numeric:true})),x=>x.code+" — "+x.name,undefined,"— เลือกอะไหล่ —");
     const openJobs=state.repairJobs.filter(x=>!["completed","cancelled"].includes(x.status)).sort((a,b)=>b.jobDate.localeCompare(a.jobDate));
     ["iss-job","req-job","transfer-job"].forEach(id=>setSelectOptions(id,openJobs,x=>x.jobNo+" — "+x.symptom,undefined,"— ไม่ผูก Job —"));
   }
@@ -6797,7 +6810,7 @@
     if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
     const guide = [
-      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.8.3 Quick SKU from JOB Transfer"],
+      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.8.4 Multi-item Stock Transfer"],
       ["วิธีใช้","ใช้ไฟล์เดียวได้ทุกห้อง เลือกประเภทในโปรแกรมแล้วอัปโหลดไฟล์เดิม ระบบจะอ่านเฉพาะชีทที่ตรงกัน"],
       ["ลำดับแนะนำ","จังหวัด → ลูกค้า → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → หมวดหมู่ SKU → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
       ["การสร้าง SKU","ในชีท “เพิ่มอะไหล่” สามารถเว้นคอลัมน์รหัสอะไหล่ไว้ ระบบจะสร้าง SKU จากหมวดหมู่ + ประเภทไอเท็ม + เลขลำดับต่อจากข้อมูลเดิมให้อัตโนมัติ"],
@@ -6812,7 +6825,7 @@
       ws["!autofilter"]={ref:"A1:"+XLSX.utils.encode_col(cfg.headers.length-1)+"1"};
       XLSX.utils.book_append_sheet(wb,ws,cfg.sheet);
     });
-    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.8.3.xlsx");
+    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.8.4.xlsx");
     toast("ดาวน์โหลดแม่แบบรวมเรียบร้อย");
   }
   document.getElementById("btn-download-import-template").addEventListener("click",downloadFullTemplate);
@@ -7205,7 +7218,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.8.3`;
+    document.title=`${meta.title} | Stock Control v4.8.4`;
   }
 
   function selectLabel(el){
@@ -7629,10 +7642,63 @@
     document.getElementById("stock-transfer-body").innerHTML=rows.length?rows.map(x=>{const items=state.stockTransferItems.filter(i=>i.transferId===x.id),job=repairJobById(x.jobId);return `<tr><td class="mono">${escapeHTML(x.transferNo)}</td><td>${fmtDate(x.date)}</td><td><span class="stock-type-pill ${x.fromStockType==="RESALE"?"resale":""}">${stockTypeText(x.fromStockType)}</span> → <span class="stock-type-pill ${x.toStockType==="RESALE"?"resale":""}">${stockTypeText(x.toStockType)}</span></td><td>${items.map(i=>{const p=partById(i.partId);return `${escapeHTML(p?.code||"?")} × ${fmtMoney(i.qty)}`;}).join("<br>")||"-"}<div class="hint">${escapeHTML(x.reason||"")}</div></td><td>${job?`<button class="small job-link" data-job-open="${job.id}">${escapeHTML(job.jobNo)}</button>`:"-"}</td><td><span class="status-pill ${x.status}">${x.status==="cancelled"?"ยกเลิก":"สำเร็จ"}</span></td><td>${x.status!=="cancelled"?`<button class="small danger-ghost" data-transfer-cancel="${x.id}">ยกเลิก</button>`:""}</td></tr>`;}).join(""):`<tr class="empty-row"><td colspan="7">ยังไม่มีประวัติการโอน</td></tr>`;
   }
   let transferRequestId=uid();
-  function syncTransferDirection(changed){const from=document.getElementById("transfer-from"),to=document.getElementById("transfer-to");if(from.value===to.value){if(changed==="from")to.value=from.value==="INTERNAL"?"RESALE":"INTERNAL";else from.value=to.value==="INTERNAL"?"RESALE":"INTERNAL";}}
+  let stockTransferLines=[{id:uid(),partId:"",qty:""}];
+  function syncStockTransferLinesFromControls(){
+    document.querySelectorAll("#transfer-lines .transfer-line-row").forEach(row=>{
+      const line=stockTransferLines.find(x=>x.id===row.dataset.lineId);if(!line)return;
+      line.partId=row.querySelector("[data-transfer-part]")?.value||"";
+      line.qty=row.querySelector("[data-transfer-qty]")?.value??"";
+    });
+  }
+  function stockTransferLineHTML(line){
+    return `<div class="job-line-row transfer-line-row" data-line-id="${escapeHTML(line.id)}"><label class="line-field line-wide"><span>อะไหล่ *</span><select data-transfer-part data-line-id="${escapeHTML(line.id)}" aria-label="อะไหล่ที่ต้องการโอน">${documentPartOptions(line.partId)}</select></label><div class="line-field"><span>พร้อมโอนจากต้นทาง</span><div class="transfer-available" data-transfer-available>—</div></div><label class="line-field"><span>จำนวนโอน *</span><input type="number" min="0.0001" step="0.0001" placeholder="0" value="${escapeHTML(line.qty)}" data-transfer-qty data-line-id="${escapeHTML(line.id)}" aria-label="จำนวนที่ต้องการโอน"></label><button type="button" class="small danger-ghost line-remove" data-transfer-remove="${escapeHTML(line.id)}" aria-label="ลบรายการโอน"><span class="remove-mark" aria-hidden="true">×</span><span class="remove-text">ลบรายการอะไหล่</span></button><div class="jp-line-summary transfer-line-summary" aria-live="polite"></div></div>`;
+  }
+  function renderStockTransferLines(){
+    const root=document.getElementById("transfer-lines");if(!root)return;
+    if(!stockTransferLines.length)stockTransferLines=[{id:uid(),partId:"",qty:""}];
+    if(searchableSelectActive?.closest("#transfer-lines"))closeSearchableSelect(false);
+    root.innerHTML=stockTransferLines.map(stockTransferLineHTML).join("");
+    root.querySelectorAll("select[data-transfer-part]").forEach(enhanceSearchableSelect);
+    refreshEntryFeedback(root);updateAllStockTransferLines();
+  }
+  function updateStockTransferLine(row){
+    if(!row)return;
+    const partId=row.querySelector("[data-transfer-part]")?.value||"",qty=Number(row.querySelector("[data-transfer-qty]")?.value),part=partById(partId),fromType=document.getElementById("transfer-from")?.value||"INTERNAL",available=part?availableQty(partId,"",fromType):0;
+    const duplicate=!!partId&&stockTransferLines.filter(x=>x.partId===partId).length>1,tooMuch=!!part&&Number.isFinite(qty)&&qty>available+.0000001;
+    const errors=[];if(duplicate)errors.push("เลือก SKU นี้ซ้ำในใบโอน");if(tooMuch)errors.push("จำนวนโอนเกินยอดพร้อมโอน");
+    const availableEl=row.querySelector("[data-transfer-available]");
+    if(availableEl){availableEl.textContent=part?`${fmtMoney(available)} ${part.unit}`:"—";availableEl.classList.toggle("is-low",tooMuch||!!part&&available<=0);}
+    const summary=row.querySelector(".transfer-line-summary");
+    if(summary)summary.innerHTML=part?`<span><strong>${escapeHTML(part.code)}</strong> · ${escapeHTML(part.name)}</span><span class="line-summary-sep">•</span><span>${stockTypeText(fromType)} พร้อมโอน <strong>${fmtMoney(available)} ${escapeHTML(part.unit)}</strong></span>${Number.isFinite(qty)&&qty>0?`<span class="line-summary-sep">•</span><span>หลังโอนเหลือ <strong>${fmtMoney(Math.max(0,available-qty))} ${escapeHTML(part.unit)}</strong></span>`:""}${errors.length?`<span class="line-error">${escapeHTML(errors.join(" · "))}</span>`:""}`:`<span>ค้นหาและเลือกอะไหล่ที่ต้องการโอน</span>`;
+    row.classList.toggle("line-has-error",errors.length>0);
+    const select=row.querySelector("[data-transfer-part]"),qtyInput=row.querySelector("[data-transfer-qty]");
+    if(select){select.dataset.entryCustomInvalid=duplicate?"1":"0";updateEntryFeedback(select,false);}
+    if(qtyInput){qtyInput.dataset.entryCustomInvalid=tooMuch?"1":"0";updateEntryFeedback(qtyInput,false);}
+    const remove=row.querySelector("[data-transfer-remove]");if(remove)remove.disabled=stockTransferLines.length===1;
+  }
+  function updateAllStockTransferLines(){syncStockTransferLinesFromControls();document.querySelectorAll("#transfer-lines .transfer-line-row").forEach(updateStockTransferLine);}
+  function clearStockTransferForm(){
+    transferRequestId=uid();stockTransferLines=[{id:uid(),partId:"",qty:""}];
+    setDateInputToCurrent("transfer-date",true);document.getElementById("transfer-job").value="";document.getElementById("transfer-from").value="INTERNAL";document.getElementById("transfer-to").value="RESALE";document.getElementById("transfer-reason").value="";
+    renderStockTransferLines();resetEntryFeedback(document.getElementById("view-stocktransfer"));clearSmartDirty();
+  }
+  function validateStockTransferLines(fromType){
+    syncStockTransferLinesFromControls();
+    const items=stockTransferLines.map(x=>({partId:x.partId,qty:Number(x.qty)})),seen=new Set();
+    if(!items.length)throw new Error("กรุณาเพิ่มรายการอะไหล่อย่างน้อย 1 รายการ");
+    if(items.length>100)throw new Error("หนึ่งใบโอนได้สูงสุด 100 รายการ");
+    items.forEach((item,index)=>{const row=document.querySelector(`#transfer-lines .transfer-line-row[data-line-id="${CSS.escape(stockTransferLines[index].id)}"]`),part=partById(item.partId),select=row?.querySelector("[data-transfer-part]"),qtyInput=row?.querySelector("[data-transfer-qty]");if(!part){if(select)setEntryInvalid(select,true);throw new Error(`รายการที่ ${index+1}: กรุณาเลือกอะไหล่`);}if(seen.has(item.partId)){if(select)setEntryInvalid(select,true);throw new Error(`รายการที่ ${index+1}: เลือก ${part.code} ซ้ำ`);}seen.add(item.partId);if(!Number.isFinite(item.qty)||item.qty<=0){if(qtyInput)setEntryInvalid(qtyInput,true);throw new Error(`รายการที่ ${index+1}: จำนวนโอนต้องมากกว่า 0`);}const available=availableQty(item.partId,"",fromType);if(item.qty>available+.0000001){if(qtyInput)setEntryInvalid(qtyInput,true);throw new Error(`รายการที่ ${index+1}: ${part.code} พร้อมโอนเพียง ${fmtMoney(available)} ${part.unit}`);}});
+    return items;
+  }
+  function syncTransferDirection(changed){const from=document.getElementById("transfer-from"),to=document.getElementById("transfer-to");if(from.value===to.value){if(changed==="from")to.value=from.value==="INTERNAL"?"RESALE":"INTERNAL";else from.value=to.value==="INTERNAL"?"RESALE":"INTERNAL";}updateAllStockTransferLines();}
   document.getElementById("transfer-from")?.addEventListener("change",()=>syncTransferDirection("from"));
   document.getElementById("transfer-to")?.addEventListener("change",()=>syncTransferDirection("to"));
-  document.getElementById("btn-transfer-save")?.addEventListener("click",async()=>{if(!requireAdmin())return;const partId=document.getElementById("transfer-part").value,qty=Number(document.getElementById("transfer-qty").value),fromStockType=document.getElementById("transfer-from").value,toStockType=document.getElementById("transfer-to").value,reason=document.getElementById("transfer-reason").value.trim(),part=partById(partId);try{if(!part)throw new Error("กรุณาเลือกอะไหล่");if(!qty||qty<=0)throw new Error("จำนวนโอนต้องมากกว่า 0");if(fromStockType===toStockType)throw new Error("ต้นทางและปลายทางต้องเป็นคนละสต๊อก");if(qty>availableQty(partId,"",fromStockType))throw new Error(`ยอดพร้อมโอนไม่พอ (พร้อมโอน ${fmtMoney(availableQty(partId,"",fromStockType))} ${part.unit})`);if(reason.length<3)throw new Error("กรุณาระบุเหตุผลอย่างน้อย 3 ตัวอักษร");}catch(err){toast(err.message,true);return;}if(!confirm(`ยืนยันโอน ${part.code} จำนวน ${fmtMoney(qty)} ${part.unit}\n${stockTypeText(fromStockType)} → ${stockTypeText(toStockType)}?`))return;const btn=document.getElementById("btn-transfer-save");btn.disabled=true;btn.textContent="กำลังโอน...";try{const result=await apiCall("transferStock",{transfer:{clientRequestId:transferRequestId,date:document.getElementById("transfer-date").value||todayISO(),fromStockType,toStockType,jobId:document.getElementById("transfer-job").value,reason,items:[{partId,qty}]}});mergeV470Result(result);transferRequestId=uid();document.getElementById("transfer-part").value="";document.getElementById("transfer-qty").value="";document.getElementById("transfer-reason").value="";cacheSave();renderAll();toast(`โอนสต๊อก ${result.transfer.transferNo} สำเร็จ${result.duplicateProtected?" · ป้องกันรายการซ้ำแล้ว":""}`);}catch(err){toast("โอนสต๊อกไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="ยืนยันการโอน";}});
+  document.getElementById("btn-transfer-add-line")?.addEventListener("click",()=>{syncStockTransferLinesFromControls();if(stockTransferLines.length>=100){toast("หนึ่งใบโอนได้สูงสุด 100 รายการ",true);return;}const line={id:uid(),partId:"",qty:""};stockTransferLines.push(line);renderStockTransferLines();searchableSelectControl(document.querySelector(`[data-transfer-part][data-line-id="${CSS.escape(line.id)}"]`))?.focus();});
+  document.getElementById("btn-transfer-clear")?.addEventListener("click",clearStockTransferForm);
+  document.getElementById("transfer-lines")?.addEventListener("input",event=>{const line=stockTransferLines.find(x=>x.id===event.target.dataset.lineId);if(!line)return;if(event.target.dataset.transferQty!==undefined)line.qty=event.target.value;updateAllStockTransferLines();});
+  document.getElementById("transfer-lines")?.addEventListener("change",event=>{const line=stockTransferLines.find(x=>x.id===event.target.dataset.lineId);if(!line)return;if(event.target.dataset.transferPart!==undefined)line.partId=event.target.value;else if(event.target.dataset.transferQty!==undefined)line.qty=event.target.value;updateAllStockTransferLines();});
+  document.getElementById("transfer-lines")?.addEventListener("click",event=>{const button=event.target.closest("[data-transfer-remove]");if(!button)return;syncStockTransferLinesFromControls();if(stockTransferLines.length===1)return;stockTransferLines=stockTransferLines.filter(x=>x.id!==button.dataset.transferRemove);renderStockTransferLines();});
+  document.getElementById("btn-transfer-save")?.addEventListener("click",async()=>{if(!requireAdmin())return;const fromStockType=document.getElementById("transfer-from").value,toStockType=document.getElementById("transfer-to").value,reason=document.getElementById("transfer-reason").value.trim();let items;try{if(fromStockType===toStockType)throw new Error("ต้นทางและปลายทางต้องเป็นคนละสต๊อก");if(reason.length<3)throw new Error("กรุณาระบุเหตุผลอย่างน้อย 3 ตัวอักษร");items=validateStockTransferLines(fromStockType);}catch(err){toast(err.message,true);updateAllStockTransferLines();return;}const preview=items.slice(0,12).map(x=>{const part=partById(x.partId);return `• ${part.code} × ${fmtMoney(x.qty)} ${part.unit}`;}).join("\n"),more=items.length>12?`\nและอีก ${items.length-12} รายการ`:"";if(!confirm(`ยืนยันโอน ${items.length} รายการ\n${stockTypeText(fromStockType)} → ${stockTypeText(toStockType)}\n\n${preview}${more}`))return;const btn=document.getElementById("btn-transfer-save");btn.disabled=true;btn.textContent="กำลังโอน...";try{const result=await apiCall("transferStock",{transfer:{clientRequestId:transferRequestId,date:document.getElementById("transfer-date").value||todayISO(),fromStockType,toStockType,jobId:document.getElementById("transfer-job").value,reason,items}});mergeV470Result(result);clearStockTransferForm();cacheSave();renderAll();saveWorkingDraft();toast(`โอนสต๊อก ${result.transfer.transferNo} สำเร็จ ${items.length} รายการ${result.duplicateProtected?" · ป้องกันรายการซ้ำแล้ว":""}`);}catch(err){toast("โอนสต๊อกไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="ยืนยันการโอน";}});
   document.getElementById("stock-transfer-body")?.addEventListener("click",async e=>{const button=e.target.closest("[data-transfer-cancel]");if(!button)return;const transfer=state.stockTransfers.find(x=>x.id===button.dataset.transferCancel),reason=prompt(`เหตุผลยกเลิก ${transfer?.transferNo||"ใบโอน"}`)?.trim();if(reason===undefined)return;if(!reason||reason.length<3){toast("กรุณาระบุเหตุผลอย่างน้อย 3 ตัวอักษร",true);return;}button.disabled=true;try{const result=await apiCall("cancelStockTransfer",{id:transfer.id,reason,expectedVersion:transfer.version});mergeV470Result(result);cacheSave();renderAll();toast("ยกเลิกใบโอนและคืนยอดทั้งสองสต๊อกแล้ว");}catch(err){toast("ยกเลิกใบโอนไม่สำเร็จ: "+err.message,true);}finally{button.disabled=false;}});
 
   function updateTruckOwnerUI(){const customer=document.getElementById("mf-truck-owner-type")?.value==="CUSTOMER";if(document.getElementById("mf-truck-customer-field"))document.getElementById("mf-truck-customer-field").hidden=!customer;if(!customer&&document.getElementById("mf-truck-customer"))document.getElementById("mf-truck-customer").value="";}
@@ -7718,6 +7784,7 @@
     applyJobPurchasePermissions();
     populatePartSelects();
     populateMasterSelects();
+    renderStockTransferLines();
     renderMaster();
     renderUsers();
     renderReceiveLog();
@@ -7744,6 +7811,7 @@
     loadCache();
     clearMasterImport();
     renderAll();
+    if(!document.querySelector("#transfer-lines .transfer-line-row"))clearStockTransferForm();
     if(!document.querySelector("#job-task-lines .job-line-row"))clearJobForm();
     if(!document.querySelector("#jp-lines .job-line-row"))clearJobPurchaseForm();
     if(hasScriptURL()){
