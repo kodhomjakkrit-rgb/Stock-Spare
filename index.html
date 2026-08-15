@@ -285,6 +285,7 @@
     align-items:center;justify-content:center;padding:20px;z-index:50;
   }
   #modal-overlay.show{display:flex;}
+  #modal-overlay.from-job-transfer{z-index:145;}
   #settings-modal-overlay{
     display:none;position:fixed;inset:0;background:rgba(8,10,13,.6);
     align-items:center;justify-content:center;padding:20px;z-index:50;
@@ -322,6 +323,11 @@
     .modal .form-actions{position:sticky;bottom:-16px;margin:14px -16px -16px;padding:12px 16px;background:var(--panel);border-top:1px solid var(--border);}
   }
   .modal h3{font-family:'Kanit',sans-serif;margin:0 0 14px;font-size:16px;}
+  .jpt-sku-actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;}
+  .jpt-sku-actions .searchable-select{min-width:0;}
+  .jpt-sku-actions .searchable-select-trigger{width:100%;}
+  #pf-transfer-note{margin-bottom:12px;}
+  @media(max-width:560px){.jpt-sku-actions{grid-template-columns:1fr}.jpt-sku-actions button{width:100%;}}
   .modal.modal-attention{animation:modalAttention .24s ease;}
   @keyframes modalAttention{0%,100%{transform:translateX(0)}30%{transform:translateX(-7px)}65%{transform:translateX(7px)}}
 
@@ -2235,7 +2241,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.8.2</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.8.3</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -2315,7 +2321,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.8.2</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.8.3</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -3113,6 +3119,7 @@
   <div class="modal">
     <h3 id="modal-title">เพิ่มอะไหล่ใหม่</h3>
     <input type="hidden" id="pf-id">
+    <div class="import-note" id="pf-transfer-note" hidden></div>
     <div class="field-grid">
       <div class="field"><label>รหัสอะไหล่ (SKU)</label><input type="text" id="pf-code" placeholder="ระบบสร้างให้อัตโนมัติ" autocomplete="off"></div>
       <div class="field"><label>ชื่ออะไหล่</label><input type="text" id="pf-name" placeholder="ชื่ออะไหล่" autocomplete="off"></div>
@@ -3145,7 +3152,7 @@
         </select>
         <input type="text" id="pf-unit-custom" placeholder="พิมพ์หน่วยนับใหม่" style="display:none;margin-top:6px;">
       </div>
-      <div class="field"><label>จำนวนคงเหลือ</label><input type="number" id="pf-qty" min="0" step="any" placeholder="0"></div>
+      <div class="field"><label id="pf-qty-label">จำนวนคงเหลือ</label><input type="number" id="pf-qty" min="0" step="any" placeholder="0"></div>
       <div class="field"><label>จุดสั่งซื้อขั้นต่ำ</label><input type="number" id="pf-min" min="0" step="any" placeholder="0"></div>
       <div class="field"><label>จุดสั่งซื้อ (Reorder Point)</label><input type="number" id="pf-reorder" min="0" step="any" placeholder="0"></div>
       <div class="field"><label>จำนวนสูงสุด (Max Stock)</label><input type="number" id="pf-max" min="0" step="any" placeholder="0"></div>
@@ -3243,7 +3250,7 @@
 <!-- Garage job detail / customer history / transfer leftover -->
 <div id="job-detail-overlay" class="modal-overlay" hidden><div class="modal" style="width:min(1040px,96vw);max-width:1040px"><h3 id="job-detail-title">รายละเอียด JOB</h3><div id="job-detail-content"></div><div class="form-actions"><button id="btn-job-detail-close">ปิด</button></div></div></div>
 <div id="customer-history-overlay" class="modal-overlay" hidden><div class="modal" style="width:min(920px,96vw);max-width:920px"><h3 id="customer-history-title">ประวัติลูกค้า</h3><div id="customer-history-content"></div><div class="form-actions"><button id="btn-customer-history-close">ปิด</button></div></div></div>
-<div id="jp-transfer-overlay" class="modal-overlay" hidden><div class="modal"><h3>โอนของเหลือเข้า Stock</h3><input type="hidden" id="jpt-item-id"><input type="hidden" id="jpt-request-id"><div class="field-grid"><div class="field span2"><div class="import-note" id="jpt-caption"></div></div><div class="field"><label>วันที่</label><input type="date" id="jpt-date" data-default-today></div><div class="field"><label>สต๊อกปลายทาง *</label><select id="jpt-stock-type"><option value="INTERNAL">สต๊อกใช้ภายใน</option><option value="RESALE">สต๊อกเพื่อขาย</option></select></div><div class="field span2"><label>SKU ปลายทาง *</label><select id="jpt-part"></select></div><div class="field"><label>จำนวนโอน *</label><input type="number" id="jpt-qty" min="0.0001" step="0.0001"></div></div><div class="form-actions"><button id="btn-jpt-cancel">ยกเลิก</button><button class="primary" id="btn-jpt-save">ยืนยันโอนเข้า Stock</button></div></div></div>
+<div id="jp-transfer-overlay" class="modal-overlay" hidden><div class="modal"><h3>โอนของเหลือเข้า Stock</h3><input type="hidden" id="jpt-item-id"><input type="hidden" id="jpt-request-id"><div class="field-grid"><div class="field span2"><div class="import-note" id="jpt-caption"></div></div><div class="field"><label>วันที่</label><input type="date" id="jpt-date" data-default-today></div><div class="field"><label>สต๊อกปลายทาง *</label><select id="jpt-stock-type"><option value="INTERNAL">สต๊อกใช้ภายใน</option><option value="RESALE">สต๊อกเพื่อขาย</option></select></div><div class="field span2"><label>SKU ปลายทาง *</label><div class="jpt-sku-actions"><select id="jpt-part"></select><button type="button" class="small" id="btn-jpt-create-part" data-admin-only>+ สร้างรหัสใหม่</button></div><div class="hint">ค้นหาและเลือกรหัสเดิมก่อน หากยังไม่มีรายการจึงสร้างรหัสใหม่</div></div><div class="field"><label>จำนวนโอน *</label><input type="number" id="jpt-qty" min="0.0001" step="0.0001"></div></div><div class="form-actions"><button id="btn-jpt-cancel">ยกเลิก</button><button class="primary" id="btn-jpt-save">ยืนยันโอนเข้า Stock</button></div></div></div>
 
 <!-- Settings modal -->
 <div id="settings-modal-overlay">
@@ -4176,7 +4183,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.8.2 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.8.3 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -5270,6 +5277,7 @@
 
   const PART_MODAL_FIELD_IDS = ["pf-id","pf-code","pf-name","pf-category","pf-category-custom","pf-item-type","pf-unit","pf-unit-custom","pf-qty","pf-min","pf-reorder","pf-max","pf-lead","pf-cost","pf-location","pf-supplier","pf-truck","pf-province"];
   let partModalInitialSnapshot = "";
+  let partModalReturnContext = null;
   function partModalSnapshot(){
     return JSON.stringify(PART_MODAL_FIELD_IDS.map(id=>{
       const el=document.getElementById(id);
@@ -5290,44 +5298,61 @@
     toast("รายการยังเปิดอยู่ ข้อมูลไม่หาย กรุณากด “บันทึก” หรือ “ยกเลิก”");
   }
 
-  function openPartModal(id){
+  function openPartModal(id, options={}){
     if(!requireAdmin()) return;
     const p = id ? partById(id) : null;
+    const fromJobTransfer=!p&&options.source==="jobPurchaseTransfer";
+    partModalReturnContext=fromJobTransfer?{...options}:null;
     resetEntryFeedback(document.getElementById("modal-overlay"));
     populateMasterSelects();
-    document.getElementById("modal-title").textContent = p ? "แก้ไขอะไหล่" : "เพิ่มอะไหล่ใหม่";
+    const overlay=document.getElementById("modal-overlay"),transferNote=document.getElementById("pf-transfer-note"),qtyInput=document.getElementById("pf-qty");
+    overlay.classList.toggle("from-job-transfer",fromJobTransfer);
+    document.getElementById("modal-title").textContent = p ? "แก้ไขอะไหล่" : (fromJobTransfer?"สร้าง SKU สำหรับโอนเข้า Stock":"เพิ่มอะไหล่ใหม่");
+    transferNote.hidden=!fromJobTransfer;
+    transferNote.textContent=fromJobTransfer?`สร้างรหัสสำหรับ “${options.name||"อะไหล่ที่เหลือ"}” โดยยอดเริ่มต้นจะถูกล็อกเป็น 0 และยอดจะเพิ่มเมื่อกดยืนยันโอนเข้า Stock เท่านั้น`:"";
     document.getElementById("pf-id").value = p ? p.id : "";
     document.getElementById("pf-code").value = p ? p.code : "";
-    document.getElementById("pf-name").value = p ? p.name : "";
-    document.getElementById("pf-item-type").value = p ? (p.itemType||"") : "";
-    populateSelectWithCustomOption(document.getElementById("pf-category"), DEFAULT_CATEGORIES, p ? p.category : "เครื่องจักร", "+ เพิ่มหมวดหมู่ใหม่...");
-    populateSelectWithCustomOption(document.getElementById("pf-unit"), DEFAULT_UNITS, p ? p.unit : "ชิ้น", "+ เพิ่มหน่วยนับใหม่...");
+    document.getElementById("pf-name").value = p ? p.name : (options.name||"");
+    document.getElementById("pf-item-type").value = p ? (p.itemType||"") : (options.itemType||"");
+    populateSelectWithCustomOption(document.getElementById("pf-category"), DEFAULT_CATEGORIES, p ? p.category : (options.category||"อุปกรณ์ทั่วไป"), "+ เพิ่มหมวดหมู่ใหม่...");
+    populateSelectWithCustomOption(document.getElementById("pf-unit"), DEFAULT_UNITS, p ? p.unit : (options.unit||"ชิ้น"), "+ เพิ่มหน่วยนับใหม่...");
     document.getElementById("pf-category-custom").style.display = "none";
     document.getElementById("pf-category-custom").value = "";
     document.getElementById("pf-unit-custom").style.display = "none";
     document.getElementById("pf-unit-custom").value = "";
-    document.getElementById("pf-qty").value = p ? p.qty : 0;
+    qtyInput.value = p ? p.qty : 0;
+    qtyInput.disabled=fromJobTransfer;
+    qtyInput.title=fromJobTransfer?"ยอดเริ่มต้นเป็น 0 เพื่อป้องกัน Stock เพิ่มซ้ำ":"";
+    document.getElementById("pf-qty-label").textContent=fromJobTransfer?"จำนวนคงเหลือเริ่มต้น (ล็อกเป็น 0)":"จำนวนคงเหลือ";
     document.getElementById("pf-min").value = p ? p.minQty : 0;
     document.getElementById("pf-reorder").value = p ? (p.reorderPoint||p.minQty||0) : 0;
     document.getElementById("pf-max").value = p ? (p.maxQty||0) : 0;
     document.getElementById("pf-lead").value = p ? (p.leadTimeDays||0) : 0;
-    document.getElementById("pf-cost").value = p ? p.cost : "";
+    document.getElementById("pf-cost").value = p ? p.cost : (options.cost??"");
     document.getElementById("pf-location").value = p ? p.location : "";
-    document.getElementById("pf-supplier").value = p ? (p.supplierId||"") : "";
+    document.getElementById("pf-supplier").value = p ? (p.supplierId||"") : (options.supplierId||"");
     document.getElementById("pf-truck").value = p ? (p.truckId||"") : "";
     document.getElementById("pf-province").value = p ? (p.provinceId||"") : "";
     partSkuAutoManaged=!p;
     lastSkuSuggestion=skuSuggestion();
     if(!p) document.getElementById("pf-code").value=lastSkuSuggestion;
-    document.getElementById("modal-overlay").classList.add("show");
+    overlay.classList.add("show");
     refreshPartHelpers(false);
     updateEntryFeedback(document.getElementById("pf-code"),!p);
     partModalInitialSnapshot=partModalSnapshot();
   }
   function closeModal(force=false){
     if(!force && partModalHasUnsavedChanges() && !confirm("มีข้อมูลที่ยังไม่ได้บันทึก\n\nยืนยันยกเลิกรายการนี้หรือไม่?")) return false;
-    document.getElementById("modal-overlay").classList.remove("show");
+    const returnContext=partModalReturnContext;
+    const overlay=document.getElementById("modal-overlay");
+    overlay.classList.remove("show","from-job-transfer");
+    document.getElementById("pf-qty").disabled=false;
+    document.getElementById("pf-qty").title="";
+    document.getElementById("pf-qty-label").textContent="จำนวนคงเหลือ";
+    document.getElementById("pf-transfer-note").hidden=true;
     partModalInitialSnapshot = "";
+    partModalReturnContext = null;
+    if(returnContext?.source==="jobPurchaseTransfer")document.getElementById("jp-transfer-overlay").hidden=false;
     return true;
   }
   document.getElementById("btn-modal-cancel").addEventListener("click", ()=>closeModal(false));
@@ -5337,6 +5362,7 @@
 
   document.getElementById("btn-modal-save").addEventListener("click", async ()=>{
     if(!requireAdmin()) return;
+    const transferReturnContext=partModalReturnContext?{...partModalReturnContext}:null;
     const id = document.getElementById("pf-id").value;
     const codeInput=document.getElementById("pf-code");
     if(!id){
@@ -5373,7 +5399,7 @@
 
     const data = {
       code, name, category, unit, itemType: document.getElementById("pf-item-type").value.trim(),
-      qty: Math.max(0, Number(document.getElementById("pf-qty").value)||0),
+      qty: transferReturnContext?.source==="jobPurchaseTransfer"?0:Math.max(0, Number(document.getElementById("pf-qty").value)||0),
       minQty: Math.max(0, Number(document.getElementById("pf-min").value)||0),
       reorderPoint: Math.max(0, Number(document.getElementById("pf-reorder").value)||0),
       maxQty: Math.max(0, Number(document.getElementById("pf-max").value)||0),
@@ -5387,6 +5413,7 @@
 
     const btn = document.getElementById("btn-modal-save");
     btn.disabled = true; btn.textContent = "กำลังบันทึก...";
+    let createdPart=null;
     try{
       if(id){
         const partObj = { id, ...data };
@@ -5395,14 +5422,22 @@
         toast("แก้ไขอะไหล่เรียบร้อย" + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
       } else {
         const partObj = { id: uid(), ...data };
-        const savedPart = hasScriptURL() ? await apiCall("addPart", { part: partObj }) : partObj;
-        state.parts.push(savedPart || partObj);
-        toast("เพิ่มอะไหล่ใหม่เรียบร้อย" + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
+        const apiPart = transferReturnContext?.source==="jobPurchaseTransfer"?{...partObj,source:"JOB_PURCHASE_TRANSFER"}:partObj;
+        const savedPart = hasScriptURL() ? await apiCall("addPart", { part: apiPart }) : partObj;
+        createdPart=savedPart||partObj;
+        state.parts.push(createdPart);
+        toast(transferReturnContext?.source==="jobPurchaseTransfer"?`สร้าง ${createdPart.code} และเลือกเป็น SKU ปลายทางแล้ว — ยอดเริ่มต้นยังเป็น 0`:"เพิ่มอะไหล่ใหม่เรียบร้อย" + (hasScriptURL() ? " (ซิงก์กับ Sheets แล้ว)" : ""));
       }
       cacheSave();
       clearSmartDirty();
       closeModal(true);
       renderAll();
+      if(transferReturnContext?.source==="jobPurchaseTransfer"&&createdPart){
+        const destination=document.getElementById("jpt-part");
+        destination.value=createdPart.id;
+        syncSearchableSelect(destination);
+        document.getElementById("jp-transfer-overlay").hidden=false;
+      }
     }catch(err){
       toast("บันทึกไป Google Sheets ไม่สำเร็จ: " + err.message, true);
     }finally{
@@ -6762,7 +6797,7 @@
     if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
     const guide = [
-      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.8.2 Clear Line-item Forms"],
+      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.8.3 Quick SKU from JOB Transfer"],
       ["วิธีใช้","ใช้ไฟล์เดียวได้ทุกห้อง เลือกประเภทในโปรแกรมแล้วอัปโหลดไฟล์เดิม ระบบจะอ่านเฉพาะชีทที่ตรงกัน"],
       ["ลำดับแนะนำ","จังหวัด → ลูกค้า → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → หมวดหมู่ SKU → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
       ["การสร้าง SKU","ในชีท “เพิ่มอะไหล่” สามารถเว้นคอลัมน์รหัสอะไหล่ไว้ ระบบจะสร้าง SKU จากหมวดหมู่ + ประเภทไอเท็ม + เลขลำดับต่อจากข้อมูลเดิมให้อัตโนมัติ"],
@@ -6777,7 +6812,7 @@
       ws["!autofilter"]={ref:"A1:"+XLSX.utils.encode_col(cfg.headers.length-1)+"1"};
       XLSX.utils.book_append_sheet(wb,ws,cfg.sheet);
     });
-    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.8.2.xlsx");
+    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.8.3.xlsx");
     toast("ดาวน์โหลดแม่แบบรวมเรียบร้อย");
   }
   document.getElementById("btn-download-import-template").addEventListener("click",downloadFullTemplate);
@@ -7170,7 +7205,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.8.2`;
+    document.title=`${meta.title} | Stock Control v4.8.3`;
   }
 
   function selectLabel(el){
@@ -7637,11 +7672,19 @@
   function editJobPurchase(id){const p=state.jobPurchases.find(x=>x.id===id);if(!p||p.status==="cancelled")return;document.getElementById("jp-id").value=p.id;document.getElementById("jp-version").value=p.version;document.getElementById("jp-request-id").value=p.clientRequestId||uid();setStoredDateInput("jp-date",p.date);document.getElementById("jp-job").value=p.jobId;document.getElementById("jp-supplier").value=p.supplierId;document.getElementById("jp-invoice").value=p.invoiceNo;document.getElementById("jp-buyer").value=p.purchasedBy;document.getElementById("jp-note").value=p.note;document.getElementById("jp-lines").innerHTML="";state.jobPurchaseItems.filter(i=>i.purchaseId===id).sort((a,b)=>a.lineNo-b.lineNo).forEach(addJobPurchaseLine);document.getElementById("btn-jp-save").textContent="บันทึกการแก้ไข";window.scrollTo({top:0,behavior:"smooth"});}
   function renderJobPurchases(){const q=String(document.getElementById("jp-search")?.value||"").trim().toLowerCase(),rows=state.jobPurchases.filter(p=>{const items=state.jobPurchaseItems.filter(i=>i.purchaseId===p.id),job=repairJobById(p.jobId);return !q||`${p.purchaseNo} ${job?.jobNo||""} ${p.supplierName} ${p.invoiceNo} ${items.map(i=>i.itemName).join(" ")}`.toLowerCase().includes(q);}).sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt.localeCompare(a.createdAt));const active=state.jobPurchases.filter(p=>p.status!=="cancelled"),total=active.reduce((s,p)=>s+state.jobPurchaseItems.filter(i=>i.purchaseId===p.id).reduce((n,i)=>n+i.lineAmount,0),0);document.getElementById("jp-summary").textContent=`${active.length} ใบ · ${fmtMoney(total)} บาท`;document.getElementById("jp-history-body").innerHTML=rows.length?rows.map(p=>{const items=state.jobPurchaseItems.filter(i=>i.purchaseId===p.id).sort((a,b)=>a.lineNo-b.lineNo),job=repairJobById(p.jobId),amount=items.reduce((s,i)=>s+i.lineAmount,0),remaining=items.reduce((s,i)=>s+Math.max(0,i.qty-i.usedQty-i.transferredQty),0);return `<tr><td class="mono">${escapeHTML(p.purchaseNo)}<div class="hint">${fmtDate(p.date)}</div></td><td><button class="small job-link" data-job-view="${p.jobId}">${escapeHTML(job?.jobNo||"-")}</button></td><td>${escapeHTML(p.supplierName||"ไม่ระบุร้าน")}<div class="hint">${escapeHTML(p.invoiceNo||"-")}</div></td><td>${items.map(i=>`${escapeHTML(i.itemName)} × ${fmtMoney(i.qty)} ${escapeHTML(i.unit)}`).join("<br>")}<div class="hint">รวม ${fmtMoney(amount)} บาท</div></td><td>${remaining?items.filter(i=>i.qty-i.usedQty-i.transferredQty>0).map(i=>`<button class="small" data-jp-transfer="${i.id}">${escapeHTML(i.itemName)} · ${fmtMoney(i.qty-i.usedQty-i.transferredQty)}</button>`).join(" "):"ไม่มีของเหลือ"}</td><td><span class="status-pill ${p.status}">${p.status==="cancelled"?"ยกเลิก":"ใช้งาน"}</span></td><td class="row-actions">${p.status!=="cancelled"?`<button class="small" data-jp-edit="${p.id}">แก้ไข</button><button class="small danger-ghost" data-jp-cancel="${p.id}">ยกเลิก</button>`:""}</td></tr>`;}).join(""):`<tr class="empty-row"><td colspan="7">ยังไม่มีรายการซื้อเฉพาะ JOB</td></tr>`;}
   function openJobPurchaseTransfer(itemId){const item=state.jobPurchaseItems.find(i=>i.id===itemId);if(!item)return;const remaining=item.qty-item.usedQty-item.transferredQty;if(remaining<=0){toast("รายการนี้ไม่มีของเหลือให้โอน",true);return;}document.getElementById("jpt-item-id").value=item.id;document.getElementById("jpt-request-id").value=uid();setDateInputToCurrent("jpt-date",true);document.getElementById("jpt-stock-type").value="INTERNAL";document.getElementById("jpt-part").value=item.partId||"";document.getElementById("jpt-qty").value=remaining;document.getElementById("jpt-qty").max=remaining;document.getElementById("jpt-caption").textContent=`${item.itemName} · ซื้อ ${fmtMoney(item.qty)} · ใช้กับ JOB ${fmtMoney(item.usedQty)} · โอนแล้ว ${fmtMoney(item.transferredQty)} · เหลือ ${fmtMoney(remaining)} ${item.unit}`;document.getElementById("jp-transfer-overlay").hidden=false;}
+  function createPartFromJobPurchaseTransfer(){
+    if(!requireAdmin())return;
+    const item=state.jobPurchaseItems.find(x=>x.id===document.getElementById("jpt-item-id").value);
+    if(!item){toast("ไม่พบรายการซื้อที่ต้องการสร้างรหัส",true);return;}
+    const purchase=state.jobPurchases.find(x=>x.id===item.purchaseId),unitNetCost=Number(item.qty)>0?Number(item.lineAmount)/Number(item.qty):Number(item.unitCost)||0;
+    document.getElementById("jp-transfer-overlay").hidden=true;
+    openPartModal(null,{source:"jobPurchaseTransfer",purchaseItemId:item.id,name:item.itemName,unit:item.unit||"ชิ้น",cost:Math.max(0,unitNetCost),supplierId:purchase?.supplierId||""});
+  }
   function applyJobPurchasePermissions(){document.querySelectorAll("[data-jp-transfer],[data-jp-cancel]").forEach(button=>button.hidden=!isAdmin());document.querySelectorAll("[data-jp-edit]").forEach(button=>{const purchase=state.jobPurchases.find(x=>x.id===button.dataset.jpEdit);button.hidden=!isAdmin()&&purchase?.createdBy!==currentUser?.username;});}
   document.getElementById("btn-jp-add-line")?.addEventListener("click",()=>addJobPurchaseLine());document.getElementById("jp-lines")?.addEventListener("click",e=>{if(e.target.closest(".jp-remove")){const row=e.target.closest(".job-line-row");if(Number(row.dataset.transferred)>0)toast("ลบรายการที่เคยโอนเข้า Stock ไม่ได้",true);else row.remove();}});document.getElementById("jp-lines")?.addEventListener("input",e=>updateJobPurchaseLineSummary(e.target.closest(".purchase-line-row")));document.getElementById("btn-jp-clear")?.addEventListener("click",()=>clearJobPurchaseForm());document.getElementById("jp-search")?.addEventListener("input",renderJobPurchases);
   document.getElementById("btn-jp-save")?.addEventListener("click",async()=>{const items=collectJobPurchaseLines(),purchase={id:document.getElementById("jp-id").value,expectedVersion:document.getElementById("jp-version").value,clientRequestId:document.getElementById("jp-request-id").value||uid(),date:document.getElementById("jp-date").value||todayISO(),jobId:document.getElementById("jp-job").value,supplierId:document.getElementById("jp-supplier").value,invoiceNo:document.getElementById("jp-invoice").value.trim(),purchasedBy:document.getElementById("jp-buyer").value.trim(),note:document.getElementById("jp-note").value.trim(),items};try{if(!purchase.jobId)throw new Error("กรุณาเลือก JOB");if(!items.length)throw new Error("กรุณาเพิ่มรายการซื้อ");items.forEach((i,n)=>{if(!i.itemName)throw new Error(`รายการที่ ${n+1}: กรุณาระบุชื่ออะไหล่`);if(!Number.isFinite(i.qty)||i.qty<=0)throw new Error(`รายการที่ ${n+1}: จำนวนซื้อต้องมากกว่า 0`);if(i.usedQty<0||i.usedQty+i.transferredQty>i.qty)throw new Error(`รายการที่ ${n+1}: จำนวนใช้กับ JOB รวมจำนวนที่โอน Stock ต้องไม่เกินจำนวนซื้อ`);if(i.discount>i.qty*i.unitCost)throw new Error(`รายการที่ ${n+1}: ส่วนลดเกินมูลค่ารายการ`);});}catch(err){toast(err.message,true);return;}const btn=document.getElementById("btn-jp-save");btn.disabled=true;btn.textContent="กำลังบันทึก...";try{const result=await apiCall("saveJobPurchase",{purchase});await syncFromSheet(false);clearJobPurchaseForm();renderAll();toast(`บันทึก ${result.purchase.purchaseNo} แล้ว — รายการนี้ยังไม่เข้า Stock`);}catch(err){toast("บันทึกไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="บันทึกซื้อเฉพาะ JOB";}});
   document.getElementById("jp-history-body")?.addEventListener("click",async e=>{const view=e.target.closest("[data-job-view]"),edit=e.target.closest("[data-jp-edit]"),transfer=e.target.closest("[data-jp-transfer]"),cancel=e.target.closest("[data-jp-cancel]");if(view){openJobDetail(view.dataset.jobView);return;}if(edit){editJobPurchase(edit.dataset.jpEdit);return;}if(transfer){openJobPurchaseTransfer(transfer.dataset.jpTransfer);return;}if(cancel){const p=state.jobPurchases.find(x=>x.id===cancel.dataset.jpCancel),reason=prompt(`เหตุผลยกเลิก ${p.purchaseNo}`)?.trim();if(!reason)return;try{await apiCall("cancelJobPurchase",{id:p.id,reason,expectedVersion:p.version});await syncFromSheet(false);renderAll();toast("ยกเลิกรายการแล้ว");}catch(err){toast("ยกเลิกไม่สำเร็จ: "+err.message,true);}}});
-  document.getElementById("btn-jpt-cancel")?.addEventListener("click",()=>document.getElementById("jp-transfer-overlay").hidden=true);document.getElementById("btn-jpt-save")?.addEventListener("click",async()=>{const transfer={purchaseItemId:document.getElementById("jpt-item-id").value,clientRequestId:document.getElementById("jpt-request-id").value,date:document.getElementById("jpt-date").value||todayISO(),stockType:document.getElementById("jpt-stock-type").value,partId:document.getElementById("jpt-part").value,qty:Number(document.getElementById("jpt-qty").value)};if(!transfer.partId||!Number.isFinite(transfer.qty)||transfer.qty<=0){toast("กรุณาเลือก SKU และระบุจำนวนโอน",true);return;}const btn=document.getElementById("btn-jpt-save");btn.disabled=true;try{const result=await apiCall("transferJobPurchaseToStock",{transfer});await syncFromSheet(false);document.getElementById("jp-transfer-overlay").hidden=true;renderAll();toast(`โอนเข้า ${stockTypeText(result.transfer.stockType)} ด้วยเลขที่ ${result.transfer.transferNo} แล้ว`);}catch(err){toast("โอนไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;}});
+  document.getElementById("btn-jpt-create-part")?.addEventListener("click",createPartFromJobPurchaseTransfer);document.getElementById("btn-jpt-cancel")?.addEventListener("click",()=>document.getElementById("jp-transfer-overlay").hidden=true);document.getElementById("btn-jpt-save")?.addEventListener("click",async()=>{const transfer={purchaseItemId:document.getElementById("jpt-item-id").value,clientRequestId:document.getElementById("jpt-request-id").value,date:document.getElementById("jpt-date").value||todayISO(),stockType:document.getElementById("jpt-stock-type").value,partId:document.getElementById("jpt-part").value,qty:Number(document.getElementById("jpt-qty").value)};if(!transfer.partId||!Number.isFinite(transfer.qty)||transfer.qty<=0){toast("กรุณาเลือก SKU และระบุจำนวนโอน",true);return;}const btn=document.getElementById("btn-jpt-save");btn.disabled=true;try{const result=await apiCall("transferJobPurchaseToStock",{transfer});await syncFromSheet(false);document.getElementById("jp-transfer-overlay").hidden=true;renderAll();toast(`โอนเข้า ${stockTypeText(result.transfer.stockType)} ด้วยเลขที่ ${result.transfer.transferNo} แล้ว`);}catch(err){toast("โอนไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;}});
 
   // ================= RENDER ALL =================
   function setNavigationBadge(id,count,label){
