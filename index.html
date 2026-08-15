@@ -2244,7 +2244,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.8.5</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.8.6</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -2324,7 +2324,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.8.5</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.8.6</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -3004,7 +3004,7 @@
       <div class="panel"><h2>อะไหล่เบิกสูงสุด <span class="sub">90 วันล่าสุด</span></h2><div class="table-wrap"><table><thead><tr><th>รหัส</th><th>รายการ</th><th>จำนวนเบิก</th></tr></thead><tbody id="top-issued-body"></tbody></table></div></div>
       <div class="panel"><h2>อะไหล่ไม่เคลื่อนไหว</h2><div class="search-bar"><select id="inactive-days"><option value="90">เกิน 90 วัน</option><option value="180">เกิน 180 วัน</option><option value="365">เกิน 365 วัน</option></select></div><div class="table-wrap"><table><thead><tr><th>รหัส</th><th>รายการ</th><th>เคลื่อนไหวล่าสุด</th><th>คงเหลือ</th></tr></thead><tbody id="inactive-parts-body"></tbody></table></div></div>
     </div>
-    <div class="panel" id="stock-card-panel"><h2>Stock Card รายอะไหล่</h2><div class="search-bar"><select id="stock-card-part"></select><button id="btn-stock-card-export">ส่งออก Stock Card</button></div><div class="table-wrap"><table><thead><tr><th>วันที่</th><th>เลขที่</th><th>รับเข้า</th><th>เบิกออก</th><th>คงเหลือ</th><th>รายละเอียด</th></tr></thead><tbody id="stock-card-body"></tbody></table></div></div>
+    <div class="panel" id="stock-card-panel"><h2>Stock Card รายอะไหล่</h2><div class="search-bar"><select id="stock-card-part"></select><select id="stock-card-stock-type" aria-label="ประเภทสต๊อก"><option value="INTERNAL">สต๊อกใช้ภายใน</option><option value="RESALE">สต๊อกเพื่อขาย</option></select><button id="btn-stock-card-export">ส่งออก Stock Card</button></div><div class="table-wrap"><table><thead><tr><th>วันที่</th><th>เลขที่</th><th>รับเข้า</th><th>เบิกออก</th><th>คงเหลือ</th><th>รายละเอียด</th></tr></thead><tbody id="stock-card-body"></tbody></table></div></div>
     <div class="panel">
       <h2>ประวัติการเคลื่อนไหวทั้งหมด</h2>
       <div class="search-bar">
@@ -4200,7 +4200,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.8.5 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.8.6 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -6544,7 +6544,7 @@
     document.getElementById(id).addEventListener("change",()=>{resetReportPagination("history-body");renderHistory();});
   });
   document.getElementById("inactive-days").addEventListener("change",()=>{resetReportPagination("inactive-parts-body");renderManagementReports();});
-  document.getElementById("stock-card-part").addEventListener("change",()=>{resetReportPagination("stock-card-body");renderStockCard();});
+  ["stock-card-part","stock-card-stock-type"].forEach(id=>document.getElementById(id).addEventListener("change",()=>{resetReportPagination("stock-card-body");renderStockCard();}));
 
   function renderStockCardPartOptions(){
     const sel=document.getElementById("stock-card-part");if(!sel)return;const prev=sel.value;
@@ -6559,17 +6559,22 @@
     setTimeout(()=>document.getElementById("stock-card-panel")?.scrollIntoView({behavior:"smooth",block:"start"}),50);
     toast(`เปิด Stock Card: ${p.code} — ${p.name}`);
   }
-  function stockCardRows(partId){
-    const p=partById(partId);if(!p)return[];const tx=state.transactions.filter(t=>t.partId===partId&&t.status!=="cancelled").sort((a,b)=>a.date.localeCompare(b.date)||a.createdAt.localeCompare(b.createdAt)||a.lineNo-b.lineNo);
-    let balance=p.qty-tx.reduce((s,t)=>s+(t.type==="in"?t.qty:-t.qty),0);
-    return tx.map(t=>{balance+=t.type==="in"?t.qty:-t.qty;return{...t,balance};});
+  function stockCardRows(partId,stockType="INTERNAL"){
+    const p=partById(partId);if(!p)return[];
+    const normalizedType=normalizeStockType(stockType),currentQty=stockQty(partId,normalizedType);
+    const tx=state.transactions.filter(t=>t.partId===partId&&t.status!=="cancelled"&&normalizeStockType(t.stockType)===normalizedType).sort((a,b)=>a.date.localeCompare(b.date)||a.createdAt.localeCompare(b.createdAt)||a.lineNo-b.lineNo);
+    const movement=tx.reduce((s,t)=>s+(t.type==="in"?Number(t.qty)||0:-(Number(t.qty)||0)),0);
+    let balance=currentQty-movement;
+    const rows=[{isOpening:true,type:"opening",date:"",docNo:"OPENING",qty:0,balance,note:`ยอดยกมา · ${stockTypeText(normalizedType)}`,stockType:normalizedType}];
+    tx.forEach(t=>{balance+=t.type==="in"?Number(t.qty)||0:-(Number(t.qty)||0);rows.push({...t,balance});});
+    return rows;
   }
-  let paginatedStockCardPartId="";
+  let paginatedStockCardKey="";
   function renderStockCard(){
-    const partId=document.getElementById("stock-card-part").value;
-    if(partId!==paginatedStockCardPartId){paginatedStockCardPartId=partId;resetReportPagination("stock-card-body");}
-    const rows=stockCardRows(partId),body=document.getElementById("stock-card-body");
-    body.innerHTML=rows.length?rows.map(t=>`<tr><td>${fmtDate(t.date)}</td><td class="mono">${escapeHTML(t.docNo||"-")}</td><td class="mono diff-pos">${t.type==="in"?t.qty:"-"}</td><td class="mono diff-neg">${t.type==="out"?t.qty:"-"}</td><td class="mono">${fmtMoney(t.balance)}</td><td>${escapeHTML(txContext(t)||t.note||"-")}</td></tr>`).join(""):`<tr class="empty-row"><td colspan="6">เลือกอะไหล่เพื่อดู Stock Card</td></tr>`;
+    const partId=document.getElementById("stock-card-part").value,stockType=normalizeStockType(document.getElementById("stock-card-stock-type").value),key=`${partId}|${stockType}`;
+    if(key!==paginatedStockCardKey){paginatedStockCardKey=key;resetReportPagination("stock-card-body");}
+    const rows=stockCardRows(partId,stockType),body=document.getElementById("stock-card-body");
+    body.innerHTML=partId?rows.map(t=>t.isOpening?`<tr class="opening-row"><td>-</td><td class="mono">OPENING</td><td class="mono diff-pos">-</td><td class="mono diff-neg">-</td><td class="mono">${fmtMoney(t.balance)}</td><td>${escapeHTML(t.note)}</td></tr>`:`<tr><td>${fmtDate(t.date)}</td><td class="mono">${escapeHTML(t.docNo||"-")}</td><td class="mono diff-pos">${t.type==="in"?t.qty:"-"}</td><td class="mono diff-neg">${t.type==="out"?t.qty:"-"}</td><td class="mono">${fmtMoney(t.balance)}</td><td>${escapeHTML(txContext(t)||t.note||"-")}</td></tr>`).join(""):`<tr class="empty-row"><td colspan="6">เลือกอะไหล่เพื่อดู Stock Card</td></tr>`;
     refreshReportPagination("stock-card-body");
   }
   function renderManagementReports(){
@@ -6585,7 +6590,8 @@
   }
   document.getElementById("btn-stock-card-export").addEventListener("click",()=>{
     const partId=document.getElementById("stock-card-part").value,p=partById(partId);if(!p){toast("กรุณาเลือกอะไหล่",true);return;}
-    exportTableToExcel("stock-card-body",{title:`Stock Card ${p.code} — ${p.name}`,fileName:`Stock-Card-${p.code}`});
+    const stockType=normalizeStockType(document.getElementById("stock-card-stock-type").value),stockLabel=stockTypeText(stockType);
+    exportTableToExcel("stock-card-body",{title:`Stock Card ${p.code} — ${p.name} — ${stockLabel}`,fileName:`Stock-Card-${p.code}-${stockType}`});
   });
 
   function renderHistory(){
@@ -6865,7 +6871,7 @@
     if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
     const guide = [
-      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.8.5 Clear Form Everywhere"],
+      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.8.6 Stock Card Balance Fix"],
       ["วิธีใช้","ใช้ไฟล์เดียวได้ทุกห้อง เลือกประเภทในโปรแกรมแล้วอัปโหลดไฟล์เดิม ระบบจะอ่านเฉพาะชีทที่ตรงกัน"],
       ["ลำดับแนะนำ","จังหวัด → ลูกค้า → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → หมวดหมู่ SKU → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
       ["การสร้าง SKU","ในชีท “เพิ่มอะไหล่” สามารถเว้นคอลัมน์รหัสอะไหล่ไว้ ระบบจะสร้าง SKU จากหมวดหมู่ + ประเภทไอเท็ม + เลขลำดับต่อจากข้อมูลเดิมให้อัตโนมัติ"],
@@ -6880,7 +6886,7 @@
       ws["!autofilter"]={ref:"A1:"+XLSX.utils.encode_col(cfg.headers.length-1)+"1"};
       XLSX.utils.book_append_sheet(wb,ws,cfg.sheet);
     });
-    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.8.5.xlsx");
+    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.8.6.xlsx");
     toast("ดาวน์โหลดแม่แบบรวมเรียบร้อย");
   }
   document.getElementById("btn-download-import-template").addEventListener("click",downloadFullTemplate);
@@ -7193,7 +7199,7 @@
     "master-table-body":[["master-search","คำค้นหา"]],
     "audit-body":[["audit-search","คำค้นหา"]],
     "inactive-parts-body":[["inactive-days","ช่วงเวลา"]],
-    "stock-card-body":[["stock-card-part","อะไหล่"]],
+    "stock-card-body":[["stock-card-part","อะไหล่"],["stock-card-stock-type","ประเภทสต๊อก"]],
     "history-body":[["hist-type-filter","ประเภท"],["hist-purpose-filter","วัตถุประสงค์"],["hist-customer-filter","ลูกค้า"],["hist-truck-filter","รถ"],["hist-from","ตั้งแต่"],["hist-to","ถึง"],["hist-search","คำค้นหา"]]
   };
   const SMART_EMPTY={
@@ -7205,7 +7211,7 @@
     "recent-issue-body":{title:"ยังไม่มีรายการเบิกออก",description:"สร้างใบเบิกออกเมื่อมีการนำอะไหล่ไปใช้งาน",action:"go-issue",label:"สร้างรายการเบิกออก"},
     "history-body":{title:"ไม่พบประวัติตามเงื่อนไข",description:"ลองเปลี่ยนช่วงวันที่ ประเภท หรือคำค้นหา",action:"clear-history",label:"ล้างตัวกรอง"},
     "audit-body":{title:"ไม่พบ Audit Log",description:"ไม่พบกิจกรรมที่ตรงกับคำค้นหาปัจจุบัน",action:"clear-audit",label:"ล้างคำค้นหา"},
-    "stock-card-body":{title:"เลือกอะไหล่เพื่อดู Stock Card",description:"เลือก SKU จากด้านบนเพื่อดูยอดยกมา รับเข้า เบิกออก และคงเหลือ"},
+    "stock-card-body":{title:"เลือกอะไหล่เพื่อดู Stock Card",description:"เลือก SKU และประเภทสต๊อกจากด้านบนเพื่อดูยอดยกมา รับเข้า เบิกออก และคงเหลือ"},
     "backups-body":{title:"ยังไม่มีไฟล์สำรอง",description:"กด “สำรองข้อมูลตอนนี้” เพื่อสร้างจุดกู้คืนแรก"}
   };
   const smartTableObservers=new Map();
@@ -7273,7 +7279,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.8.5`;
+    document.title=`${meta.title} | Stock Control v4.8.6`;
   }
 
   function selectLabel(el){
