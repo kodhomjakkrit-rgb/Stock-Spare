@@ -1667,6 +1667,21 @@
     .workspace-title{white-space:normal;overflow:visible;text-overflow:clip;}
   }
 
+
+  /* ================= v4.8.7 Required Field Guard ================= */
+  .required-notice{margin:10px 0 14px;padding:11px 13px;border:1px solid #f0c36b;border-left:4px solid #d97706;border-radius:10px;background:#fff9e8;color:#7c4a03;font-size:12.5px;line-height:1.55}
+  .required-notice strong{font-weight:900;color:#9a5b00}.required-notice .required-star{color:#c2410c;font-weight:900}
+  .required-marker{display:inline-flex;align-items:center;margin-left:6px;padding:1px 7px;border-radius:999px;background:#fff1f2;border:1px solid #fecdd3;color:#be123c;font-size:10.5px;font-weight:900;line-height:1.5;vertical-align:middle;white-space:nowrap}
+  .required-marker[hidden]{display:none!important}
+  .required-error-text{display:block;margin-top:5px;color:#b42318;font-size:11px;font-weight:700;line-height:1.45}
+  .required-invalid-row{outline:2px solid rgba(220,38,38,.16);outline-offset:2px;border-radius:8px}
+  .required-submit-shake{animation:requiredSubmitShake .26s ease}
+  @keyframes requiredSubmitShake{0%,100%{transform:translateX(0)}30%{transform:translateX(-5px)}65%{transform:translateX(5px)}}
+  html[data-theme="dark"] .required-notice{background:#392d13;border-color:#77591f;color:#f8d889}
+  html[data-theme="dark"] .required-notice strong{color:#ffd884}
+  html[data-theme="dark"] .required-marker{background:#40242b;border-color:#7f3645;color:#ffb8c3}
+  html[data-theme="dark"] .required-error-text{color:#ff9ca9}
+
   /* ================= v4.5.5 Color Form Feedback ================= */
   .entry-feedback{
     transition:background-color .16s ease,border-color .16s ease,color .16s ease,
@@ -2244,7 +2259,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.8.6</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.8.7</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -2324,7 +2339,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.8.6</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.8.7</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -2634,7 +2649,7 @@
       <div class="job-line-editor">
         <div class="job-line-editor-head"><strong>รายการที่ซื้อ</strong><button type="button" class="small" id="btn-jp-add-line">+ เพิ่มรายการ</button></div>
         <div class="job-line-guide"><strong>ความหมายของจำนวน</strong><span>จำนวนซื้อ = ของที่ซื้อทั้งหมด · ใช้กับ JOB = จำนวนที่ติดตั้งหรือใช้จริงกับงานนี้ · ของที่เหลือจะยังไม่เข้า Stock จนกว่าจะกดโอนภายหลัง</span></div>
-        <div class="job-line-columns purchase-line-columns" aria-hidden="true"><span>ชื่ออะไหล่ *</span><span>จำนวนซื้อ</span><span>หน่วย</span><span>ราคาซื้อ/หน่วย (บาท)</span><span>ใช้กับ JOB</span><span>ส่วนลดรวม (บาท)</span><span></span></div>
+        <div class="job-line-columns purchase-line-columns" aria-hidden="true"><span>ชื่ออะไหล่ *</span><span>จำนวนซื้อ *</span><span>หน่วย</span><span>ราคาซื้อ/หน่วย (บาท)</span><span>ใช้กับ JOB</span><span>ส่วนลดรวม (บาท)</span><span></span></div>
         <div id="jp-lines"></div>
       </div>
       <div class="form-actions"><button id="btn-jp-clear">ล้างฟอร์ม</button><button class="primary" id="btn-jp-save">บันทึกซื้อเฉพาะ JOB</button></div>
@@ -2685,7 +2700,7 @@
         </div>
       </div>
       <div class="section-caption"><span>2</span>รายการอะไหล่</div>
-      <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่</th><th style="width:150px">จำนวนรับ</th><th style="width:105px">คงเหลือ</th><th style="width:72px"></th></tr></thead><tbody id="receive-lines-body"></tbody></table><div class="doc-total"><span id="receive-line-count">0 รายการ</span><span id="receive-total-qty">รวม 0 หน่วย</span></div></div>
+      <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่ *</th><th style="width:150px">จำนวนรับ *</th><th style="width:105px">คงเหลือ</th><th style="width:72px"></th></tr></thead><tbody id="receive-lines-body"></tbody></table><div class="doc-total"><span id="receive-line-count">0 รายการ</span><span id="receive-total-qty">รวม 0 หน่วย</span></div></div>
       <div class="form-actions document-actions">
         <button type="button" id="btn-receive-clear">ล้างฟอร์ม</button>
         <button id="btn-receive-add-line">+ เพิ่มรายการ</button>
@@ -2774,7 +2789,7 @@
         <div class="line-part-search-control"><input id="issue-part-search" type="search" autocomplete="off" placeholder="ค้นหาด้วยรหัสหรือชื่ออะไหล่ แล้วเลือกเพื่อเพิ่มรายการ"><button class="small" id="btn-issue-part-search-clear" type="button">ล้าง</button></div>
         <div class="line-part-search-results" id="issue-part-search-results" hidden></div>
       </div>
-      <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่</th><th style="width:120px">จำนวนเบิก</th><th style="width:125px">คงเหลือ</th><th style="width:125px">ราคา/หน่วย</th><th style="width:115px">ส่วนลด</th><th style="width:125px">รวม</th><th style="width:72px"></th></tr></thead><tbody id="issue-lines-body"></tbody></table><div class="doc-total"><span id="issue-line-count">0 รายการ</span><span><span id="issue-total-qty">รวม 0 หน่วย</span> · <strong id="issue-total-amount">0.00 บาท</strong></span></div></div>
+      <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่ *</th><th style="width:120px">จำนวนเบิก *</th><th style="width:125px">คงเหลือ</th><th style="width:125px">ราคา/หน่วย</th><th style="width:115px">ส่วนลด</th><th style="width:125px">รวม</th><th style="width:72px"></th></tr></thead><tbody id="issue-lines-body"></tbody></table><div class="doc-total"><span id="issue-line-count">0 รายการ</span><span><span id="issue-total-qty">รวม 0 หน่วย</span> · <strong id="issue-total-amount">0.00 บาท</strong></span></div></div>
       <div class="form-actions document-actions">
         <button type="button" id="btn-issue-clear">ล้างฟอร์ม</button>
         <button type="button" id="btn-issue-blank-form">ดาวน์โหลด / พิมพ์แบบฟอร์ม A4</button>
@@ -2818,7 +2833,7 @@
         <div class="line-part-search-control"><input id="request-part-search" type="search" autocomplete="off" placeholder="ค้นหาด้วยรหัสหรือชื่ออะไหล่ แล้วเลือกเพื่อเพิ่มรายการ"><button class="small" id="btn-request-part-search-clear" type="button">ล้าง</button></div>
         <div class="line-part-search-results" id="request-part-search-results" hidden></div>
       </div>
-      <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่</th><th style="width:140px">จำนวน</th><th style="width:170px">พร้อมเบิก</th><th style="width:72px"></th></tr></thead><tbody id="request-lines-body"></tbody></table><div class="doc-total"><span id="request-line-count">0 รายการ</span><span id="request-total-qty">รวม 0 หน่วย</span></div></div>
+      <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่ *</th><th style="width:140px">จำนวน *</th><th style="width:170px">พร้อมเบิก</th><th style="width:72px"></th></tr></thead><tbody id="request-lines-body"></tbody></table><div class="doc-total"><span id="request-line-count">0 รายการ</span><span id="request-total-qty">รวม 0 หน่วย</span></div></div>
       <div class="form-actions document-actions"><button id="btn-request-clear">ล้างฟอร์ม</button><button id="btn-request-add-line">+ เพิ่มรายการ</button><button class="primary" id="btn-request-submit">ส่งคำขออนุมัติ</button></div>
     </div>
     <div class="panel">
@@ -2883,7 +2898,7 @@
         <div class="field"><label>เหตุผล / รอบตรวจนับ *</label><input id="count-reason" placeholder="เช่น ตรวจนับสิ้นเดือน สิงหาคม 2569"></div>
       </div>
       <div class="search-bar" style="margin-top:14px"><input id="count-search" placeholder="ค้นหารหัส ชื่อ หรือตำแหน่งจัดเก็บ..."><button id="btn-count-fill-system">เติมยอดตามระบบทั้งหมด</button></div>
-      <div class="table-wrap"><table><thead><tr><th>รหัส</th><th>อะไหล่</th><th>ที่จัดเก็บ</th><th>ยอดระบบ</th><th>ยอดนับจริง</th><th>ผลต่าง</th></tr></thead><tbody id="stock-count-body"></tbody></table></div>
+      <div class="table-wrap"><table><thead><tr><th>รหัส</th><th>อะไหล่</th><th>ที่จัดเก็บ</th><th>ยอดระบบ</th><th>ยอดนับจริง *</th><th>ผลต่าง</th></tr></thead><tbody id="stock-count-body"></tbody></table></div>
       <div class="form-actions"><button type="button" id="btn-count-clear">ล้างฟอร์ม</button><button class="primary" id="btn-count-save">ยืนยันและปรับยอด</button></div>
     </div>
     <div class="panel"><h2>ประวัติตรวจนับล่าสุด</h2><div class="table-wrap"><table><thead><tr><th>เลขที่</th><th>วันที่</th><th>อะไหล่</th><th>ยอดเดิม</th><th>ยอดจริง</th><th>ผลต่าง</th><th>ผู้ตรวจ/ผู้อนุมัติ</th></tr></thead><tbody id="stock-count-history-body"></tbody></table></div></div>
@@ -3093,9 +3108,9 @@
 <div id="password-modal-overlay"><div class="modal">
   <h3>เปลี่ยนรหัสผ่าน</h3>
   <div class="field-grid">
-    <div class="field span2"><label>รหัสผ่านปัจจุบัน</label><input type="password" id="pw-current" autocomplete="current-password"></div>
-    <div class="field"><label>รหัสผ่านใหม่</label><input type="password" id="pw-new" autocomplete="new-password"></div>
-    <div class="field"><label>ยืนยันรหัสผ่านใหม่</label><input type="password" id="pw-confirm" autocomplete="new-password"></div>
+    <div class="field span2"><label>รหัสผ่านปัจจุบัน *</label><input type="password" id="pw-current" autocomplete="current-password"></div>
+    <div class="field"><label>รหัสผ่านใหม่ *</label><input type="password" id="pw-new" autocomplete="new-password"></div>
+    <div class="field"><label>ยืนยันรหัสผ่านใหม่ *</label><input type="password" id="pw-confirm" autocomplete="new-password"></div>
   </div>
   <div class="form-actions"><button type="button" id="btn-password-clear">ล้างฟอร์ม</button><button id="btn-password-cancel">ยกเลิก</button><button class="primary" id="btn-password-save">บันทึกรหัสผ่านใหม่</button></div>
 </div></div>
@@ -3131,7 +3146,7 @@
     <div class="import-note" id="pf-transfer-note" hidden></div>
     <div class="field-grid">
       <div class="field"><label>รหัสอะไหล่ (SKU)</label><input type="text" id="pf-code" placeholder="ระบบสร้างให้อัตโนมัติ" autocomplete="off"></div>
-      <div class="field"><label>ชื่ออะไหล่</label><input type="text" id="pf-name" placeholder="ชื่ออะไหล่" autocomplete="off"></div>
+      <div class="field"><label>ชื่ออะไหล่ *</label><input type="text" id="pf-name" placeholder="ชื่ออะไหล่" autocomplete="off"></div>
       <div class="field">
         <label>หมวดหมู่</label>
         <div class="inline-control"><select id="pf-category">
@@ -3611,6 +3626,179 @@
     control.dataset.entryCustomInvalid=invalid?"1":"0";
     updateEntryFeedback(control,true);
   }
+
+  // ================= v4.8.7 REQUIRED FIELD GUARD =================
+  // UI guard only: backend validation remains the final authority.
+  // The guard mirrors existing required rules and prevents the save click from
+  // reaching existing handlers until required data is complete.
+  const REQUIRED_SAVE_BUTTONS=new Set([
+    "btn-receive-submit","btn-issue-submit","btn-request-submit","btn-count-save",
+    "btn-transfer-save","btn-job-save","btn-jp-save","btn-jpt-save",
+    "btn-modal-save","btn-master-modal-save","btn-user-save","btn-password-save"
+  ]);
+
+  function requiredEl(id){return document.getElementById(id);}
+  function requiredValue(control){return String(control?.value??"").trim();}
+  function requiredPositive(control){const value=Number(control?.value);return Number.isFinite(value)&&value>0;}
+  function requiredNonNegative(control){if(requiredValue(control)==="")return false;const value=Number(control?.value);return Number.isFinite(value)&&value>=0;}
+  function requiredRule(control,label,message,test=()=>requiredValue(control)!=="",active=true){
+    return {control,label,message,test,active};
+  }
+  function requiredLabelNode(control){
+    if(!control)return null;
+    const field=control.closest(".field");
+    if(field){
+      const direct=[...field.children].find(node=>node.tagName==="LABEL");
+      if(direct)return direct;
+    }
+    const line=control.closest(".line-field");
+    return line?.querySelector(":scope > span")||null;
+  }
+  function setRequiredMarker(control,required=true){
+    const label=requiredLabelNode(control);if(!label)return;
+    let marker=label.querySelector(":scope > .required-marker");
+    if(!marker){marker=document.createElement("span");marker.className="required-marker";marker.textContent="จำเป็น";label.appendChild(marker);}
+    marker.hidden=!required;
+  }
+  function requiredVisualControl(control){return control instanceof HTMLSelectElement?(searchableSelectControl(control)||control):control;}
+  function clearRequiredError(control){
+    if(!control)return;setEntryInvalid(control,false);
+    const visual=requiredVisualControl(control);visual?.classList.remove("required-invalid-row");
+    const host=control.closest(".field,.line-field,td")||control.parentElement;
+    host?.querySelector(":scope > .required-error-text")?.remove();
+  }
+  function showRequiredError(rule){
+    const control=rule.control;if(!control)return;
+    setEntryInvalid(control,true);
+    const visual=requiredVisualControl(control);visual?.classList.add("required-invalid-row");
+    const host=control.closest(".field,.line-field,td")||control.parentElement;
+    if(host){let text=host.querySelector(":scope > .required-error-text");if(!text){text=document.createElement("small");text.className="required-error-text";host.appendChild(text);}text.textContent=rule.message;}
+  }
+  function focusRequiredError(control){
+    if(!control)return;
+    const target=requiredVisualControl(control)||control;
+    (control.closest(".field,.line-field,tr")||target).scrollIntoView?.({behavior:"smooth",block:"center"});
+    setTimeout(()=>target.focus?.({preventScroll:true}),180);
+  }
+  function addRequiredNotice(scopeSelector){
+    const scope=document.querySelector(scopeSelector);if(!scope||scope.querySelector(":scope > .required-notice"))return;
+    const note=document.createElement("div");note.className="required-notice";note.setAttribute("role","note");
+    note.innerHTML='<strong>ห้ามข้ามช่องจำเป็น</strong> — ช่องที่มีป้าย <span class="required-marker">จำเป็น</span> หรือเครื่องหมาย <span class="required-star">*</span> ต้องกรอกให้ครบก่อนบันทึก ระบบจะชี้ช่องที่ยังขาดและไม่ส่งข้อมูลจนกว่าจะแก้ครบ';
+    const title=scope.querySelector(":scope > h2,:scope > h3");if(title)title.insertAdjacentElement("afterend",note);else scope.prepend(note);
+  }
+  function markStaticRequiredControls(){
+    [
+      "rec-date","rec-stock-type","iss-date","iss-stock-type","iss-purpose","req-date","req-stock-type","req-department","req-purpose",
+      "count-date","count-stock-type","count-reason","transfer-date","transfer-from","transfer-to","transfer-reason",
+      "job-date","job-type","job-truck","job-symptom","jp-date","jp-job","jpt-date","jpt-stock-type","jpt-part","jpt-qty",
+      "pf-name","uf-username","uf-name","pw-current","pw-new","pw-confirm"
+    ].forEach(id=>setRequiredMarker(requiredEl(id),true));
+    addRequiredNotice("#view-receive .document-panel");addRequiredNotice("#view-issue .document-panel");
+    addRequiredNotice("#view-requisitions .document-panel");addRequiredNotice("#view-stockcount .panel:first-child");
+    addRequiredNotice("#view-stocktransfer .document-panel");addRequiredNotice("#view-repairjobs .document-panel");
+    addRequiredNotice("#view-jobpurchases .document-panel");addRequiredNotice("#modal-overlay .modal");
+    addRequiredNotice("#master-modal-overlay .modal");addRequiredNotice("#user-modal-overlay .modal");
+    addRequiredNotice("#password-modal-overlay .modal");addRequiredNotice("#jp-transfer-overlay .modal");
+  }
+  function refreshConditionalRequiredMarkers(){
+    const apply=(control,required)=>{setRequiredMarker(control,required);if(control&&!required)clearRequiredError(control);};
+    const purpose=requiredEl("iss-purpose")?.value||"";
+    apply(requiredEl("iss-customer"),purpose==="sale");
+    apply(requiredEl("iss-note"),["other","damage"].includes(purpose));
+    const vehicle=!!requiredEl("iss-use-vehicle")?.checked;
+    apply(requiredEl("iss-truck"),vehicle);apply(requiredEl("iss-mileage"),vehicle);
+    const customerJob=requiredEl("job-type")?.value==="customer";apply(requiredEl("job-customer"),customerJob);
+    apply(requiredEl("pf-category-custom"),requiredEl("pf-category")?.value==="__custom__");
+    apply(requiredEl("pf-unit-custom"),requiredEl("pf-unit")?.value==="__custom__");
+    const newUser=!requiredValue(requiredEl("uf-id"));apply(requiredEl("uf-password"),newUser);
+    if(typeof modalMasterType!=="undefined"){
+      apply(requiredEl("mf-customer-name"),modalMasterType==="customers");
+      apply(requiredEl("mf-supplier-name"),modalMasterType==="suppliers");
+      apply(requiredEl("mf-truck-owner-type"),modalMasterType==="trucks");
+      apply(requiredEl("mf-truck-plate"),modalMasterType==="trucks");
+      apply(requiredEl("mf-truck-customer"),modalMasterType==="trucks"&&requiredEl("mf-truck-owner-type")?.value==="CUSTOMER");
+      apply(requiredEl("mf-province-name"),modalMasterType==="provinces");
+      apply(requiredEl("mf-doc-type"),modalMasterType==="documents");
+      apply(requiredEl("mf-doc-no"),modalMasterType==="documents");
+      apply(requiredEl("mf-category-name"),modalMasterType==="partCategories");
+      apply(requiredEl("mf-category-prefix"),modalMasterType==="partCategories");
+    }
+  }
+  function requiredDocumentLineRules(type){
+    const rows=[...document.querySelectorAll(type==="in"?"#receive-lines-body tr":"#issue-lines-body tr")];
+    let active=rows.filter(row=>requiredValue(row.querySelector(`[data-doc-part="${type}"]`))||requiredValue(row.querySelector(`[data-doc-qty="${type}"]`))||(type==="out"&&(requiredValue(row.querySelector('[data-doc-price="out"]'))||requiredValue(row.querySelector('[data-doc-discount="out"]')))));
+    if(!active.length&&rows[0])active=[rows[0]];
+    const rules=[];active.forEach((row,index)=>{
+      const part=row.querySelector(`[data-doc-part="${type}"]`),qty=row.querySelector(`[data-doc-qty="${type}"]`);
+      rules.push(requiredRule(part,`รายการ ${index+1} อะไหล่`,`รายการที่ ${index+1}: ต้องเลือกอะไหล่`));
+      rules.push(requiredRule(qty,`รายการ ${index+1} จำนวน`,`รายการที่ ${index+1}: จำนวนต้องมากกว่า 0`,()=>requiredPositive(qty)));
+      if(type==="out"&&requiredEl("iss-purpose")?.value==="sale"){
+        const price=row.querySelector('[data-doc-price="out"]');
+        rules.push(requiredRule(price,`รายการ ${index+1} ราคา`,`รายการที่ ${index+1}: การขายต้องกรอกราคาต่อหน่วยมากกว่า 0`,()=>requiredPositive(price)));
+      }
+    });return rules;
+  }
+  function requiredRequestLineRules(){
+    const rows=[...document.querySelectorAll("#request-lines-body tr")];let active=rows.filter(row=>requiredValue(row.querySelector("[data-request-part]"))||requiredValue(row.querySelector("[data-request-qty]")));
+    if(!active.length&&rows[0])active=[rows[0]];const rules=[];active.forEach((row,index)=>{const part=row.querySelector("[data-request-part]"),qty=row.querySelector("[data-request-qty]");rules.push(requiredRule(part,"อะไหล่",`รายการที่ ${index+1}: ต้องเลือกอะไหล่`));rules.push(requiredRule(qty,"จำนวน",`รายการที่ ${index+1}: จำนวนต้องมากกว่า 0`,()=>requiredPositive(qty)));});return rules;
+  }
+  function requiredTransferLineRules(){
+    return [...document.querySelectorAll("#transfer-lines .transfer-line-row")].flatMap((row,index)=>{const part=row.querySelector("[data-transfer-part]"),qty=row.querySelector("[data-transfer-qty]");return [requiredRule(part,"อะไหล่",`รายการที่ ${index+1}: ต้องเลือกอะไหล่`),requiredRule(qty,"จำนวนโอน",`รายการที่ ${index+1}: จำนวนโอนต้องมากกว่า 0`,()=>requiredPositive(qty))];});
+  }
+  function requiredJobTaskRules(){
+    const rows=[...document.querySelectorAll("#job-task-lines .task-line-row")];let active=rows.filter(row=>requiredValue(row.querySelector(".task-description"))||requiredPositive(row.querySelector(".task-labor"))||requiredValue(row.querySelector(".task-mechanic")));
+    if(!active.length&&rows[0])active=[rows[0]];return active.map((row,index)=>{const control=row.querySelector(".task-description");return requiredRule(control,"รายการซ่อม",`รายการซ่อมที่ ${index+1}: ต้องระบุรายการซ่อม`);});
+  }
+  function requiredJobPurchaseRules(){
+    return [...document.querySelectorAll("#jp-lines .purchase-line-row")].flatMap((row,index)=>{const name=row.querySelector(".jp-item-name"),qty=row.querySelector(".jp-qty");return [requiredRule(name,"ชื่ออะไหล่",`รายการที่ ${index+1}: ต้องระบุชื่ออะไหล่`),requiredRule(qty,"จำนวนซื้อ",`รายการที่ ${index+1}: จำนวนซื้อต้องมากกว่า 0`,()=>requiredPositive(qty))];});
+  }
+  function requiredMasterRules(){
+    if(typeof modalMasterType==="undefined")return [];
+    if(modalMasterType==="customers")return [requiredRule(requiredEl("mf-customer-name"),"ชื่อลูกค้า","ต้องระบุชื่อลูกค้า / บริษัท")];
+    if(modalMasterType==="suppliers")return [requiredRule(requiredEl("mf-supplier-name"),"ชื่อซัพพลายเออร์","ต้องระบุชื่อซัพพลายเออร์")];
+    if(modalMasterType==="trucks")return [requiredRule(requiredEl("mf-truck-owner-type"),"เจ้าของรถ","ต้องเลือกเจ้าของรถ"),requiredRule(requiredEl("mf-truck-plate"),"ทะเบียนรถ","ต้องระบุทะเบียนรถ"),requiredRule(requiredEl("mf-truck-customer"),"ลูกค้าเจ้าของรถ","รถลูกค้าต้องเลือกลูกค้าเจ้าของรถ",()=>requiredValue(requiredEl("mf-truck-customer"))!=="",requiredEl("mf-truck-owner-type")?.value==="CUSTOMER")];
+    if(modalMasterType==="provinces")return [requiredRule(requiredEl("mf-province-name"),"ชื่อจังหวัด","ต้องระบุชื่อจังหวัด")];
+    if(modalMasterType==="documents")return [requiredRule(requiredEl("mf-doc-type"),"ประเภทเอกสาร","ต้องเลือกประเภทเอกสาร"),requiredRule(requiredEl("mf-doc-no"),"เลขที่เอกสาร","ต้องระบุเลขที่เอกสาร")];
+    if(modalMasterType==="partCategories")return [requiredRule(requiredEl("mf-category-name"),"ชื่อหมวดหมู่","ต้องระบุชื่อหมวดหมู่"),requiredRule(requiredEl("mf-category-prefix"),"ตัวย่อ SKU","ตัวย่อ SKU ต้องเป็น A-Z หรือ 0-9 จำนวน 3 ตัว",()=>/^[A-Z0-9]{3}$/.test(requiredValue(requiredEl("mf-category-prefix")).toUpperCase()))];
+    return [];
+  }
+  function requiredRulesForButton(buttonId){
+    switch(buttonId){
+      case "btn-receive-submit":return [requiredRule(requiredEl("rec-date"),"วันที่","ต้องระบุวันที่รับเข้า"),requiredRule(requiredEl("rec-stock-type"),"สต๊อก","ต้องเลือกสต๊อกปลายทาง"),...requiredDocumentLineRules("in")];
+      case "btn-issue-submit":{const purpose=requiredEl("iss-purpose")?.value||"",vehicle=!!requiredEl("iss-use-vehicle")?.checked;return [requiredRule(requiredEl("iss-date"),"วันที่","ต้องระบุวันที่เบิก"),requiredRule(requiredEl("iss-stock-type"),"สต๊อก","ต้องเลือกสต๊อกต้นทาง"),requiredRule(requiredEl("iss-purpose"),"วัตถุประสงค์","ต้องเลือกวัตถุประสงค์การเบิก"),requiredRule(requiredEl("iss-customer"),"ลูกค้า","การเบิกเพื่อขายต้องเลือกลูกค้า",()=>requiredValue(requiredEl("iss-customer"))!=="",purpose==="sale"),requiredRule(requiredEl("iss-note"),"หมายเหตุ","วัตถุประสงค์นี้ต้องระบุเหตุผลในหมายเหตุ",()=>requiredValue(requiredEl("iss-note"))!=="",["other","damage"].includes(purpose)),requiredRule(requiredEl("iss-truck"),"รถ","เมื่อใช้รถต้องเลือกรถ",()=>requiredValue(requiredEl("iss-truck"))!=="",vehicle),requiredRule(requiredEl("iss-mileage"),"เลขไมล์","เมื่อใช้รถต้องกรอกเลขไมล์ที่ถูกต้อง",()=>requiredNonNegative(requiredEl("iss-mileage")),vehicle),...requiredDocumentLineRules("out")];}
+      case "btn-request-submit":return [requiredRule(requiredEl("req-date"),"วันที่","ต้องระบุวันที่ขอ"),requiredRule(requiredEl("req-stock-type"),"สต๊อก","ต้องเลือกสต๊อก"),requiredRule(requiredEl("req-department"),"แผนก","ต้องระบุแผนก"),requiredRule(requiredEl("req-purpose"),"วัตถุประสงค์","ต้องระบุวัตถุประสงค์"),...requiredRequestLineRules()];
+      case "btn-count-save":{const first=document.querySelector("#stock-count-body .count-input"),hasAny=[...document.querySelectorAll("#stock-count-body .count-input")].some(input=>requiredValue(input)!=="");return [requiredRule(requiredEl("count-date"),"วันที่","ต้องระบุวันที่ตรวจนับ"),requiredRule(requiredEl("count-stock-type"),"สต๊อก","ต้องเลือกสต๊อกที่ตรวจนับ"),requiredRule(requiredEl("count-reason"),"เหตุผล","ต้องระบุเหตุผลหรือรอบตรวจนับ"),requiredRule(first||requiredEl("count-reason"),"ยอดนับจริง","ต้องกรอกยอดนับจริงอย่างน้อย 1 รายการ",()=>hasAny)];}
+      case "btn-transfer-save":return [requiredRule(requiredEl("transfer-date"),"วันที่","ต้องระบุวันที่โอน"),requiredRule(requiredEl("transfer-from"),"ต้นทาง","ต้องเลือกสต๊อกต้นทาง"),requiredRule(requiredEl("transfer-to"),"ปลายทาง","ต้องเลือกสต๊อกปลายทาง"),requiredRule(requiredEl("transfer-reason"),"เหตุผล","ต้องระบุเหตุผลอย่างน้อย 3 ตัวอักษร",()=>requiredValue(requiredEl("transfer-reason")).length>=3),...requiredTransferLineRules()];
+      case "btn-job-save":{const customer=requiredEl("job-type")?.value==="customer";return [requiredRule(requiredEl("job-date"),"วันที่","ต้องระบุวันที่แจ้ง"),requiredRule(requiredEl("job-type"),"ประเภทงาน","ต้องเลือกประเภทงาน"),requiredRule(requiredEl("job-customer"),"ลูกค้า","งานซ่อมลูกค้าต้องเลือกลูกค้า",()=>requiredValue(requiredEl("job-customer"))!=="",customer),requiredRule(requiredEl("job-truck"),"รถ","ต้องเลือกรถ"),requiredRule(requiredEl("job-symptom"),"อาการเสีย","ต้องระบุอาการเสียอย่างน้อย 3 ตัวอักษร",()=>requiredValue(requiredEl("job-symptom")).length>=3),...requiredJobTaskRules()];}
+      case "btn-jp-save":return [requiredRule(requiredEl("jp-date"),"วันที่","ต้องระบุวันที่ซื้อ"),requiredRule(requiredEl("jp-job"),"JOB","ต้องเลือก JOB"),...requiredJobPurchaseRules()];
+      case "btn-jpt-save":return [requiredRule(requiredEl("jpt-date"),"วันที่","ต้องระบุวันที่โอน"),requiredRule(requiredEl("jpt-stock-type"),"สต๊อกปลายทาง","ต้องเลือกสต๊อกปลายทาง"),requiredRule(requiredEl("jpt-part"),"SKU ปลายทาง","ต้องเลือก SKU ปลายทาง"),requiredRule(requiredEl("jpt-qty"),"จำนวนโอน","จำนวนโอนต้องมากกว่า 0",()=>requiredPositive(requiredEl("jpt-qty")))];
+      case "btn-modal-save":return [requiredRule(requiredEl("pf-name"),"ชื่ออะไหล่","ต้องระบุชื่ออะไหล่"),requiredRule(requiredEl("pf-category-custom"),"หมวดหมู่ใหม่","ต้องกรอกชื่อหมวดหมู่ใหม่",()=>requiredValue(requiredEl("pf-category-custom"))!=="",requiredEl("pf-category")?.value==="__custom__"),requiredRule(requiredEl("pf-unit-custom"),"หน่วยนับใหม่","ต้องกรอกหน่วยนับใหม่",()=>requiredValue(requiredEl("pf-unit-custom"))!=="",requiredEl("pf-unit")?.value==="__custom__")];
+      case "btn-master-modal-save":return requiredMasterRules();
+      case "btn-user-save":{const isNew=!requiredValue(requiredEl("uf-id"));return [requiredRule(requiredEl("uf-username"),"ชื่อผู้ใช้","ต้องระบุชื่อผู้ใช้"),requiredRule(requiredEl("uf-name"),"ชื่อที่แสดง","ต้องระบุชื่อที่แสดง"),requiredRule(requiredEl("uf-password"),"รหัสผ่านเริ่มต้น","ผู้ใช้ใหม่ต้องมีรหัสผ่านเริ่มต้น",()=>requiredValue(requiredEl("uf-password"))!=="",isNew)];}
+      case "btn-password-save":return [requiredRule(requiredEl("pw-current"),"รหัสผ่านปัจจุบัน","ต้องกรอกรหัสผ่านปัจจุบัน"),requiredRule(requiredEl("pw-new"),"รหัสผ่านใหม่","ต้องกรอกรหัสผ่านใหม่"),requiredRule(requiredEl("pw-confirm"),"ยืนยันรหัสผ่านใหม่","ต้องยืนยันรหัสผ่านใหม่")];
+      default:return [];
+    }
+  }
+  function validateRequiredBeforeSave(button){
+    refreshConditionalRequiredMarkers();
+    const rules=requiredRulesForButton(button.id).filter(rule=>rule.active!==false&&rule.control);
+    rules.forEach(rule=>clearRequiredError(rule.control));
+    const failed=rules.filter(rule=>{try{return !rule.test();}catch(_){return true;}});
+    if(!failed.length)return true;
+    failed.forEach(showRequiredError);button.classList.remove("required-submit-shake");void button.offsetWidth;button.classList.add("required-submit-shake");
+    const unique=[];failed.forEach(rule=>{if(!unique.includes(rule.message))unique.push(rule.message);});
+    toast(`ยังบันทึกไม่ได้ · กรุณากรอกช่องจำเป็นให้ครบ (${failed.length} จุด)\n${unique.slice(0,3).join(" · ")}`,true,{duration:6500});
+    focusRequiredError(failed[0].control);return false;
+  }
+  function initRequiredFieldGuard(){
+    if(document.documentElement.dataset.requiredGuardReady==="1")return;document.documentElement.dataset.requiredGuardReady="1";
+    markStaticRequiredControls();refreshConditionalRequiredMarkers();
+    document.addEventListener("click",event=>{const button=event.target.closest("button");if(!button||!REQUIRED_SAVE_BUTTONS.has(button.id))return;if(!validateRequiredBeforeSave(button)){event.preventDefault();event.stopImmediatePropagation();}},true);
+    ["change","input"].forEach(type=>document.addEventListener(type,event=>{if(isEntryFeedbackControl(event.target))clearRequiredError(event.target);refreshConditionalRequiredMarkers();},true));
+    document.addEventListener("click",event=>{if(event.target.closest("#btn-modal-clear,#btn-master-modal-clear,#btn-user-clear,#btn-password-clear,#btn-receive-clear,#btn-issue-clear,#btn-request-clear,#btn-count-clear,#btn-transfer-clear,#btn-job-clear,#btn-jp-clear,#btn-jpt-clear"))setTimeout(()=>{refreshConditionalRequiredMarkers();document.querySelectorAll(".required-error-text").forEach(x=>x.remove());},0);},true);
+  }
+  setTimeout(initRequiredFieldGuard,0);
+
 
   function refreshEntryFeedback(scope=document){
     scope.querySelectorAll?.(ENTRY_FEEDBACK_SELECTOR).forEach(control=>updateEntryFeedback(control,false));
@@ -4200,7 +4388,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.8.6 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.8.7 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -6871,7 +7059,7 @@
     if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
     const guide = [
-      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.8.6 Stock Card Balance Fix"],
+      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.8.7 Required Field Guard"],
       ["วิธีใช้","ใช้ไฟล์เดียวได้ทุกห้อง เลือกประเภทในโปรแกรมแล้วอัปโหลดไฟล์เดิม ระบบจะอ่านเฉพาะชีทที่ตรงกัน"],
       ["ลำดับแนะนำ","จังหวัด → ลูกค้า → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → หมวดหมู่ SKU → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
       ["การสร้าง SKU","ในชีท “เพิ่มอะไหล่” สามารถเว้นคอลัมน์รหัสอะไหล่ไว้ ระบบจะสร้าง SKU จากหมวดหมู่ + ประเภทไอเท็ม + เลขลำดับต่อจากข้อมูลเดิมให้อัตโนมัติ"],
@@ -6886,7 +7074,7 @@
       ws["!autofilter"]={ref:"A1:"+XLSX.utils.encode_col(cfg.headers.length-1)+"1"};
       XLSX.utils.book_append_sheet(wb,ws,cfg.sheet);
     });
-    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.8.6.xlsx");
+    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.8.7.xlsx");
     toast("ดาวน์โหลดแม่แบบรวมเรียบร้อย");
   }
   document.getElementById("btn-download-import-template").addEventListener("click",downloadFullTemplate);
@@ -7279,7 +7467,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.8.6`;
+    document.title=`${meta.title} | Stock Control v4.8.7`;
   }
 
   function selectLabel(el){
