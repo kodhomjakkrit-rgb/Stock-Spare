@@ -2244,7 +2244,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.8.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.8.5</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -2324,7 +2324,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.8.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.8.5</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -2687,6 +2687,7 @@
       <div class="section-caption"><span>2</span>รายการอะไหล่</div>
       <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่</th><th style="width:150px">จำนวนรับ</th><th style="width:105px">คงเหลือ</th><th style="width:72px"></th></tr></thead><tbody id="receive-lines-body"></tbody></table><div class="doc-total"><span id="receive-line-count">0 รายการ</span><span id="receive-total-qty">รวม 0 หน่วย</span></div></div>
       <div class="form-actions document-actions">
+        <button type="button" id="btn-receive-clear">ล้างฟอร์ม</button>
         <button id="btn-receive-add-line">+ เพิ่มรายการ</button>
         <button class="primary" id="btn-receive-submit">บันทึกรับเข้า</button>
       </div>
@@ -2775,6 +2776,7 @@
       </div>
       <div class="doc-lines"><table><thead><tr><th style="width:52px">ลำดับ</th><th>อะไหล่</th><th style="width:120px">จำนวนเบิก</th><th style="width:125px">คงเหลือ</th><th style="width:125px">ราคา/หน่วย</th><th style="width:115px">ส่วนลด</th><th style="width:125px">รวม</th><th style="width:72px"></th></tr></thead><tbody id="issue-lines-body"></tbody></table><div class="doc-total"><span id="issue-line-count">0 รายการ</span><span><span id="issue-total-qty">รวม 0 หน่วย</span> · <strong id="issue-total-amount">0.00 บาท</strong></span></div></div>
       <div class="form-actions document-actions">
+        <button type="button" id="btn-issue-clear">ล้างฟอร์ม</button>
         <button type="button" id="btn-issue-blank-form">ดาวน์โหลด / พิมพ์แบบฟอร์ม A4</button>
         <button id="btn-issue-add-line">+ เพิ่มรายการ</button>
         <button class="warn" id="btn-issue-submit">บันทึกเบิกออก</button>
@@ -2852,7 +2854,7 @@
           </div>
           <div class="label-print-hint" id="label-print-hint">A4 จะจัดจำนวนคอลัมน์ให้อัตโนมัติ และป้องกันป้ายถูกตัดข้ามหน้า</div>
           <div class="import-note">QR บันทึกลิงก์ Web App พร้อมรหัสอะไหล่ เพื่อเปิดหน้าสรุปจากกล้องมือถือทั่วไป ส่วน Barcode ใช้มาตรฐาน CODE 39 โดยไม่ใส่ยอดคงเหลือไว้บนป้าย</div>
-          <div class="form-actions"><button id="btn-print-label" class="primary">ดูตัวอย่างและพิมพ์</button><button id="btn-label-scan">เปิดเครื่องสแกน</button></div>
+          <div class="form-actions"><button type="button" id="btn-label-form-clear">ล้างฟอร์ม</button><button id="btn-print-label" class="primary">ดูตัวอย่างและพิมพ์</button><button id="btn-label-scan">เปิดเครื่องสแกน</button></div>
         </div>
         <div class="part-label" id="part-label-preview"><div class="label-empty-preview">เลือกอะไหล่ทางซ้ายเพื่อดูตัวอย่างป้าย</div></div>
       </div>
@@ -2864,7 +2866,7 @@
     <div class="panel">
       <h2>สำรองและกู้คืนข้อมูล <span class="sub">เฉพาะ Admin</span></h2>
       <div class="import-note">ระบบสร้างสำเนา Google Sheets แยกไฟล์ การกู้คืนจะสำรองข้อมูลปัจจุบันให้อัตโนมัติก่อน และไม่เปลี่ยนบัญชีผู้ใช้หรือ Audit Log</div>
-      <div class="backup-actions" style="margin-top:14px"><button class="primary" id="btn-backup-now">สำรองข้อมูลตอนนี้</button><select id="backup-hour"><option value="0">00:00</option><option value="2" selected>02:00</option><option value="6">06:00</option><option value="12">12:00</option><option value="18">18:00</option><option value="22">22:00</option></select><button id="btn-backup-schedule">ตั้งสำรองรายวัน</button></div>
+      <div class="backup-actions" style="margin-top:14px"><button class="primary" id="btn-backup-now">สำรองข้อมูลตอนนี้</button><select id="backup-hour"><option value="0">00:00</option><option value="2" selected>02:00</option><option value="6">06:00</option><option value="12">12:00</option><option value="18">18:00</option><option value="22">22:00</option></select><button id="btn-backup-schedule">ตั้งสำรองรายวัน</button><button type="button" id="btn-backup-form-clear">ล้างฟอร์ม</button></div>
     </div>
     <div class="panel"><h2>ประวัติไฟล์สำรอง</h2><div class="table-wrap"><table><thead><tr><th>วันที่เวลา</th><th>ชื่อไฟล์</th><th>สร้างโดย</th><th>เหตุผล</th><th></th></tr></thead><tbody id="backups-body"></tbody></table></div></div>
   </section>
@@ -2882,7 +2884,7 @@
       </div>
       <div class="search-bar" style="margin-top:14px"><input id="count-search" placeholder="ค้นหารหัส ชื่อ หรือตำแหน่งจัดเก็บ..."><button id="btn-count-fill-system">เติมยอดตามระบบทั้งหมด</button></div>
       <div class="table-wrap"><table><thead><tr><th>รหัส</th><th>อะไหล่</th><th>ที่จัดเก็บ</th><th>ยอดระบบ</th><th>ยอดนับจริง</th><th>ผลต่าง</th></tr></thead><tbody id="stock-count-body"></tbody></table></div>
-      <div class="form-actions"><button class="primary" id="btn-count-save">ยืนยันและปรับยอด</button></div>
+      <div class="form-actions"><button type="button" id="btn-count-clear">ล้างฟอร์ม</button><button class="primary" id="btn-count-save">ยืนยันและปรับยอด</button></div>
     </div>
     <div class="panel"><h2>ประวัติตรวจนับล่าสุด</h2><div class="table-wrap"><table><thead><tr><th>เลขที่</th><th>วันที่</th><th>อะไหล่</th><th>ยอดเดิม</th><th>ยอดจริง</th><th>ผลต่าง</th><th>ผู้ตรวจ/ผู้อนุมัติ</th></tr></thead><tbody id="stock-count-history-body"></tbody></table></div></div>
   </section>
@@ -3084,7 +3086,7 @@
       </label>
     </div>
   </div>
-  <div class="form-actions"><button id="btn-user-cancel">ยกเลิก</button><button class="primary" id="btn-user-save">บันทึก</button></div>
+  <div class="form-actions"><button type="button" id="btn-user-clear">ล้างฟอร์ม</button><button id="btn-user-cancel">ยกเลิก</button><button class="primary" id="btn-user-save">บันทึก</button></div>
 </div></div>
 
 <!-- Change password modal -->
@@ -3095,7 +3097,7 @@
     <div class="field"><label>รหัสผ่านใหม่</label><input type="password" id="pw-new" autocomplete="new-password"></div>
     <div class="field"><label>ยืนยันรหัสผ่านใหม่</label><input type="password" id="pw-confirm" autocomplete="new-password"></div>
   </div>
-  <div class="form-actions"><button id="btn-password-cancel">ยกเลิก</button><button class="primary" id="btn-password-save">บันทึกรหัสผ่านใหม่</button></div>
+  <div class="form-actions"><button type="button" id="btn-password-clear">ล้างฟอร์ม</button><button id="btn-password-cancel">ยกเลิก</button><button class="primary" id="btn-password-save">บันทึกรหัสผ่านใหม่</button></div>
 </div></div>
 
 <div id="print-area"></div>
@@ -3176,6 +3178,7 @@
       <div class="similar-box" id="similar-box"><strong>พบรายการที่อาจซ้ำ</strong><div id="similar-list"></div></div>
     </div>
     <div class="form-actions">
+      <button type="button" id="btn-modal-clear">ล้างฟอร์ม</button>
       <button id="btn-modal-cancel">ยกเลิก</button>
       <button class="primary" id="btn-modal-save">บันทึก</button>
     </div>
@@ -3250,14 +3253,14 @@
         <span class="choice-copy"><strong>เปิดใช้งานข้อมูลนี้</strong><span>นำไปเลือกใช้ในรายการใหม่ได้ทันที หากเอาเครื่องหมายออก ข้อมูลเดิมยังคงอยู่แต่จะไม่แสดงเป็นตัวเลือกใหม่</span></span>
       </label>
     </div>
-    <div class="form-actions"><button id="btn-master-modal-cancel">ยกเลิก</button><button class="primary" id="btn-master-modal-save">บันทึก</button></div>
+    <div class="form-actions"><button type="button" id="btn-master-modal-clear">ล้างฟอร์ม</button><button id="btn-master-modal-cancel">ยกเลิก</button><button class="primary" id="btn-master-modal-save">บันทึก</button></div>
   </div>
 </div>
 
 <!-- Garage job detail / customer history / transfer leftover -->
 <div id="job-detail-overlay" class="modal-overlay" hidden><div class="modal" style="width:min(1040px,96vw);max-width:1040px"><h3 id="job-detail-title">รายละเอียด JOB</h3><div id="job-detail-content"></div><div class="form-actions"><button id="btn-job-detail-close">ปิด</button></div></div></div>
 <div id="customer-history-overlay" class="modal-overlay" hidden><div class="modal" style="width:min(920px,96vw);max-width:920px"><h3 id="customer-history-title">ประวัติลูกค้า</h3><div id="customer-history-content"></div><div class="form-actions"><button id="btn-customer-history-close">ปิด</button></div></div></div>
-<div id="jp-transfer-overlay" class="modal-overlay" hidden><div class="modal"><h3>โอนของเหลือเข้า Stock</h3><input type="hidden" id="jpt-item-id"><input type="hidden" id="jpt-request-id"><div class="field-grid"><div class="field span2"><div class="import-note" id="jpt-caption"></div></div><div class="field"><label>วันที่</label><input type="date" id="jpt-date" data-default-today></div><div class="field"><label>สต๊อกปลายทาง *</label><select id="jpt-stock-type"><option value="INTERNAL">สต๊อกใช้ภายใน</option><option value="RESALE">สต๊อกเพื่อขาย</option></select></div><div class="field span2"><label>SKU ปลายทาง *</label><div class="jpt-sku-actions"><select id="jpt-part"></select><button type="button" class="small" id="btn-jpt-create-part" data-admin-only>+ สร้างรหัสใหม่</button></div><div class="hint">ค้นหาและเลือกรหัสเดิมก่อน หากยังไม่มีรายการจึงสร้างรหัสใหม่</div></div><div class="field"><label>จำนวนโอน *</label><input type="number" id="jpt-qty" min="0.0001" step="0.0001"></div></div><div class="form-actions"><button id="btn-jpt-cancel">ยกเลิก</button><button class="primary" id="btn-jpt-save">ยืนยันโอนเข้า Stock</button></div></div></div>
+<div id="jp-transfer-overlay" class="modal-overlay" hidden><div class="modal"><h3>โอนของเหลือเข้า Stock</h3><input type="hidden" id="jpt-item-id"><input type="hidden" id="jpt-request-id"><div class="field-grid"><div class="field span2"><div class="import-note" id="jpt-caption"></div></div><div class="field"><label>วันที่</label><input type="date" id="jpt-date" data-default-today></div><div class="field"><label>สต๊อกปลายทาง *</label><select id="jpt-stock-type"><option value="INTERNAL">สต๊อกใช้ภายใน</option><option value="RESALE">สต๊อกเพื่อขาย</option></select></div><div class="field span2"><label>SKU ปลายทาง *</label><div class="jpt-sku-actions"><select id="jpt-part"></select><button type="button" class="small" id="btn-jpt-create-part" data-admin-only>+ สร้างรหัสใหม่</button></div><div class="hint">ค้นหาและเลือกรหัสเดิมก่อน หากยังไม่มีรายการจึงสร้างรหัสใหม่</div></div><div class="field"><label>จำนวนโอน *</label><input type="number" id="jpt-qty" min="0.0001" step="0.0001"></div></div><div class="form-actions"><button type="button" id="btn-jpt-clear">ล้างฟอร์ม</button><button id="btn-jpt-cancel">ยกเลิก</button><button class="primary" id="btn-jpt-save">ยืนยันโอนเข้า Stock</button></div></div></div>
 
 <!-- Settings modal -->
 <div id="settings-modal-overlay">
@@ -4197,7 +4200,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.8.4 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.8.5 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -5368,6 +5371,7 @@
     if(returnContext?.source==="jobPurchaseTransfer")document.getElementById("jp-transfer-overlay").hidden=false;
     return true;
   }
+  document.getElementById("btn-modal-clear")?.addEventListener("click",()=>{const id=document.getElementById("pf-id").value||null,options=partModalReturnContext?{...partModalReturnContext}:{};openPartModal(id,options);});
   document.getElementById("btn-modal-cancel").addEventListener("click", ()=>closeModal(false));
   document.getElementById("modal-overlay").addEventListener("click", (e)=>{
     if(e.target.id==="modal-overlay") remindPartModalStillOpen();
@@ -5564,6 +5568,34 @@
   document.getElementById("iss-purpose").addEventListener("change",updateIssuePurposeUI);
   document.getElementById("iss-use-vehicle").addEventListener("change",updateIssueVehicleUI);
   updateIssuePurposeUI();updateIssueVehicleUI();
+
+  function clearReceiveForm(){
+    receiveRequestId=uid();
+    document.getElementById("rec-stock-type").value="INTERNAL";
+    setDateInputToCurrent("rec-date",true);
+    ["rec-supplier","rec-truck","rec-province","rec-pr","rec-po","rec-iv","rec-contact","rec-note"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
+    receiveLines=[{id:uid(),partId:"",qty:""}];
+    if(mobileWorkflowType==="in")clearMobileQrWorkflow(false);
+    renderDocumentLines("in");
+    clearSmartDirty();saveWorkingDraft();
+  }
+  function clearIssueForm(){
+    issueRequestId=uid();
+    document.getElementById("iss-stock-type").value="INTERNAL";
+    document.getElementById("iss-job").value="";
+    setDateInputToCurrent("iss-date",true);
+    ["iss-purpose","iss-customer-search","iss-customer","iss-receiver","iss-department","iss-project","iss-reference","iss-truck","iss-province","iss-mileage","iss-driver","iss-destination","iss-pr","iss-po","iss-iv","iss-note","issue-part-search"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
+    document.getElementById("iss-person").value=currentUser?currentUser.name:"";
+    document.getElementById("iss-use-vehicle").checked=false;
+    const searchResults=document.getElementById("issue-part-search-results");if(searchResults){searchResults.innerHTML="";searchResults.hidden=true;}
+    issueLines=[{id:uid(),partId:"",qty:"",unitPrice:"",discount:""}];
+    updateIssuePurposeUI();updateIssueVehicleUI();
+    if(mobileWorkflowType==="out")clearMobileQrWorkflow(false);
+    renderDocumentLines("out");
+    clearSmartDirty();saveWorkingDraft();
+  }
+  document.getElementById("btn-receive-clear")?.addEventListener("click",clearReceiveForm);
+  document.getElementById("btn-issue-clear")?.addEventListener("click",clearIssueForm);
 
   function collectDocument(type){
     const lines=(type==="in"?receiveLines:issueLines).filter(x=>x.partId||String(x.qty).trim());
@@ -5787,6 +5819,15 @@
   async function printSelectedLabels(){try{const items=selectedLabelItems();if(!items.length)throw new Error("กรุณาเลือกอะไหล่อย่างน้อย 1 รายการ");if(typeof QRCode==="undefined")throw new Error("ไลบรารี QR ยังโหลดไม่สำเร็จ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่");const config=labelPrintConfig(),area=document.getElementById("label-print-area");area.innerHTML="";area.className=config.mode==="sticker"?"sticker-print":"a4-print";area.style.gridTemplateColumns=config.mode==="a4"?`repeat(${config.columns}, ${config.width}mm)`:"none";area.style.gap=config.mode==="a4"?`${config.gap}mm`:"0";items.forEach(({part,copies})=>{for(let i=0;i<copies;i++)area.appendChild(makePrintLabel(part,config));});area.querySelectorAll(".print-part-label").forEach(el=>renderQRCode(el.querySelector(".print-label-qr"),el.dataset.qr,180));document.getElementById("label-page-style")?.remove();const style=document.createElement("style");style.id="label-page-style";style.textContent=config.mode==="a4"?`@page{size:A4 portrait;margin:${config.margin}mm}`:`@page{size:${config.width}mm ${config.height}mm;margin:0}`;document.head.appendChild(style);document.body.classList.add("print-label-mode");if(document.fonts?.ready)await document.fonts.ready;await new Promise(resolve=>setTimeout(resolve,120));window.print();setTimeout(()=>{document.body.classList.remove("print-label-mode");style.remove();},700);}catch(err){toast(err.message||"สร้างหน้าพิมพ์ไม่สำเร็จ",true);}}
   document.getElementById("label-search").addEventListener("input",renderLabelPartList);document.getElementById("label-category").addEventListener("change",renderLabelPartList);document.getElementById("label-part-list").addEventListener("change",e=>{const partId=e.target.dataset.labelPart||e.target.dataset.labelCopy;if(!partId)return;if(e.target.dataset.labelPart!==undefined){if(e.target.checked)labelSelection.set(partId,Math.max(1,Number(labelSelection.get(partId))||1));else labelSelection.delete(partId);}else{const copies=Math.max(1,Math.min(99,Math.floor(Number(e.target.value)||1)));e.target.value=copies;labelSelection.set(partId,copies);}renderLabelPartList();});
   document.getElementById("btn-label-select-visible").addEventListener("click",()=>{filteredLabelParts().forEach(p=>{if(!labelSelection.has(p.id))labelSelection.set(p.id,1);});renderLabelPartList();});document.getElementById("btn-label-clear").addEventListener("click",()=>{labelSelection.clear();renderLabelPartList();});document.getElementById("label-size").addEventListener("change",()=>{updateLabelPrintControls();renderLabelPreview();});document.getElementById("label-print-mode").addEventListener("change",updateLabelPrintControls);document.getElementById("btn-print-label").addEventListener("click",printSelectedLabels);
+  function clearLabelForm(){
+    labelSelection.clear();
+    document.getElementById("label-search").value="";document.getElementById("label-category").value="";
+    document.getElementById("label-print-mode").value="a4";document.getElementById("label-size").value="shelf";
+    document.getElementById("label-width-mm").value="100";document.getElementById("label-height-mm").value="60";
+    document.getElementById("label-margin-mm").value="4";document.getElementById("label-gap-mm").value="2";
+    renderLabels();
+  }
+  document.getElementById("btn-label-form-clear")?.addEventListener("click",clearLabelForm);
   let scannerStream=null,scannerTimer=null,scannerDetector=null,scannerFallback=null,scannerBackend="",scannerSession=0,pendingScanPartId="";
   const scanActionLabels={parts:"ค้นหาอะไหล่",receive:"เพิ่มในใบรับเข้า",issue:"เพิ่มในใบเบิกออก",requisitions:"เพิ่มในคำขอเบิก",stockcount:"เปิดตรวจนับ",stockcard:"ดู Stock Card"};
   function stopNativeScanner(){if(scannerTimer)cancelAnimationFrame(scannerTimer);scannerTimer=null;if(scannerStream)scannerStream.getTracks().forEach(t=>t.stop());scannerStream=null;scannerDetector=null;const video=document.getElementById("scanner-video");if(video){video.pause();video.srcObject=null;}}
@@ -6067,6 +6108,7 @@
   function renderBackups(){if(!isAdmin())return;const list=[...state.backups].sort((a,b)=>b.timestamp.localeCompare(a.timestamp));const body=document.getElementById("backups-body");body.innerHTML=list.length?list.map(x=>`<tr><td>${new Date(x.timestamp).toLocaleString("th-TH")}</td><td>${x.fileUrl?`<a href="${escapeHTML(x.fileUrl)}" target="_blank" rel="noopener" style="color:#78e9dc">${escapeHTML(x.fileName)}</a>`:escapeHTML(x.fileName)}</td><td>${escapeHTML(x.createdBy||"system")}</td><td>${escapeHTML(x.reason||"-")}</td><td><button class="small danger-ghost" data-restore-backup="${x.id}">กู้คืน</button></td></tr>`).join(""):`<tr class="empty-row"><td colspan="5">ยังไม่มีไฟล์สำรอง</td></tr>`;body.querySelectorAll("[data-restore-backup]").forEach(b=>b.addEventListener("click",async()=>{const x=state.backups.find(v=>v.id===b.dataset.restoreBackup);if(!x||!confirm(`กู้คืนข้อมูลจาก ${x.fileName}?\nระบบจะสร้างจุดย้อนกลับของข้อมูลปัจจุบันก่อน`))return;b.disabled=true;try{state=normalizeFromSheet(await apiCall("restoreBackup",{id:x.id}));cacheSave();renderAll();toast("กู้คืนข้อมูลเรียบร้อย");}catch(err){toast("กู้คืนไม่สำเร็จ: "+err.message,true);}finally{b.disabled=false;}}));}
   document.getElementById("btn-backup-now").addEventListener("click",async()=>{if(!requireAdmin())return;const btn=document.getElementById("btn-backup-now");btn.disabled=true;btn.textContent="กำลังสำรอง...";try{const row=await apiCall("createBackup",{reason:"สำรองด้วยตนเอง"});state.backups.push(row);cacheSave();renderBackups();toast("สำรองข้อมูลเรียบร้อย");}catch(err){toast("สำรองข้อมูลไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="สำรองข้อมูลตอนนี้";}});
   document.getElementById("btn-backup-schedule").addEventListener("click",async()=>{if(!requireAdmin())return;const hour=Number(document.getElementById("backup-hour").value);try{await apiCall("setupDailyBackup",{hour});toast(`ตั้งสำรองรายวันเวลา ${String(hour).padStart(2,"0")}:00 แล้ว`);}catch(err){toast("ตั้งเวลาไม่สำเร็จ: "+err.message,true);}});
+  document.getElementById("btn-backup-form-clear")?.addEventListener("click",()=>{document.getElementById("backup-hour").value="2";});
 
   // ================= STOCK COUNT =================
   const countDraft={};
@@ -6086,6 +6128,16 @@
   document.getElementById("count-stock-type")?.addEventListener("change",renderStockCount);
   document.getElementById("stock-count-body").addEventListener("change",e=>{if(!e.target.dataset.countPart)return;const stockType=normalizeStockType(document.getElementById("count-stock-type").value);countDraft[`${stockType}|${e.target.dataset.countPart}`]=e.target.value;renderStockCount();});
   document.getElementById("btn-count-fill-system").addEventListener("click",()=>{const stockType=normalizeStockType(document.getElementById("count-stock-type").value);state.parts.filter(p=>p.isActive!==false).forEach(p=>countDraft[`${stockType}|${p.id}`]=stockQty(p.id,stockType));renderStockCount();});
+  function clearStockCountForm(){
+    Object.keys(countDraft).forEach(key=>delete countDraft[key]);
+    setDateInputToCurrent("count-date",true);
+    document.getElementById("count-stock-type").value="INTERNAL";
+    document.getElementById("count-by").value=currentUser?.name||"";
+    document.getElementById("count-approved").value=currentUser?.name||"";
+    document.getElementById("count-reason").value="";document.getElementById("count-search").value="";
+    renderStockCount();clearSmartDirty();saveWorkingDraft();
+  }
+  document.getElementById("btn-count-clear")?.addEventListener("click",clearStockCountForm);
   document.getElementById("btn-count-save").addEventListener("click",async()=>{
     if(!requireAdmin())return;
     const stockType=normalizeStockType(document.getElementById("count-stock-type").value),prefix=`${stockType}|`;
@@ -6227,6 +6279,7 @@
   document.querySelectorAll("[data-quick-master]").forEach(b=>b.addEventListener("click",()=>openMasterModal(b.dataset.quickMaster,null)));
   document.getElementById("master-search").addEventListener("input",renderMaster);
   document.getElementById("btn-master-add").addEventListener("click",()=>openMasterModal(currentMasterType,null));
+  document.getElementById("btn-master-modal-clear")?.addEventListener("click",()=>openMasterModal(modalMasterType,document.getElementById("mf-id").value||null));
   document.getElementById("btn-master-modal-cancel").addEventListener("click",closeMasterModal);
   document.getElementById("master-modal-overlay").addEventListener("click",e=>{if(e.target.id==="master-modal-overlay")closeMasterModal();});
   document.getElementById("btn-master-modal-save").addEventListener("click",async()=>{
@@ -6362,6 +6415,7 @@
     document.getElementById("user-modal-overlay").classList.add("show");
   }
   function closeUserModal(){document.getElementById("user-modal-overlay").classList.remove("show");}
+  document.getElementById("btn-user-clear")?.addEventListener("click",()=>openUserModal(document.getElementById("uf-id").value||""));
   document.getElementById("btn-user-cancel").addEventListener("click",closeUserModal);
   document.getElementById("btn-user-save").addEventListener("click",async()=>{
     const id=document.getElementById("uf-id").value,record={id,username:document.getElementById("uf-username").value.trim(),name:document.getElementById("uf-name").value.trim(),role:document.getElementById("uf-role").value,password:document.getElementById("uf-password").value,mustChangePassword:document.getElementById("uf-must-change").checked};
@@ -6384,6 +6438,7 @@
     document.getElementById("btn-password-cancel").hidden=passwordForced;document.getElementById("password-modal-overlay").classList.add("show");
   }
   document.getElementById("btn-change-password").addEventListener("click",()=>openPasswordModal(false));
+  document.getElementById("btn-password-clear")?.addEventListener("click",()=>{["pw-current","pw-new","pw-confirm"].forEach(id=>document.getElementById(id).value="");document.getElementById("pw-current").focus();});
   document.getElementById("btn-password-cancel").addEventListener("click",()=>{if(!passwordForced)document.getElementById("password-modal-overlay").classList.remove("show");});
   document.getElementById("btn-password-save").addEventListener("click",async()=>{
     const currentPassword=document.getElementById("pw-current").value,newPassword=document.getElementById("pw-new").value,confirmPassword=document.getElementById("pw-confirm").value;
@@ -6810,7 +6865,7 @@
     if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
     const guide = [
-      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.8.4 Multi-item Stock Transfer"],
+      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.8.5 Clear Form Everywhere"],
       ["วิธีใช้","ใช้ไฟล์เดียวได้ทุกห้อง เลือกประเภทในโปรแกรมแล้วอัปโหลดไฟล์เดิม ระบบจะอ่านเฉพาะชีทที่ตรงกัน"],
       ["ลำดับแนะนำ","จังหวัด → ลูกค้า → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → หมวดหมู่ SKU → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
       ["การสร้าง SKU","ในชีท “เพิ่มอะไหล่” สามารถเว้นคอลัมน์รหัสอะไหล่ไว้ ระบบจะสร้าง SKU จากหมวดหมู่ + ประเภทไอเท็ม + เลขลำดับต่อจากข้อมูลเดิมให้อัตโนมัติ"],
@@ -6825,7 +6880,7 @@
       ws["!autofilter"]={ref:"A1:"+XLSX.utils.encode_col(cfg.headers.length-1)+"1"};
       XLSX.utils.book_append_sheet(wb,ws,cfg.sheet);
     });
-    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.8.4.xlsx");
+    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.8.5.xlsx");
     toast("ดาวน์โหลดแม่แบบรวมเรียบร้อย");
   }
   document.getElementById("btn-download-import-template").addEventListener("click",downloadFullTemplate);
@@ -7218,7 +7273,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.8.4`;
+    document.title=`${meta.title} | Stock Control v4.8.5`;
   }
 
   function selectLabel(el){
@@ -7738,6 +7793,12 @@
   function editJobPurchase(id){const p=state.jobPurchases.find(x=>x.id===id);if(!p||p.status==="cancelled")return;document.getElementById("jp-id").value=p.id;document.getElementById("jp-version").value=p.version;document.getElementById("jp-request-id").value=p.clientRequestId||uid();setStoredDateInput("jp-date",p.date);document.getElementById("jp-job").value=p.jobId;document.getElementById("jp-supplier").value=p.supplierId;document.getElementById("jp-invoice").value=p.invoiceNo;document.getElementById("jp-buyer").value=p.purchasedBy;document.getElementById("jp-note").value=p.note;document.getElementById("jp-lines").innerHTML="";state.jobPurchaseItems.filter(i=>i.purchaseId===id).sort((a,b)=>a.lineNo-b.lineNo).forEach(addJobPurchaseLine);document.getElementById("btn-jp-save").textContent="บันทึกการแก้ไข";window.scrollTo({top:0,behavior:"smooth"});}
   function renderJobPurchases(){const q=String(document.getElementById("jp-search")?.value||"").trim().toLowerCase(),rows=state.jobPurchases.filter(p=>{const items=state.jobPurchaseItems.filter(i=>i.purchaseId===p.id),job=repairJobById(p.jobId);return !q||`${p.purchaseNo} ${job?.jobNo||""} ${p.supplierName} ${p.invoiceNo} ${items.map(i=>i.itemName).join(" ")}`.toLowerCase().includes(q);}).sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt.localeCompare(a.createdAt));const active=state.jobPurchases.filter(p=>p.status!=="cancelled"),total=active.reduce((s,p)=>s+state.jobPurchaseItems.filter(i=>i.purchaseId===p.id).reduce((n,i)=>n+i.lineAmount,0),0);document.getElementById("jp-summary").textContent=`${active.length} ใบ · ${fmtMoney(total)} บาท`;document.getElementById("jp-history-body").innerHTML=rows.length?rows.map(p=>{const items=state.jobPurchaseItems.filter(i=>i.purchaseId===p.id).sort((a,b)=>a.lineNo-b.lineNo),job=repairJobById(p.jobId),amount=items.reduce((s,i)=>s+i.lineAmount,0),remaining=items.reduce((s,i)=>s+Math.max(0,i.qty-i.usedQty-i.transferredQty),0);return `<tr><td class="mono">${escapeHTML(p.purchaseNo)}<div class="hint">${fmtDate(p.date)}</div></td><td><button class="small job-link" data-job-view="${p.jobId}">${escapeHTML(job?.jobNo||"-")}</button></td><td>${escapeHTML(p.supplierName||"ไม่ระบุร้าน")}<div class="hint">${escapeHTML(p.invoiceNo||"-")}</div></td><td>${items.map(i=>`${escapeHTML(i.itemName)} × ${fmtMoney(i.qty)} ${escapeHTML(i.unit)}`).join("<br>")}<div class="hint">รวม ${fmtMoney(amount)} บาท</div></td><td>${remaining?items.filter(i=>i.qty-i.usedQty-i.transferredQty>0).map(i=>`<button class="small" data-jp-transfer="${i.id}">${escapeHTML(i.itemName)} · ${fmtMoney(i.qty-i.usedQty-i.transferredQty)}</button>`).join(" "):"ไม่มีของเหลือ"}</td><td><span class="status-pill ${p.status}">${p.status==="cancelled"?"ยกเลิก":"ใช้งาน"}</span></td><td class="row-actions">${p.status!=="cancelled"?`<button class="small" data-jp-edit="${p.id}">แก้ไข</button><button class="small danger-ghost" data-jp-cancel="${p.id}">ยกเลิก</button>`:""}</td></tr>`;}).join(""):`<tr class="empty-row"><td colspan="7">ยังไม่มีรายการซื้อเฉพาะ JOB</td></tr>`;}
   function openJobPurchaseTransfer(itemId){const item=state.jobPurchaseItems.find(i=>i.id===itemId);if(!item)return;const remaining=item.qty-item.usedQty-item.transferredQty;if(remaining<=0){toast("รายการนี้ไม่มีของเหลือให้โอน",true);return;}document.getElementById("jpt-item-id").value=item.id;document.getElementById("jpt-request-id").value=uid();setDateInputToCurrent("jpt-date",true);document.getElementById("jpt-stock-type").value="INTERNAL";document.getElementById("jpt-part").value=item.partId||"";document.getElementById("jpt-qty").value=remaining;document.getElementById("jpt-qty").max=remaining;document.getElementById("jpt-caption").textContent=`${item.itemName} · ซื้อ ${fmtMoney(item.qty)} · ใช้กับ JOB ${fmtMoney(item.usedQty)} · โอนแล้ว ${fmtMoney(item.transferredQty)} · เหลือ ${fmtMoney(remaining)} ${item.unit}`;document.getElementById("jp-transfer-overlay").hidden=false;}
+  function clearJobPurchaseTransferForm(){
+    const item=state.jobPurchaseItems.find(i=>i.id===document.getElementById("jpt-item-id").value);
+    if(!item)return;const remaining=Math.max(0,item.qty-item.usedQty-item.transferredQty);
+    document.getElementById("jpt-request-id").value=uid();setDateInputToCurrent("jpt-date",true);
+    document.getElementById("jpt-stock-type").value="INTERNAL";document.getElementById("jpt-part").value="";document.getElementById("jpt-qty").value="";document.getElementById("jpt-qty").max=remaining;
+  }
   function createPartFromJobPurchaseTransfer(){
     if(!requireAdmin())return;
     const item=state.jobPurchaseItems.find(x=>x.id===document.getElementById("jpt-item-id").value);
@@ -7750,7 +7811,7 @@
   document.getElementById("btn-jp-add-line")?.addEventListener("click",()=>addJobPurchaseLine());document.getElementById("jp-lines")?.addEventListener("click",e=>{if(e.target.closest(".jp-remove")){const row=e.target.closest(".job-line-row");if(Number(row.dataset.transferred)>0)toast("ลบรายการที่เคยโอนเข้า Stock ไม่ได้",true);else row.remove();}});document.getElementById("jp-lines")?.addEventListener("input",e=>updateJobPurchaseLineSummary(e.target.closest(".purchase-line-row")));document.getElementById("btn-jp-clear")?.addEventListener("click",()=>clearJobPurchaseForm());document.getElementById("jp-search")?.addEventListener("input",renderJobPurchases);
   document.getElementById("btn-jp-save")?.addEventListener("click",async()=>{const items=collectJobPurchaseLines(),purchase={id:document.getElementById("jp-id").value,expectedVersion:document.getElementById("jp-version").value,clientRequestId:document.getElementById("jp-request-id").value||uid(),date:document.getElementById("jp-date").value||todayISO(),jobId:document.getElementById("jp-job").value,supplierId:document.getElementById("jp-supplier").value,invoiceNo:document.getElementById("jp-invoice").value.trim(),purchasedBy:document.getElementById("jp-buyer").value.trim(),note:document.getElementById("jp-note").value.trim(),items};try{if(!purchase.jobId)throw new Error("กรุณาเลือก JOB");if(!items.length)throw new Error("กรุณาเพิ่มรายการซื้อ");items.forEach((i,n)=>{if(!i.itemName)throw new Error(`รายการที่ ${n+1}: กรุณาระบุชื่ออะไหล่`);if(!Number.isFinite(i.qty)||i.qty<=0)throw new Error(`รายการที่ ${n+1}: จำนวนซื้อต้องมากกว่า 0`);if(i.usedQty<0||i.usedQty+i.transferredQty>i.qty)throw new Error(`รายการที่ ${n+1}: จำนวนใช้กับ JOB รวมจำนวนที่โอน Stock ต้องไม่เกินจำนวนซื้อ`);if(i.discount>i.qty*i.unitCost)throw new Error(`รายการที่ ${n+1}: ส่วนลดเกินมูลค่ารายการ`);});}catch(err){toast(err.message,true);return;}const btn=document.getElementById("btn-jp-save");btn.disabled=true;btn.textContent="กำลังบันทึก...";try{const result=await apiCall("saveJobPurchase",{purchase});await syncFromSheet(false);clearJobPurchaseForm();renderAll();toast(`บันทึก ${result.purchase.purchaseNo} แล้ว — รายการนี้ยังไม่เข้า Stock`);}catch(err){toast("บันทึกไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="บันทึกซื้อเฉพาะ JOB";}});
   document.getElementById("jp-history-body")?.addEventListener("click",async e=>{const view=e.target.closest("[data-job-view]"),edit=e.target.closest("[data-jp-edit]"),transfer=e.target.closest("[data-jp-transfer]"),cancel=e.target.closest("[data-jp-cancel]");if(view){openJobDetail(view.dataset.jobView);return;}if(edit){editJobPurchase(edit.dataset.jpEdit);return;}if(transfer){openJobPurchaseTransfer(transfer.dataset.jpTransfer);return;}if(cancel){const p=state.jobPurchases.find(x=>x.id===cancel.dataset.jpCancel),reason=prompt(`เหตุผลยกเลิก ${p.purchaseNo}`)?.trim();if(!reason)return;try{await apiCall("cancelJobPurchase",{id:p.id,reason,expectedVersion:p.version});await syncFromSheet(false);renderAll();toast("ยกเลิกรายการแล้ว");}catch(err){toast("ยกเลิกไม่สำเร็จ: "+err.message,true);}}});
-  document.getElementById("btn-jpt-create-part")?.addEventListener("click",createPartFromJobPurchaseTransfer);document.getElementById("btn-jpt-cancel")?.addEventListener("click",()=>document.getElementById("jp-transfer-overlay").hidden=true);document.getElementById("btn-jpt-save")?.addEventListener("click",async()=>{const transfer={purchaseItemId:document.getElementById("jpt-item-id").value,clientRequestId:document.getElementById("jpt-request-id").value,date:document.getElementById("jpt-date").value||todayISO(),stockType:document.getElementById("jpt-stock-type").value,partId:document.getElementById("jpt-part").value,qty:Number(document.getElementById("jpt-qty").value)};if(!transfer.partId||!Number.isFinite(transfer.qty)||transfer.qty<=0){toast("กรุณาเลือก SKU และระบุจำนวนโอน",true);return;}const btn=document.getElementById("btn-jpt-save");btn.disabled=true;try{const result=await apiCall("transferJobPurchaseToStock",{transfer});await syncFromSheet(false);document.getElementById("jp-transfer-overlay").hidden=true;renderAll();toast(`โอนเข้า ${stockTypeText(result.transfer.stockType)} ด้วยเลขที่ ${result.transfer.transferNo} แล้ว`);}catch(err){toast("โอนไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;}});
+  document.getElementById("btn-jpt-create-part")?.addEventListener("click",createPartFromJobPurchaseTransfer);document.getElementById("btn-jpt-clear")?.addEventListener("click",clearJobPurchaseTransferForm);document.getElementById("btn-jpt-cancel")?.addEventListener("click",()=>document.getElementById("jp-transfer-overlay").hidden=true);document.getElementById("btn-jpt-save")?.addEventListener("click",async()=>{const transfer={purchaseItemId:document.getElementById("jpt-item-id").value,clientRequestId:document.getElementById("jpt-request-id").value,date:document.getElementById("jpt-date").value||todayISO(),stockType:document.getElementById("jpt-stock-type").value,partId:document.getElementById("jpt-part").value,qty:Number(document.getElementById("jpt-qty").value)};if(!transfer.partId||!Number.isFinite(transfer.qty)||transfer.qty<=0){toast("กรุณาเลือก SKU และระบุจำนวนโอน",true);return;}const btn=document.getElementById("btn-jpt-save");btn.disabled=true;try{const result=await apiCall("transferJobPurchaseToStock",{transfer});await syncFromSheet(false);document.getElementById("jp-transfer-overlay").hidden=true;renderAll();toast(`โอนเข้า ${stockTypeText(result.transfer.stockType)} ด้วยเลขที่ ${result.transfer.transferNo} แล้ว`);}catch(err){toast("โอนไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;}});
 
   // ================= RENDER ALL =================
   function setNavigationBadge(id,count,label){
