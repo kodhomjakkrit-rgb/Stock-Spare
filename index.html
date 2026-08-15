@@ -2183,6 +2183,32 @@
     html[data-theme="dark"],html[data-theme="dark"] body{color-scheme:light;background:#fff!important;color:#111!important;}
   }
 
+  /* ================= v4.8.1 Independent Desktop Sidebar Scroll ================= */
+  @media(min-width:981px){
+    nav.tabs{
+      max-height:calc(100dvh - 112px);
+      overflow-x:hidden;
+      overflow-y:auto;
+      overscroll-behavior-y:contain;
+      scrollbar-gutter:stable;
+      scrollbar-width:thin;
+      scrollbar-color:rgba(148,163,184,.62) transparent;
+      scroll-padding-block:10px;
+    }
+    nav.tabs::-webkit-scrollbar{width:7px;}
+    nav.tabs::-webkit-scrollbar-track{background:transparent;}
+    nav.tabs::-webkit-scrollbar-thumb{
+      background:rgba(148,163,184,.52);
+      border:2px solid transparent;
+      border-radius:999px;
+      background-clip:padding-box;
+    }
+    nav.tabs:hover::-webkit-scrollbar-thumb{background:rgba(148,163,184,.78);background-clip:padding-box;}
+    html[data-theme="light"] nav.tabs{scrollbar-color:rgba(100,116,139,.52) transparent;}
+    html[data-theme="light"] nav.tabs::-webkit-scrollbar-thumb{background:rgba(100,116,139,.42);background-clip:padding-box;}
+    html[data-theme="light"] nav.tabs:hover::-webkit-scrollbar-thumb{background:rgba(100,116,139,.68);background-clip:padding-box;}
+  }
+
 </style>
 </head>
 <body>
@@ -2192,7 +2218,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.8.0</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.8.1</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -2272,7 +2298,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.8.0</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.8.1</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -4123,7 +4149,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.8.0 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.8.1 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -4792,6 +4818,21 @@
     const group=document.getElementById("nav-system-group");
     if(group&&SYSTEM_VIEW_NAMES.has(viewName)) group.open=true;
   }
+  let sidebarVisibilityTimer=0;
+  function keepActiveSidebarItemVisible(viewName,{smooth=true}={}){
+    if(!window.matchMedia("(min-width:981px)").matches)return;
+    const nav=document.querySelector("nav.tabs"),active=nav?.querySelector(`.tab[data-view="${CSS.escape(viewName)}"]`);
+    if(!nav||!active||active.hidden)return;
+    requestAnimationFrame(()=>{
+      const navRect=nav.getBoundingClientRect(),itemRect=active.getBoundingClientRect(),safeGap=10;
+      let nextTop=null;
+      if(itemRect.top<navRect.top+safeGap)nextTop=nav.scrollTop+(itemRect.top-navRect.top)-safeGap;
+      else if(itemRect.bottom>navRect.bottom-safeGap)nextTop=nav.scrollTop+(itemRect.bottom-navRect.bottom)+safeGap;
+      if(nextTop===null)return;
+      const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      nav.scrollTo({top:Math.max(0,nextTop),behavior:smooth&&!reduced?"smooth":"auto"});
+    });
+  }
   function activateView(viewName){
     applyDefaultCurrentDates();
     const previousView=document.querySelector(".view.active")?.id.replace("view-","")||"";
@@ -4801,6 +4842,7 @@
     }
     document.querySelectorAll("nav.tabs .tab").forEach(b=>b.classList.toggle("active", b.dataset.view===viewName));
     syncSidebarSystemGroup(viewName);
+    keepActiveSidebarItemVisible(viewName);
     document.querySelectorAll(".mobile-tab[data-mobile-view]").forEach(b=>b.classList.toggle("active", b.dataset.mobileView===viewName));
     document.getElementById("btn-mobile-more").classList.toggle("active", !["dashboard","parts","receive","issue"].includes(viewName));
     document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active", v.id==="view-"+viewName));
@@ -4815,6 +4857,13 @@
   }
   document.querySelectorAll("nav.tabs .tab").forEach(btn=>{
     btn.addEventListener("click", ()=> activateView(btn.dataset.view));
+  });
+  window.addEventListener("resize",()=>{
+    clearTimeout(sidebarVisibilityTimer);
+    sidebarVisibilityTimer=setTimeout(()=>{
+      const viewName=document.querySelector("nav.tabs .tab.active")?.dataset.view;
+      if(viewName)keepActiveSidebarItemVisible(viewName,{smooth:false});
+    },120);
   });
   document.querySelectorAll("[data-mobile-view]").forEach(btn=>{
     btn.addEventListener("click", ()=> activateView(btn.dataset.mobileView));
@@ -6685,7 +6734,7 @@
     if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
     const guide = [
-      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.8.0 Garage Job Management"],
+      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.8.1 Independent Sidebar Scroll"],
       ["วิธีใช้","ใช้ไฟล์เดียวได้ทุกห้อง เลือกประเภทในโปรแกรมแล้วอัปโหลดไฟล์เดิม ระบบจะอ่านเฉพาะชีทที่ตรงกัน"],
       ["ลำดับแนะนำ","จังหวัด → ลูกค้า → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → หมวดหมู่ SKU → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
       ["การสร้าง SKU","ในชีท “เพิ่มอะไหล่” สามารถเว้นคอลัมน์รหัสอะไหล่ไว้ ระบบจะสร้าง SKU จากหมวดหมู่ + ประเภทไอเท็ม + เลขลำดับต่อจากข้อมูลเดิมให้อัตโนมัติ"],
@@ -6700,7 +6749,7 @@
       ws["!autofilter"]={ref:"A1:"+XLSX.utils.encode_col(cfg.headers.length-1)+"1"};
       XLSX.utils.book_append_sheet(wb,ws,cfg.sheet);
     });
-    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.8.0.xlsx");
+    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.8.1.xlsx");
     toast("ดาวน์โหลดแม่แบบรวมเรียบร้อย");
   }
   document.getElementById("btn-download-import-template").addEventListener("click",downloadFullTemplate);
@@ -7093,7 +7142,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.8.0`;
+    document.title=`${meta.title} | Stock Control v4.8.1`;
   }
 
   function selectLabel(el){
