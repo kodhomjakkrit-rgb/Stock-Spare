@@ -2301,6 +2301,15 @@
     .quick-actions,.quick-actions.staff-layout{grid-template-columns:1fr;}
     .quick-actions.staff-layout .quick-action.search{grid-column:auto;}
   }
+
+
+  /* ================= v4.9.5 JOB Workspace Phase 5 — Dashboard & Cost Report ================= */
+  .job-dashboard-panel{overflow:hidden}.job-dashboard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}.job-dashboard-head h2{margin:0}.job-dashboard-head p{margin:3px 0 0;color:var(--text-dim);font-size:12px;line-height:1.5}.job-dashboard-head-actions{display:flex;gap:7px;flex-wrap:wrap}.job-dashboard-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.job-dashboard-stat{padding:12px 13px;border:1px solid var(--border);border-radius:11px;background:var(--panel-alt);min-width:0}.job-dashboard-stat span{display:block;color:var(--text-dim);font-size:10.5px}.job-dashboard-stat strong{display:block;margin-top:2px;font:750 20px 'Kanit',sans-serif;line-height:1.2}.job-dashboard-stat small{display:block;margin-top:4px;color:var(--text-dim);font-size:10px;line-height:1.4}.job-dashboard-stat.warn strong{color:var(--warning)}.job-dashboard-stat.danger strong{color:#dc2626}.job-dashboard-stat.success strong{color:var(--success)}.job-dashboard-finance{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px}.job-dashboard-finance .job-dashboard-stat{background:linear-gradient(135deg,rgba(15,118,110,.05),rgba(14,165,233,.035))}.job-dashboard-watch{margin-top:12px;border-top:1px solid var(--border);padding-top:12px}.job-dashboard-watch-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}.job-dashboard-watch-head strong{font-size:12px}.job-dashboard-watch-list{display:grid;gap:7px}.job-dashboard-watch-item{display:grid;grid-template-columns:minmax(0,1.5fr) auto auto auto;gap:8px;align-items:center;padding:9px 10px;border:1px solid var(--border);border-radius:10px;background:var(--panel)}.job-dashboard-watch-item .job-watch-main{min-width:0}.job-dashboard-watch-item .job-watch-main strong{display:block;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.job-dashboard-watch-item .job-watch-main small{display:block;margin-top:2px;color:var(--text-dim);font-size:9.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.job-watch-age,.job-watch-cost{font-size:10px;color:var(--text-dim);white-space:nowrap}.job-cost-report-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:10px 0 12px}.job-cost-kpi{padding:10px 11px;border:1px solid var(--border);border-radius:10px;background:var(--panel-alt)}.job-cost-kpi span{display:block;color:var(--text-dim);font-size:10px}.job-cost-kpi strong{display:block;margin-top:2px;font-size:15px;line-height:1.25}.job-cost-kpi.profit strong{color:var(--success)}.job-cost-kpi.loss strong{color:#dc2626}.job-cost-filters{display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) auto;gap:8px;align-items:end}.job-cost-filter label{display:block;margin-bottom:4px;color:var(--text-dim);font-size:10px;font-weight:700}.job-cost-report-note{margin:8px 0 0;color:var(--text-dim);font-size:10px;line-height:1.45}.job-cost-number{text-align:right;white-space:nowrap}.job-cost-profit-positive{color:var(--success);font-weight:800}.job-cost-profit-negative{color:#dc2626;font-weight:800}.job-cost-internal{color:var(--text-dim);font-weight:700}.job-margin-pill{display:inline-flex;padding:2px 6px;border-radius:999px;background:rgba(16,185,129,.09);color:var(--success);font-size:9.5px;font-weight:800}.job-margin-pill.negative{background:rgba(220,38,38,.08);color:#dc2626}.job-dashboard-empty{padding:14px;text-align:center;color:var(--text-dim);font-size:11px}.job-dashboard-panel.is-staff .job-dashboard-finance{display:none}
+  @media(max-width:1100px){.job-cost-report-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.job-cost-filters{grid-template-columns:repeat(3,minmax(0,1fr))}.job-cost-filters>button{align-self:end}.job-dashboard-watch-item{grid-template-columns:minmax(0,1fr) auto auto}}
+  @media(max-width:780px){.job-dashboard-head{flex-direction:column}.job-dashboard-head-actions{width:100%}.job-dashboard-head-actions button{flex:1}.job-dashboard-grid,.job-dashboard-finance{grid-template-columns:repeat(2,minmax(0,1fr))}.job-dashboard-watch-item{grid-template-columns:minmax(0,1fr) auto}.job-watch-cost{display:none}.job-cost-report-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.job-cost-filters{grid-template-columns:1fr 1fr}.job-cost-filters .job-cost-search{grid-column:1/-1}.job-cost-filters>button{width:100%}}
+  @media(max-width:430px){.job-dashboard-grid,.job-dashboard-finance,.job-cost-report-kpis{grid-template-columns:1fr 1fr}.job-dashboard-watch-item{grid-template-columns:minmax(0,1fr) auto}.job-watch-age{display:none}}
+  html[data-theme="dark"] .job-dashboard-finance .job-dashboard-stat{background:linear-gradient(135deg,rgba(20,184,166,.08),rgba(14,165,233,.05))}
+
 </style>
 </head>
 <body>
@@ -2310,7 +2319,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.9.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.9.5</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -2390,7 +2399,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.9.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.9.5</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -2561,6 +2570,16 @@
       <div class="attention-grid" id="attention-grid"></div>
     </div>
 
+    <div class="panel job-dashboard-panel" id="job-dashboard-panel">
+      <div class="job-dashboard-head">
+        <div><h2>ภาพรวม JOB <span class="sub">งานที่กำลังดำเนินการและต้นทุนจากข้อมูลล่าสุด</span></h2><p>ช่วยเห็นงานรออะไหล่ งานพร้อมปิด งานค้างนาน และภาพรวมต้นทุนโดยไม่ต้องเปิดทีละ JOB</p></div>
+        <div class="job-dashboard-head-actions"><button type="button" class="small" id="btn-dashboard-open-jobs">เปิดรายการ JOB</button><button type="button" class="small primary" id="btn-dashboard-job-cost-report">รายงานต้นทุน JOB</button></div>
+      </div>
+      <div class="job-dashboard-grid" id="job-dashboard-grid"></div>
+      <div class="job-dashboard-finance" id="job-dashboard-finance"></div>
+      <div class="job-dashboard-watch"><div class="job-dashboard-watch-head"><strong>JOB ที่ควรติดตาม</strong><span class="hint">เรียงจากงานเร่งด่วน / รออะไหล่ / ค้างนาน</span></div><div class="job-dashboard-watch-list" id="job-dashboard-watch-list"></div></div>
+    </div>
+
     <div class="panel personal-workspace-panel" id="personal-workspace-panel">
       <div class="personal-workspace-head"><div><h2>พื้นที่ทำงานของฉัน</h2><p>รวมหน้ารายงานและอะไหล่ที่บันทึกเป็นรายการโปรด พร้อมรายการที่เปิดล่าสุด</p></div><span class="hint">จัดเก็บแยกตามผู้ใช้งานในเครื่องนี้</span></div>
       <div class="personal-workspace-grid">
@@ -2698,6 +2717,20 @@
       <h2>ติดตามงานซ่อม <span class="sub" id="job-summary"></span></h2>
       <div class="search-bar"><input id="job-search" placeholder="ค้นหาเลข Job ลูกค้า รถ อาการ หรือผู้รับผิดชอบ..."><select id="job-status-filter"><option value="">ทุกสถานะ</option><option value="open">เปิดงาน</option><option value="in_progress">กำลังซ่อม</option><option value="wait_parts">รออะไหล่</option><option value="completed">ซ่อมเสร็จ</option><option value="cancelled">ยกเลิก</option></select></div>
       <div class="table-wrap"><table><thead><tr><th>เลข Job</th><th>วันที่ / ประเภท</th><th>ลูกค้า / รถ</th><th>อาการ / ผู้รับผิดชอบ</th><th>อะไหล่และมูลค่า</th><th>สถานะ</th><th>การทำงาน</th></tr></thead><tbody id="repair-jobs-body"></tbody></table></div>
+    </div>
+    <div class="panel">
+      <h2>รายงานต้นทุน JOB <span class="sub" id="job-cost-report-summary">สรุปต้นทุน รายรับ และผลต่างราย JOB</span></h2>
+      <div class="job-cost-filters">
+        <div class="job-cost-filter"><label for="job-cost-from">ตั้งแต่วันที่</label><input type="date" id="job-cost-from"></div>
+        <div class="job-cost-filter"><label for="job-cost-to">ถึงวันที่</label><input type="date" id="job-cost-to"></div>
+        <div class="job-cost-filter"><label for="job-cost-type">ประเภท JOB</label><select id="job-cost-type"><option value="">ทุกประเภท</option><option value="customer">งานลูกค้า</option><option value="internal">งานภายใน</option></select></div>
+        <div class="job-cost-filter"><label for="job-cost-status">สถานะ</label><select id="job-cost-status"><option value="">ทุกสถานะ</option><option value="active">งานที่ยังเปิดอยู่</option><option value="open">เปิดงาน</option><option value="in_progress">กำลังซ่อม</option><option value="wait_parts">รออะไหล่</option><option value="completed">ซ่อมเสร็จ</option><option value="cancelled">ยกเลิก</option></select></div>
+        <div class="job-cost-filter job-cost-search"><label for="job-cost-search">ค้นหา</label><input id="job-cost-search" type="search" placeholder="JOB ลูกค้า รถ อาการ ผู้รับผิดชอบ..."></div>
+        <button type="button" id="btn-job-cost-clear">ล้างตัวกรอง</button>
+      </div>
+      <div class="job-cost-report-kpis" id="job-cost-report-kpis"></div>
+      <div class="table-wrap"><table><thead><tr><th>JOB / วันที่</th><th>ประเภท / สถานะ</th><th>ลูกค้า / รถ</th><th>Stock โดยประมาณ</th><th>ซื้อเฉพาะ JOB ที่ใช้</th><th>ค่าแรง</th><th>ค่าใช้จ่ายอื่น</th><th>ต้นทุนรวม</th><th>รายรับ</th><th>กำไร / ผลต่าง</th><th>Margin</th></tr></thead><tbody id="job-cost-report-body"></tbody></table></div>
+      <p class="job-cost-report-note">หมายเหตุ: ต้นทุนอะไหล่ที่เบิกจาก Stock คำนวณจากต้นทุนปัจจุบันของ SKU เพื่อใช้วิเคราะห์ภาพรวม เนื่องจาก Transaction เดิมไม่ได้เก็บต้นทุนย้อนหลังแยกต่อรายการ ส่วนซื้อเฉพาะ JOB ใช้ต้นทุนสุทธิตามจำนวนที่ใช้จริงกับ JOB</p>
     </div>
   </section>
 
@@ -3903,7 +3936,7 @@
     "low-stock-body","recent-tx-body","parts-body","recent-receive-body","recent-issue-body",
     "requests-body","backups-body","stock-count-body","stock-count-history-body","master-table-body",
     "users-body","audit-body","top-issued-body","inactive-parts-body","stock-card-body","history-body",
-    "internal-stock-body","resale-stock-body","stock-transfer-body","repair-jobs-body","jp-history-body","customer-service-body"
+    "internal-stock-body","resale-stock-body","stock-transfer-body","repair-jobs-body","job-cost-report-body","jp-history-body","customer-service-body"
   ]);
   const tableSortState = new Map();
   const sortableTableObservers = new Map();
@@ -3932,6 +3965,7 @@
     ,"resale-stock-body": { fileName:"รายงาน-สต๊อกเพื่อขาย" }
     ,"stock-transfer-body": { fileName:"รายงาน-ประวัติโอนสต๊อก" }
     ,"repair-jobs-body": { fileName:"รายงาน-ติดตามงานซ่อม" }
+    ,"job-cost-report-body": { fileName:"รายงาน-ต้นทุน-JOB" }
     ,"jp-history-body": { fileName:"รายงาน-ซื้อเฉพาะ-JOB" }
     ,"customer-service-body": { fileName:"รายงาน-ลูกค้าและประวัติซ่อม" }
   };
@@ -4450,7 +4484,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.9.4 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.9.5 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -5324,6 +5358,7 @@
       </tr>`;
     }).join("") : `<tr class="empty-row"><td colspan="5">ยังไม่มีความเคลื่อนไหว</td></tr>`;
 
+    renderJobDashboardOverview();
     renderCharts();
   }
 
@@ -6766,6 +6801,7 @@
     ,["resale-stock-body",20]
     ,["stock-transfer-body",20]
     ,["repair-jobs-body",20]
+    ,["job-cost-report-body",20]
     ,["jp-history-body",20]
     ,["customer-service-body",20]
   ]);
@@ -7168,7 +7204,7 @@
     if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
     const guide = [
-      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.9.4 JOB Closing Check"],
+      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.9.5 JOB Dashboard & Cost Report"],
       ["วิธีใช้","ใช้ไฟล์เดียวได้ทุกห้อง เลือกประเภทในโปรแกรมแล้วอัปโหลดไฟล์เดิม ระบบจะอ่านเฉพาะชีทที่ตรงกัน"],
       ["ลำดับแนะนำ","จังหวัด → ลูกค้า → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → หมวดหมู่ SKU → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
       ["การสร้าง SKU","ในชีท “เพิ่มอะไหล่” สามารถเว้นคอลัมน์รหัสอะไหล่ไว้ ระบบจะสร้าง SKU จากหมวดหมู่ + ประเภทไอเท็ม + เลขลำดับต่อจากข้อมูลเดิมให้อัตโนมัติ"],
@@ -7183,7 +7219,7 @@
       ws["!autofilter"]={ref:"A1:"+XLSX.utils.encode_col(cfg.headers.length-1)+"1"};
       XLSX.utils.book_append_sheet(wb,ws,cfg.sheet);
     });
-    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.9.4.xlsx");
+    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.9.5.xlsx");
     toast("ดาวน์โหลดแม่แบบรวมเรียบร้อย");
   }
   document.getElementById("btn-download-import-template").addEventListener("click",downloadFullTemplate);
@@ -7497,7 +7533,8 @@
     "audit-body":[["audit-search","คำค้นหา"]],
     "inactive-parts-body":[["inactive-days","ช่วงเวลา"]],
     "stock-card-body":[["stock-card-part","อะไหล่"],["stock-card-stock-type","ประเภทสต๊อก"]],
-    "history-body":[["hist-type-filter","ประเภท"],["hist-purpose-filter","วัตถุประสงค์"],["hist-customer-filter","ลูกค้า"],["hist-truck-filter","รถ"],["hist-from","ตั้งแต่"],["hist-to","ถึง"],["hist-search","คำค้นหา"]]
+    "history-body":[["hist-type-filter","ประเภท"],["hist-purpose-filter","วัตถุประสงค์"],["hist-customer-filter","ลูกค้า"],["hist-truck-filter","รถ"],["hist-from","ตั้งแต่"],["hist-to","ถึง"],["hist-search","คำค้นหา"]],
+    "job-cost-report-body":[["job-cost-from","ตั้งแต่"],["job-cost-to","ถึง"],["job-cost-type","ประเภท JOB"],["job-cost-status","สถานะ"],["job-cost-search","คำค้นหา"]]
   };
   const SMART_EMPTY={
     "parts-body":{title:"ไม่พบรายการอะไหล่",description:"ลองเปลี่ยนคำค้นหาหรือล้างตัวกรองหมวดหมู่",action:"clear-parts",label:"ล้างตัวกรอง"},
@@ -7509,7 +7546,8 @@
     "history-body":{title:"ไม่พบประวัติตามเงื่อนไข",description:"ลองเปลี่ยนช่วงวันที่ ประเภท หรือคำค้นหา",action:"clear-history",label:"ล้างตัวกรอง"},
     "audit-body":{title:"ไม่พบ Audit Log",description:"ไม่พบกิจกรรมที่ตรงกับคำค้นหาปัจจุบัน",action:"clear-audit",label:"ล้างคำค้นหา"},
     "stock-card-body":{title:"เลือกอะไหล่เพื่อดู Stock Card",description:"เลือก SKU และประเภทสต๊อกจากด้านบนเพื่อดูยอดยกมา รับเข้า เบิกออก และคงเหลือ"},
-    "backups-body":{title:"ยังไม่มีไฟล์สำรอง",description:"กด “สำรองข้อมูลตอนนี้” เพื่อสร้างจุดกู้คืนแรก"}
+    "backups-body":{title:"ยังไม่มีไฟล์สำรอง",description:"กด “สำรองข้อมูลตอนนี้” เพื่อสร้างจุดกู้คืนแรก"},
+    "job-cost-report-body":{title:"ไม่พบ JOB ตามเงื่อนไข",description:"ลองเปลี่ยนช่วงวันที่ ประเภท สถานะ หรือคำค้นหา"}
   };
   const smartTableObservers=new Map();
   let smartUXInitialized=false;
@@ -7567,7 +7605,7 @@
   }
   function shouldTrackSmartDirty(target){
     if(!target||target.type==="file"||target.type==="password")return false;
-    if(["count-search","part-search","part-cat-filter","request-search","request-status-filter","master-search","audit-search","inactive-days","stock-card-part","hist-type-filter","hist-purpose-filter","hist-customer-filter","hist-truck-filter","hist-from","hist-to","hist-search"].includes(target.id))return false;
+    if(["count-search","part-search","part-cat-filter","request-search","request-status-filter","master-search","audit-search","inactive-days","stock-card-part","hist-type-filter","hist-purpose-filter","hist-customer-filter","hist-truck-filter","hist-from","hist-to","hist-search","job-cost-from","job-cost-to","job-cost-type","job-cost-status","job-cost-search"].includes(target.id))return false;
     return !!target.closest("#modal-overlay,#master-modal-overlay,#user-modal-overlay,#view-receive .document-panel,#view-issue .document-panel,#view-requisitions .document-panel,#view-stockcount .panel:first-child");
   }
 
@@ -7576,7 +7614,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.9.4`;
+    document.title=`${meta.title} | Stock Control v4.9.5`;
   }
 
   function selectLabel(el){
@@ -8067,7 +8105,9 @@
   function collectTaskLines(){return [...document.querySelectorAll("#job-task-lines .job-line-row")].map((row,i)=>({id:row.dataset.taskId||"",lineNo:i+1,description:row.querySelector(".task-description").value.trim(),status:row.querySelector(".task-status").value,laborPrice:Number(row.querySelector(".task-labor").value)||0,mechanic:row.querySelector(".task-mechanic").value.trim()})).filter(x=>x.description);}
   function clearJobForm(){document.getElementById("job-id").value="";document.getElementById("job-version").value="";setDateInputToCurrent("job-date",true);document.getElementById("job-type").value="internal";["job-customer","job-truck","job-mileage","job-department","job-assigned","job-location","job-appointment","job-contact","job-symptom","job-note","job-other-cost-note"].forEach(id=>document.getElementById(id).value="");document.getElementById("job-priority").value="normal";document.getElementById("job-sale-amount").value=0;document.getElementById("job-other-cost").value=0;document.getElementById("job-requester").value=currentUser?.name||"";document.getElementById("btn-job-save").textContent="บันทึกใบแจ้งซ่อม";document.getElementById("job-task-lines").innerHTML="";addTaskLine();updateJobTypeUI();}
   function editRepairJob(id){const x=repairJobById(id);if(!x)return;document.getElementById("job-id").value=x.id;document.getElementById("job-version").value=x.version;setStoredDateInput("job-date",x.jobDate);document.getElementById("job-type").value=x.jobType;document.getElementById("job-customer").value=x.customerId;updateJobTypeUI();document.getElementById("job-truck").value=x.truckId;refreshJobVehicleOptions();document.getElementById("job-mileage").value=x.mileage;document.getElementById("job-priority").value=x.priority;document.getElementById("job-requester").value=x.requester;document.getElementById("job-department").value=x.department;document.getElementById("job-assigned").value=x.assignedTo;document.getElementById("job-location").value=x.repairLocation;document.getElementById("job-appointment").value=x.appointmentDate;document.getElementById("job-contact").value=x.contact;document.getElementById("job-symptom").value=x.symptom;document.getElementById("job-note").value=x.note;document.getElementById("job-sale-amount").value=x.saleAmount;document.getElementById("job-other-cost").value=x.otherCost;document.getElementById("job-other-cost-note").value=x.otherCostNote;document.getElementById("job-task-lines").innerHTML="";(state.repairJobTasks.filter(t=>t.jobId===id).sort((a,b)=>a.lineNo-b.lineNo).length?state.repairJobTasks.filter(t=>t.jobId===id).sort((a,b)=>a.lineNo-b.lineNo):[{}]).forEach(addTaskLine);document.getElementById("btn-job-save").textContent="บันทึกการแก้ไข";window.scrollTo({top:0,behavior:"smooth"});}
+  const jobMetricsCache=new Map();
   function jobMetrics(job){
+    const cacheKey=String(job?.id||"");if(cacheKey&&jobMetricsCache.has(cacheKey))return jobMetricsCache.get(cacheKey);
     const stockLines=state.transactions.filter(t=>t.jobId===job.id&&t.type==="out"&&t.status!=="cancelled"&&t.transactionKind==="ISSUE").sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.createdAt||"").localeCompare(a.createdAt||""));
     const purchases=state.jobPurchases.filter(p=>p.jobId===job.id&&p.status!=="cancelled").sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.createdAt||"").localeCompare(a.createdAt||""));
     const purchasesById={};purchases.forEach(p=>purchasesById[p.id]=p);
@@ -8081,7 +8121,7 @@
     const purchaseQty=purchaseItems.reduce((s,i)=>s+Number(i.qty||0),0),purchaseUsedQty=purchaseItems.reduce((s,i)=>s+Number(i.usedQty||0),0),purchaseTransferredQty=purchaseItems.reduce((s,i)=>s+Number(i.transferredQty||0),0),purchaseRemainingQty=leftovers.reduce((s,i)=>s+i.remaining,0),purchaseRemainingValue=leftovers.reduce((s,i)=>s+i.remainingValue,0);
     const purchaseCost=purchaseItems.reduce((s,i)=>s+(Number(i.qty)>0?Number(i.lineAmount||0)/Number(i.qty):Number(i.unitCost||0))*Number(i.usedQty||0),0),laborCost=tasks.reduce((s,t)=>s+Number(t.laborPrice||0),0),totalCost=stockCost+purchaseCost+laborCost+Number(job.otherCost||0),revenue=Number(job.saleAmount||0),profit=revenue-totalCost;
     const pendingRequests=requisitions.filter(r=>r.status==="pending"||r.status==="approved");
-    return{stockLines,purchases,purchasesById,purchaseItems,leftovers,requisitions,requisitionItems,pendingRequests,tasks,stockQty,stockCost,purchaseQty,purchaseUsedQty,purchaseTransferredQty,purchaseRemainingQty,purchaseRemainingValue,purchaseCost,laborCost,totalCost,revenue,profit};
+    const result={stockLines,purchases,purchasesById,purchaseItems,leftovers,requisitions,requisitionItems,pendingRequests,tasks,stockQty,stockCost,purchaseQty,purchaseUsedQty,purchaseTransferredQty,purchaseRemainingQty,purchaseRemainingValue,purchaseCost,laborCost,totalCost,revenue,profit};if(cacheKey)jobMetricsCache.set(cacheKey,result);return result;
   }
 
   function jobClosingCheck(job,m){
@@ -8145,7 +8185,74 @@
     if(job.status==="in_progress")return `${view}${edit}<button class="small warn" data-job-status="${job.id}" data-next-status="wait_parts">รออะไหล่</button>${close}${cancel}`;
     return `${view}${edit}<button class="small" data-job-status="${job.id}" data-next-status="in_progress">ซ่อมต่อ</button>${close}${cancel}`;
   }
-  function renderRepairJobs(){const q=String(document.getElementById("job-search")?.value||"").trim().toLowerCase(),status=document.getElementById("job-status-filter")?.value||"";let rows=state.repairJobs.filter(x=>(!status||x.status===status)&&(!q||`${x.jobNo} ${customerById(x.customerId)?.name||""} ${truckById(x.truckId)?.plateNo||""} ${x.symptom} ${x.assignedTo}`.toLowerCase().includes(q))).sort((a,b)=>b.jobDate.localeCompare(a.jobDate)||b.createdAt.localeCompare(a.createdAt));const active=state.repairJobs.filter(x=>!["completed","cancelled"].includes(x.status)).length;document.getElementById("job-summary").textContent=`งานเปิด ${active} · ทั้งหมด ${state.repairJobs.length}`;document.getElementById("nav-job-badge")&&(document.getElementById("nav-job-badge").textContent=active,document.getElementById("nav-job-badge").hidden=!active);document.getElementById("repair-jobs-body").innerHTML=rows.length?rows.map(x=>{const customer=customerById(x.customerId),truck=truckById(x.truckId),m=jobMetrics(x);return `<tr><td><button class="small job-link" data-job-view="${x.id}">${escapeHTML(x.jobNo)}</button></td><td>${fmtDate(x.jobDate)}<div class="hint">${x.jobType==="customer"?"งานลูกค้า":"งานภายใน"}</div></td><td>${escapeHTML(customer?.name||"-")}<div class="hint">${escapeHTML(truck?.plateNo||"ไม่ระบุรถ")} · ${escapeHTML([truck?.brand,truck?.model].filter(Boolean).join(" ")||"ไม่ระบุรุ่น")}</div></td><td>${escapeHTML(x.symptom)}<div class="hint">รับผิดชอบ: ${escapeHTML(x.assignedTo||"ยังไม่ระบุ")}</div></td><td><div class="job-cost"><span>Stock ${m.stockLines.length}</span><span>ซื้อเฉพาะ ${m.purchaseItems.length}</span><span>${fmtMoney(m.totalCost)} ฿</span></div><div class="hint">รายรับ ${fmtMoney(m.revenue)} · กำไร ${fmtMoney(m.profit)} บาท</div></td><td><span class="status-pill ${x.status}">${REPAIR_JOB_STATUS_TEXT[x.status]||x.status}</span></td><td class="row-actions">${jobWorkflowButtons(x)}</td></tr>`;}).join(""):`<tr class="empty-row"><td colspan="7">ยังไม่มี Job ตามเงื่อนไข</td></tr>`;}
+  function jobAgeDays(job){
+    const raw=String(job?.jobDate||"").slice(0,10);if(!raw)return 0;
+    const start=new Date(raw+"T00:00:00+07:00"),end=new Date(todayISO()+"T00:00:00+07:00");
+    return Math.max(0,Math.floor((end-start)/86400000));
+  }
+  function jobDurationDays(job){
+    const raw=String(job?.jobDate||"").slice(0,10);if(!raw)return 0;
+    const ended=["completed","cancelled"].includes(job?.status),endRaw=ended?String(job?.completedAt||job?.updatedAt||job?.jobDate||"").slice(0,10):todayISO();
+    const start=new Date(raw+"T00:00:00+07:00"),end=new Date((endRaw||raw)+"T00:00:00+07:00");
+    return Math.max(0,Math.floor((end-start)/86400000));
+  }
+  function jobCompletedMonth(job,monthKey){
+    const source=String(job?.completedAt||job?.updatedAt||job?.jobDate||"");return source.slice(0,7)===monthKey;
+  }
+  function jobPhase5Summary(){
+    const active=state.repairJobs.filter(j=>!["completed","cancelled"].includes(j.status));
+    const waiting=active.filter(j=>j.status==="wait_parts");
+    const ready=active.filter(j=>["in_progress","wait_parts"].includes(j.status)&&jobClosingCheck(j,jobMetrics(j)).ok);
+    const overdue=active.filter(j=>jobAgeDays(j)>=7);
+    const month=todayISO().slice(0,7),closedMonth=state.repairJobs.filter(j=>j.status==="completed"&&jobCompletedMonth(j,month));
+    const customerMonth=closedMonth.filter(j=>j.jobType==="customer"),internalMonth=closedMonth.filter(j=>j.jobType==="internal");
+    const activeCost=active.reduce((sum,j)=>sum+jobMetrics(j).totalCost,0);
+    const customerRevenue=customerMonth.reduce((sum,j)=>sum+jobMetrics(j).revenue,0);
+    const customerProfit=customerMonth.reduce((sum,j)=>sum+jobMetrics(j).profit,0);
+    const internalCost=internalMonth.reduce((sum,j)=>sum+jobMetrics(j).totalCost,0);
+    return{active,waiting,ready,overdue,closedMonth,customerMonth,internalMonth,activeCost,customerRevenue,customerProfit,internalCost};
+  }
+  function renderJobDashboardOverview(){
+    const panel=document.getElementById("job-dashboard-panel"),grid=document.getElementById("job-dashboard-grid"),finance=document.getElementById("job-dashboard-finance"),watch=document.getElementById("job-dashboard-watch-list");if(!panel||!grid||!finance||!watch)return;
+    const s=jobPhase5Summary();panel.classList.toggle("is-staff",!isAdmin());
+    grid.innerHTML=[
+      {label:"JOB กำลังดำเนินการ",value:s.active.length,detail:"ยังไม่ปิดหรือยกเลิก",tone:""},
+      {label:"รออะไหล่",value:s.waiting.length,detail:"ควรติดตามการจัดหาอะไหล่",tone:s.waiting.length?"warn":"success"},
+      {label:"พร้อมปิด JOB",value:s.ready.length,detail:"Closing Check ผ่านครบ",tone:s.ready.length?"success":""},
+      {label:"ค้างตั้งแต่ 7 วัน",value:s.overdue.length,detail:"นับจากวันที่เปิด JOB",tone:s.overdue.length?"danger":"success"}
+    ].map(x=>`<div class="job-dashboard-stat ${x.tone}"><span>${escapeHTML(x.label)}</span><strong>${Number(x.value).toLocaleString("th-TH")}</strong><small>${escapeHTML(x.detail)}</small></div>`).join("");
+    finance.innerHTML=isAdmin()?[
+      {label:"ต้นทุน JOB ที่ยังเปิด",value:`${fmtMoney(s.activeCost)} ฿`,detail:`${s.active.length} JOB`},
+      {label:"รายรับงานลูกค้าปิดเดือนนี้",value:`${fmtMoney(s.customerRevenue)} ฿`,detail:`${s.customerMonth.length} JOB`},
+      {label:"กำไรงานลูกค้าปิดเดือนนี้",value:`${fmtMoney(s.customerProfit)} ฿`,detail:"รายรับ - ต้นทุนรวม"},
+      {label:"ต้นทุนงานภายในปิดเดือนนี้",value:`${fmtMoney(s.internalCost)} ฿`,detail:`${s.internalMonth.length} JOB`}
+    ].map(x=>`<div class="job-dashboard-stat"><span>${escapeHTML(x.label)}</span><strong>${escapeHTML(x.value)}</strong><small>${escapeHTML(x.detail)}</small></div>`).join(""):"";
+    const priorityRank={urgent:4,high:3,normal:2,low:1};
+    const rows=[...s.active].sort((a,b)=>{const aw=a.status==="wait_parts"?1:0,bw=b.status==="wait_parts"?1:0;if(bw!==aw)return bw-aw;const ap=priorityRank[a.priority]||0,bp=priorityRank[b.priority]||0;if(bp!==ap)return bp-ap;const age=jobAgeDays(b)-jobAgeDays(a);if(age)return age;return jobMetrics(b).totalCost-jobMetrics(a).totalCost;}).slice(0,6);
+    watch.innerHTML=rows.length?rows.map(j=>{const m=jobMetrics(j),truck=truckById(j.truckId),customer=customerById(j.customerId),closing=["in_progress","wait_parts"].includes(j.status)?jobClosingCheck(j,m):null;return `<div class="job-dashboard-watch-item"><div class="job-watch-main"><strong>${escapeHTML(j.jobNo)} · ${escapeHTML(REPAIR_JOB_STATUS_TEXT[j.status]||j.status)}</strong><small>${escapeHTML(customer?.name||"งานภายใน")} · ${escapeHTML(truck?.plateNo||"ไม่ระบุรถ")} · ${escapeHTML(j.symptom||"")}</small></div><span class="job-watch-age">${jobAgeDays(j)} วัน</span><span class="job-watch-cost">${fmtMoney(m.totalCost)} ฿${closing&&!closing.ok?` · ค้าง ${closing.blockers.length}`:""}</span><button type="button" class="small" data-job-open="${j.id}">เปิด</button></div>`;}).join(""):`<div class="job-dashboard-empty">ไม่มี JOB ที่กำลังดำเนินการในขณะนี้</div>`;
+  }
+  function jobCostReportRows(){
+    const from=document.getElementById("job-cost-from")?.value||"",to=document.getElementById("job-cost-to")?.value||"",type=document.getElementById("job-cost-type")?.value||"",status=document.getElementById("job-cost-status")?.value||"",q=String(document.getElementById("job-cost-search")?.value||"").trim().toLowerCase();
+    return state.repairJobs.filter(j=>{const customer=customerById(j.customerId),truck=truckById(j.truckId);if(from&&j.jobDate<from)return false;if(to&&j.jobDate>to)return false;if(type&&j.jobType!==type)return false;if(status==="active"&&["completed","cancelled"].includes(j.status))return false;if(status&&status!=="active"&&j.status!==status)return false;if(q&&!`${j.jobNo} ${customer?.name||""} ${truck?.plateNo||""} ${j.symptom||""} ${j.assignedTo||""}`.toLowerCase().includes(q))return false;return true;}).sort((a,b)=>(b.jobDate||"").localeCompare(a.jobDate||"")||(b.createdAt||"").localeCompare(a.createdAt||""));
+  }
+  function renderJobCostReport(){
+    const body=document.getElementById("job-cost-report-body"),kpis=document.getElementById("job-cost-report-kpis"),summary=document.getElementById("job-cost-report-summary");if(!body||!kpis)return;
+    const rows=jobCostReportRows(),metrics=rows.map(job=>({job,m:jobMetrics(job)}));
+    const totalCost=metrics.filter(x=>x.job.status!=="cancelled").reduce((s,x)=>s+x.m.totalCost,0),customer=metrics.filter(x=>x.job.jobType==="customer"&&x.job.status!=="cancelled"),revenue=customer.reduce((s,x)=>s+x.m.revenue,0),profit=customer.reduce((s,x)=>s+x.m.profit,0),internalCost=metrics.filter(x=>x.job.jobType==="internal"&&x.job.status!=="cancelled").reduce((s,x)=>s+x.m.totalCost,0);
+    if(summary)summary.textContent=`${rows.length} JOB · ต้นทุนรวม ${fmtMoney(totalCost)} บาท`;
+    kpis.innerHTML=[
+      {label:"จำนวน JOB",value:rows.length},
+      {label:"ต้นทุนรวม",value:`${fmtMoney(totalCost)} ฿`},
+      {label:"รายรับงานลูกค้า",value:`${fmtMoney(revenue)} ฿`},
+      {label:"กำไรงานลูกค้า",value:`${fmtMoney(profit)} ฿`,cls:profit<0?"loss":"profit"},
+      {label:"ต้นทุนงานภายใน",value:`${fmtMoney(internalCost)} ฿`}
+    ].map(x=>`<div class="job-cost-kpi ${x.cls||""}"><span>${escapeHTML(x.label)}</span><strong>${escapeHTML(String(x.value))}</strong></div>`).join("");
+    body.innerHTML=metrics.length?metrics.map(({job,m})=>{const customer=customerById(job.customerId),truck=truckById(job.truckId),isCustomer=job.jobType==="customer",margin=isCustomer&&m.revenue>0?(m.profit/m.revenue*100):null,profitClass=isCustomer?(m.profit>=0?"job-cost-profit-positive":"job-cost-profit-negative"):"job-cost-internal";return `<tr><td><button type="button" class="small job-link" data-job-view="${job.id}">${escapeHTML(job.jobNo)}</button><div class="hint">${fmtDate(job.jobDate)} · ${jobDurationDays(job)} วัน</div></td><td>${job.jobType==="customer"?"งานลูกค้า":"งานภายใน"}<div class="hint"><span class="status-pill ${escapeHTML(job.status)}">${escapeHTML(REPAIR_JOB_STATUS_TEXT[job.status]||job.status)}</span></div></td><td>${escapeHTML(customer?.name||(job.jobType==="internal"?"งานภายใน":"-"))}<div class="hint">${escapeHTML(truck?.plateNo||"ไม่ระบุรถ")}</div></td><td class="job-cost-number">${fmtMoney(m.stockCost)} ฿</td><td class="job-cost-number">${fmtMoney(m.purchaseCost)} ฿</td><td class="job-cost-number">${fmtMoney(m.laborCost)} ฿</td><td class="job-cost-number">${fmtMoney(Number(job.otherCost||0))} ฿</td><td class="job-cost-number"><strong>${fmtMoney(m.totalCost)} ฿</strong></td><td class="job-cost-number">${isCustomer?`${fmtMoney(m.revenue)} ฿`:'-'}</td><td class="job-cost-number ${profitClass}">${isCustomer?`${fmtMoney(m.profit)} ฿`:`${fmtMoney(m.totalCost)} ฿`}</td><td>${margin===null?'-':`<span class="job-margin-pill ${margin<0?'negative':''}">${fmtMoney(margin)}%</span>`}</td></tr>`;}).join(""):`<tr class="empty-row"><td colspan="11">ไม่พบ JOB ตามเงื่อนไข</td></tr>`;
+  }
+  function clearJobCostReportFilters(){["job-cost-from","job-cost-to","job-cost-type","job-cost-status","job-cost-search"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});renderJobCostReport();refreshTableMeta("job-cost-report-body");}
+  function openJobCostReport(){activateView("repairjobs");setTimeout(()=>document.getElementById("job-cost-report-body")?.closest(".panel")?.scrollIntoView({behavior:"smooth",block:"start"}),80);}
+
+  function renderRepairJobs(){const q=String(document.getElementById("job-search")?.value||"").trim().toLowerCase(),status=document.getElementById("job-status-filter")?.value||"";let rows=state.repairJobs.filter(x=>(!status||x.status===status)&&(!q||`${x.jobNo} ${customerById(x.customerId)?.name||""} ${truckById(x.truckId)?.plateNo||""} ${x.symptom} ${x.assignedTo}`.toLowerCase().includes(q))).sort((a,b)=>b.jobDate.localeCompare(a.jobDate)||b.createdAt.localeCompare(a.createdAt));const active=state.repairJobs.filter(x=>!["completed","cancelled"].includes(x.status)).length;document.getElementById("job-summary").textContent=`งานเปิด ${active} · ทั้งหมด ${state.repairJobs.length}`;document.getElementById("nav-job-badge")&&(document.getElementById("nav-job-badge").textContent=active,document.getElementById("nav-job-badge").hidden=!active);document.getElementById("repair-jobs-body").innerHTML=rows.length?rows.map(x=>{const customer=customerById(x.customerId),truck=truckById(x.truckId),m=jobMetrics(x);return `<tr><td><button class="small job-link" data-job-view="${x.id}">${escapeHTML(x.jobNo)}</button></td><td>${fmtDate(x.jobDate)}<div class="hint">${x.jobType==="customer"?"งานลูกค้า":"งานภายใน"}</div></td><td>${escapeHTML(customer?.name||"-")}<div class="hint">${escapeHTML(truck?.plateNo||"ไม่ระบุรถ")} · ${escapeHTML([truck?.brand,truck?.model].filter(Boolean).join(" ")||"ไม่ระบุรุ่น")}</div></td><td>${escapeHTML(x.symptom)}<div class="hint">รับผิดชอบ: ${escapeHTML(x.assignedTo||"ยังไม่ระบุ")}</div></td><td><div class="job-cost"><span>Stock ${m.stockLines.length}</span><span>ซื้อเฉพาะ ${m.purchaseItems.length}</span><span>${fmtMoney(m.totalCost)} ฿</span></div><div class="hint">รายรับ ${fmtMoney(m.revenue)} · กำไร ${fmtMoney(m.profit)} บาท</div></td><td><span class="status-pill ${x.status}">${REPAIR_JOB_STATUS_TEXT[x.status]||x.status}</span></td><td class="row-actions">${jobWorkflowButtons(x)}</td></tr>`;}).join(""):`<tr class="empty-row"><td colspan="7">ยังไม่มี Job ตามเงื่อนไข</td></tr>`;renderJobCostReport();}
   function openJobDetail(id){
     const job=repairJobById(id);if(!job)return;
     if(isOpenRepairJob(job))setActiveJob(job.id,{silent:true});
@@ -8176,7 +8283,7 @@
   function openCustomerHistory(id){const c=customerById(id);if(!c)return;const vehicles=state.trucks.filter(v=>v.customerId===id),jobs=state.repairJobs.filter(j=>j.customerId===id).sort((a,b)=>b.jobDate.localeCompare(a.jobDate)),total=jobs.reduce((s,j)=>s+jobMetrics(j).revenue,0);document.getElementById("customer-history-title").textContent=`${c.code||"ลูกค้า"} · ${c.name}`;document.getElementById("customer-history-content").innerHTML=`<div class="job-detail-kpis"><div><span>รถที่ลงทะเบียน</span><strong>${vehicles.length}</strong></div><div><span>ประวัติ JOB</span><strong>${jobs.length}</strong></div><div><span>ยอดบริการรวม</span><strong>${fmtMoney(total)} ฿</strong></div><div><span>โทรศัพท์</span><strong style="font-size:14px">${escapeHTML(c.phone||"-")}</strong></div></div><div class="detail-section"><h4>รถของลูกค้า</h4><p>${vehicles.map(v=>`${escapeHTML(v.plateNo)} — ${escapeHTML([v.brand,v.model,v.year].filter(Boolean).join(" ")||"ไม่ระบุรุ่น")}`).join("<br>")||"ยังไม่มีรถ"}</p></div><div class="detail-section"><h4>ประวัติการซ่อม</h4><div class="detail-list"><table><thead><tr><th>JOB</th><th>วันที่</th><th>รถ</th><th>อาการ</th><th>ยอด</th></tr></thead><tbody>${jobs.length?jobs.map(j=>`<tr><td><button class="small job-link" data-job-view="${j.id}">${escapeHTML(j.jobNo)}</button></td><td>${fmtDate(j.jobDate)}</td><td>${escapeHTML(truckById(j.truckId)?.plateNo||"-")}</td><td>${escapeHTML(j.symptom)}</td><td>${fmtMoney(jobMetrics(j).revenue)} ฿</td></tr>`).join(""):`<tr><td colspan="5">ยังไม่มีประวัติซ่อม</td></tr>`}</tbody></table></div></div>`;document.getElementById("customer-history-overlay").hidden=false;}
   function renderCustomerService(){const q=String(document.getElementById("customer-service-search")?.value||"").trim().toLowerCase(),rows=state.customers.filter(c=>{const vehicles=state.trucks.filter(v=>v.customerId===c.id),jobs=state.repairJobs.filter(j=>j.customerId===c.id);return !q||`${c.code} ${c.name} ${c.phone} ${vehicles.map(v=>v.plateNo+" "+v.brand+" "+v.model).join(" ")} ${jobs.map(j=>j.jobNo+" "+j.symptom).join(" ")}`.toLowerCase().includes(q);}).sort((a,b)=>a.name.localeCompare(b.name,'th'));document.getElementById("customer-service-summary").textContent=`${rows.length} ราย`;document.getElementById("customer-service-body").innerHTML=rows.length?rows.map(c=>{const vehicles=state.trucks.filter(v=>v.customerId===c.id),jobs=state.repairJobs.filter(j=>j.customerId===c.id),total=jobs.reduce((s,j)=>s+jobMetrics(j).revenue,0);return `<tr><td class="mono">${escapeHTML(c.code||"-")}</td><td>${escapeHTML(c.name)}<div class="hint">${c.customerType==="company"?"บริษัท":"บุคคล"}</div></td><td>${escapeHTML(c.phone||"-")}<div class="hint">${escapeHTML(c.contact||"")}</div></td><td>${vehicles.length} คัน<div class="hint">${escapeHTML(vehicles.map(v=>v.plateNo).join(", ")||"ยังไม่มีรถ")}</div></td><td>${jobs.length} JOB<div class="hint">ล่าสุด ${jobs.length?fmtDate([...jobs].sort((a,b)=>b.jobDate.localeCompare(a.jobDate))[0].jobDate):"-"}</div></td><td>${fmtMoney(total)} ฿</td><td><button class="small primary" data-customer-history="${c.id}">ดูประวัติ</button></td></tr>`;}).join(""):`<tr class="empty-row"><td colspan="7">ไม่พบลูกค้า</td></tr>`;document.querySelectorAll("#customer-service-body [data-customer-history]").forEach(b=>b.addEventListener("click",()=>openCustomerHistory(b.dataset.customerHistory)));}
   document.getElementById("customer-service-search")?.addEventListener("input",renderCustomerService);
-  document.getElementById("mf-truck-owner-type")?.addEventListener("change",updateTruckOwnerUI);document.getElementById("job-type")?.addEventListener("change",updateJobTypeUI);document.getElementById("job-customer")?.addEventListener("change",refreshJobVehicleOptions);document.getElementById("job-truck")?.addEventListener("change",refreshJobVehicleOptions);document.getElementById("btn-job-task-add")?.addEventListener("click",()=>addTaskLine());document.getElementById("job-task-lines")?.addEventListener("click",e=>{if(e.target.closest(".task-remove"))e.target.closest(".job-line-row").remove();});document.getElementById("btn-job-clear")?.addEventListener("click",clearJobForm);document.getElementById("job-search")?.addEventListener("input",renderRepairJobs);document.getElementById("job-status-filter")?.addEventListener("change",renderRepairJobs);document.getElementById("internal-stock-search")?.addEventListener("input",()=>renderStockRoom("INTERNAL"));document.getElementById("resale-stock-search")?.addEventListener("input",()=>renderStockRoom("RESALE"));
+  document.getElementById("mf-truck-owner-type")?.addEventListener("change",updateTruckOwnerUI);document.getElementById("job-type")?.addEventListener("change",updateJobTypeUI);document.getElementById("job-customer")?.addEventListener("change",refreshJobVehicleOptions);document.getElementById("job-truck")?.addEventListener("change",refreshJobVehicleOptions);document.getElementById("btn-job-task-add")?.addEventListener("click",()=>addTaskLine());document.getElementById("job-task-lines")?.addEventListener("click",e=>{if(e.target.closest(".task-remove"))e.target.closest(".job-line-row").remove();});document.getElementById("btn-job-clear")?.addEventListener("click",clearJobForm);document.getElementById("job-search")?.addEventListener("input",renderRepairJobs);document.getElementById("job-status-filter")?.addEventListener("change",renderRepairJobs);["job-cost-from","job-cost-to","job-cost-type","job-cost-status"].forEach(id=>document.getElementById(id)?.addEventListener("change",renderJobCostReport));document.getElementById("job-cost-search")?.addEventListener("input",renderJobCostReport);document.getElementById("btn-job-cost-clear")?.addEventListener("click",clearJobCostReportFilters);document.getElementById("btn-dashboard-open-jobs")?.addEventListener("click",()=>{activateView("repairjobs");setTimeout(()=>document.getElementById("repair-jobs-body")?.closest(".panel")?.scrollIntoView({behavior:"smooth",block:"start"}),80);});document.getElementById("btn-dashboard-job-cost-report")?.addEventListener("click",openJobCostReport);document.getElementById("internal-stock-search")?.addEventListener("input",()=>renderStockRoom("INTERNAL"));document.getElementById("resale-stock-search")?.addEventListener("input",()=>renderStockRoom("RESALE"));
   document.getElementById("btn-job-save")?.addEventListener("click",async()=>{const id=document.getElementById("job-id").value,jobType=document.getElementById("job-type").value,input={id,expectedVersion:document.getElementById("job-version").value,jobDate:document.getElementById("job-date").value||todayISO(),jobType,customerId:document.getElementById("job-customer").value,truckId:document.getElementById("job-truck").value,mileage:document.getElementById("job-mileage").value,priority:document.getElementById("job-priority").value,requester:document.getElementById("job-requester").value.trim(),department:document.getElementById("job-department").value.trim(),assignedTo:document.getElementById("job-assigned").value.trim(),repairLocation:document.getElementById("job-location").value.trim(),appointmentDate:document.getElementById("job-appointment").value,contact:document.getElementById("job-contact").value.trim(),symptom:document.getElementById("job-symptom").value.trim(),note:document.getElementById("job-note").value.trim(),saleAmount:Number(document.getElementById("job-sale-amount").value)||0,otherCost:Number(document.getElementById("job-other-cost").value)||0,otherCostNote:document.getElementById("job-other-cost-note").value.trim(),tasks:collectTaskLines()};try{if(input.symptom.length<3)throw new Error("กรุณาระบุอาการเสียอย่างน้อย 3 ตัวอักษร");if(!input.truckId)throw new Error("กรุณาเลือกรถ");if(jobType==="customer"&&!input.customerId)throw new Error("งานซ่อมลูกค้าต้องเลือกลูกค้า");if(!input.tasks.length)throw new Error("กรุณาเพิ่มรายการซ่อมอย่างน้อย 1 รายการ");}catch(err){toast(err.message,true);return;}const btn=document.getElementById("btn-job-save");btn.disabled=true;btn.textContent="กำลังบันทึก...";try{const saved=await apiCall("saveRepairJob",{job:input});await syncFromSheet(false);clearJobForm();renderAll();if(!id&&saved?.id){setActiveJob(saved.id,{silent:true});if(pendingJobContinuation==="jobpurchases"){pendingJobContinuation="";activateView("jobpurchases");clearJobPurchaseForm(saved.id);renderJobPurchaseGuide();toast(`เปิด ${saved.jobNo} เรียบร้อย — กลับมาทำรายการซื้อเฉพาะ JOB ต่อแล้ว`);}else{openJobDetail(saved.id);toast(`เปิด ${saved.jobNo} เรียบร้อย — ตั้งเป็น JOB ปัจจุบันแล้ว`);}}else{toast(`แก้ไข ${saved.jobNo} เรียบร้อย`);}}catch(err){toast("บันทึก Job ไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;if(!document.getElementById("job-id").value)btn.textContent="บันทึกใบแจ้งซ่อม";}});
   document.getElementById("repair-jobs-body")?.addEventListener("click",async e=>{const view=e.target.closest("[data-job-view]"),edit=e.target.closest("[data-job-edit]"),issue=e.target.closest("[data-job-issue]"),purchase=e.target.closest("[data-job-purchase]"),closeBtn=e.target.closest("[data-job-close]"),statusBtn=e.target.closest("[data-job-status]");if(view){openJobDetail(view.dataset.jobView);return;}if(edit){editRepairJob(edit.dataset.jobEdit);return;}if(issue){setActiveJob(issue.dataset.jobIssue,{silent:true});activateView("issue");document.getElementById("iss-job").value=issue.dataset.jobIssue;document.getElementById("iss-purpose").value="service";updateIssuePurposeUI();renderActiveJobBar();return;}if(purchase){setActiveJob(purchase.dataset.jobPurchase,{silent:true});activateView("jobpurchases");clearJobPurchaseForm(purchase.dataset.jobPurchase);renderJobPurchaseGuide();return;}if(closeBtn){openJobClosingCheck(closeBtn.dataset.jobClose);return;}if(!statusBtn)return;const job=repairJobById(statusBtn.dataset.jobStatus),nextStatus=statusBtn.dataset.nextStatus;let reason="";if(nextStatus==="cancelled"){reason=prompt(`เหตุผลยกเลิก ${job.jobNo}`)?.trim();if(reason===undefined)return;}statusBtn.disabled=true;try{await apiCall("changeRepairJobStatus",{id:job.id,status:nextStatus,result:"",reason,expectedVersion:job.version});await syncFromSheet(false);renderAll();toast(`อัปเดต ${job.jobNo} เรียบร้อย`);}catch(err){toast("เปลี่ยนสถานะไม่สำเร็จ: "+err.message,true);}finally{statusBtn.disabled=false;}});
   document.getElementById("active-job-select")?.addEventListener("change",e=>{if(e.target.value)setActiveJob(e.target.value,{silent:true});});
@@ -8247,6 +8354,7 @@
     if(requestTab)requestTab.title=pending?`คำขอเบิก · รอดำเนินการ ${pending} รายการ`:"คำขอเบิก";
   }
   function renderAll(options={}){
+    jobMetricsCache.clear();
     const viewport=options.preserveViewport?captureViewportState():null;
     renderDashboard();
     renderParts();
