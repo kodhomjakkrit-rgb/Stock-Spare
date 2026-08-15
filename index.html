@@ -2154,6 +2154,26 @@
   }
   html[data-theme="dark"] .table-wrap::-webkit-scrollbar-track{background:#0d171e;}
   html[data-theme="dark"] .table-wrap::-webkit-scrollbar-thumb{background:#3b4f5c;border-color:#0d171e;}
+
+  /* ================= v4.7.0 Multi-stock & Repair Jobs ================= */
+  .stock-room-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px;}
+  .stock-room-card{padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--panel-alt);}
+  .stock-room-card span{display:block;color:var(--text-dim);font-size:11px;}
+  .stock-room-card strong{display:block;margin-top:4px;font-family:'Kanit',sans-serif;font-size:22px;color:var(--text);}
+  .stock-type-pill{display:inline-flex;align-items:center;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:700;background:#e6f7f4;color:#0f766e;white-space:nowrap;}
+  .stock-type-pill.resale{background:#eaf2ff;color:#245d91;}
+  .status-pill.open{background:#eaf2ff;color:#245d91}.status-pill.in_progress{background:#e6f7f4;color:#0f766e}.status-pill.wait_parts{background:#fff4d6;color:#8a5a00}.status-pill.completed{background:#e8f7ed;color:#16703a;}
+  .job-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .job-grid .span2{grid-column:1/-1;}
+  .job-link{font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--brand);}
+  .job-cost{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:6px;}
+  .job-cost span{padding:5px 7px;border-radius:7px;background:var(--panel-alt);font-size:11px;color:var(--text-dim);}
+  html[data-theme="dark"] .stock-room-card,
+  html[data-theme="dark"] .job-cost span{background:var(--panel-alt);border-color:var(--border);}
+  html[data-theme="dark"] .stock-type-pill{background:#153d3a;color:#79ded3;}
+  html[data-theme="dark"] .stock-type-pill.resale{background:#172f42;color:#90c8ef;}
+  html[data-theme="dark"] .status-pill.open{background:#172f42;color:#90c8ef}html[data-theme="dark"] .status-pill.in_progress{background:#153d3a;color:#79ded3}html[data-theme="dark"] .status-pill.wait_parts{background:#493617;color:#f6c665}html[data-theme="dark"] .status-pill.completed{background:#163b2d;color:#72d99c}
+  @media(max-width:760px){.stock-room-summary{grid-template-columns:repeat(2,minmax(0,1fr));}.job-grid{grid-template-columns:1fr}.job-grid .span2{grid-column:auto;}}
   @media print{
     html[data-theme="dark"],html[data-theme="dark"] body{color-scheme:light;background:#fff!important;color:#111!important;}
   }
@@ -2167,7 +2187,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.6.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.7.0</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -2247,7 +2267,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.6.4</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.7.0</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -2301,6 +2321,10 @@
     <span class="nav-group-label"><span>งานประจำ</span></span>
     <button class="tab active" data-view="dashboard" title="ภาพรวม"><svg class="tab-ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.3"/><rect x="14" y="3" width="7" height="7" rx="1.3"/><rect x="3" y="14" width="7" height="7" rx="1.3"/><rect x="14" y="14" width="7" height="7" rx="1.3"/></svg><span class="tab-label">ภาพรวม</span></button>
     <button class="tab" data-view="parts" title="คลังอะไหล่"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg><span class="tab-label">คลังอะไหล่</span><span class="nav-badge nav-badge-warn" id="nav-low-stock-badge" hidden>0</span></button>
+    <button class="tab" data-view="stockinternal" title="สต๊อกใช้ภายใน"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 6h16v14H4zM8 6V3h8v3M8 11h8M8 15h5"/></svg><span class="tab-label">สต๊อกใช้ภายใน</span></button>
+    <button class="tab" data-view="stockresale" title="สต๊อกเพื่อขาย"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 7h16v13H4zM7 7l2-4h6l2 4M8 12h8M12 9v7"/></svg><span class="tab-label">สต๊อกเพื่อขาย</span></button>
+    <button class="tab" data-view="stocktransfer" data-admin-only title="โอนระหว่างสต๊อก"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 8h13m0 0l-3-3m3 3l-3 3M20 16H7m0 0l3-3m-3 3l3 3"/></svg><span class="tab-label">โอนสต๊อก</span></button>
+    <button class="tab" data-view="repairjobs" title="ใบแจ้งซ่อม / Job"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M14 5a4 4 0 01-5 5L4 15l5 5 5-5a4 4 0 005-5l-3 3-3-3 3-3z"/></svg><span class="tab-label">ใบแจ้งซ่อม / Job</span><span class="nav-badge" id="nav-job-badge" hidden>0</span></button>
     <button class="tab" data-view="receive" title="รับเข้า"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 4h16v6H4z"/><path d="M12 10v8m0 0l-3.5-3.5M12 18l3.5-3.5"/></svg><span class="tab-label">รับเข้า</span></button>
     <button class="tab" data-view="issue" title="เบิกออก"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M4 14h16v6H4z"/><path d="M12 14V6m0 0l-3.5 3.5M12 6l3.5 3.5"/></svg><span class="tab-label">เบิกออก</span></button>
     <button class="tab" data-view="requisitions" title="คำขอเบิก"><svg class="tab-ic" viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 8h6M9 12h6M9 16h3"/></svg><span class="tab-label">คำขอเบิก</span><span class="nav-badge" id="nav-request-badge" hidden>0</span></button>
@@ -2466,6 +2490,71 @@
     </div>
   </section>
 
+  <!-- MULTI-STOCK ROOMS v4.7.0 -->
+  <section class="view" id="view-stockinternal">
+    <div class="panel">
+      <h2>สต๊อกใช้ภายใน <span class="sub">ยอดสำหรับงานบริษัท รถ เครื่องจักร และการใช้งานภายใน</span></h2>
+      <div class="stock-room-summary" id="internal-stock-summary"></div>
+      <div class="search-bar"><input id="internal-stock-search" type="search" placeholder="ค้นหารหัส ชื่อ หมวดหมู่ หรือตำแหน่ง..."></div>
+      <div class="table-wrap"><table><thead><tr><th>รหัส</th><th>ชื่ออะไหล่</th><th>คงเหลือ</th><th>พร้อมเบิก</th><th>จุดสั่งซื้อ</th><th>ที่จัดเก็บ</th><th>สถานะ</th></tr></thead><tbody id="internal-stock-body"></tbody></table></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-stockresale">
+    <div class="panel">
+      <h2>สต๊อกเพื่อขาย <span class="sub">ยอดสำหรับขายลูกค้าและงานซ่อมที่คิดค่าอะไหล่</span></h2>
+      <div class="stock-room-summary" id="resale-stock-summary"></div>
+      <div class="search-bar"><input id="resale-stock-search" type="search" placeholder="ค้นหารหัส ชื่อ หมวดหมู่ หรือตำแหน่ง..."></div>
+      <div class="table-wrap"><table><thead><tr><th>รหัส</th><th>ชื่ออะไหล่</th><th>คงเหลือ</th><th>พร้อมขาย</th><th>จุดสั่งซื้อ</th><th>ที่จัดเก็บ</th><th>สถานะ</th></tr></thead><tbody id="resale-stock-body"></tbody></table></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-stocktransfer" data-admin-only>
+    <div class="panel document-panel">
+      <h2>โอนระหว่างสต๊อก <span class="sub">ตัดต้นทางและเพิ่มปลายทางพร้อมกัน</span></h2>
+      <div class="field-grid">
+        <div class="field"><label>วันที่โอน</label><input type="date" id="transfer-date" data-default-today></div>
+        <div class="field"><label>Job ที่เกี่ยวข้อง</label><select id="transfer-job"></select></div>
+        <div class="field"><label>จากสต๊อก</label><select id="transfer-from"><option value="INTERNAL">ใช้ภายใน</option><option value="RESALE">เพื่อขาย</option></select></div>
+        <div class="field"><label>ไปยังสต๊อก</label><select id="transfer-to"><option value="RESALE">เพื่อขาย</option><option value="INTERNAL">ใช้ภายใน</option></select></div>
+        <div class="field"><label>อะไหล่ *</label><select id="transfer-part"></select></div>
+        <div class="field"><label>จำนวนโอน *</label><input type="number" id="transfer-qty" min="0" step="any" placeholder="0"></div>
+        <div class="field span2"><label>เหตุผลการโอน *</label><textarea id="transfer-reason" placeholder="เช่น โอนสินค้า 5 ชิ้นเพื่อเตรียมขายลูกค้า"></textarea></div>
+      </div>
+      <div class="form-actions"><button class="primary" id="btn-transfer-save">ยืนยันการโอน</button></div>
+    </div>
+    <div class="panel"><h2>ประวัติใบโอนล่าสุด</h2><div class="table-wrap"><table><thead><tr><th>เลขที่</th><th>วันที่</th><th>ต้นทาง → ปลายทาง</th><th>รายการ</th><th>Job</th><th>สถานะ</th><th></th></tr></thead><tbody id="stock-transfer-body"></tbody></table></div></div>
+  </section>
+
+  <section class="view" id="view-repairjobs">
+    <div class="panel document-panel">
+      <h2>ใบแจ้งซ่อม / Job <span class="sub">เชื่อมลูกค้า รถ คำขอเบิก และอะไหล่ที่ใช้จริง</span></h2>
+      <input type="hidden" id="job-id"><input type="hidden" id="job-version">
+      <div class="job-grid">
+        <div class="field"><label>วันที่แจ้ง</label><input type="date" id="job-date" data-default-today></div>
+        <div class="field"><label>ประเภทงาน *</label><select id="job-type"><option value="internal">รถบริษัท / ใช้ภายใน</option><option value="customer">งานซ่อมลูกค้า</option></select></div>
+        <div class="field" id="job-customer-field" hidden><label>ลูกค้า *</label><select id="job-customer"></select></div>
+        <div class="field"><label>รถ *</label><select id="job-truck"></select></div>
+        <div class="field"><label>เลขไมล์</label><input type="number" id="job-mileage" min="0" step="1" placeholder="0"></div>
+        <div class="field"><label>ระดับความเร่งด่วน</label><select id="job-priority"><option value="normal">ปกติ</option><option value="high">เร่งด่วน</option><option value="urgent">ด่วนมาก</option><option value="low">ไม่เร่งด่วน</option></select></div>
+        <div class="field"><label>ผู้แจ้ง</label><input id="job-requester" placeholder="ชื่อผู้แจ้ง"></div>
+        <div class="field"><label>แผนก</label><input id="job-department" placeholder="เช่น ซ่อมบำรุง"></div>
+        <div class="field"><label>ผู้รับผิดชอบ</label><input id="job-assigned" placeholder="ชื่อช่างหรือผู้รับผิดชอบ"></div>
+        <div class="field"><label>สถานที่ซ่อม</label><input id="job-location" placeholder="เช่น อู่ภายใน"></div>
+        <div class="field"><label>วันที่นัดหมาย</label><input type="date" id="job-appointment"></div>
+        <div class="field"><label>ข้อมูลติดต่อ</label><input id="job-contact" placeholder="โทรศัพท์หรือช่องทางติดต่อ"></div>
+        <div class="field span2"><label>อาการเสีย *</label><textarea id="job-symptom" placeholder="ระบุอาการที่พบอย่างน้อย 3 ตัวอักษร"></textarea></div>
+        <div class="field span2"><label>หมายเหตุ</label><textarea id="job-note" placeholder="รายละเอียดเพิ่มเติม"></textarea></div>
+      </div>
+      <div class="form-actions"><button id="btn-job-clear">ล้างฟอร์ม</button><button class="primary" id="btn-job-save">บันทึกใบแจ้งซ่อม</button></div>
+    </div>
+    <div class="panel">
+      <h2>ติดตามงานซ่อม <span class="sub" id="job-summary"></span></h2>
+      <div class="search-bar"><input id="job-search" placeholder="ค้นหาเลข Job ลูกค้า รถ อาการ หรือผู้รับผิดชอบ..."><select id="job-status-filter"><option value="">ทุกสถานะ</option><option value="open">เปิดงาน</option><option value="in_progress">กำลังซ่อม</option><option value="wait_parts">รออะไหล่</option><option value="completed">ซ่อมเสร็จ</option><option value="cancelled">ยกเลิก</option></select></div>
+      <div class="table-wrap"><table><thead><tr><th>เลข Job</th><th>วันที่ / ประเภท</th><th>ลูกค้า / รถ</th><th>อาการ / ผู้รับผิดชอบ</th><th>อะไหล่และมูลค่า</th><th>สถานะ</th><th>การทำงาน</th></tr></thead><tbody id="repair-jobs-body"></tbody></table></div>
+    </div>
+  </section>
+
   <!-- RECEIVE -->
   <section class="view" id="view-receive">
     <div class="panel document-panel receive-document">
@@ -2476,6 +2565,7 @@
       </div>
       <div class="section-caption"><span>1</span>ข้อมูลหัวเอกสาร</div>
       <div class="field-grid">
+        <div class="field"><label>รับเข้าไปยังสต๊อก *</label><select id="rec-stock-type"><option value="INTERNAL">สต๊อกใช้ภายใน</option><option value="RESALE">สต๊อกเพื่อขาย</option></select></div>
         <div class="field">
           <label>วันที่</label>
           <input type="date" id="rec-date" data-default-today title="ระบบใส่วันที่ปัจจุบันให้อัตโนมัติ และสามารถเลือกวันที่อื่นได้">
@@ -2534,6 +2624,8 @@
       </div>
       <div class="section-caption"><span>1</span>ข้อมูลหัวเอกสาร</div>
       <div class="field-grid">
+        <div class="field"><label>เบิกจากสต๊อก *</label><select id="iss-stock-type"><option value="INTERNAL">สต๊อกใช้ภายใน</option><option value="RESALE">สต๊อกเพื่อขาย</option></select></div>
+        <div class="field"><label>Job ที่เกี่ยวข้อง</label><select id="iss-job"></select></div>
         <div class="field">
           <label>วันที่</label>
           <input type="date" id="iss-date" data-default-today title="ระบบใส่วันที่ปัจจุบันให้อัตโนมัติ และสามารถเลือกวันที่อื่นได้">
@@ -2625,6 +2717,8 @@
       <div class="field-grid">
         <div class="field"><label>วันที่ขอ</label><input type="date" id="req-date" data-default-today title="ระบบใส่วันที่ปัจจุบันให้อัตโนมัติ และสามารถเลือกวันที่อื่นได้"></div>
         <div class="field"><label>ผู้ขอเบิก</label><input id="req-requester" placeholder="ชื่อผู้ขอเบิก"></div>
+        <div class="field"><label>เบิกจากสต๊อก *</label><select id="req-stock-type"><option value="INTERNAL">สต๊อกใช้ภายใน</option><option value="RESALE">สต๊อกเพื่อขาย</option></select></div>
+        <div class="field"><label>Job ที่เกี่ยวข้อง</label><select id="req-job"></select></div>
         <div class="field"><label>แผนก *</label><input id="req-department" placeholder="เช่น ซ่อมบำรุง"></div>
         <div class="field"><label>วัตถุประสงค์ *</label><input id="req-purpose" placeholder="งาน/เครื่องจักรที่นำไปใช้"></div>
       </div>
@@ -2692,6 +2786,7 @@
       <h2>ตรวจนับและปรับยอดสต๊อก <span class="sub">เฉพาะ Admin · บันทึก Audit Log อัตโนมัติ</span></h2>
       <div class="field-grid">
         <div class="field"><label>วันที่ตรวจนับ</label><input type="date" id="count-date" data-default-today title="ระบบใส่วันที่ปัจจุบันให้อัตโนมัติ และสามารถเลือกวันที่อื่นได้"></div>
+        <div class="field"><label>สต๊อกที่ตรวจนับ</label><select id="count-stock-type"><option value="INTERNAL">สต๊อกใช้ภายใน</option><option value="RESALE">สต๊อกเพื่อขาย</option></select></div>
         <div class="field"><label>ผู้ตรวจนับ</label><input id="count-by" placeholder="ชื่อผู้ตรวจนับ"></div>
         <div class="field"><label>ผู้อนุมัติ</label><input id="count-approved" placeholder="ชื่อผู้อนุมัติ"></div>
         <div class="field"><label>เหตุผล / รอบตรวจนับ *</label><input id="count-reason" placeholder="เช่น ตรวจนับสิ้นเดือน สิงหาคม 2569"></div>
@@ -2858,6 +2953,10 @@
   <div class="mobile-sheet">
     <div class="mobile-sheet-head"><div><strong>เมนูเพิ่มเติม</strong><small>รายงานและเครื่องมือผู้ดูแล</small></div><button id="btn-mobile-more-close" aria-label="ปิด">×</button></div>
     <div class="mobile-more-grid">
+      <button data-mobile-view="stockinternal"><svg viewBox="0 0 24 24"><path d="M4 6h16v14H4zM8 6V3h8v3M8 11h8"/></svg><span>สต๊อกใช้ภายใน</span></button>
+      <button data-mobile-view="stockresale"><svg viewBox="0 0 24 24"><path d="M4 7h16v13H4zM7 7l2-4h6l2 4"/></svg><span>สต๊อกเพื่อขาย</span></button>
+      <button data-mobile-view="repairjobs"><svg viewBox="0 0 24 24"><path d="M14 5a4 4 0 01-5 5L4 15l5 5 5-5a4 4 0 005-5"/></svg><span>ใบแจ้งซ่อม / Job</span></button>
+      <button data-mobile-view="stocktransfer" data-admin-only><svg viewBox="0 0 24 24"><path d="M4 8h13m0 0l-3-3m3 3l-3 3M20 16H7"/></svg><span>โอนสต๊อก</span></button>
       <button data-mobile-view="requisitions"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 8h6M9 12h6M9 16h3"/></svg><span>คำขอเบิก</span></button>
       <button data-mobile-view="labels"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM7 8v8M10 8v8M14 8v8M17 8v8"/></svg><span>ป้าย QR / Barcode</span></button>
       <button data-mobile-view="history"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span>รายงานและประวัติ</span></button>
@@ -3450,7 +3549,8 @@
   const SORTABLE_TABLE_BODIES = new Set([
     "low-stock-body","recent-tx-body","parts-body","recent-receive-body","recent-issue-body",
     "requests-body","backups-body","stock-count-body","stock-count-history-body","master-table-body",
-    "users-body","audit-body","top-issued-body","inactive-parts-body","stock-card-body","history-body"
+    "users-body","audit-body","top-issued-body","inactive-parts-body","stock-card-body","history-body",
+    "internal-stock-body","resale-stock-body","stock-transfer-body","repair-jobs-body"
   ]);
   const tableSortState = new Map();
   const sortableTableObservers = new Map();
@@ -3475,6 +3575,10 @@
     "top-issued-body": { fileName:"รายงาน-อะไหล่เบิกสูงสุด-90วัน" },
     "inactive-parts-body": { dynamicTitle:true, fileName:"รายงาน-อะไหล่ไม่เคลื่อนไหว" },
     "history-body": { fileName:"รายงาน-ประวัติการเคลื่อนไหว" }
+    ,"internal-stock-body": { fileName:"รายงาน-สต๊อกใช้ภายใน" }
+    ,"resale-stock-body": { fileName:"รายงาน-สต๊อกเพื่อขาย" }
+    ,"stock-transfer-body": { fileName:"รายงาน-ประวัติโอนสต๊อก" }
+    ,"repair-jobs-body": { fileName:"รายงาน-ติดตามงานซ่อม" }
   };
 
   function cleanReportTitle(bodyId,config={}){
@@ -3903,6 +4007,7 @@
     badge.textContent = `${user.name} · ${admin ? "ผู้ดูแลระบบ" : "ผู้ใช้งาน"}`;
     badge.title = admin ? "สิทธิ์สูงสุด: อนุมัติ จ่ายของ และจัดการระบบ" : "สร้างคำขอเบิก รับเข้า และดูสถานะได้";
     document.getElementById("req-requester").value = document.getElementById("req-requester").value || user.name;
+    document.getElementById("job-requester").value = document.getElementById("job-requester").value || user.name;
   }
 
   function showApp(user){
@@ -3983,7 +4088,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.6.4 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.7.0 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -4031,7 +4136,7 @@
   });
   window.setInterval(applyDefaultCurrentDates,60000);
 
-  let state = { parts: [], transactions: [], customers: [], suppliers: [], trucks: [], provinces: [], documents: [], partCategories: [], stockCounts: [], requisitions: [], requisitionItems: [], backups: [], users: [], auditLogs: [] };
+  let state = { parts: [], transactions: [], customers: [], suppliers: [], trucks: [], provinces: [], documents: [], partCategories: [], stockCounts: [], requisitions: [], requisitionItems: [], stockBalances: [], stockTransfers: [], stockTransferItems: [], repairJobs: [], backups: [], users: [], auditLogs: [] };
   const charts = {};
   const CHART_FONT_TH = "'Noto Sans Thai', sans-serif";
   const CHART_FONT_MONO = "'IBM Plex Mono', monospace";
@@ -4365,7 +4470,10 @@
       department:String(t.department||""),project:String(t.project||""),referenceNo:String(t.referenceNo||""),
       useVehicle:t.useVehicle===true||String(t.useVehicle).toLowerCase()==="true",mileage:t.mileage===""?"":Number(t.mileage),
       driverName:String(t.driverName||""),destination:String(t.destination||""),mileageOverrideReason:String(t.mileageOverrideReason||""),
-      unitPrice:Number(t.unitPrice)||0,discount:Number(t.discount)||0,lineAmount:Number(t.lineAmount)||0
+      unitPrice:Number(t.unitPrice)||0,discount:Number(t.discount)||0,lineAmount:Number(t.lineAmount)||0,
+      stockType:String(t.stockType||"INTERNAL").toUpperCase()==="RESALE"?"RESALE":"INTERNAL",
+      transactionKind:String(t.transactionKind||"DOCUMENT"),jobId:String(t.jobId||""),transferId:String(t.transferId||""),
+      counterStockType:String(t.counterStockType||"").toUpperCase()==="RESALE"?"RESALE":String(t.counterStockType||"").toUpperCase()==="INTERNAL"?"INTERNAL":""
     })).filter(t=>t.id && t.partId);
     const customers = (data.customers||[]).map(x=>({id:String(x.id||""),code:String(x.code||""),customerType:x.customerType==="company"?"company":"person",name:String(x.name||""),taxId:String(x.taxId||""),branch:String(x.branch||""),contact:String(x.contact||""),phone:String(x.phone||""),line:String(x.line||""),email:String(x.email||""),billingAddress:String(x.billingAddress||""),shippingAddress:String(x.shippingAddress||""),creditTerm:Number(x.creditTerm)||0,isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||""),updatedAt:String(x.updatedAt||"")})).filter(x=>x.id&&x.name);
     const suppliers = (data.suppliers||[]).map(x=>({id:String(x.id||""),code:String(x.code||""),name:String(x.name||""),contact:String(x.contact||""),phone:String(x.phone||""),taxId:String(x.taxId||""),address:String(x.address||""),provinceId:String(x.provinceId||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.name);
@@ -4374,13 +4482,18 @@
     const documents = (data.documents||[]).map(x=>({id:String(x.id||""),docType:String(x.docType||"").toUpperCase(),docNo:String(x.docNo||""),supplierId:String(x.supplierId||""),date:String(x.date||"").slice(0,10),note:String(x.note||""),isActive:truthyActive(x.isActive),createdAt:String(x.createdAt||"")})).filter(x=>x.id&&x.docNo);
     const partCategories = (data.partCategories||[]).map(x=>({id:String(x.id||""),name:String(x.name||""),prefix:String(x.prefix||"").trim().toUpperCase(),description:String(x.description||""),isActive:truthyActive(x.isActive),isSystem:x.isSystem===true||String(x.isSystem).toLowerCase()==="true"||String(x.isSystem)==="1",createdAt:String(x.createdAt||""),updatedAt:String(x.updatedAt||"")})).filter(x=>x.id&&x.name&&/^[A-Z0-9]{3}$/.test(x.prefix));
     if(!partCategories.length && typeof DEFAULT_PART_CATEGORIES!=="undefined") DEFAULT_PART_CATEGORIES.forEach(x=>partCategories.push({...x,id:"default-"+x.prefix,isActive:true,isSystem:true,createdAt:"",updatedAt:""}));
-    const stockCounts = (data.stockCounts||[]).map(x=>({id:String(x.id||""),countNo:String(x.countNo||""),date:String(x.date||"").slice(0,10),partId:String(x.partId||""),systemQty:Number(x.systemQty)||0,actualQty:Number(x.actualQty)||0,difference:Number(x.difference)||0,reason:String(x.reason||""),countedBy:String(x.countedBy||""),approvedBy:String(x.approvedBy||""),status:String(x.status||"approved"),createdAt:String(x.createdAt||""),createdBy:String(x.createdBy||"")})).filter(x=>x.id&&x.partId);
-    const requisitions = (data.requisitions||[]).map(x=>({id:String(x.id||""),reqNo:String(x.reqNo||""),date:String(x.date||"").slice(0,10),requester:String(x.requester||""),department:String(x.department||""),purpose:String(x.purpose||""),status:String(x.status||"pending"),approvedBy:String(x.approvedBy||""),approvedAt:String(x.approvedAt||""),issuedBy:String(x.issuedBy||""),issuedAt:String(x.issuedAt||""),cancelReason:String(x.cancelReason||""),createdAt:String(x.createdAt||""),createdBy:String(x.createdBy||""),updatedAt:String(x.updatedAt||""),version:Number(x.version)||1})).filter(x=>x.id);
-    const requisitionItems = (data.requisitionItems||[]).map(x=>({id:String(x.id||""),requisitionId:String(x.requisitionId||""),lineNo:Number(x.lineNo)||0,partId:String(x.partId||""),qty:Number(x.qty)||0,approvedQty:Number(x.approvedQty)||0,reservedQty:Number(x.reservedQty)||0,issuedQty:Number(x.issuedQty)||0,note:String(x.note||"")})).filter(x=>x.id&&x.requisitionId&&x.partId);
+    const stockCounts = (data.stockCounts||[]).map(x=>({id:String(x.id||""),countNo:String(x.countNo||""),date:String(x.date||"").slice(0,10),partId:String(x.partId||""),systemQty:Number(x.systemQty)||0,actualQty:Number(x.actualQty)||0,difference:Number(x.difference)||0,reason:String(x.reason||""),countedBy:String(x.countedBy||""),approvedBy:String(x.approvedBy||""),status:String(x.status||"approved"),createdAt:String(x.createdAt||""),createdBy:String(x.createdBy||""),stockType:String(x.stockType||"INTERNAL").toUpperCase()==="RESALE"?"RESALE":"INTERNAL"})).filter(x=>x.id&&x.partId);
+    const requisitions = (data.requisitions||[]).map(x=>({id:String(x.id||""),reqNo:String(x.reqNo||""),date:String(x.date||"").slice(0,10),requester:String(x.requester||""),department:String(x.department||""),purpose:String(x.purpose||""),status:String(x.status||"pending"),approvedBy:String(x.approvedBy||""),approvedAt:String(x.approvedAt||""),issuedBy:String(x.issuedBy||""),issuedAt:String(x.issuedAt||""),cancelReason:String(x.cancelReason||""),createdAt:String(x.createdAt||""),createdBy:String(x.createdBy||""),updatedAt:String(x.updatedAt||""),version:Number(x.version)||1,stockType:String(x.stockType||"INTERNAL").toUpperCase()==="RESALE"?"RESALE":"INTERNAL",jobId:String(x.jobId||"")})).filter(x=>x.id);
+    const requisitionItems = (data.requisitionItems||[]).map(x=>({id:String(x.id||""),requisitionId:String(x.requisitionId||""),lineNo:Number(x.lineNo)||0,partId:String(x.partId||""),qty:Number(x.qty)||0,approvedQty:Number(x.approvedQty)||0,reservedQty:Number(x.reservedQty)||0,issuedQty:Number(x.issuedQty)||0,note:String(x.note||""),stockType:String(x.stockType||"INTERNAL").toUpperCase()==="RESALE"?"RESALE":"INTERNAL"})).filter(x=>x.id&&x.requisitionId&&x.partId);
+    const stockBalances = (data.stockBalances||[]).map(x=>({id:String(x.id||""),partId:String(x.partId||""),stockType:String(x.stockType||"INTERNAL").toUpperCase()==="RESALE"?"RESALE":"INTERNAL",qty:Number(x.qty)||0,minQty:Number(x.minQty)||0,reorderPoint:Number(x.reorderPoint)||0,maxQty:Number(x.maxQty)||0,location:String(x.location||""),updatedAt:String(x.updatedAt||""),version:Number(x.version)||1})).filter(x=>x.id&&x.partId);
+    const stockTransfers = (data.stockTransfers||[]).map(x=>({id:String(x.id||""),transferNo:String(x.transferNo||""),date:String(x.date||"").slice(0,10),fromStockType:String(x.fromStockType||"INTERNAL").toUpperCase()==="RESALE"?"RESALE":"INTERNAL",toStockType:String(x.toStockType||"RESALE").toUpperCase()==="INTERNAL"?"INTERNAL":"RESALE",jobId:String(x.jobId||""),reason:String(x.reason||""),status:String(x.status||"active"),createdAt:String(x.createdAt||""),createdBy:String(x.createdBy||""),cancelledAt:String(x.cancelledAt||""),cancelledBy:String(x.cancelledBy||""),cancelReason:String(x.cancelReason||""),version:Number(x.version)||1})).filter(x=>x.id);
+    const stockTransferItems = (data.stockTransferItems||[]).map(x=>({id:String(x.id||""),transferId:String(x.transferId||""),lineNo:Number(x.lineNo)||0,partId:String(x.partId||""),qty:Number(x.qty)||0})).filter(x=>x.id&&x.transferId&&x.partId);
+    const repairJobs = (data.repairJobs||[]).map(x=>({id:String(x.id||""),jobNo:String(x.jobNo||""),jobDate:String(x.jobDate||x.date||"").slice(0,10),jobType:String(x.jobType||"internal").toLowerCase()==="customer"?"customer":"internal",customerId:String(x.customerId||""),truckId:String(x.truckId||""),provinceId:String(x.provinceId||""),mileage:x.mileage===""?"":Number(x.mileage),symptom:String(x.symptom||""),priority:String(x.priority||"normal"),status:String(x.status||"open"),requester:String(x.requester||""),department:String(x.department||""),assignedTo:String(x.assignedTo||""),repairLocation:String(x.repairLocation||""),appointmentDate:String(x.appointmentDate||"").slice(0,10),contact:String(x.contact||""),result:String(x.result||""),note:String(x.note||""),createdAt:String(x.createdAt||""),createdBy:String(x.createdBy||""),updatedAt:String(x.updatedAt||""),updatedBy:String(x.updatedBy||""),completedAt:String(x.completedAt||""),cancelReason:String(x.cancelReason||""),version:Number(x.version)||1})).filter(x=>x.id&&x.jobNo);
     const backups = (data.backups||[]).map(x=>({id:String(x.id||""),timestamp:String(x.timestamp||""),fileId:String(x.fileId||""),fileName:String(x.fileName||""),fileUrl:String(x.fileUrl||""),createdBy:String(x.createdBy||""),reason:String(x.reason||""),status:String(x.status||"ready")})).filter(x=>x.id);
     const users = (data.users||[]).map(x=>({id:String(x.id||""),username:String(x.username||""),name:String(x.name||""),role:x.role==="admin"?"admin":"staff",isActive:truthyActive(x.isActive),mustChangePassword:!!x.mustChangePassword,failedAttempts:Number(x.failedAttempts)||0,lockedUntil:String(x.lockedUntil||""),createdAt:String(x.createdAt||""),updatedAt:String(x.updatedAt||"")})).filter(x=>x.id&&x.username);
     const auditLogs = (data.auditLogs||[]).map(x=>({id:String(x.id||""),timestamp:String(x.timestamp||""),username:String(x.username||""),userName:String(x.userName||""),role:String(x.role||""),action:String(x.action||""),entityType:String(x.entityType||""),entityId:String(x.entityId||""),detail:String(x.detail||"")}));
-    return { parts, transactions, customers, suppliers, trucks, provinces, documents, partCategories, stockCounts, requisitions, requisitionItems, backups, users, auditLogs };
+    if(!stockBalances.length)parts.forEach(p=>{stockBalances.push({id:`local-${p.id}-INTERNAL`,partId:p.id,stockType:"INTERNAL",qty:p.qty,minQty:p.minQty,reorderPoint:p.reorderPoint,maxQty:p.maxQty,location:p.location,updatedAt:p.updatedAt,version:1},{id:`local-${p.id}-RESALE`,partId:p.id,stockType:"RESALE",qty:0,minQty:p.minQty,reorderPoint:p.reorderPoint,maxQty:p.maxQty,location:p.location,updatedAt:p.updatedAt,version:1});});
+    return { parts, transactions, customers, suppliers, trucks, provinces, documents, partCategories, stockCounts, requisitions, requisitionItems, stockBalances, stockTransfers, stockTransferItems, repairJobs, backups, users, auditLogs };
   }
 
   async function syncFromSheet(showToastOnFail){
@@ -4498,6 +4611,13 @@
     state.stockCounts = [];
     state.requisitions = [];
     state.requisitionItems = [];
+    state.stockBalances = state.parts.flatMap(p=>[
+      {id:uid(),partId:p.id,stockType:"INTERNAL",qty:p.qty,minQty:p.minQty,reorderPoint:p.reorderPoint,maxQty:p.maxQty,location:p.location,updatedAt:new Date().toISOString(),version:1},
+      {id:uid(),partId:p.id,stockType:"RESALE",qty:0,minQty:p.minQty,reorderPoint:p.reorderPoint,maxQty:p.maxQty,location:p.location,updatedAt:new Date().toISOString(),version:1}
+    ]);
+    state.stockTransfers = [];
+    state.stockTransferItems = [];
+    state.repairJobs = [];
     state.backups = [];
     state.users = [];
     state.auditLogs = [];
@@ -4559,11 +4679,16 @@
   }
   const ISSUE_PURPOSE_TEXT={sale:"ขาย",service:"งานซ่อม / บริการ",internal:"ใช้ภายใน",sample:"ตัวอย่าง / ทดลอง",damage:"ชำรุด / ตัดจำหน่าย",transfer:"โอนย้าย",other:"อื่น ๆ"};
   function partById(id){ return state.parts.find(p=>p.id===id); }
-  function reservedQty(partId, excludeRequestId){
+  function normalizeStockType(value){return String(value||"INTERNAL").toUpperCase()==="RESALE"?"RESALE":"INTERNAL";}
+  function stockTypeText(value){return normalizeStockType(value)==="RESALE"?"สต๊อกเพื่อขาย":"สต๊อกใช้ภายใน";}
+  function balanceByPart(partId,stockType="INTERNAL"){return state.stockBalances.find(x=>x.partId===partId&&x.stockType===normalizeStockType(stockType));}
+  function stockQty(partId,stockType="INTERNAL"){const balance=balanceByPart(partId,stockType),part=partById(partId);return balance?Number(balance.qty)||0:(normalizeStockType(stockType)==="INTERNAL"?Number(part?.qty)||0:0);}
+  function reservedQty(partId, excludeRequestId, stockType="INTERNAL"){
+    const normalizedType=normalizeStockType(stockType);
     const approvedIds=new Set(state.requisitions.filter(r=>r.status==="approved"&&r.id!==excludeRequestId).map(r=>r.id));
-    return state.requisitionItems.filter(x=>x.partId===partId&&approvedIds.has(x.requisitionId)).reduce((s,x)=>s+(Number(x.reservedQty)||0),0);
+    return state.requisitionItems.filter(x=>x.partId===partId&&normalizeStockType(x.stockType)===normalizedType&&approvedIds.has(x.requisitionId)).reduce((s,x)=>s+(Number(x.reservedQty)||0),0);
   }
-  function availableQty(partId, excludeRequestId){const p=partById(partId);return p?Math.max(0,Number(p.qty||0)-reservedQty(partId,excludeRequestId)):0;}
+  function availableQty(partId, excludeRequestId, stockType="INTERNAL"){return Math.max(0,stockQty(partId,stockType)-reservedQty(partId,excludeRequestId,stockType));}
   function usedQty(partId){return state.transactions.filter(t=>t.partId===partId&&t.type==="out"&&t.status!=="cancelled").reduce((sum,t)=>sum+(Number(t.qty)||0),0);}
   function supplierById(id){ return state.suppliers.find(x=>x.id===id); }
   function customerById(id){ return state.customers.find(x=>x.id===id); }
@@ -4571,6 +4696,8 @@
   function provinceById(id){ return state.provinces.find(x=>x.id===id); }
   function documentByNo(type,no){ return state.documents.find(x=>x.docType===type && x.docNo===no); }
   function activeRows(type){ return (state[type]||[]).filter(x=>x.isActive!==false); }
+  function repairJobById(id){return state.repairJobs.find(x=>x.id===id);}
+  const REPAIR_JOB_STATUS_TEXT={open:"เปิดงาน",in_progress:"กำลังซ่อม",wait_parts:"รออะไหล่",completed:"ซ่อมเสร็จ",cancelled:"ยกเลิก"};
 
   function setSelectOptions(id, rows, labelFn, currentValue, emptyLabel){
     const sel = document.getElementById(id);
@@ -4603,6 +4730,11 @@
     setSelectOptions("hist-truck-filter",state.trucks.slice().sort((a,b)=>a.plateNo.localeCompare(b.plateNo,'th')),x=>x.plateNo,undefined,"รถทั้งหมด");
     ["rec-province","iss-province","pf-province","mf-supplier-province","mf-truck-province"].forEach(id=>setSelectOptions(id,provinces,x=>x.name,undefined,"— ไม่ระบุจังหวัด —"));
     [["rec-pr","PR"],["rec-po","PO"],["rec-iv","IV"],["iss-pr","PR"],["iss-po","PO"],["iss-iv","IV"]].forEach(([id,type])=>setDocumentOptions(id,type));
+    setSelectOptions("job-customer",customers,x=>(x.code?x.code+" — ":"")+x.name,undefined,"— ไม่ระบุลูกค้า —");
+    setSelectOptions("job-truck",trucks,x=>x.plateNo+(provinceById(x.provinceId)?" · "+provinceById(x.provinceId).name:""),undefined,"— ไม่ระบุรถ —");
+    setSelectOptions("transfer-part",state.parts.filter(x=>x.isActive!==false).sort((a,b)=>a.code.localeCompare(b.code,'th',{numeric:true})),x=>x.code+" — "+x.name,undefined,"— เลือกอะไหล่ —");
+    const openJobs=state.repairJobs.filter(x=>!["completed","cancelled"].includes(x.status)).sort((a,b)=>b.jobDate.localeCompare(a.jobDate));
+    ["iss-job","req-job","transfer-job"].forEach(id=>setSelectOptions(id,openJobs,x=>x.jobNo+" — "+x.symptom,undefined,"— ไม่ผูก Job —"));
   }
   document.getElementById("iss-customer-search").addEventListener("input",populateMasterSelects);
   function txContext(t){
@@ -4612,7 +4744,7 @@
   }
 
   // ---------- Tab navigation ----------
-  const SYSTEM_VIEW_NAMES=new Set(["master","import","users","backups"]);
+  const SYSTEM_VIEW_NAMES=new Set(["master","import","users","backups","stocktransfer"]);
   function syncSidebarSystemGroup(viewName){
     const group=document.getElementById("nav-system-group");
     if(group&&SYSTEM_VIEW_NAMES.has(viewName)) group.open=true;
@@ -4620,7 +4752,7 @@
   function activateView(viewName){
     applyDefaultCurrentDates();
     const previousView=document.querySelector(".view.active")?.id.replace("view-","")||"";
-    if(["stockcount","master","import","users","backups"].includes(viewName) && !isAdmin()){
+    if(["stockcount","master","import","users","backups","stocktransfer"].includes(viewName) && !isAdmin()){
       toast("เมนูนี้ใช้ได้เฉพาะผู้ดูแลระบบ", true);
       viewName = "dashboard";
     }
@@ -5198,11 +5330,12 @@
   }
   function renderDocumentLines(type){
     const lines=type==="in"?receiveLines:issueLines;
+    const stockType=normalizeStockType(document.getElementById(type==="in"?"rec-stock-type":"iss-stock-type")?.value);
     const body=document.getElementById(type==="in"?"receive-lines-body":"issue-lines-body");
     body.innerHTML=lines.map((line,index)=>{
       const p=partById(line.partId);
       const balanceLabel=type==="out"?"พร้อมเบิก":"คงเหลือก่อนรับ";
-      const base=`<td class="mono doc-line-index" data-label="ลำดับ">${index+1}</td><td class="doc-line-part" data-label="อะไหล่"><select data-doc-part="${type}" data-line-id="${line.id}" aria-label="เลือกอะไหล่รายการที่ ${index+1}">${documentPartOptions(line.partId)}</select></td><td class="doc-line-qty" data-label="${type==="out"?"จำนวนเบิก":"จำนวนรับ"}"><input class="qty-input" type="number" min="0" step="any" inputmode="decimal" value="${escapeHTML(line.qty)}" data-doc-qty="${type}" data-line-id="${line.id}" placeholder="0" aria-label="${type==="out"?"จำนวนเบิก":"จำนวนรับ"}รายการที่ ${index+1}"></td><td class="mono doc-line-balance" data-label="${balanceLabel}">${p?`${type==="out"?availableQty(p.id):p.qty} ${escapeHTML(p.unit)}${type==="out"&&reservedQty(p.id)>0?`<div class="reserved-note">จอง ${fmtMoney(reservedQty(p.id))}</div>`:""}`:'-'}</td>`;
+      const base=`<td class="mono doc-line-index" data-label="ลำดับ">${index+1}</td><td class="doc-line-part" data-label="อะไหล่"><select data-doc-part="${type}" data-line-id="${line.id}" aria-label="เลือกอะไหล่รายการที่ ${index+1}">${documentPartOptions(line.partId)}</select></td><td class="doc-line-qty" data-label="${type==="out"?"จำนวนเบิก":"จำนวนรับ"}"><input class="qty-input" type="number" min="0" step="any" inputmode="decimal" value="${escapeHTML(line.qty)}" data-doc-qty="${type}" data-line-id="${line.id}" placeholder="0" aria-label="${type==="out"?"จำนวนเบิก":"จำนวนรับ"}รายการที่ ${index+1}"></td><td class="mono doc-line-balance" data-label="${balanceLabel}">${p?`${type==="out"?availableQty(p.id,"",stockType):stockQty(p.id,stockType)} ${escapeHTML(p.unit)}${type==="out"&&reservedQty(p.id,"",stockType)>0?`<div class="reserved-note">จอง ${fmtMoney(reservedQty(p.id,"",stockType))}</div>`:""}`:'-'}</td>`;
       const pricing=type==="out"?`<td class="doc-line-price" data-label="ราคา/หน่วย"><input class="qty-input" type="number" min="0" step="0.01" inputmode="decimal" value="${escapeHTML(line.unitPrice??"")}" data-doc-price="out" data-line-id="${line.id}" placeholder="0.00" aria-label="ราคาต่อหน่วยรายการที่ ${index+1}"></td><td class="doc-line-discount" data-label="ส่วนลด"><input class="qty-input" type="number" min="0" step="0.01" inputmode="decimal" value="${escapeHTML(line.discount??"")}" data-doc-discount="out" data-line-id="${line.id}" placeholder="0.00" aria-label="ส่วนลดรายการที่ ${index+1}"></td><td class="mono doc-line-amount" data-label="รวมสุทธิ">${fmtMoney(Math.max(0,(Number(line.qty)||0)*(Number(line.unitPrice)||0)-(Number(line.discount)||0)))} บาท</td>`:"";
       return `<tr data-line-number="${index+1}">${base}${pricing}<td class="doc-line-action" data-label="จัดการ"><button class="small danger-ghost" data-doc-remove="${type}" data-line-id="${line.id}" ${lines.length===1?'disabled':''}>ลบรายการนี้</button></td></tr>`;
     }).join("");
@@ -5229,6 +5362,8 @@
   });
   document.getElementById("btn-receive-add-line").addEventListener("click",()=>{receiveLines.push({id:uid(),partId:"",qty:""});renderDocumentLines("in");});
   document.getElementById("btn-issue-add-line").addEventListener("click",()=>{issueLines.push({id:uid(),partId:"",qty:"",unitPrice:"",discount:""});renderDocumentLines("out");});
+  document.getElementById("rec-stock-type")?.addEventListener("change",()=>renderDocumentLines("in"));
+  document.getElementById("iss-stock-type")?.addEventListener("change",()=>renderDocumentLines("out"));
 
   applyDefaultCurrentDates();
   document.getElementById("rec-supplier").addEventListener("change", ()=>{
@@ -5266,8 +5401,8 @@
     const lines=(type==="in"?receiveLines:issueLines).filter(x=>x.partId||String(x.qty).trim());
     if(!lines.length)throw new Error("กรุณาเพิ่มรายการอะไหล่อย่างน้อย 1 รายการ");
     const seen=new Set();
-    const purpose=type==="out"?document.getElementById("iss-purpose").value:"";
-    const items=lines.map((x,i)=>{const qty=Number(x.qty),p=partById(x.partId);if(!p)throw new Error(`รายการที่ ${i+1}: กรุณาเลือกอะไหล่`);if(!qty||qty<=0)throw new Error(`รายการที่ ${i+1}: จำนวนต้องมากกว่า 0`);if(seen.has(x.partId))throw new Error(`รายการที่ ${i+1}: เลือกอะไหล่ซ้ำ`);seen.add(x.partId);if(type==="out"&&qty>availableQty(p.id))throw new Error(`สต๊อกพร้อมเบิก ${p.code} ไม่พอ (พร้อมเบิก ${availableQty(p.id)} ${p.unit})`);const unitPrice=type==="out"?Number(x.unitPrice||0):0,discount=type==="out"?Number(x.discount||0):0;if(!Number.isFinite(unitPrice)||unitPrice<0)throw new Error(`รายการที่ ${i+1}: ราคาต่อหน่วยต้องไม่น้อยกว่า 0`);if(type==="out"&&purpose==="sale"&&unitPrice<=0)throw new Error(`รายการที่ ${i+1}: การขายต้องกรอกราคาต่อหน่วยมากกว่า 0`);if(!Number.isFinite(discount)||discount<0)throw new Error(`รายการที่ ${i+1}: ส่วนลดต้องไม่น้อยกว่า 0`);if(discount>qty*unitPrice)throw new Error(`รายการที่ ${i+1}: ส่วนลดต้องไม่เกินมูลค่าก่อนลด`);return{partId:x.partId,qty,unitPrice,discount};});
+    const purpose=type==="out"?document.getElementById("iss-purpose").value:"",stockType=normalizeStockType(document.getElementById(type==="in"?"rec-stock-type":"iss-stock-type").value);
+    const items=lines.map((x,i)=>{const qty=Number(x.qty),p=partById(x.partId);if(!p)throw new Error(`รายการที่ ${i+1}: กรุณาเลือกอะไหล่`);if(!qty||qty<=0)throw new Error(`รายการที่ ${i+1}: จำนวนต้องมากกว่า 0`);if(seen.has(x.partId))throw new Error(`รายการที่ ${i+1}: เลือกอะไหล่ซ้ำ`);seen.add(x.partId);if(type==="out"&&qty>availableQty(p.id,"",stockType))throw new Error(`สต๊อกพร้อมเบิก ${p.code} ไม่พอ (พร้อมเบิก ${availableQty(p.id,"",stockType)} ${p.unit})`);const unitPrice=type==="out"?Number(x.unitPrice||0):0,discount=type==="out"?Number(x.discount||0):0;if(!Number.isFinite(unitPrice)||unitPrice<0)throw new Error(`รายการที่ ${i+1}: ราคาต่อหน่วยต้องไม่น้อยกว่า 0`);if(type==="out"&&purpose==="sale"&&unitPrice<=0)throw new Error(`รายการที่ ${i+1}: การขายต้องกรอกราคาต่อหน่วยมากกว่า 0`);if(!Number.isFinite(discount)||discount<0)throw new Error(`รายการที่ ${i+1}: ส่วนลดต้องไม่น้อยกว่า 0`);if(discount>qty*unitPrice)throw new Error(`รายการที่ ${i+1}: ส่วนลดต้องไม่เกินมูลค่าก่อนลด`);return{partId:x.partId,qty,unitPrice,discount};});
     const prefix=type==="in"?"rec":"iss",supplierId=type==="in"?document.getElementById("rec-supplier").value:"";
     let mileageOverrideReason="";
     if(type==="out"){
@@ -5276,7 +5411,7 @@
       const note=document.getElementById("iss-note").value.trim();if(["other","damage"].includes(purpose)&&!note)throw new Error("กรุณาระบุเหตุผลในหมายเหตุ");
       if(document.getElementById("iss-use-vehicle").checked){const truckId=document.getElementById("iss-truck").value,mileage=Number(document.getElementById("iss-mileage").value);if(!truckId)throw new Error("เมื่อใช้รถ กรุณาเลือกรถ");if(!Number.isFinite(mileage)||mileage<0)throw new Error("กรุณากรอกเลขไมล์ที่ถูกต้อง");const latest=latestMileageForTruck(truckId);if(latest&&mileage<latest){if(!isAdmin())throw new Error(`เลขไมล์น้อยกว่าค่าล่าสุด ${fmtMoney(latest)} กม. กรุณาให้ผู้ดูแลทำรายการ`);mileageOverrideReason=prompt(`เลขไมล์น้อยกว่าค่าล่าสุด ${fmtMoney(latest)} กม.\nกรุณาระบุเหตุผลเพื่อยืนยัน`)?.trim()||"";if(mileageOverrideReason.length<5)throw new Error("เหตุผลยืนยันเลขไมล์ต้องมีอย่างน้อย 5 ตัวอักษร");}}
     }
-    return {type,date:document.getElementById(`${prefix}-date`).value||todayISO(),items,
+    return {type,date:document.getElementById(`${prefix}-date`).value||todayISO(),items,stockType,jobId:type==="out"?document.getElementById("iss-job")?.value||"":"",
       clientRequestId:type==="in"?receiveRequestId:issueRequestId,
       supplierId,supplier:type==="in"?(supplierById(supplierId)?.name||""):"",
       person:type==="in"?document.getElementById("rec-contact").value.trim():document.getElementById("iss-person").value.trim(),
@@ -5296,7 +5431,7 @@
       else{
         const docNo=nextLocalDocNo(type,docPayload.date),documentId=docPayload.clientRequestId||uid();
         const transactions=docPayload.items.map((x,i)=>({id:uid(),documentId,lineNo:i+1,partId:x.partId,type,qty:x.qty,date:docPayload.date,person:docPayload.person,supplier:docPayload.supplier,supplierId:docPayload.supplierId,truckId:docPayload.truckId,provinceId:docPayload.provinceId,prNo:docPayload.prNo,poNo:docPayload.poNo,ivNo:docPayload.ivNo,note:docPayload.note,docNo,status:"active",createdBy:currentUser?currentUser.username:"",issuePurpose:docPayload.issuePurpose,customerId:docPayload.customerId,receiverName:docPayload.receiverName,department:docPayload.department,project:docPayload.project,referenceNo:docPayload.referenceNo,useVehicle:docPayload.useVehicle,mileage:docPayload.mileage,driverName:docPayload.driverName,destination:docPayload.destination,mileageOverrideReason:docPayload.mileageOverrideReason,unitPrice:x.unitPrice,discount:x.discount,lineAmount:x.qty*x.unitPrice-x.discount}));
-        transactions.forEach(t=>{const p=partById(t.partId);p.qty+=type==="in"?t.qty:-t.qty;});result={docNo,documentId,transactions,parts:docPayload.items.map(x=>partById(x.partId)),serverMs:0};
+        const changedBalances=[];transactions.forEach(t=>{const p=partById(t.partId),balance=balanceByPart(t.partId,docPayload.stockType);balance.qty+=type==="in"?t.qty:-t.qty;balance.updatedAt=new Date().toISOString();balance.version=(Number(balance.version)||1)+1;changedBalances.push({...balance});if(docPayload.stockType==="INTERNAL")p.qty=balance.qty;});result={docNo,documentId,transactions,parts:docPayload.stockType==="INTERNAL"?docPayload.items.map(x=>partById(x.partId)):[],stockBalances:changedBalances,serverMs:0};
       }
     }catch(err){
       toast("บันทึกเอกสารไม่สำเร็จ: "+err.message,true);
@@ -5307,10 +5442,11 @@
 
     // เมื่อ Server ตอบสำเร็จแล้ว ห้ามเปลี่ยนเป็นข้อความ “บันทึกไม่สำเร็จ” เพราะ Error ฝั่งหน้าจอ
     try{
-      const normalized=normalizeFromSheet({transactions:result.transactions,parts:result.parts});
+      const normalized=normalizeFromSheet({transactions:result.transactions,parts:result.parts,stockBalances:result.stockBalances});
       normalized.parts.forEach(saved=>{const p=partById(saved.id);if(p)Object.assign(p,saved);});
       const existingIds=new Set(state.transactions.map(x=>x.id));
       normalized.transactions.forEach(t=>{if(!existingIds.has(t.id))state.transactions.push(t);});
+      normalized.stockBalances.forEach(saved=>{const i=state.stockBalances.findIndex(x=>x.id===saved.id);if(i>=0)state.stockBalances[i]=saved;else state.stockBalances.push(saved);});
       if(type==="in"){
         receiveLines=[{id:uid(),partId:"",qty:""}];receiveRequestId=uid();
         setDateInputToCurrent("rec-date",true);
@@ -5378,14 +5514,16 @@
   function requestItems(reqId){return state.requisitionItems.filter(x=>x.requisitionId===reqId).sort((a,b)=>a.lineNo-b.lineNo);}
   function renderRequestLines(){
     const editingId=document.getElementById("req-id").value;
+    const stockType=normalizeStockType(document.getElementById("req-stock-type")?.value);
     const body=document.getElementById("request-lines-body");
-    body.innerHTML=requestLines.map((line,index)=>{const p=partById(line.partId),available=p?availableQty(p.id,editingId):0;return `<tr><td class="mono">${index+1}</td><td><select data-request-part data-line-id="${line.id}">${documentPartOptions(line.partId)}</select></td><td><input class="qty-input" type="number" min="0" step="any" value="${escapeHTML(line.qty)}" data-request-qty data-line-id="${line.id}" placeholder="0"></td><td>${p?`<span class="available-qty mono">${fmtMoney(available)} ${escapeHTML(p.unit)}</span>${reservedQty(p.id,editingId)>0?`<div class="reserved-note">จองอื่น ${fmtMoney(reservedQty(p.id,editingId))}</div>`:""}`:"-"}</td><td><button class="small danger-ghost" data-request-remove data-line-id="${line.id}" ${requestLines.length===1?'disabled':''}>ลบ</button></td></tr>`;}).join("");
+    body.innerHTML=requestLines.map((line,index)=>{const p=partById(line.partId),available=p?availableQty(p.id,editingId,stockType):0;return `<tr><td class="mono">${index+1}</td><td><select data-request-part data-line-id="${line.id}">${documentPartOptions(line.partId)}</select></td><td><input class="qty-input" type="number" min="0" step="any" value="${escapeHTML(line.qty)}" data-request-qty data-line-id="${line.id}" placeholder="0"></td><td>${p?`<span class="available-qty mono">${fmtMoney(available)} ${escapeHTML(p.unit)}</span>${reservedQty(p.id,editingId,stockType)>0?`<div class="reserved-note">จองอื่น ${fmtMoney(reservedQty(p.id,editingId,stockType))}</div>`:""}`:"-"}</td><td><button class="small danger-ghost" data-request-remove data-line-id="${line.id}" ${requestLines.length===1?'disabled':''}>ลบ</button></td></tr>`;}).join("");
     const valid=requestLines.filter(x=>x.partId&&Number(x.qty)>0);document.getElementById("request-line-count").textContent=`${valid.length} รายการ`;document.getElementById("request-total-qty").textContent=`รวม ${fmtMoney(valid.reduce((s,x)=>s+Number(x.qty),0))} หน่วย`;
   }
-  function clearRequestForm(){document.getElementById("req-id").value="";document.getElementById("req-version").value="";setDateInputToCurrent("req-date",true);document.getElementById("req-requester").value=currentUser?currentUser.name:"";document.getElementById("req-department").value="";document.getElementById("req-purpose").value="";requestLines=[{id:uid(),partId:"",qty:""}];renderRequestLines();document.getElementById("btn-request-submit").textContent="ส่งคำขออนุมัติ";clearSmartDirty();saveWorkingDraft();}
+  function clearRequestForm(){document.getElementById("req-id").value="";document.getElementById("req-version").value="";setDateInputToCurrent("req-date",true);document.getElementById("req-requester").value=currentUser?currentUser.name:"";document.getElementById("req-department").value="";document.getElementById("req-purpose").value="";document.getElementById("req-stock-type").value="INTERNAL";document.getElementById("req-job").value="";requestLines=[{id:uid(),partId:"",qty:""}];renderRequestLines();document.getElementById("btn-request-submit").textContent="ส่งคำขออนุมัติ";clearSmartDirty();saveWorkingDraft();}
   setDateInputToCurrent("req-date",true);
   document.getElementById("btn-request-add-line").addEventListener("click",()=>{requestLines.push({id:uid(),partId:"",qty:""});renderRequestLines();});
   document.getElementById("btn-request-clear").addEventListener("click",clearRequestForm);
+  document.getElementById("req-stock-type")?.addEventListener("change",renderRequestLines);
   document.addEventListener("change",e=>{if(e.target.dataset.requestPart===undefined&&e.target.dataset.requestQty===undefined)return;const line=requestLines.find(x=>x.id===e.target.dataset.lineId);if(!line)return;if(e.target.dataset.requestPart!==undefined)line.partId=e.target.value;else line.qty=e.target.value;renderRequestLines();});
   document.addEventListener("click",e=>{if(e.target.dataset.requestRemove===undefined)return;requestLines=requestLines.filter(x=>x.id!==e.target.dataset.lineId);renderRequestLines();});
   // ================= SEARCH AND ADD PARTS TO ISSUE / REQUISITION =================
@@ -5395,7 +5533,7 @@
   };
   function linePartSearchElements(type){const config=linePartSearchConfig[type];return config?{input:document.getElementById(config.inputId),results:document.getElementById(config.resultsId)}:{input:null,results:null};}
   function linePartSearchLines(type){return type==="issue"?issueLines:requestLines;}
-  function linePartSearchAvailable(type,partId){return type==="request"?availableQty(partId,document.getElementById("req-id").value):availableQty(partId);}
+  function linePartSearchAvailable(type,partId){return type==="request"?availableQty(partId,document.getElementById("req-id").value,document.getElementById("req-stock-type")?.value):availableQty(partId,"",document.getElementById("iss-stock-type")?.value);}
   function closeLinePartSearch(type,clearInput=false){const {input,results}=linePartSearchElements(type);if(clearInput&&input)input.value="";if(results){results.hidden=true;results.innerHTML="";}}
   function renderLinePartSearch(type){
     const {input,results}=linePartSearchElements(type);if(!input||!results)return;
@@ -5430,15 +5568,17 @@
     if(Array.isArray(result.items)){state.requisitionItems=state.requisitionItems.filter(x=>x.requisitionId!==result.requisition.id).concat(result.items);}
     (result.parts||[]).forEach(saved=>{const p=partById(String(saved.id));if(p)Object.assign(p,normalizeFromSheet({parts:[saved]}).parts[0]);});
     if(Array.isArray(result.transactions))state.transactions.push(...normalizeFromSheet({transactions:result.transactions}).transactions);
+    if(Array.isArray(result.stockBalances))normalizeFromSheet({stockBalances:result.stockBalances}).stockBalances.forEach(saved=>{const i=state.stockBalances.findIndex(x=>x.id===saved.id);if(i>=0)state.stockBalances[i]=saved;else state.stockBalances.push(saved);});
   }
   document.getElementById("btn-request-submit").addEventListener("click",async()=>{
     const id=document.getElementById("req-id").value,version=document.getElementById("req-version").value;const raw=requestLines.filter(x=>x.partId||String(x.qty).trim());const seen=new Set();let items;
-    try{if(!raw.length)throw new Error("กรุณาเพิ่มรายการอย่างน้อย 1 รายการ");items=raw.map((x,i)=>{const p=partById(x.partId),qty=Number(x.qty);if(!p)throw new Error(`รายการที่ ${i+1}: กรุณาเลือกอะไหล่`);if(!qty||qty<=0)throw new Error(`รายการที่ ${i+1}: จำนวนต้องมากกว่า 0`);if(seen.has(p.id))throw new Error(`รายการที่ ${i+1}: เลือกอะไหล่ซ้ำ`);seen.add(p.id);return{id:x.serverId||"",partId:p.id,qty};});if(!document.getElementById("req-department").value.trim())throw new Error("กรุณาระบุแผนก");if(!document.getElementById("req-purpose").value.trim())throw new Error("กรุณาระบุวัตถุประสงค์");}catch(err){toast(err.message,true);return;}
+    const stockType=normalizeStockType(document.getElementById("req-stock-type").value);
+    try{if(!raw.length)throw new Error("กรุณาเพิ่มรายการอย่างน้อย 1 รายการ");items=raw.map((x,i)=>{const p=partById(x.partId),qty=Number(x.qty);if(!p)throw new Error(`รายการที่ ${i+1}: กรุณาเลือกอะไหล่`);if(!qty||qty<=0)throw new Error(`รายการที่ ${i+1}: จำนวนต้องมากกว่า 0`);if(seen.has(p.id))throw new Error(`รายการที่ ${i+1}: เลือกอะไหล่ซ้ำ`);seen.add(p.id);return{id:x.serverId||"",partId:p.id,qty,stockType};});if(!document.getElementById("req-department").value.trim())throw new Error("กรุณาระบุแผนก");if(!document.getElementById("req-purpose").value.trim())throw new Error("กรุณาระบุวัตถุประสงค์");}catch(err){toast(err.message,true);return;}
     if(!(await confirmRequestSummary({date:document.getElementById("req-date").value,requester:document.getElementById("req-requester").value.trim(),department:document.getElementById("req-department").value.trim(),purpose:document.getElementById("req-purpose").value.trim(),items})))return;
     const btn=document.getElementById("btn-request-submit");btn.disabled=true;btn.textContent="กำลังส่งคำขอ...";
-    try{const result=await apiCall("saveRequisition",{requisition:{id,expectedVersion:version,date:document.getElementById("req-date").value,requester:document.getElementById("req-requester").value.trim(),department:document.getElementById("req-department").value.trim(),purpose:document.getElementById("req-purpose").value.trim(),status:"pending",items}});mergeRequestResult(result);cacheSave();clearRequestForm();renderAll();toast(`ส่งคำขอ ${result.requisition.reqNo} เรียบร้อย`);}catch(err){toast("บันทึกคำขอไม่สำเร็จ: "+err.message,true);if(err.code==="VERSION_CONFLICT")syncFromSheet(false);}finally{btn.disabled=false;if(!document.getElementById("req-id").value)btn.textContent="ส่งคำขออนุมัติ";}
+    try{const result=await apiCall("saveRequisition",{requisition:{id,expectedVersion:version,date:document.getElementById("req-date").value,requester:document.getElementById("req-requester").value.trim(),department:document.getElementById("req-department").value.trim(),purpose:document.getElementById("req-purpose").value.trim(),status:"pending",stockType,jobId:document.getElementById("req-job").value,items}});mergeRequestResult(result);cacheSave();clearRequestForm();renderAll();toast(`ส่งคำขอ ${result.requisition.reqNo} เรียบร้อย`);}catch(err){toast("บันทึกคำขอไม่สำเร็จ: "+err.message,true);if(err.code==="VERSION_CONFLICT")syncFromSheet(false);}finally{btn.disabled=false;if(!document.getElementById("req-id").value)btn.textContent="ส่งคำขออนุมัติ";}
   });
-  function editRequest(id){const req=state.requisitions.find(x=>x.id===id);if(!req)return;document.getElementById("req-id").value=req.id;document.getElementById("req-version").value=req.version;setStoredDateInput("req-date",req.date);document.getElementById("req-requester").value=req.requester;document.getElementById("req-department").value=req.department;document.getElementById("req-purpose").value=req.purpose;requestLines=requestItems(req.id).map(x=>({id:uid(),serverId:x.id,partId:x.partId,qty:x.qty}));if(!requestLines.length)requestLines=[{id:uid(),partId:"",qty:""}];renderRequestLines();document.getElementById("btn-request-submit").textContent="บันทึกและส่งใหม่";window.scrollTo({top:0,behavior:"smooth"});}
+  function editRequest(id){const req=state.requisitions.find(x=>x.id===id);if(!req)return;document.getElementById("req-id").value=req.id;document.getElementById("req-version").value=req.version;setStoredDateInput("req-date",req.date);document.getElementById("req-requester").value=req.requester;document.getElementById("req-department").value=req.department;document.getElementById("req-purpose").value=req.purpose;document.getElementById("req-stock-type").value=normalizeStockType(req.stockType);document.getElementById("req-job").value=req.jobId||"";requestLines=requestItems(req.id).map(x=>({id:uid(),serverId:x.id,partId:x.partId,qty:x.qty}));if(!requestLines.length)requestLines=[{id:uid(),partId:"",qty:""}];renderRequestLines();document.getElementById("btn-request-submit").textContent="บันทึกและส่งใหม่";window.scrollTo({top:0,behavior:"smooth"});}
   async function requestAction(id,action){const req=state.requisitions.find(x=>x.id===id);if(!req)return;let api,payload={id:req.id,expectedVersion:req.version};if(action==="approve"){if(!confirm(`อนุมัติ ${req.reqNo} และจองสต๊อก?`))return;api="approveRequisition";payload.decision="approve";}else if(action==="reject"){const reason=prompt(`เหตุผลที่ไม่อนุมัติ ${req.reqNo}`);if(reason===null)return;api="approveRequisition";payload.decision="reject";payload.reason=reason;}else if(action==="issue"){if(!confirm(`ยืนยันจ่ายของตาม ${req.reqNo}? ระบบจะตัดสต๊อกและออกเลข IS`))return;api="issueRequisition";}else{const reason=prompt(`เหตุผลยกเลิก ${req.reqNo}`);if(reason===null)return;api="cancelRequisition";payload.reason=reason;}
     try{const result=await apiCall(api,payload);mergeRequestResult(result);cacheSave();renderAll();toast(action==="approve"?"อนุมัติและจองสต๊อกแล้ว":action==="issue"?`จ่ายของแล้ว เลขที่ ${result.docNo}`:action==="reject"?"บันทึกไม่อนุมัติแล้ว":"ยกเลิกคำขอแล้ว");}catch(err){toast("ทำรายการไม่สำเร็จ: "+err.message,true);if(err.code==="VERSION_CONFLICT")syncFromSheet(false);}
   }
@@ -5764,31 +5904,34 @@
   const countDraft={};
   function renderStockCount(){
     if(!isAdmin())return;
+    const stockType=normalizeStockType(document.getElementById("count-stock-type")?.value);
     const q=(document.getElementById("count-search").value||"").toLowerCase().trim();
     const rows=state.parts.filter(p=>p.isActive!==false&&(!q||`${p.code} ${p.name} ${p.location}`.toLowerCase().includes(q))).sort((a,b)=>(a.location||"").localeCompare(b.location||"",'th')||a.code.localeCompare(b.code));
     document.getElementById("stock-count-body").innerHTML=rows.length?rows.map(p=>{
-      const actual=countDraft[p.id],diff=actual===""||actual===undefined?null:Number(actual)-p.qty;
-      return `<tr><td>${tagHTML(p)}</td><td>${escapeHTML(p.name)}</td><td class="mono">${escapeHTML(p.location||"-")}</td><td class="mono">${p.qty} ${escapeHTML(p.unit)}</td><td><input class="count-input" type="number" min="0" step="any" data-count-part="${p.id}" value="${actual===undefined?'':escapeHTML(actual)}" placeholder="ยอดจริง"></td><td class="mono ${diff===null?'diff-zero':diff>0?'diff-pos':diff<0?'diff-neg':'diff-zero'}">${diff===null?'-':(diff>0?'+':'')+fmtMoney(diff)}</td></tr>`;
+      const key=`${stockType}|${p.id}`,systemQty=stockQty(p.id,stockType),actual=countDraft[key],diff=actual===""||actual===undefined?null:Number(actual)-systemQty;
+      return `<tr><td>${tagHTML(p)}</td><td>${escapeHTML(p.name)}</td><td class="mono">${escapeHTML(balanceByPart(p.id,stockType)?.location||p.location||"-")}</td><td class="mono">${systemQty} ${escapeHTML(p.unit)}</td><td><input class="count-input" type="number" min="0" step="any" data-count-part="${p.id}" value="${actual===undefined?'':escapeHTML(actual)}" placeholder="ยอดจริง"></td><td class="mono ${diff===null?'diff-zero':diff>0?'diff-pos':diff<0?'diff-neg':'diff-zero'}">${diff===null?'-':(diff>0?'+':'')+fmtMoney(diff)}</td></tr>`;
     }).join(""):`<tr class="empty-row"><td colspan="6">ไม่พบอะไหล่</td></tr>`;
     const history=[...(state.stockCounts||[])].sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt.localeCompare(a.createdAt));
     document.getElementById("stock-count-history-body").innerHTML=history.length?history.map(x=>{const p=partById(x.partId);return `<tr><td class="mono">${escapeHTML(x.countNo)}</td><td>${fmtDate(x.date)}</td><td>${escapeHTML(p?p.code+' — '+p.name:'-')}</td><td class="mono">${x.systemQty}</td><td class="mono">${x.actualQty}</td><td class="mono ${x.difference>0?'diff-pos':x.difference<0?'diff-neg':'diff-zero'}">${x.difference>0?'+':''}${x.difference}</td><td>${escapeHTML(x.countedBy||'-')} / ${escapeHTML(x.approvedBy||'-')}</td></tr>`;}).join(""):`<tr class="empty-row"><td colspan="7">ยังไม่มีประวัติตรวจนับ</td></tr>`;
   }
   document.getElementById("count-search").addEventListener("input",renderStockCount);
-  document.getElementById("stock-count-body").addEventListener("change",e=>{if(!e.target.dataset.countPart)return;countDraft[e.target.dataset.countPart]=e.target.value;renderStockCount();});
-  document.getElementById("btn-count-fill-system").addEventListener("click",()=>{state.parts.filter(p=>p.isActive!==false).forEach(p=>countDraft[p.id]=p.qty);renderStockCount();});
+  document.getElementById("count-stock-type")?.addEventListener("change",renderStockCount);
+  document.getElementById("stock-count-body").addEventListener("change",e=>{if(!e.target.dataset.countPart)return;const stockType=normalizeStockType(document.getElementById("count-stock-type").value);countDraft[`${stockType}|${e.target.dataset.countPart}`]=e.target.value;renderStockCount();});
+  document.getElementById("btn-count-fill-system").addEventListener("click",()=>{const stockType=normalizeStockType(document.getElementById("count-stock-type").value);state.parts.filter(p=>p.isActive!==false).forEach(p=>countDraft[`${stockType}|${p.id}`]=stockQty(p.id,stockType));renderStockCount();});
   document.getElementById("btn-count-save").addEventListener("click",async()=>{
     if(!requireAdmin())return;
-    const items=Object.keys(countDraft).filter(id=>countDraft[id]!=="").map(partId=>({partId,actualQty:Number(countDraft[partId])}));
+    const stockType=normalizeStockType(document.getElementById("count-stock-type").value),prefix=`${stockType}|`;
+    const items=Object.keys(countDraft).filter(key=>key.startsWith(prefix)&&countDraft[key]!=="").map(key=>({partId:key.slice(prefix.length),actualQty:Number(countDraft[key])}));
     const reason=document.getElementById("count-reason").value.trim();if(!items.length){toast("กรุณากรอกยอดนับจริงอย่างน้อย 1 รายการ",true);return;}if(!reason){toast("กรุณาระบุเหตุผลหรือรอบตรวจนับ",true);return;}
     if(items.some(x=>!Number.isFinite(x.actualQty)||x.actualQty<0)){toast("ยอดนับจริงต้องไม่น้อยกว่า 0",true);return;}
     if(!confirm(`ยืนยันปรับยอดตามผลตรวจนับ ${items.length} รายการ?`))return;
-    const count={date:document.getElementById("count-date").value||todayISO(),countedBy:document.getElementById("count-by").value.trim(),approvedBy:document.getElementById("count-approved").value.trim(),reason,items};
+    const count={date:document.getElementById("count-date").value||todayISO(),countedBy:document.getElementById("count-by").value.trim(),approvedBy:document.getElementById("count-approved").value.trim(),reason,stockType,items};
     const btn=document.getElementById("btn-count-save");btn.disabled=true;btn.textContent="กำลังปรับยอด...";
     try{
       if(!hasScriptURL())throw new Error("การตรวจนับต้องเชื่อมต่อ Google Sheets เพื่อเก็บ Audit Log");
-      const saved=await apiCall("saveStockCount",{count}),normalized=normalizeFromSheet({parts:saved.parts,transactions:saved.transactions,stockCounts:saved.stockCounts});
+      const saved=await apiCall("saveStockCount",{count}),normalized=normalizeFromSheet({parts:saved.parts,transactions:saved.transactions,stockCounts:saved.stockCounts,stockBalances:saved.stockBalances});
       normalized.parts.forEach(x=>{const p=partById(x.id);if(p)Object.assign(p,x);});state.transactions.push(...normalized.transactions);state.stockCounts.push(...normalized.stockCounts);
-      Object.keys(countDraft).forEach(k=>delete countDraft[k]);setDateInputToCurrent("count-date",true);document.getElementById("count-reason").value="";cacheSave();renderAll();clearSmartDirty();saveWorkingDraft();toast(`บันทึกตรวจนับ ${saved.countNo} เรียบร้อย`);
+      normalized.stockBalances.forEach(savedBalance=>{const i=state.stockBalances.findIndex(x=>x.id===savedBalance.id);if(i>=0)state.stockBalances[i]=savedBalance;else state.stockBalances.push(savedBalance);});Object.keys(countDraft).filter(k=>k.startsWith(prefix)).forEach(k=>delete countDraft[k]);setDateInputToCurrent("count-date",true);document.getElementById("count-reason").value="";cacheSave();renderAll();clearSmartDirty();saveWorkingDraft();toast(`บันทึกตรวจนับ ${saved.countNo} เรียบร้อย`);
     }catch(err){toast("บันทึกตรวจนับไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="ยืนยันและปรับยอด";}
   });
 
@@ -6095,6 +6238,10 @@
     ["inactive-parts-body",10],
     ["stock-card-body",20],
     ["history-body",20]
+    ,["internal-stock-body",20]
+    ,["resale-stock-body",20]
+    ,["stock-transfer-body",20]
+    ,["repair-jobs-body",20]
   ]);
   const reportPaginationState=new Map();
   function reportPageStorageKey(bodyId){return `stock-report-page-size:${bodyId}`;}
@@ -6385,7 +6532,7 @@
     try{
       const saved=hasScriptURL()?await apiCall("cancelTransaction",{id,reason:reason.trim()}):null;
       if(saved&&saved.tx)Object.assign(tx,normalizeFromSheet({transactions:[saved.tx]}).transactions[0]);else Object.assign(tx,{status:"cancelled",cancelReason:reason.trim(),cancelledBy:currentUser.username,cancelledAt:new Date().toISOString()});
-      p.qty=saved&&saved.part?Number(saved.part.qty):(tx.type==="in"?p.qty-tx.qty:p.qty+tx.qty);
+      if(saved?.stockBalances)mergeV470Result(saved);if(saved?.part)p.qty=Number(saved.part.qty);else if(!saved){const b=balanceByPart(tx.partId,tx.stockType);b.qty+=tx.type==="in"?-tx.qty:tx.qty;if(tx.stockType==="INTERNAL")p.qty=b.qty;}
       cacheSave();renderAll();toast(`ยกเลิก ${tx.docNo||"รายการ"} และกลับยอดสต๊อกเรียบร้อย`);
     }catch(err){toast("ยกเลิกรายการไม่สำเร็จ: "+err.message,true);}
   }
@@ -6393,7 +6540,7 @@
     if(!requireAdmin())return;const lines=state.transactions.filter(x=>x.docNo===docNo&&x.status!=="cancelled");if(!lines.length)return;
     const reason=prompt(`ระบุเหตุผลยกเลิกทั้งใบ ${docNo} (อย่างน้อย 3 ตัวอักษร)`);if(reason===null)return;if(reason.trim().length<3){toast("กรุณาระบุเหตุผลอย่างน้อย 3 ตัวอักษร",true);return;}
     if(!confirm(`ยืนยันยกเลิกทั้งใบ ${docNo} จำนวน ${lines.length} รายการ และกลับยอดสต๊อก?`))return;
-    try{const saved=await apiCall("cancelDocument",{docNo,reason:reason.trim()}),normalized=normalizeFromSheet({transactions:saved.transactions,parts:saved.parts});normalized.transactions.forEach(x=>{const t=state.transactions.find(y=>y.id===x.id);if(t)Object.assign(t,x);});normalized.parts.forEach(x=>{const p=partById(x.id);if(p)Object.assign(p,x);});if(saved.requisition)mergeRequestResult(saved);cacheSave();renderAll();toast(`ยกเลิกทั้งใบ ${docNo} เรียบร้อย`);}catch(err){toast("ยกเลิกทั้งใบไม่สำเร็จ: "+err.message,true);}
+    try{const saved=await apiCall("cancelDocument",{docNo,reason:reason.trim()}),normalized=normalizeFromSheet({transactions:saved.transactions,parts:saved.parts,stockBalances:saved.stockBalances});normalized.transactions.forEach(x=>{const t=state.transactions.find(y=>y.id===x.id);if(t)Object.assign(t,x);});normalized.parts.forEach(x=>{const p=partById(x.id);if(p)Object.assign(p,x);});mergeV470Result(saved);if(saved.requisition)mergeRequestResult(saved);cacheSave();renderAll();toast(`ยกเลิกทั้งใบ ${docNo} เรียบร้อย`);}catch(err){toast("ยกเลิกทั้งใบไม่สำเร็จ: "+err.message,true);}
   }
 
   // ================= EXCEL EXPORT / IMPORT =================
@@ -6414,7 +6561,7 @@
       return {
         "วันที่": t.date, "รหัสอะไหล่": p?p.code:"", "ชื่ออะไหล่": p?p.name:"(ลบแล้ว)",
         "เลขที่เอกสาร":t.docNo||"", "สถานะ":t.status==="cancelled"?"ยกเลิก":"ปกติ", "เหตุผลยกเลิก":t.cancelReason||"",
-        "ประเภท": t.type==="in"?"รับเข้า":"เบิกออก", "จำนวน": t.qty,
+        "ประเภท": t.type==="in"?"รับเข้า":"เบิกออก", "คลังสต๊อก":stockTypeText(t.stockType), "จำนวน": t.qty,"เลข Job":repairJobById(t.jobId)?.jobNo||"",
         "ผู้เบิก/ผู้ส่ง": t.person||t.supplier||"", "ซัพพลายเออร์":supplierById(t.supplierId)?.name||t.supplier||"",
         "วัตถุประสงค์การเบิก":ISSUE_PURPOSE_TEXT[t.issuePurpose]||"","ลูกค้า":customerById(t.customerId)?.name||"","ผู้รับสินค้า":t.receiverName||"","แผนก":t.department||"","เครื่องจักร/โครงการ":t.project||"","เลขที่อ้างอิง":t.referenceNo||"",
         "รถบรรทุก":truckById(t.truckId)?.plateNo||"", "จังหวัด":provinceById(t.provinceId)?.name||"",
@@ -6430,9 +6577,12 @@
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.provinces.map(x=>({"จังหวัด":x.name,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "จังหวัด");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.documents.map(x=>({"ประเภท":x.docType,"เลขที่เอกสาร":x.docNo,"วันที่":x.date,"ซัพพลายเออร์":supplierById(x.supplierId)?.name||"","หมายเหตุ":x.note,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "PR-PO-IV");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet((state.partCategories||[]).map(x=>({"ชื่อหมวดหมู่":x.name,"ตัวย่อ SKU":x.prefix,"คำอธิบาย":x.description,"สถานะ":x.isActive!==false?"ใช้งาน":"หยุดใช้"}))), "หมวดหมู่ SKU");
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet((state.stockCounts||[]).map(x=>{const p=partById(x.partId);return{"เลขที่ตรวจนับ":x.countNo,"วันที่":x.date,"รหัสอะไหล่":p?.code||"","ชื่ออะไหล่":p?.name||"","ยอดระบบ":x.systemQty,"ยอดจริง":x.actualQty,"ผลต่าง":x.difference,"เหตุผล":x.reason,"ผู้ตรวจ":x.countedBy,"ผู้อนุมัติ":x.approvedBy};})), "ตรวจนับสต๊อก");
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet((state.requisitions||[]).map(r=>({"เลขที่คำขอ":r.reqNo,"วันที่":r.date,"ผู้ขอ":r.requester,"แผนก":r.department,"วัตถุประสงค์":r.purpose,"สถานะ":requestStatusText[r.status]||r.status,"ผู้อนุมัติ":r.approvedBy,"ผู้จ่าย":r.issuedBy,"เหตุผลยกเลิก/ไม่อนุมัติ":r.cancelReason}))), "คำขอเบิก");
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet((state.stockCounts||[]).map(x=>{const p=partById(x.partId);return{"เลขที่ตรวจนับ":x.countNo,"วันที่":x.date,"คลังสต๊อก":stockTypeText(x.stockType),"รหัสอะไหล่":p?.code||"","ชื่ออะไหล่":p?.name||"","ยอดระบบ":x.systemQty,"ยอดจริง":x.actualQty,"ผลต่าง":x.difference,"เหตุผล":x.reason,"ผู้ตรวจ":x.countedBy,"ผู้อนุมัติ":x.approvedBy};})), "ตรวจนับสต๊อก");
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet((state.requisitions||[]).map(r=>({"เลขที่คำขอ":r.reqNo,"วันที่":r.date,"คลังสต๊อก":stockTypeText(r.stockType),"เลข Job":repairJobById(r.jobId)?.jobNo||"","ผู้ขอ":r.requester,"แผนก":r.department,"วัตถุประสงค์":r.purpose,"สถานะ":requestStatusText[r.status]||r.status,"ผู้อนุมัติ":r.approvedBy,"ผู้จ่าย":r.issuedBy,"เหตุผลยกเลิก/ไม่อนุมัติ":r.cancelReason}))), "คำขอเบิก");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet((state.requisitionItems||[]).map(x=>{const r=state.requisitions.find(v=>v.id===x.requisitionId),p=partById(x.partId);return{"เลขที่คำขอ":r?.reqNo||"","ลำดับ":x.lineNo,"รหัสอะไหล่":p?.code||"","ชื่ออะไหล่":p?.name||"","จำนวนขอ":x.qty,"จำนวนอนุมัติ":x.approvedQty,"จำนวนจอง":x.reservedQty,"จำนวนจ่าย":x.issuedQty};})), "รายการคำขอเบิก");
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(state.stockBalances.map(x=>{const p=partById(x.partId);return{"คลังสต๊อก":stockTypeText(x.stockType),"รหัสอะไหล่":p?.code||"","ชื่ออะไหล่":p?.name||"","คงเหลือ":x.qty,"จุดสั่งซื้อ":x.reorderPoint,"จำนวนสูงสุด":x.maxQty,"ที่จัดเก็บ":x.location};})),"ยอดแยกสต๊อก");
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(state.stockTransfers.map(x=>({"เลขที่โอน":x.transferNo,"วันที่":x.date,"จากคลัง":stockTypeText(x.fromStockType),"ไปคลัง":stockTypeText(x.toStockType),"เลข Job":repairJobById(x.jobId)?.jobNo||"","เหตุผล":x.reason,"สถานะ":x.status==="cancelled"?"ยกเลิก":"สำเร็จ"}))),"ใบโอนสต๊อก");
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(state.repairJobs.map(x=>({"เลข Job":x.jobNo,"วันที่แจ้ง":x.jobDate,"ประเภท":x.jobType==="customer"?"งานลูกค้า":"งานภายใน","ลูกค้า":customerById(x.customerId)?.name||"","รถ":truckById(x.truckId)?.plateNo||"","อาการเสีย":x.symptom,"ผู้รับผิดชอบ":x.assignedTo,"สถานะ":REPAIR_JOB_STATUS_TEXT[x.status]||x.status,"ผลการซ่อม":x.result||""}))),"ใบแจ้งซ่อม");
 
     XLSX.writeFile(wb, `stock-${todayISO()}.xlsx`);
     toast("ส่งออกไฟล์ Excel เรียบร้อย");
@@ -6786,6 +6936,10 @@
   const SMART_VIEW_META={
     dashboard:{group:"งานประจำ",title:"ภาพรวมคลังอะไหล่",description:"ติดตามสถานะสต๊อก งานค้าง และความเคลื่อนไหวล่าสุด"},
     parts:{group:"งานประจำ",title:"ทะเบียนอะไหล่",description:"ค้นหา เพิ่ม แก้ไข และดู Stock Card ของแต่ละไอเท็ม"},
+    stockinternal:{group:"งานประจำ",title:"สต๊อกใช้ภายใน",description:"ดูยอดคงเหลือ พร้อมเบิก และจุดสั่งซื้อสำหรับงานภายใน"},
+    stockresale:{group:"งานประจำ",title:"สต๊อกเพื่อขาย",description:"ดูยอดคงเหลือพร้อมขายแยกจากการใช้งานภายใน"},
+    stocktransfer:{group:"จัดการระบบ",title:"โอนระหว่างสต๊อก",description:"ตัดต้นทางและเพิ่มปลายทางพร้อมกันอย่างปลอดภัย"},
+    repairjobs:{group:"งานประจำ",title:"ใบแจ้งซ่อมและ Job",description:"ติดตามงานซ่อม รถ ลูกค้า คำขอเบิก และอะไหล่ที่ใช้"},
     receive:{group:"งานประจำ",title:"รับเข้าอะไหล่",description:"บันทึกการซื้อหรือรับสินค้าเข้าสต๊อกแบบหลายรายการ"},
     issue:{group:"งานประจำ",title:"เบิกออกอะไหล่",description:"ตัดสต๊อกพร้อมตรวจยอดคงเหลือก่อนยืนยัน"},
     requisitions:{group:"งานประจำ",title:"คำขอเบิกและการอนุมัติ",description:"ส่งคำขอ จองสต๊อก อนุมัติ และจ่ายของตามขั้นตอน"},
@@ -6884,7 +7038,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.6.4`;
+    document.title=`${meta.title} | Stock Control v4.7.0`;
   }
 
   function selectLabel(el){
@@ -7286,6 +7440,44 @@
     });
   }
 
+  // ================= v4.7.0 MULTI-STOCK & REPAIR JOBS =================
+  function stockRoomStatus(balance){const qty=Number(balance?.qty)||0,reorder=Number(balance?.reorderPoint)||0;return qty<=0?"out":qty<=reorder?"low":"ok";}
+  function renderStockRoom(stockType){
+    const type=normalizeStockType(stockType),prefix=type==="RESALE"?"resale":"internal",q=String(document.getElementById(`${prefix}-stock-search`)?.value||"").trim().toLowerCase();
+    const rows=state.parts.filter(p=>p.isActive!==false&&(!q||`${p.code} ${p.name} ${p.category} ${balanceByPart(p.id,type)?.location||p.location}`.toLowerCase().includes(q))).sort((a,b)=>a.code.localeCompare(b.code,'th',{numeric:true}));
+    const all=state.parts.filter(p=>p.isActive!==false),totalQty=all.reduce((s,p)=>s+stockQty(p.id,type),0),low=all.filter(p=>stockRoomStatus(balanceByPart(p.id,type))!=="ok").length,value=all.reduce((s,p)=>s+stockQty(p.id,type)*(Number(p.cost)||0),0),reserved=all.reduce((s,p)=>s+reservedQty(p.id,"",type),0);
+    document.getElementById(`${prefix}-stock-summary`).innerHTML=`<div class="stock-room-card"><span>SKU ที่ใช้งาน</span><strong>${all.length}</strong></div><div class="stock-room-card"><span>จำนวนคงเหลือรวม</span><strong>${fmtMoney(totalQty)}</strong></div><div class="stock-room-card"><span>ต่ำกว่าจุดสั่งซื้อ</span><strong>${low}</strong></div><div class="stock-room-card"><span>${type==="RESALE"?"มูลค่าต้นทุน":"ยอดจอง"}</span><strong>${type==="RESALE"?fmtMoney(value)+" ฿":fmtMoney(reserved)}</strong></div>`;
+    document.getElementById(`${prefix}-stock-body`).innerHTML=rows.length?rows.map(p=>{const b=balanceByPart(p.id,type)||{},qty=stockQty(p.id,type),available=availableQty(p.id,"",type),status=stockRoomStatus(b),statusText=status==="ok"?"ปกติ":status==="low"?"ควรสั่งซื้อ":"หมด";return `<tr><td>${tagHTML(p)}</td><td>${escapeHTML(p.name)}<div class="hint">${escapeHTML(p.category)}</div></td><td class="mono">${fmtMoney(qty)} ${escapeHTML(p.unit)}</td><td class="mono">${fmtMoney(available)} ${escapeHTML(p.unit)}</td><td class="mono">${fmtMoney(b.reorderPoint??p.reorderPoint)}</td><td>${escapeHTML(b.location||p.location||"-")}</td><td><span class="status-pill stock-${status}">${statusText}</span></td></tr>`;}).join(""):`<tr class="empty-row"><td colspan="7">ไม่พบอะไหล่ตามเงื่อนไข</td></tr>`;
+  }
+  function mergeV470Result(result){
+    if(!result)return;
+    if(result.transfer){const normalized=normalizeFromSheet({stockTransfers:[result.transfer]}).stockTransfers[0],i=state.stockTransfers.findIndex(x=>x.id===normalized.id);if(i>=0)state.stockTransfers[i]=normalized;else state.stockTransfers.push(normalized);}
+    if(Array.isArray(result.items)&&result.transfer){state.stockTransferItems=state.stockTransferItems.filter(x=>x.transferId!==result.transfer.id).concat(normalizeFromSheet({stockTransferItems:result.items}).stockTransferItems);}
+    if(Array.isArray(result.transactions)){const normalized=normalizeFromSheet({transactions:result.transactions}).transactions,ids=new Set(state.transactions.map(x=>x.id));normalized.forEach(x=>{const i=state.transactions.findIndex(t=>t.id===x.id);if(i>=0)state.transactions[i]=x;else if(!ids.has(x.id))state.transactions.push(x);});}
+    if(Array.isArray(result.stockBalances))normalizeFromSheet({stockBalances:result.stockBalances}).stockBalances.forEach(x=>{const i=state.stockBalances.findIndex(b=>b.id===x.id);if(i>=0)state.stockBalances[i]=x;else state.stockBalances.push(x);});
+  }
+  function renderStockTransfers(){
+    if(!isAdmin())return;
+    const rows=[...state.stockTransfers].sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt.localeCompare(a.createdAt));
+    document.getElementById("stock-transfer-body").innerHTML=rows.length?rows.map(x=>{const items=state.stockTransferItems.filter(i=>i.transferId===x.id),job=repairJobById(x.jobId);return `<tr><td class="mono">${escapeHTML(x.transferNo)}</td><td>${fmtDate(x.date)}</td><td><span class="stock-type-pill ${x.fromStockType==="RESALE"?"resale":""}">${stockTypeText(x.fromStockType)}</span> → <span class="stock-type-pill ${x.toStockType==="RESALE"?"resale":""}">${stockTypeText(x.toStockType)}</span></td><td>${items.map(i=>{const p=partById(i.partId);return `${escapeHTML(p?.code||"?")} × ${fmtMoney(i.qty)}`;}).join("<br>")||"-"}<div class="hint">${escapeHTML(x.reason||"")}</div></td><td>${job?`<button class="small job-link" data-job-open="${job.id}">${escapeHTML(job.jobNo)}</button>`:"-"}</td><td><span class="status-pill ${x.status}">${x.status==="cancelled"?"ยกเลิก":"สำเร็จ"}</span></td><td>${x.status!=="cancelled"?`<button class="small danger-ghost" data-transfer-cancel="${x.id}">ยกเลิก</button>`:""}</td></tr>`;}).join(""):`<tr class="empty-row"><td colspan="7">ยังไม่มีประวัติการโอน</td></tr>`;
+  }
+  let transferRequestId=uid();
+  function syncTransferDirection(changed){const from=document.getElementById("transfer-from"),to=document.getElementById("transfer-to");if(from.value===to.value){if(changed==="from")to.value=from.value==="INTERNAL"?"RESALE":"INTERNAL";else from.value=to.value==="INTERNAL"?"RESALE":"INTERNAL";}}
+  document.getElementById("transfer-from")?.addEventListener("change",()=>syncTransferDirection("from"));
+  document.getElementById("transfer-to")?.addEventListener("change",()=>syncTransferDirection("to"));
+  document.getElementById("btn-transfer-save")?.addEventListener("click",async()=>{if(!requireAdmin())return;const partId=document.getElementById("transfer-part").value,qty=Number(document.getElementById("transfer-qty").value),fromStockType=document.getElementById("transfer-from").value,toStockType=document.getElementById("transfer-to").value,reason=document.getElementById("transfer-reason").value.trim(),part=partById(partId);try{if(!part)throw new Error("กรุณาเลือกอะไหล่");if(!qty||qty<=0)throw new Error("จำนวนโอนต้องมากกว่า 0");if(fromStockType===toStockType)throw new Error("ต้นทางและปลายทางต้องเป็นคนละสต๊อก");if(qty>availableQty(partId,"",fromStockType))throw new Error(`ยอดพร้อมโอนไม่พอ (พร้อมโอน ${fmtMoney(availableQty(partId,"",fromStockType))} ${part.unit})`);if(reason.length<3)throw new Error("กรุณาระบุเหตุผลอย่างน้อย 3 ตัวอักษร");}catch(err){toast(err.message,true);return;}if(!confirm(`ยืนยันโอน ${part.code} จำนวน ${fmtMoney(qty)} ${part.unit}\n${stockTypeText(fromStockType)} → ${stockTypeText(toStockType)}?`))return;const btn=document.getElementById("btn-transfer-save");btn.disabled=true;btn.textContent="กำลังโอน...";try{const result=await apiCall("transferStock",{transfer:{clientRequestId:transferRequestId,date:document.getElementById("transfer-date").value||todayISO(),fromStockType,toStockType,jobId:document.getElementById("transfer-job").value,reason,items:[{partId,qty}]}});mergeV470Result(result);transferRequestId=uid();document.getElementById("transfer-part").value="";document.getElementById("transfer-qty").value="";document.getElementById("transfer-reason").value="";cacheSave();renderAll();toast(`โอนสต๊อก ${result.transfer.transferNo} สำเร็จ${result.duplicateProtected?" · ป้องกันรายการซ้ำแล้ว":""}`);}catch(err){toast("โอนสต๊อกไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;btn.textContent="ยืนยันการโอน";}});
+  document.getElementById("stock-transfer-body")?.addEventListener("click",async e=>{const button=e.target.closest("[data-transfer-cancel]");if(!button)return;const transfer=state.stockTransfers.find(x=>x.id===button.dataset.transferCancel),reason=prompt(`เหตุผลยกเลิก ${transfer?.transferNo||"ใบโอน"}`)?.trim();if(reason===undefined)return;if(!reason||reason.length<3){toast("กรุณาระบุเหตุผลอย่างน้อย 3 ตัวอักษร",true);return;}button.disabled=true;try{const result=await apiCall("cancelStockTransfer",{id:transfer.id,reason,expectedVersion:transfer.version});mergeV470Result(result);cacheSave();renderAll();toast("ยกเลิกใบโอนและคืนยอดทั้งสองสต๊อกแล้ว");}catch(err){toast("ยกเลิกใบโอนไม่สำเร็จ: "+err.message,true);}finally{button.disabled=false;}});
+
+  function updateJobTypeUI(){const customer=document.getElementById("job-type")?.value==="customer";if(document.getElementById("job-customer-field"))document.getElementById("job-customer-field").hidden=!customer;}
+  function clearJobForm(){document.getElementById("job-id").value="";document.getElementById("job-version").value="";setDateInputToCurrent("job-date",true);document.getElementById("job-type").value="internal";["job-customer","job-truck","job-mileage","job-department","job-assigned","job-location","job-appointment","job-contact","job-symptom","job-note"].forEach(id=>document.getElementById(id).value="");document.getElementById("job-priority").value="normal";document.getElementById("job-requester").value=currentUser?.name||"";document.getElementById("btn-job-save").textContent="บันทึกใบแจ้งซ่อม";updateJobTypeUI();}
+  function editRepairJob(id){const x=repairJobById(id);if(!x)return;document.getElementById("job-id").value=x.id;document.getElementById("job-version").value=x.version;setStoredDateInput("job-date",x.jobDate);document.getElementById("job-type").value=x.jobType;document.getElementById("job-customer").value=x.customerId;document.getElementById("job-truck").value=x.truckId;document.getElementById("job-mileage").value=x.mileage;document.getElementById("job-priority").value=x.priority;document.getElementById("job-requester").value=x.requester;document.getElementById("job-department").value=x.department;document.getElementById("job-assigned").value=x.assignedTo;document.getElementById("job-location").value=x.repairLocation;document.getElementById("job-appointment").value=x.appointmentDate;document.getElementById("job-contact").value=x.contact;document.getElementById("job-symptom").value=x.symptom;document.getElementById("job-note").value=x.note;document.getElementById("btn-job-save").textContent="บันทึกการแก้ไข";updateJobTypeUI();window.scrollTo({top:0,behavior:"smooth"});}
+  function jobWorkflowButtons(job){if(["completed","cancelled"].includes(job.status))return "";const edit=`<button class="small" data-job-edit="${job.id}">แก้ไข</button><button class="small primary" data-job-issue="${job.id}">เบิกอะไหล่</button>`,cancel=`<button class="small danger-ghost" data-job-status="${job.id}" data-next-status="cancelled">ยกเลิก</button>`;if(job.status==="open")return `${edit}<button class="small" data-job-status="${job.id}" data-next-status="in_progress">เริ่มซ่อม</button><button class="small warn" data-job-status="${job.id}" data-next-status="wait_parts">รออะไหล่</button>${cancel}`;if(job.status==="in_progress")return `${edit}<button class="small warn" data-job-status="${job.id}" data-next-status="wait_parts">รออะไหล่</button><button class="small" data-job-status="${job.id}" data-next-status="completed">ซ่อมเสร็จ</button>${cancel}`;return `${edit}<button class="small" data-job-status="${job.id}" data-next-status="in_progress">อะไหล่พร้อม/ซ่อมต่อ</button><button class="small" data-job-status="${job.id}" data-next-status="completed">ซ่อมเสร็จ</button>${cancel}`;}
+  function renderRepairJobs(){const q=String(document.getElementById("job-search")?.value||"").trim().toLowerCase(),status=document.getElementById("job-status-filter")?.value||"";let rows=state.repairJobs.filter(x=>(!status||x.status===status)&&(!q||`${x.jobNo} ${customerById(x.customerId)?.name||""} ${truckById(x.truckId)?.plateNo||""} ${x.symptom} ${x.assignedTo}`.toLowerCase().includes(q))).sort((a,b)=>b.jobDate.localeCompare(a.jobDate)||b.createdAt.localeCompare(a.createdAt));const active=state.repairJobs.filter(x=>!["completed","cancelled"].includes(x.status)).length;document.getElementById("job-summary").textContent=`งานเปิด ${active} · ทั้งหมด ${state.repairJobs.length}`;document.getElementById("nav-job-badge")&&(document.getElementById("nav-job-badge").textContent=active,document.getElementById("nav-job-badge").hidden=!active);document.getElementById("repair-jobs-body").innerHTML=rows.length?rows.map(x=>{const customer=customerById(x.customerId),truck=truckById(x.truckId),tx=state.transactions.filter(t=>t.jobId===x.id&&t.type==="out"&&t.status!=="cancelled"),qty=tx.reduce((s,t)=>s+t.qty,0),value=tx.reduce((s,t)=>s+(t.lineAmount||t.qty*(partById(t.partId)?.cost||0)),0),reqs=state.requisitions.filter(r=>r.jobId===x.id);return `<tr><td><button class="small job-link" data-job-edit="${x.id}">${escapeHTML(x.jobNo)}</button></td><td>${fmtDate(x.jobDate)}<div class="hint">${x.jobType==="customer"?"งานลูกค้า":"งานภายใน"}</div></td><td>${escapeHTML(customer?.name||"-")}<div class="hint">${escapeHTML(truck?.plateNo||"ไม่ระบุรถ")}${x.mileage!==""?` · ${fmtMoney(x.mileage)} กม.`:""}</div></td><td>${escapeHTML(x.symptom)}<div class="hint">รับผิดชอบ: ${escapeHTML(x.assignedTo||"ยังไม่ระบุ")}</div></td><td><div class="job-cost"><span>${tx.length} รายการ</span><span>${fmtMoney(qty)} หน่วย</span><span>${fmtMoney(value)} ฿</span></div><div class="hint">คำขอเบิก ${reqs.length} ใบ</div></td><td><span class="status-pill ${x.status}">${REPAIR_JOB_STATUS_TEXT[x.status]||x.status}</span>${x.result?`<div class="hint">${escapeHTML(x.result)}</div>`:""}</td><td class="row-actions">${jobWorkflowButtons(x)}</td></tr>`;}).join(""):`<tr class="empty-row"><td colspan="7">ยังไม่มี Job ตามเงื่อนไข</td></tr>`;}
+  document.getElementById("job-type")?.addEventListener("change",updateJobTypeUI);document.getElementById("btn-job-clear")?.addEventListener("click",clearJobForm);document.getElementById("job-search")?.addEventListener("input",renderRepairJobs);document.getElementById("job-status-filter")?.addEventListener("change",renderRepairJobs);document.getElementById("internal-stock-search")?.addEventListener("input",()=>renderStockRoom("INTERNAL"));document.getElementById("resale-stock-search")?.addEventListener("input",()=>renderStockRoom("RESALE"));
+  document.getElementById("btn-job-save")?.addEventListener("click",async()=>{const id=document.getElementById("job-id").value,jobType=document.getElementById("job-type").value,input={id,expectedVersion:document.getElementById("job-version").value,jobDate:document.getElementById("job-date").value||todayISO(),jobType,customerId:document.getElementById("job-customer").value,truckId:document.getElementById("job-truck").value,mileage:document.getElementById("job-mileage").value,priority:document.getElementById("job-priority").value,requester:document.getElementById("job-requester").value.trim(),department:document.getElementById("job-department").value.trim(),assignedTo:document.getElementById("job-assigned").value.trim(),repairLocation:document.getElementById("job-location").value.trim(),appointmentDate:document.getElementById("job-appointment").value,contact:document.getElementById("job-contact").value.trim(),symptom:document.getElementById("job-symptom").value.trim(),note:document.getElementById("job-note").value.trim()};try{if(input.symptom.length<3)throw new Error("กรุณาระบุอาการเสียอย่างน้อย 3 ตัวอักษร");if(jobType==="customer"&&!input.customerId)throw new Error("งานซ่อมลูกค้าต้องเลือกลูกค้า");if(jobType==="internal"&&!input.truckId)throw new Error("งานซ่อมภายในต้องเลือกรถ");}catch(err){toast(err.message,true);return;}const btn=document.getElementById("btn-job-save");btn.disabled=true;btn.textContent="กำลังบันทึก...";try{const saved=normalizeFromSheet({repairJobs:[await apiCall("saveRepairJob",{job:input})]}).repairJobs[0],i=state.repairJobs.findIndex(x=>x.id===saved.id);if(i>=0)state.repairJobs[i]=saved;else state.repairJobs.push(saved);cacheSave();clearJobForm();renderAll();toast(`${id?"แก้ไข":"เปิด"} ${saved.jobNo} เรียบร้อย`);}catch(err){toast("บันทึก Job ไม่สำเร็จ: "+err.message,true);}finally{btn.disabled=false;if(!document.getElementById("job-id").value)btn.textContent="บันทึกใบแจ้งซ่อม";}});
+  document.getElementById("repair-jobs-body")?.addEventListener("click",async e=>{const edit=e.target.closest("[data-job-edit]"),issue=e.target.closest("[data-job-issue]"),statusBtn=e.target.closest("[data-job-status]");if(edit){editRepairJob(edit.dataset.jobEdit);return;}if(issue){activateView("issue");document.getElementById("iss-job").value=issue.dataset.jobIssue;document.getElementById("iss-purpose").value="service";updateIssuePurposeUI();return;}if(!statusBtn)return;const job=repairJobById(statusBtn.dataset.jobStatus),nextStatus=statusBtn.dataset.nextStatus;let result="",reason="";if(nextStatus==="completed"){result=prompt(`ผลการซ่อม ${job.jobNo}`)?.trim();if(result===undefined)return;}if(nextStatus==="cancelled"){reason=prompt(`เหตุผลยกเลิก ${job.jobNo}`)?.trim();if(reason===undefined)return;}statusBtn.disabled=true;try{const saved=normalizeFromSheet({repairJobs:[await apiCall("changeRepairJobStatus",{id:job.id,status:nextStatus,result,reason,expectedVersion:job.version})]}).repairJobs[0],i=state.repairJobs.findIndex(x=>x.id===saved.id);state.repairJobs[i]=saved;cacheSave();renderAll();toast(`อัปเดต ${saved.jobNo} เป็น ${REPAIR_JOB_STATUS_TEXT[saved.status]}`);}catch(err){toast("เปลี่ยนสถานะไม่สำเร็จ: "+err.message,true);}finally{statusBtn.disabled=false;}});
+  document.addEventListener("click",e=>{const open=e.target.closest("[data-job-open]");if(open){activateView("repairjobs");setTimeout(()=>editRepairJob(open.dataset.jobOpen),0);}});
+
   // ================= RENDER ALL =================
   function setNavigationBadge(id,count,label){
     const badge=document.getElementById(id);
@@ -7309,6 +7501,10 @@
     const viewport=options.preserveViewport?captureViewportState():null;
     renderDashboard();
     renderParts();
+    renderStockRoom("INTERNAL");
+    renderStockRoom("RESALE");
+    renderStockTransfers();
+    renderRepairJobs();
     populatePartSelects();
     populateMasterSelects();
     renderMaster();
