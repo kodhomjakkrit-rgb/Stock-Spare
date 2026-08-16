@@ -2310,6 +2310,19 @@
   @media(max-width:430px){.job-dashboard-grid,.job-dashboard-finance,.job-cost-report-kpis{grid-template-columns:1fr 1fr}.job-dashboard-watch-item{grid-template-columns:minmax(0,1fr) auto}.job-watch-age{display:none}}
   html[data-theme="dark"] .job-dashboard-finance .job-dashboard-stat{background:linear-gradient(135deg,rgba(20,184,166,.08),rgba(14,165,233,.05))}
 
+  /* ================= v4.9.8 Stock Ending Report ================= */
+  .stock-ending-filters{display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) minmax(180px,1.4fr) auto;gap:8px;align-items:end;margin-bottom:10px}
+  .stock-ending-filter label{display:block;margin-bottom:4px;color:var(--text-dim);font-size:10px;font-weight:700}
+  .stock-ending-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:10px 0 11px}
+  .stock-ending-kpi{padding:10px 11px;border:1px solid var(--border);border-radius:10px;background:var(--panel-alt)}
+  .stock-ending-kpi span{display:block;color:var(--text-dim);font-size:10px}
+  .stock-ending-kpi strong{display:block;margin-top:2px;font-size:15px;line-height:1.25}
+  .stock-ending-kpi.warn strong{color:var(--warning)}.stock-ending-kpi.danger strong{color:#dc2626}.stock-ending-kpi.success strong{color:var(--success)}
+  .stock-ending-note{margin:8px 0 10px;padding:8px 10px;border-radius:9px;background:rgba(14,165,233,.055);color:var(--text-dim);font-size:10.5px;line-height:1.5}
+  .stock-ending-status{display:inline-flex;align-items:center;padding:2px 7px;border-radius:999px;font-size:9.5px;font-weight:800;white-space:nowrap}.stock-ending-status.ok{background:rgba(16,185,129,.1);color:var(--success)}.stock-ending-status.low{background:rgba(245,158,11,.11);color:#b45309}.stock-ending-status.out,.stock-ending-status.negative{background:rgba(220,38,38,.09);color:#dc2626}
+  @media(max-width:1100px){.stock-ending-filters{grid-template-columns:repeat(3,minmax(0,1fr))}.stock-ending-filters .stock-ending-search{grid-column:1/-1}.stock-ending-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:680px){.stock-ending-filters{grid-template-columns:1fr 1fr}.stock-ending-filter.stock-ending-date,.stock-ending-filter.stock-ending-search{grid-column:1/-1}.stock-ending-filters>button{grid-column:1/-1;width:100%}.stock-ending-kpis{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
@@ -2319,7 +2332,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.9.7</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.9.8</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -2399,7 +2412,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.9.7</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.9.8</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -3114,6 +3127,21 @@
     <div class="report-grid">
       <div class="panel"><h2>อะไหล่เบิกสูงสุด <span class="sub">90 วันล่าสุด</span></h2><div class="table-wrap"><table><thead><tr><th>รหัส</th><th>รายการ</th><th>จำนวนเบิก</th></tr></thead><tbody id="top-issued-body"></tbody></table></div></div>
       <div class="panel"><h2>อะไหล่ไม่เคลื่อนไหว</h2><div class="search-bar"><select id="inactive-days"><option value="90">เกิน 90 วัน</option><option value="180">เกิน 180 วัน</option><option value="365">เกิน 365 วัน</option></select></div><div class="table-wrap"><table><thead><tr><th>รหัส</th><th>รายการ</th><th>เคลื่อนไหวล่าสุด</th><th>คงเหลือ</th></tr></thead><tbody id="inactive-parts-body"></tbody></table></div></div>
+    </div>
+    <div class="panel" id="stock-ending-panel">
+      <h2>สินค้าคงเหลือ ณ วันที่ <span class="sub" id="stock-ending-summary">ดูยอดคงเหลือย้อนหลังจากประวัติการเคลื่อนไหว</span></h2>
+      <div class="stock-ending-filters">
+        <div class="stock-ending-filter stock-ending-date"><label>ณ วันที่</label><input type="date" id="stock-ending-date" data-default-today></div>
+        <div class="stock-ending-filter"><label>คลังสต๊อก</label><select id="stock-ending-stock-type"><option value="ALL">ทุกคลัง</option><option value="INTERNAL">สต๊อกใช้ภายใน</option><option value="RESALE">สต๊อกเพื่อขาย</option></select></div>
+        <div class="stock-ending-filter"><label>หมวดหมู่</label><select id="stock-ending-category"><option value="">ทุกหมวดหมู่</option></select></div>
+        <div class="stock-ending-filter"><label>ยอดคงเหลือ</label><select id="stock-ending-balance-filter"><option value="NONZERO">เฉพาะที่มียอด / ติดลบ</option><option value="ALL">ทั้งหมดรวมศูนย์</option><option value="LOW">ต่ำกว่าหรือเท่าจุดสั่งซื้อ</option><option value="OUT">หมด / ติดลบ</option></select></div>
+        <div class="stock-ending-filter"><label>สถานะ SKU</label><select id="stock-ending-active-filter"><option value="ALL">ทั้งหมด</option><option value="ACTIVE">ใช้งาน</option><option value="INACTIVE">ปิดใช้งาน</option></select></div>
+        <div class="stock-ending-filter stock-ending-search"><label>ค้นหา</label><input id="stock-ending-search" placeholder="รหัส / ชื่อ / หมวด / ที่จัดเก็บ..."></div>
+        <button type="button" id="btn-stock-ending-clear">ล้างตัวกรอง</button>
+      </div>
+      <div class="stock-ending-kpis" id="stock-ending-kpis"></div>
+      <div class="stock-ending-note">ยอดจำนวน ณ วันที่คำนวณจากยอดยกมา + Transaction ที่ยังมีผลถึงวันที่เลือก ส่วน <b>มูลค่าประมาณ</b> ใช้ราคาทุนปัจจุบันในทะเบียนอะไหล่ ไม่ใช่มูลค่าบัญชีย้อนหลังแบบ FIFO/ถัวเฉลี่ย</div>
+      <div class="table-wrap"><table><thead><tr><th>รหัส</th><th>รายการ</th><th>หมวดหมู่</th><th>คลัง</th><th>คงเหลือ</th><th>หน่วย</th><th>จุดสั่งซื้อ</th><th data-admin-only>ทุน/หน่วย</th><th data-admin-only>มูลค่าประมาณ</th><th>สถานะ</th></tr></thead><tbody id="stock-ending-body"></tbody></table></div>
     </div>
     <div class="panel" id="stock-card-panel"><h2>Stock Card รายอะไหล่</h2><div class="search-bar"><select id="stock-card-part"></select><select id="stock-card-stock-type" aria-label="ประเภทสต๊อก"><option value="INTERNAL">สต๊อกใช้ภายใน</option><option value="RESALE">สต๊อกเพื่อขาย</option></select><button id="btn-stock-card-export">ส่งออก Stock Card</button></div><div class="table-wrap"><table><thead><tr><th>วันที่</th><th>เลขที่</th><th>รับเข้า</th><th>เบิกออก</th><th>คงเหลือ</th><th>รายละเอียด</th></tr></thead><tbody id="stock-card-body"></tbody></table></div></div>
     <div class="panel">
@@ -3937,7 +3965,7 @@
   const SORTABLE_TABLE_BODIES = new Set([
     "low-stock-body","recent-tx-body","parts-body","recent-receive-body","recent-issue-body",
     "requests-body","backups-body","stock-count-body","stock-count-history-body","master-table-body",
-    "users-body","audit-body","top-issued-body","inactive-parts-body","stock-card-body","history-body",
+    "users-body","audit-body","top-issued-body","inactive-parts-body","stock-ending-body","stock-card-body","history-body",
     "internal-stock-body","resale-stock-body","stock-transfer-body","repair-jobs-body","job-cost-report-body","jp-history-body","customer-service-body"
   ]);
   const tableSortState = new Map();
@@ -3962,6 +3990,7 @@
     "audit-body": { fileName:"รายงาน-Audit-Log" },
     "top-issued-body": { fileName:"รายงาน-อะไหล่เบิกสูงสุด-90วัน" },
     "inactive-parts-body": { dynamicTitle:true, fileName:"รายงาน-อะไหล่ไม่เคลื่อนไหว" },
+    "stock-ending-body": { dynamicTitle:true, fileName:"รายงาน-สินค้าคงเหลือ-ณ-วันที่" },
     "history-body": { fileName:"รายงาน-ประวัติการเคลื่อนไหว" }
     ,"internal-stock-body": { fileName:"รายงาน-สต๊อกใช้ภายใน" }
     ,"resale-stock-body": { fileName:"รายงาน-สต๊อกเพื่อขาย" }
@@ -3984,6 +4013,12 @@
     if(bodyId==="inactive-parts-body"){
       const days=Number(document.getElementById("inactive-days")?.value)||90;
       title=`อะไหล่ไม่เคลื่อนไหวเกิน ${days} วัน`;
+    }
+    if(bodyId==="stock-ending-body"){
+      const asOf=document.getElementById("stock-ending-date")?.value||todayISO();
+      const stock=document.getElementById("stock-ending-stock-type")?.value||"ALL";
+      const stockLabel=stock==="ALL"?"ทุกคลัง":stockTypeText(stock);
+      title=`สินค้าคงเหลือ ณ ${fmtDate(asOf)} — ${stockLabel}`;
     }
     return title;
   }
@@ -4058,6 +4093,7 @@
     let base=config.fileName||title;
     if(bodyId==="master-table-body") base=title;
     if(bodyId==="inactive-parts-body") base=title;
+    if(bodyId==="stock-ending-body") base=title;
     XLSX.writeFile(wb,`${safeExcelFileName(base)}-${todayISO()}.xlsx`);
     toast(`ส่งออก ${title} เป็น Excel แล้ว (${visibleRows.length} แถว)`);
   }
@@ -4486,7 +4522,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.9.7 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.9.8 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -6798,6 +6834,7 @@
     ["audit-body",20],
     ["top-issued-body",10],
     ["inactive-parts-body",10],
+    ["stock-ending-body",50],
     ["stock-card-body",20],
     ["history-body",20]
     ,["internal-stock-body",20]
@@ -6880,6 +6917,52 @@
     document.getElementById(id).addEventListener("change",()=>{resetReportPagination("history-body");renderHistory();});
   });
   document.getElementById("inactive-days").addEventListener("change",()=>{resetReportPagination("inactive-parts-body");renderManagementReports();});
+
+  function populateStockEndingCategoryOptions(){
+    const sel=document.getElementById("stock-ending-category");if(!sel)return;const prev=sel.value;
+    const categories=[...new Set(state.parts.map(p=>String(p.category||"อื่นๆ").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"th",{numeric:true}));
+    sel.innerHTML='<option value="">ทุกหมวดหมู่</option>'+categories.map(x=>`<option value="${escapeHTML(x)}">${escapeHTML(x)}</option>`).join("");
+    if(categories.includes(prev))sel.value=prev;
+  }
+  function stockEndingStatus(qty,reorder){
+    qty=Number(qty)||0;reorder=Number(reorder)||0;
+    if(qty<-.0000001)return{key:"negative",text:"ติดลบ"};
+    if(qty<=.0000001)return{key:"out",text:"หมด"};
+    if(qty<=reorder+.0000001)return{key:"low",text:"ต่ำ"};
+    return{key:"ok",text:"ปกติ"};
+  }
+  function stockEndingRows(){
+    const asOf=document.getElementById("stock-ending-date")?.value||todayISO(),stockFilter=document.getElementById("stock-ending-stock-type")?.value||"ALL",category=document.getElementById("stock-ending-category")?.value||"",balanceFilter=document.getElementById("stock-ending-balance-filter")?.value||"NONZERO",activeFilter=document.getElementById("stock-ending-active-filter")?.value||"ALL",q=String(document.getElementById("stock-ending-search")?.value||"").trim().toLowerCase();
+    const datedNetAll={},datedNetAsOf={};
+    (state.transactions||[]).forEach(t=>{
+      if(t.status==="cancelled"||!t.partId||!t.date)return;const type=normalizeStockType(t.stockType),key=`${t.partId}|${type}`,delta=t.type==="in"?Number(t.qty)||0:-(Number(t.qty)||0);
+      datedNetAll[key]=(datedNetAll[key]||0)+delta;if(t.date<=asOf)datedNetAsOf[key]=(datedNetAsOf[key]||0)+delta;
+    });
+    const stockTypes=stockFilter==="ALL"?["INTERNAL","RESALE"]:[normalizeStockType(stockFilter)],rows=[];
+    (state.parts||[]).forEach(p=>{
+      if(category&&p.category!==category)return;if(activeFilter==="ACTIVE"&&p.isActive===false)return;if(activeFilter==="INACTIVE"&&p.isActive!==false)return;
+      stockTypes.forEach(type=>{const key=`${p.id}|${type}`,current=stockQty(p.id,type),opening=current-(datedNetAll[key]||0),createdDate=String(p.createdAt||"").slice(0,10),openingAtDate=createdDate&&asOf<createdDate?0:opening,rawQty=openingAtDate+(datedNetAsOf[key]||0),qty=Math.abs(rawQty)<.0000001?0:rawQty,b=balanceByPart(p.id,type)||{},reorder=Number(b.reorderPoint??p.reorderPoint??p.minQty)||0,status=stockEndingStatus(qty,reorder),cost=Number(p.cost)||0,value=qty*cost,location=String(b.location||p.location||"");
+        if(balanceFilter==="NONZERO"&&Math.abs(qty)<.0000001)return;if(balanceFilter==="LOW"&&qty>reorder+.0000001)return;if(balanceFilter==="OUT"&&qty>.0000001)return;
+        const hay=`${p.code} ${p.name} ${p.category} ${p.unit} ${location} ${stockTypeText(type)}`.toLowerCase();if(q&&!hay.includes(q))return;
+        rows.push({part:p,stockType:type,qty,reorder,cost,value,location,status,opening});
+      });
+    });
+    return rows.sort((a,b)=>a.part.code.localeCompare(b.part.code,"th",{numeric:true})||a.stockType.localeCompare(b.stockType));
+  }
+  function renderStockEndingReport(){
+    const dateEl=document.getElementById("stock-ending-date");if(dateEl&&!dateEl.value)dateEl.value=todayISO();populateStockEndingCategoryOptions();const rows=stockEndingRows(),body=document.getElementById("stock-ending-body"),asOf=dateEl?.value||todayISO(),uniqueSku=new Set(rows.filter(r=>Math.abs(r.qty)>.0000001).map(r=>r.part.id)).size,low=rows.filter(r=>r.status.key==="low"||r.status.key==="out"||r.status.key==="negative").length,negative=rows.filter(r=>r.status.key==="negative").length,value=rows.reduce((sum,r)=>sum+r.value,0);
+    const kpis=document.getElementById("stock-ending-kpis");if(kpis)kpis.innerHTML=`<div class="stock-ending-kpi success"><span>SKU ที่มียอด</span><strong>${uniqueSku.toLocaleString("th-TH")}</strong></div><div class="stock-ending-kpi"><span>รายการคลังตามตัวกรอง</span><strong>${rows.length.toLocaleString("th-TH")}</strong></div><div class="stock-ending-kpi ${negative?"danger":low?"warn":""}"><span>ต่ำ / หมด / ติดลบ</span><strong>${low.toLocaleString("th-TH")}${negative?` · ติดลบ ${negative}`:""}</strong></div>${isAdmin()?`<div class="stock-ending-kpi"><span>มูลค่าประมาณ</span><strong>${fmtMoney(value)} ฿</strong></div>`:""}`;
+    const summary=document.getElementById("stock-ending-summary");if(summary)summary.textContent=`ณ ${fmtDate(asOf)} · ${rows.length.toLocaleString("th-TH")} รายการ`;
+    body.innerHTML=rows.length?rows.map(r=>`<tr class="${r.status.key==="negative"?"cancelled-row":""}"><td>${tagHTML(r.part)}</td><td>${escapeHTML(r.part.name)}${r.part.isActive===false?'<div class="hint">ปิดใช้งาน</div>':""}</td><td>${escapeHTML(r.part.category||"อื่นๆ")}</td><td><span class="stock-type-pill ${r.stockType==="RESALE"?"resale":""}">${stockTypeText(r.stockType)}</span></td><td class="mono">${fmtMoney(r.qty)}</td><td>${escapeHTML(r.part.unit||"ชิ้น")}</td><td class="mono">${fmtMoney(r.reorder)}</td><td ${isAdmin()?"":"hidden"} class="mono">${fmtMoney(r.cost)}</td><td ${isAdmin()?"":"hidden"} class="mono">${fmtMoney(r.value)}</td><td><span class="stock-ending-status ${r.status.key}">${r.status.text}</span></td></tr>`).join(""):`<tr class="empty-row"><td colspan="10">ไม่พบสินค้าคงเหลือตามเงื่อนไขที่เลือก</td></tr>`;
+    refreshReportPagination("stock-ending-body");
+  }
+  function clearStockEndingFilters(){
+    const defaults={"stock-ending-date":todayISO(),"stock-ending-stock-type":"ALL","stock-ending-category":"","stock-ending-balance-filter":"NONZERO","stock-ending-active-filter":"ALL","stock-ending-search":""};Object.entries(defaults).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.value=value;});resetReportPagination("stock-ending-body");renderStockEndingReport();
+  }
+  ["stock-ending-date","stock-ending-stock-type","stock-ending-category","stock-ending-balance-filter","stock-ending-active-filter"].forEach(id=>document.getElementById(id)?.addEventListener("change",()=>{resetReportPagination("stock-ending-body");renderStockEndingReport();}));
+  document.getElementById("stock-ending-search")?.addEventListener("input",()=>{resetReportPagination("stock-ending-body");renderStockEndingReport();});
+  document.getElementById("btn-stock-ending-clear")?.addEventListener("click",clearStockEndingFilters);
+
   ["stock-card-part","stock-card-stock-type"].forEach(id=>document.getElementById(id).addEventListener("change",()=>{resetReportPagination("stock-card-body");renderStockCard();}));
 
   function renderStockCardPartOptions(){
@@ -6922,6 +7005,7 @@
     const inactive=state.parts.filter(p=>p.isActive!==false).map(p=>{const latest=activeTx.filter(t=>t.partId===p.id).sort((a,b)=>b.date.localeCompare(a.date))[0];return{p,latest:latest?latest.date:""};}).filter(x=>!x.latest||x.latest<limit).sort((a,b)=>(a.latest||"").localeCompare(b.latest||""));
     document.getElementById("inactive-parts-body").innerHTML=inactive.length?inactive.map(x=>`<tr><td>${tagHTML(x.p)}</td><td>${escapeHTML(x.p.name)}</td><td>${x.latest?fmtDate(x.latest):"ไม่เคยเคลื่อนไหว"}</td><td class="mono">${x.p.qty} ${escapeHTML(x.p.unit)}</td></tr>`).join(""):`<tr class="empty-row"><td colspan="4">ไม่มีรายการไม่เคลื่อนไหวเกิน ${days} วัน</td></tr>`;
     refreshReportPagination("inactive-parts-body");
+    renderStockEndingReport();
     renderStockCard();
   }
   document.getElementById("btn-stock-card-export").addEventListener("click",()=>{
@@ -7207,7 +7291,7 @@
     if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
     const guide = [
-      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.9.7 Reliability & Data Integrity Fix"],
+      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.9.8 Stock Ending Report"],
       ["วิธีใช้","ใช้ไฟล์เดียวได้ทุกห้อง เลือกประเภทในโปรแกรมแล้วอัปโหลดไฟล์เดิม ระบบจะอ่านเฉพาะชีทที่ตรงกัน"],
       ["ลำดับแนะนำ","จังหวัด → ลูกค้า → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → หมวดหมู่ SKU → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
       ["การสร้าง SKU","ในชีท “เพิ่มอะไหล่” สามารถเว้นคอลัมน์รหัสอะไหล่ไว้ ระบบจะสร้าง SKU จากหมวดหมู่ + ประเภทไอเท็ม + เลขลำดับต่อจากข้อมูลเดิมให้อัตโนมัติ"],
@@ -7222,7 +7306,7 @@
       ws["!autofilter"]={ref:"A1:"+XLSX.utils.encode_col(cfg.headers.length-1)+"1"};
       XLSX.utils.book_append_sheet(wb,ws,cfg.sheet);
     });
-    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.9.7.xlsx");
+    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.9.8.xlsx");
     toast("ดาวน์โหลดแม่แบบรวมเรียบร้อย");
   }
   document.getElementById("btn-download-import-template").addEventListener("click",downloadFullTemplate);
@@ -7526,7 +7610,7 @@
     import:{group:"จัดการระบบ",title:"นำเข้าข้อมูล Excel",description:"ตรวจสอบและนำเข้าข้อมูลหลายรายการอย่างปลอดภัย"},
     users:{group:"จัดการระบบ",title:"ผู้ใช้และบันทึกระบบ",description:"จัดการสิทธิ์ บัญชี และตรวจสอบกิจกรรมย้อนหลัง"},
     backups:{group:"จัดการระบบ",title:"สำรองและกู้คืนข้อมูล",description:"สร้างจุดสำรองและกู้คืน Google Sheets อย่างปลอดภัย"},
-    history:{group:"เครื่องมือ",title:"รายงานและประวัติ",description:"วิเคราะห์การเบิก ความเคลื่อนไหว และยอดคงเหลือรายตัว"}
+    history:{group:"เครื่องมือ",title:"รายงานและประวัติ",description:"ดูสินค้าคงเหลือ ณ วันที่ Stock Card และประวัติการเคลื่อนไหว"}
   };
   const SMART_FILTERS={
     "parts-body":[["part-search","คำค้นหา"],["part-cat-filter","หมวด"]],
@@ -7535,6 +7619,7 @@
     "master-table-body":[["master-search","คำค้นหา"]],
     "audit-body":[["audit-search","คำค้นหา"]],
     "inactive-parts-body":[["inactive-days","ช่วงเวลา"]],
+    "stock-ending-body":[["stock-ending-date","ณ วันที่"],["stock-ending-stock-type","ประเภทสต๊อก"],["stock-ending-category","หมวดหมู่"],["stock-ending-balance-filter","ยอดคงเหลือ"],["stock-ending-active-filter","สถานะ SKU"],["stock-ending-search","คำค้นหา"]],
     "stock-card-body":[["stock-card-part","อะไหล่"],["stock-card-stock-type","ประเภทสต๊อก"]],
     "history-body":[["hist-type-filter","ประเภท"],["hist-purpose-filter","วัตถุประสงค์"],["hist-customer-filter","ลูกค้า"],["hist-truck-filter","รถ"],["hist-from","ตั้งแต่"],["hist-to","ถึง"],["hist-search","คำค้นหา"]],
     "job-cost-report-body":[["job-cost-from","ตั้งแต่"],["job-cost-to","ถึง"],["job-cost-type","ประเภท JOB"],["job-cost-status","สถานะ"],["job-cost-search","คำค้นหา"]]
@@ -7548,6 +7633,7 @@
     "recent-issue-body":{title:"ยังไม่มีรายการเบิกออก",description:"สร้างใบเบิกออกเมื่อมีการนำอะไหล่ไปใช้งาน",action:"go-issue",label:"สร้างรายการเบิกออก"},
     "history-body":{title:"ไม่พบประวัติตามเงื่อนไข",description:"ลองเปลี่ยนช่วงวันที่ ประเภท หรือคำค้นหา",action:"clear-history",label:"ล้างตัวกรอง"},
     "audit-body":{title:"ไม่พบ Audit Log",description:"ไม่พบกิจกรรมที่ตรงกับคำค้นหาปัจจุบัน",action:"clear-audit",label:"ล้างคำค้นหา"},
+    "stock-ending-body":{title:"ไม่พบสินค้าคงเหลือตามเงื่อนไข",description:"ลองเปลี่ยนวันที่ คลัง หมวดหมู่ หรือเลือกแสดงยอดศูนย์",action:"clear-stock-ending",label:"ล้างตัวกรอง"},
     "stock-card-body":{title:"เลือกอะไหล่เพื่อดู Stock Card",description:"เลือก SKU และประเภทสต๊อกจากด้านบนเพื่อดูยอดยกมา รับเข้า เบิกออก และคงเหลือ"},
     "backups-body":{title:"ยังไม่มีไฟล์สำรอง",description:"กด “สำรองข้อมูลตอนนี้” เพื่อสร้างจุดกู้คืนแรก"},
     "job-cost-report-body":{title:"ไม่พบ JOB ตามเงื่อนไข",description:"ลองเปลี่ยนช่วงวันที่ ประเภท สถานะ หรือคำค้นหา"}
@@ -7608,7 +7694,7 @@
   }
   function shouldTrackSmartDirty(target){
     if(!target||target.type==="file"||target.type==="password")return false;
-    if(["count-search","part-search","part-cat-filter","request-search","request-status-filter","master-search","audit-search","inactive-days","stock-card-part","hist-type-filter","hist-purpose-filter","hist-customer-filter","hist-truck-filter","hist-from","hist-to","hist-search","job-cost-from","job-cost-to","job-cost-type","job-cost-status","job-cost-search"].includes(target.id))return false;
+    if(["count-search","part-search","part-cat-filter","request-search","request-status-filter","master-search","audit-search","inactive-days","stock-ending-date","stock-ending-stock-type","stock-ending-category","stock-ending-balance-filter","stock-ending-active-filter","stock-ending-search","stock-card-part","hist-type-filter","hist-purpose-filter","hist-customer-filter","hist-truck-filter","hist-from","hist-to","hist-search","job-cost-from","job-cost-to","job-cost-type","job-cost-status","job-cost-search"].includes(target.id))return false;
     return !!target.closest("#modal-overlay,#master-modal-overlay,#user-modal-overlay,#view-receive .document-panel,#view-issue .document-panel,#view-requisitions .document-panel,#view-stockcount .panel:first-child");
   }
 
@@ -7617,7 +7703,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.9.7`;
+    document.title=`${meta.title} | Stock Control v4.9.8`;
   }
 
   function selectLabel(el){
@@ -7747,6 +7833,7 @@
         const a=empty.dataset.emptyAction;
         if(a==="clear-parts"){clearFilterControl(document.getElementById("part-search"));clearFilterControl(document.getElementById("part-cat-filter"));}
         else if(a==="clear-requests"){clearFilterControl(document.getElementById("request-search"));clearFilterControl(document.getElementById("request-status-filter"));}
+        else if(a==="clear-stock-ending"){clearStockEndingFilters();}
         else if(a==="clear-history"){["hist-type-filter","hist-purpose-filter","hist-customer-filter","hist-truck-filter","hist-from","hist-to","hist-search"].forEach(id=>clearFilterControl(document.getElementById(id)));}
         else if(a==="clear-audit")clearFilterControl(document.getElementById("audit-search"));
         else if(a==="go-receive")activateView("receive");else if(a==="go-issue")activateView("issue");
@@ -7859,7 +7946,7 @@
     select.innerHTML=`<option value="">ชุดตัวกรองที่บันทึกไว้</option>`+rows.map(x=>`<option value="${escapeHTML(x.id)}">${escapeHTML(x.name)}</option>`).join("");if(rows.some(x=>x.id===current))select.value=current;
   }
   function triggerFilterRender(bodyId){
-    const map={"parts-body":renderParts,"requests-body":renderRequests,"stock-count-body":renderStockCount,"master-table-body":renderMaster,"audit-body":renderUsers,"inactive-parts-body":renderManagementReports,"stock-card-body":renderStockCard,"history-body":renderHistory};
+    const map={"parts-body":renderParts,"requests-body":renderRequests,"stock-count-body":renderStockCount,"master-table-body":renderMaster,"audit-body":renderUsers,"inactive-parts-body":renderManagementReports,"stock-ending-body":renderStockEndingReport,"stock-card-body":renderStockCard,"history-body":renderHistory};
     (map[bodyId]||renderAll)();
   }
   function applySavedFilter(bodyId,id){const row=savedFilters(bodyId).find(x=>x.id===id);if(!row)return;Object.entries(row.values||{}).forEach(([controlId,value])=>{const el=document.getElementById(controlId);if(el)el.value=String(value??"");});triggerFilterRender(bodyId);refreshTableMeta(bodyId);toast(`ใช้ชุดตัวกรอง “${row.name}” แล้ว`);}
