@@ -2310,7 +2310,7 @@
   @media(max-width:430px){.job-dashboard-grid,.job-dashboard-finance,.job-cost-report-kpis{grid-template-columns:1fr 1fr}.job-dashboard-watch-item{grid-template-columns:minmax(0,1fr) auto}.job-watch-age{display:none}}
   html[data-theme="dark"] .job-dashboard-finance .job-dashboard-stat{background:linear-gradient(135deg,rgba(20,184,166,.08),rgba(14,165,233,.05))}
 
-  /* ================= v4.9.9 Modal Form Protection ================= */
+  /* ================= v4.9.8 Stock Ending Report ================= */
   .stock-ending-filters{display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) minmax(180px,1.4fr) auto;gap:8px;align-items:end;margin-bottom:10px}
   .stock-ending-filter label{display:block;margin-bottom:4px;color:var(--text-dim);font-size:10px;font-weight:700}
   .stock-ending-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:10px 0 11px}
@@ -2332,7 +2332,7 @@
     <div class="brand" style="margin-bottom:18px;">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.9.9</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.9.10</h1>
         <p>เข้าสู่ระบบตามระดับสิทธิ์</p>
       </div>
     </div>
@@ -2412,7 +2412,7 @@
     <div class="brand">
       <img class="mark" data-drive-logo src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2080%2080'%3E%3Crect%20width='80'%20height='80'%20rx='12'%20fill='%23ffffff'/%3E%3Ctext%20x='40'%20y='47'%20text-anchor='middle'%20font-family='Arial'%20font-size='19'%20font-weight='700'%20fill='%230f766e'%3EH.O.B%3C/text%3E%3C/svg%3E" alt="โลโก้ H.O.B">
       <div>
-        <h1>คลังอะไหล่ — Stock Control v4.9.9</h1>
+        <h1>คลังอะไหล่ — Stock Control v4.9.10</h1>
         <p>ระบบควบคุมคลังอะไหล่และติดตามความเคลื่อนไหว</p>
       </div>
     </div>
@@ -3340,7 +3340,8 @@
       <div class="field"><label>โทรศัพท์</label><input id="mf-customer-phone"></div>
       <div class="field"><label>LINE</label><input id="mf-customer-line"></div>
       <div class="field"><label>อีเมล</label><input type="email" id="mf-customer-email"></div>
-      <div class="field"><label>เครดิตเทอม (วัน)</label><input type="number" min="0" step="1" id="mf-customer-credit" value="0"></div>
+      <div class="field"><label>เงื่อนไขการชำระ</label><select id="mf-customer-payment-type"><option value="cash">เงินสด</option><option value="credit">เครดิต</option></select></div>
+      <div class="field" id="mf-customer-credit-wrap" hidden><label>เครดิตเทอม (วัน)</label><input type="number" min="1" step="1" id="mf-customer-credit" value="30" placeholder="เช่น 7, 15, 30"></div>
       <div class="field span2"><label>ที่อยู่ออกเอกสาร</label><textarea id="mf-customer-billing"></textarea></div>
       <div class="field span2"><label>ที่อยู่จัดส่ง</label><textarea id="mf-customer-shipping"></textarea></div>
     </div>
@@ -3838,6 +3839,8 @@
     const newUser=!requiredValue(requiredEl("uf-id"));apply(requiredEl("uf-password"),newUser);
     if(typeof modalMasterType!=="undefined"){
       apply(requiredEl("mf-customer-name"),modalMasterType==="customers");
+      apply(requiredEl("mf-customer-payment-type"),modalMasterType==="customers");
+      apply(requiredEl("mf-customer-credit"),modalMasterType==="customers"&&requiredEl("mf-customer-payment-type")?.value==="credit");
       apply(requiredEl("mf-supplier-name"),modalMasterType==="suppliers");
       apply(requiredEl("mf-truck-owner-type"),modalMasterType==="trucks");
       apply(requiredEl("mf-truck-plate"),modalMasterType==="trucks");
@@ -3879,7 +3882,7 @@
   }
   function requiredMasterRules(){
     if(typeof modalMasterType==="undefined")return [];
-    if(modalMasterType==="customers")return [requiredRule(requiredEl("mf-customer-name"),"ชื่อลูกค้า","ต้องระบุชื่อลูกค้า / บริษัท")];
+    if(modalMasterType==="customers")return [requiredRule(requiredEl("mf-customer-name"),"ชื่อลูกค้า","ต้องระบุชื่อลูกค้า / บริษัท"),requiredRule(requiredEl("mf-customer-payment-type"),"เงื่อนไขการชำระ","ต้องเลือกเงินสดหรือเครดิต"),requiredRule(requiredEl("mf-customer-credit"),"เครดิตเทอม","เมื่อเลือกเครดิต ต้องระบุจำนวนวันมากกว่า 0",()=>requiredPositive(requiredEl("mf-customer-credit")),requiredEl("mf-customer-payment-type")?.value==="credit")];
     if(modalMasterType==="suppliers")return [requiredRule(requiredEl("mf-supplier-name"),"ชื่อซัพพลายเออร์","ต้องระบุชื่อซัพพลายเออร์")];
     if(modalMasterType==="trucks")return [requiredRule(requiredEl("mf-truck-owner-type"),"เจ้าของรถ","ต้องเลือกเจ้าของรถ"),requiredRule(requiredEl("mf-truck-plate"),"ทะเบียนรถ","ต้องระบุทะเบียนรถ"),requiredRule(requiredEl("mf-truck-customer"),"ลูกค้าเจ้าของรถ","รถลูกค้าต้องเลือกลูกค้าเจ้าของรถ",()=>requiredValue(requiredEl("mf-truck-customer"))!=="",requiredEl("mf-truck-owner-type")?.value==="CUSTOMER")];
     if(modalMasterType==="provinces")return [requiredRule(requiredEl("mf-province-name"),"ชื่อจังหวัด","ต้องระบุชื่อจังหวัด")];
@@ -4522,7 +4525,7 @@
       showApp(user);
     }catch(err){
       errorEl.textContent = /ไม่รู้จัก action:\s*login/i.test(err.message||"")
-        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.9.9 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
+        ? "กรุณาอัปเดต Code.gs เป็นเวอร์ชัน 4.9.10 และ Deploy ใหม่ก่อนเข้าสู่ระบบ"
         : (err.message || "เข้าสู่ระบบไม่สำเร็จ");
     }finally{
       btn.disabled = false; btn.textContent = "เข้าสู่ระบบ";
@@ -6556,7 +6559,7 @@
   let modalMasterType = "suppliers";
   let masterImportDraft = {type:"suppliers",rows:[],fileName:""};
   const MASTER_UI = {
-    customers:{title:"ฐานข้อมูลลูกค้า",headers:["รหัส","ลูกค้า","ประเภท","ผู้ติดต่อ","โทรศัพท์","เครดิตเทอม","สถานะ",""]},
+    customers:{title:"ฐานข้อมูลลูกค้า",headers:["รหัส","ลูกค้า","ประเภท","ผู้ติดต่อ","โทรศัพท์","เงื่อนไขชำระ","สถานะ",""]},
     suppliers:{title:"รายชื่อซัพพลายเออร์",headers:["รหัส","ซัพพลายเออร์","ผู้ติดต่อ","โทรศัพท์","จังหวัด","สถานะ",""]},
     trucks:{title:"ทะเบียนรถและเจ้าของรถ",headers:["ทะเบียนรถ","เจ้าของ","รถ","เลขตัวถัง","สถานะ",""]},
     provinces:{title:"รายชื่อจังหวัด",headers:["จังหวัด","สถานะ",""]},
@@ -6596,6 +6599,23 @@
     return `${x.docType||""}|${x.docNo||""}`.trim().toLowerCase();
   }
 
+  function customerPaymentTermText(creditTerm){
+    const days=Math.max(0,Math.floor(Number(creditTerm)||0));
+    return days>0?`${fmtMoney(days)} วัน`:`เงินสด`;
+  }
+  function updateCustomerPaymentUI(){
+    const type=document.getElementById("mf-customer-payment-type");
+    const wrap=document.getElementById("mf-customer-credit-wrap");
+    const credit=document.getElementById("mf-customer-credit");
+    if(!type||!wrap||!credit)return;
+    const isCredit=type.value==="credit";
+    wrap.hidden=!isCredit;
+    credit.disabled=!isCredit;
+    if(isCredit&&!(Number(credit.value)>0))credit.value=30;
+    if(!isCredit)clearRequiredError(credit);
+    refreshConditionalRequiredMarkers();
+  }
+
   function renderMaster(){
     const ui=MASTER_UI[currentMasterType];
     if(!ui) return;
@@ -6606,7 +6626,7 @@
     document.getElementById("master-table-body").innerHTML=rows.length?rows.map(x=>{
       const status=x.isActive!==false?'<span class="tag ok">ใช้งาน</span>':'<span class="tag out">หยุดใช้</span>';
       const actions=`<td class="row-actions"><button class="small" data-master-edit="${x.id}">แก้ไข</button><button class="small ${x.isActive!==false?'danger-ghost':''}" data-master-toggle="${x.id}">${x.isActive!==false?'หยุดใช้':'เปิดใช้'}</button></td>`;
-      if(currentMasterType==="customers") return `<tr><td class="mono">${escapeHTML(x.code||"-")}</td><td>${escapeHTML(x.name)}</td><td>${x.customerType==="company"?"บริษัท":"บุคคล"}</td><td>${escapeHTML(x.contact||"-")}</td><td class="mono">${escapeHTML(x.phone||"-")}</td><td class="mono">${fmtMoney(x.creditTerm)} วัน</td><td>${status}</td><td class="row-actions"><button class="small" data-customer-history="${x.id}">ประวัติซ่อม</button><button class="small" data-master-edit="${x.id}">แก้ไข</button><button class="small ${x.isActive!==false?'danger-ghost':''}" data-master-toggle="${x.id}">${x.isActive!==false?'หยุดใช้':'เปิดใช้'}</button></td></tr>`;
+      if(currentMasterType==="customers") return `<tr><td class="mono">${escapeHTML(x.code||"-")}</td><td>${escapeHTML(x.name)}</td><td>${x.customerType==="company"?"บริษัท":"บุคคล"}</td><td>${escapeHTML(x.contact||"-")}</td><td class="mono">${escapeHTML(x.phone||"-")}</td><td class="mono">${customerPaymentTermText(x.creditTerm)}</td><td>${status}</td><td class="row-actions"><button class="small" data-customer-history="${x.id}">ประวัติซ่อม</button><button class="small" data-master-edit="${x.id}">แก้ไข</button><button class="small ${x.isActive!==false?'danger-ghost':''}" data-master-toggle="${x.id}">${x.isActive!==false?'หยุดใช้':'เปิดใช้'}</button></td></tr>`;
       if(currentMasterType==="suppliers") return `<tr><td class="mono">${escapeHTML(x.code||"-")}</td><td>${escapeHTML(x.name)}</td><td>${escapeHTML(x.contact||"-")}</td><td class="mono">${escapeHTML(x.phone||"-")}</td><td>${escapeHTML(provinceById(x.provinceId)?.name||"-")}</td><td>${status}</td>${actions}</tr>`;
       if(currentMasterType==="trucks") return `<tr><td class="mono">${escapeHTML(x.plateNo)}<div class="hint">${escapeHTML(provinceById(x.provinceId)?.name||"")}</div></td><td>${x.ownerType==="CUSTOMER"?escapeHTML(customerById(x.customerId)?.name||"ไม่พบลูกค้า"):"รถบริษัท / ภายใน"}</td><td>${escapeHTML([x.brand,x.model,x.year,x.color].filter(Boolean).join(" · ")||x.description||"-")}</td><td class="mono">${escapeHTML(x.vin||"-")}</td><td>${status}</td>${actions}</tr>`;
       if(currentMasterType==="provinces") return `<tr><td>${escapeHTML(x.name)}</td><td>${status}</td>${actions}</tr>`;
@@ -6628,7 +6648,7 @@
     document.getElementById("mf-active").checked=x?x.isActive!==false:true;
     document.querySelectorAll(".master-form-group").forEach(g=>g.classList.toggle("active",g.id==="master-form-"+type));
     if(type==="customers"){
-      document.getElementById("mf-customer-code").value=x?x.code:"";document.getElementById("mf-customer-type").value=x?x.customerType:"person";document.getElementById("mf-customer-name").value=x?x.name:"";document.getElementById("mf-customer-tax").value=x?x.taxId:"";document.getElementById("mf-customer-branch").value=x?x.branch:"";document.getElementById("mf-customer-contact").value=x?x.contact:"";document.getElementById("mf-customer-phone").value=x?x.phone:"";document.getElementById("mf-customer-line").value=x?x.line:"";document.getElementById("mf-customer-email").value=x?x.email:"";document.getElementById("mf-customer-credit").value=x?x.creditTerm:0;document.getElementById("mf-customer-billing").value=x?x.billingAddress:"";document.getElementById("mf-customer-shipping").value=x?x.shippingAddress:"";
+      document.getElementById("mf-customer-code").value=x?x.code:"";document.getElementById("mf-customer-type").value=x?x.customerType:"person";document.getElementById("mf-customer-name").value=x?x.name:"";document.getElementById("mf-customer-tax").value=x?x.taxId:"";document.getElementById("mf-customer-branch").value=x?x.branch:"";document.getElementById("mf-customer-contact").value=x?x.contact:"";document.getElementById("mf-customer-phone").value=x?x.phone:"";document.getElementById("mf-customer-line").value=x?x.line:"";document.getElementById("mf-customer-email").value=x?x.email:"";document.getElementById("mf-customer-payment-type").value=(x&&Number(x.creditTerm)>0)?"credit":"cash";document.getElementById("mf-customer-credit").value=(x&&Number(x.creditTerm)>0)?Math.floor(Number(x.creditTerm)):30;updateCustomerPaymentUI();document.getElementById("mf-customer-billing").value=x?x.billingAddress:"";document.getElementById("mf-customer-shipping").value=x?x.shippingAddress:"";
     }else if(type==="suppliers"){
       document.getElementById("mf-supplier-code").value=x?x.code:""; document.getElementById("mf-supplier-name").value=x?x.name:"";
       document.getElementById("mf-supplier-contact").value=x?x.contact:""; document.getElementById("mf-supplier-phone").value=x?x.phone:"";
@@ -6655,7 +6675,7 @@
 
   function collectMasterForm(){
     const base={id:document.getElementById("mf-id").value||uid(),isActive:document.getElementById("mf-active").checked,createdAt:new Date().toISOString()};
-    if(modalMasterType==="customers") return {...base,code:document.getElementById("mf-customer-code").value.trim(),customerType:document.getElementById("mf-customer-type").value,name:document.getElementById("mf-customer-name").value.trim(),taxId:document.getElementById("mf-customer-tax").value.trim(),branch:document.getElementById("mf-customer-branch").value.trim(),contact:document.getElementById("mf-customer-contact").value.trim(),phone:document.getElementById("mf-customer-phone").value.trim(),line:document.getElementById("mf-customer-line").value.trim(),email:document.getElementById("mf-customer-email").value.trim(),creditTerm:Number(document.getElementById("mf-customer-credit").value)||0,billingAddress:document.getElementById("mf-customer-billing").value.trim(),shippingAddress:document.getElementById("mf-customer-shipping").value.trim(),updatedAt:new Date().toISOString()};
+    if(modalMasterType==="customers") return {...base,code:document.getElementById("mf-customer-code").value.trim(),customerType:document.getElementById("mf-customer-type").value,name:document.getElementById("mf-customer-name").value.trim(),taxId:document.getElementById("mf-customer-tax").value.trim(),branch:document.getElementById("mf-customer-branch").value.trim(),contact:document.getElementById("mf-customer-contact").value.trim(),phone:document.getElementById("mf-customer-phone").value.trim(),line:document.getElementById("mf-customer-line").value.trim(),email:document.getElementById("mf-customer-email").value.trim(),creditTerm:document.getElementById("mf-customer-payment-type").value==="cash"?0:Math.max(1,Math.floor(Number(document.getElementById("mf-customer-credit").value)||0)),billingAddress:document.getElementById("mf-customer-billing").value.trim(),shippingAddress:document.getElementById("mf-customer-shipping").value.trim(),updatedAt:new Date().toISOString()};
     if(modalMasterType==="suppliers") return {...base,code:document.getElementById("mf-supplier-code").value.trim(),name:document.getElementById("mf-supplier-name").value.trim(),contact:document.getElementById("mf-supplier-contact").value.trim(),phone:document.getElementById("mf-supplier-phone").value.trim(),taxId:document.getElementById("mf-supplier-tax").value.trim(),address:document.getElementById("mf-supplier-address").value.trim(),provinceId:document.getElementById("mf-supplier-province").value};
     if(modalMasterType==="trucks") return {...base,plateNo:document.getElementById("mf-truck-plate").value.trim(),provinceId:document.getElementById("mf-truck-province").value,description:document.getElementById("mf-truck-description").value.trim(),driver:document.getElementById("mf-truck-driver").value.trim(),ownerType:document.getElementById("mf-truck-owner-type").value,customerId:document.getElementById("mf-truck-customer").value,brand:document.getElementById("mf-truck-brand").value.trim(),model:document.getElementById("mf-truck-model").value.trim(),year:document.getElementById("mf-truck-year").value.trim(),color:document.getElementById("mf-truck-color").value.trim(),vin:document.getElementById("mf-truck-vin").value.trim(),engineNo:document.getElementById("mf-truck-engine").value.trim(),updatedAt:new Date().toISOString()};
     if(modalMasterType==="provinces") return {...base,name:document.getElementById("mf-province-name").value.trim()};
@@ -6671,6 +6691,7 @@
     try{if(hasScriptURL())await apiCall("setMasterActive",{masterType:currentMasterType,id,isActive:next});x.isActive=next;cacheSave();renderAll();toast("เปลี่ยนสถานะเรียบร้อย");}catch(err){toast("เปลี่ยนสถานะไม่สำเร็จ: "+err.message,true);}
   }
 
+  document.getElementById("mf-customer-payment-type")?.addEventListener("change",updateCustomerPaymentUI);
   document.querySelectorAll("[data-master-type]").forEach(b=>b.addEventListener("click",()=>setMasterType(b.dataset.masterType)));
   document.querySelectorAll("[data-quick-master]").forEach(b=>b.addEventListener("click",()=>openMasterModal(b.dataset.quickMaster,null)));
   document.getElementById("master-search").addEventListener("input",renderMaster);
@@ -6720,8 +6741,8 @@
       const provinceText=String(raw["จังหวัด"]||"").trim(),province=findByText(activeRows("provinces"),["name"],provinceText);
       if(provinceText&&!province&&type!=="provinces")errors.push("ไม่พบจังหวัดในฐานข้อมูล");
       if(type==="customers"){
-        record={...record,code:String(raw["รหัสลูกค้า"]||"").trim(),customerType:String(raw["ประเภทลูกค้า"]||"").trim()==="บริษัท"?"company":"person",name:String(raw["ชื่อลูกค้า/บริษัท"]||"").trim(),taxId:String(raw["เลขผู้เสียภาษี"]||"").trim(),branch:String(raw["สำนักงานใหญ่/สาขา"]||"").trim(),contact:String(raw["ผู้ติดต่อ"]||"").trim(),phone:String(raw["โทรศัพท์"]||"").trim(),line:String(raw["LINE"]||"").trim(),email:String(raw["อีเมล"]||"").trim(),billingAddress:String(raw["ที่อยู่ออกเอกสาร"]||"").trim(),shippingAddress:String(raw["ที่อยู่จัดส่ง"]||"").trim(),creditTerm:Number(raw["เครดิตเทอม(วัน)"]||0),updatedAt:new Date().toISOString()};
-        if(!record.name)errors.push("กรุณาระบุชื่อลูกค้า");if(!Number.isFinite(record.creditTerm)||record.creditTerm<0)errors.push("เครดิตเทอมต้องไม่น้อยกว่า 0");key=String(record.code||record.taxId||record.name).toLowerCase();primary=record.name;detail=[record.code,record.contact,record.phone].filter(Boolean).join(" · ")||"ลูกค้า";
+        record={...record,code:String(raw["รหัสลูกค้า"]||"").trim(),customerType:String(raw["ประเภทลูกค้า"]||"").trim()==="บริษัท"?"company":"person",name:String(raw["ชื่อลูกค้า/บริษัท"]||"").trim(),taxId:String(raw["เลขผู้เสียภาษี"]||"").trim(),branch:String(raw["สำนักงานใหญ่/สาขา"]||"").trim(),contact:String(raw["ผู้ติดต่อ"]||"").trim(),phone:String(raw["โทรศัพท์"]||"").trim(),line:String(raw["LINE"]||"").trim(),email:String(raw["อีเมล"]||"").trim(),billingAddress:String(raw["ที่อยู่ออกเอกสาร"]||"").trim(),shippingAddress:String(raw["ที่อยู่จัดส่ง"]||"").trim(),creditTerm:(()=>{const term=String(raw["เครดิตเทอม(วัน)"]??"").trim();if(!term||term==="0"||term.toLowerCase()==="cash"||term==="เงินสด")return 0;const n=Number(term);return Number.isFinite(n)?Math.floor(n):NaN;})(),updatedAt:new Date().toISOString()};
+        if(!record.name)errors.push("กรุณาระบุชื่อลูกค้า");if(!Number.isFinite(record.creditTerm)||record.creditTerm<0)errors.push("เครดิตเทอมต้องเป็น เงินสด หรือจำนวนวันตั้งแต่ 1 ขึ้นไป");key=String(record.code||record.taxId||record.name).toLowerCase();primary=record.name;detail=[record.code,record.contact,record.phone].filter(Boolean).join(" · ")||"ลูกค้า";
       }else if(type==="suppliers"){
         record={...record,code:String(raw["รหัส"]||"").trim(),name:String(raw["ชื่อซัพพลายเออร์"]||"").trim(),contact:String(raw["ผู้ติดต่อ"]||"").trim(),phone:String(raw["โทรศัพท์"]||"").trim(),taxId:String(raw["เลขผู้เสียภาษี"]||"").trim(),address:String(raw["ที่อยู่"]||"").trim(),provinceId:province?.id||""};
         if(!record.name)errors.push("กรุณาระบุชื่อซัพพลายเออร์");key=String(record.code||record.name).toLowerCase();primary=record.name;detail=record.code||record.contact||"-";
@@ -7250,7 +7271,7 @@
     });
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(txSheet), "ประวัติการเคลื่อนไหว");
 
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.customers.map(x=>({"รหัสลูกค้า":x.code,"ประเภทลูกค้า":x.customerType==="company"?"บริษัท":"บุคคล","ชื่อลูกค้า/บริษัท":x.name,"เลขผู้เสียภาษี":x.taxId,"สำนักงานใหญ่/สาขา":x.branch,"ผู้ติดต่อ":x.contact,"โทรศัพท์":x.phone,"LINE":x.line,"อีเมล":x.email,"ที่อยู่ออกเอกสาร":x.billingAddress,"ที่อยู่จัดส่ง":x.shippingAddress,"เครดิตเทอม(วัน)":x.creditTerm,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "ลูกค้า");
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.customers.map(x=>({"รหัสลูกค้า":x.code,"ประเภทลูกค้า":x.customerType==="company"?"บริษัท":"บุคคล","ชื่อลูกค้า/บริษัท":x.name,"เลขผู้เสียภาษี":x.taxId,"สำนักงานใหญ่/สาขา":x.branch,"ผู้ติดต่อ":x.contact,"โทรศัพท์":x.phone,"LINE":x.line,"อีเมล":x.email,"ที่อยู่ออกเอกสาร":x.billingAddress,"ที่อยู่จัดส่ง":x.shippingAddress,"เครดิตเทอม(วัน)":Number(x.creditTerm)>0?Math.floor(Number(x.creditTerm)):"เงินสด","สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "ลูกค้า");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.suppliers.map(x=>({"รหัส":x.code,"ชื่อซัพพลายเออร์":x.name,"ผู้ติดต่อ":x.contact,"โทรศัพท์":x.phone,"เลขผู้เสียภาษี":x.taxId,"ที่อยู่":x.address,"จังหวัด":provinceById(x.provinceId)?.name||"","สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "ซัพพลายเออร์");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.trucks.map(x=>({"ทะเบียนรถ":x.plateNo,"จังหวัด":provinceById(x.provinceId)?.name||"","เจ้าของรถ":x.ownerType==="CUSTOMER"?"รถลูกค้า":"รถบริษัท","ชื่อลูกค้าเจ้าของรถ":customerById(x.customerId)?.name||"","ยี่ห้อ":x.brand,"รุ่น":x.model,"ปีรถ":x.year,"สี":x.color,"เลขตัวถัง (VIN)":x.vin,"เลขเครื่อง":x.engineNo,"รายละเอียดรถ":x.description,"ผู้ขับ":x.driver,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "รถบรรทุก");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(state.provinces.map(x=>({"จังหวัด":x.name,"สถานะ":x.isActive?"ใช้งาน":"หยุดใช้"}))), "จังหวัด");
@@ -7289,7 +7310,7 @@
     }
   };
   const MASTER_IMPORT_CONFIG = {
-    customers:{sheet:"ลูกค้า",label:"ลูกค้า",headers:["รหัสลูกค้า","ประเภทลูกค้า","ชื่อลูกค้า/บริษัท","เลขผู้เสียภาษี","สำนักงานใหญ่/สาขา","ผู้ติดต่อ","โทรศัพท์","LINE","อีเมล","ที่อยู่ออกเอกสาร","ที่อยู่จัดส่ง","เครดิตเทอม(วัน)","สถานะ"],example:["CUS-000001","บริษัท","บริษัทตัวอย่าง จำกัด","0105559999999","สำนักงานใหญ่","สมชาย","0812345678","sample.line","sales@example.com","99/9 หมู่ 1","99/9 หมู่ 1",30,"ใช้งาน"]},
+    customers:{sheet:"ลูกค้า",label:"ลูกค้า",headers:["รหัสลูกค้า","ประเภทลูกค้า","ชื่อลูกค้า/บริษัท","เลขผู้เสียภาษี","สำนักงานใหญ่/สาขา","ผู้ติดต่อ","โทรศัพท์","LINE","อีเมล","ที่อยู่ออกเอกสาร","ที่อยู่จัดส่ง","เครดิตเทอม(วัน)","สถานะ"],example:["CUS-000001","บริษัท","บริษัทตัวอย่าง จำกัด","0105559999999","สำนักงานใหญ่","สมชาย","0812345678","sample.line","sales@example.com","99/9 หมู่ 1","99/9 หมู่ 1","เงินสด","ใช้งาน"]},
     suppliers:{sheet:"ซัพพลายเออร์",label:"ซัพพลายเออร์",headers:["รหัส","ชื่อซัพพลายเออร์","ผู้ติดต่อ","โทรศัพท์","เลขผู้เสียภาษี","ที่อยู่","จังหวัด","สถานะ"],example:["SUP-001","บริษัทตัวอย่าง จำกัด","สมชาย","0812345678","0105559999999","99/9 หมู่ 1","ราชบุรี","ใช้งาน"]},
     trucks:{sheet:"รถบรรทุก",label:"รถบรรทุก",headers:["ทะเบียนรถ","จังหวัด","เจ้าของรถ","ชื่อลูกค้าเจ้าของรถ","ยี่ห้อ","รุ่น","ปีรถ","สี","เลขตัวถัง (VIN)","เลขเครื่อง","รายละเอียดรถ","ผู้ขับ","สถานะ"],example:["กข-1234","ราชบุรี","รถลูกค้า","CUS-000001","Toyota","Hilux Revo","2024","ขาว","VIN123456","ENG123456","รถกระบะ 4 ประตู","สมศักดิ์","ใช้งาน"]},
     provinces:{sheet:"จังหวัด",label:"จังหวัด",headers:["จังหวัด","สถานะ"],example:["ราชบุรี","ใช้งาน"]},
@@ -7315,7 +7336,7 @@
     if(!requireAdmin()) return;
     const wb = XLSX.utils.book_new();
     const guide = [
-      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.9.9 Modal Form Protection"],
+      ["แม่แบบนำเข้าข้อมูลคลังอะไหล่ — v4.9.10 Customer Cash / Credit Term"],
       ["วิธีใช้","ใช้ไฟล์เดียวได้ทุกห้อง เลือกประเภทในโปรแกรมแล้วอัปโหลดไฟล์เดิม ระบบจะอ่านเฉพาะชีทที่ตรงกัน"],
       ["ลำดับแนะนำ","จังหวัด → ลูกค้า → ซัพพลายเออร์ → รถบรรทุก → PR-PO-IV → หมวดหมู่ SKU → เพิ่มอะไหล่ → รับเข้า → จ่ายออก"],
       ["การสร้าง SKU","ในชีท “เพิ่มอะไหล่” สามารถเว้นคอลัมน์รหัสอะไหล่ไว้ ระบบจะสร้าง SKU จากหมวดหมู่ + ประเภทไอเท็ม + เลขลำดับต่อจากข้อมูลเดิมให้อัตโนมัติ"],
@@ -7330,7 +7351,7 @@
       ws["!autofilter"]={ref:"A1:"+XLSX.utils.encode_col(cfg.headers.length-1)+"1"};
       XLSX.utils.book_append_sheet(wb,ws,cfg.sheet);
     });
-    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.9.9.xlsx");
+    XLSX.writeFile(wb,"แม่แบบนำเข้าข้อมูลระบบอะไหล่-v4.9.10.xlsx");
     toast("ดาวน์โหลดแม่แบบรวมเรียบร้อย");
   }
   document.getElementById("btn-download-import-template").addEventListener("click",downloadFullTemplate);
@@ -7727,7 +7748,7 @@
     const meta=SMART_VIEW_META[active]||SMART_VIEW_META.dashboard;
     const title=document.getElementById("workspace-title"),desc=document.getElementById("workspace-description"),group=document.getElementById("breadcrumb-group"),current=document.getElementById("breadcrumb-current");
     if(title)title.textContent=meta.title;if(desc)desc.textContent=meta.description;if(group)group.textContent=meta.group;if(current)current.textContent=meta.title;
-    document.title=`${meta.title} | Stock Control v4.9.9`;
+    document.title=`${meta.title} | Stock Control v4.9.10`;
   }
 
   function selectLabel(el){
